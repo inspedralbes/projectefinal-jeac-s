@@ -5,12 +5,16 @@
 Teniu la carpeta /doc per deixar-hi tota la documentació que genereu, preferiblament en format __markdown__
 
 HEU DE MODIFICAR AQUEST DOCUMENT AMB LA VOSTRA INFORMACIÖ:
-* Nom del projecte
-* Petita descripció
-* Nom (o inicials) dels integrants del grup
-* URL del prototip de penpod (penseu a deixar el prototip públic)
-* URL del taiga.io
+* Proyecto final Jeacs
+* Proyecto de desarrollo de una página web para subir minijuegos y jugar a ellos
+* Albert, Eric, Jaume, Carlos
+* https://design.penpot.app/#/workspace/4755a563-5b43-8015-8001-ec5059834358/4755a563-5b43-8015-8001-ec50930233f2?page-id=4755a563-5b43-8015-8001-ec50930233f3 
+* https://tree.taiga.io/project/carlosgomezfuentes-jeacs/
 * URL de preproducció 
-* URL de producció (amb un domini registrat)
-
+* http://jeacs.alumnes.inspedralbes.cat/
+# Tecnologias utilizadas en este proyecto:
+* NPM
+* React
+* Laravel
+* Bootstrap
 

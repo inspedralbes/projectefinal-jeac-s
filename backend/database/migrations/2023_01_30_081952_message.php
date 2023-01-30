@@ -20,8 +20,8 @@ return new class extends Migration
             $table->bigInteger('userRecieverId')->unsigned();
             $table->string('date');
 
-            $table->foreign('userSenderId')->references('id')->on('user')->onDelete('cascade');
-            $table->foreign('userRecieverId')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('userSenderId')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('userRecieverId')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();
         });

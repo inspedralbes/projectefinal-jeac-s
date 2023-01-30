@@ -19,8 +19,8 @@ return new class extends Migration
 
             $table->string('comment');
 
-            $table->foreign('userCommentatorId')->references('id')->on('user')->onDelete('cascade');
-            $table->foreign('userCreatorId')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('userCommentatorId')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('userCreatorId')->references('id')->on('users')->onDelete('cascade');
 
             $table->primary(['userCommentatorId', 'userCreatorId'])->index();
 

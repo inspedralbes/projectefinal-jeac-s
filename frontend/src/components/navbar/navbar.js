@@ -18,8 +18,8 @@ function Navbar() {
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ml-auto">
 
-          <a class="nav-item nav-link active" href="#">Sign In <span class="sr-only">(current)</span></a>
-          <a class="nav-item nav-link" href="#">Log In</a>
+          <a class="nav-item nav-link active"><NavLink to="/SignIn">Sign In</NavLink></a>
+          <a class="nav-item nav-link"><NavLink to="/LogIn">Log In</NavLink></a>
 
         </div>
       </div>

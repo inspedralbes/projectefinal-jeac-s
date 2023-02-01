@@ -1,30 +1,28 @@
 import { NavLink } from "react-router-dom"
 
 function Navbar() {
-  return (
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">
-        <img src="jeacsLogo.PNG" width="70" height="70" alt=""></img>
-      </a>
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-item nav-link"><NavLink to="/">Home</NavLink></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-item nav-link"><NavLink to="/games">Games</NavLink></a>
-        </li>
-      </ul>
+    return (
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a className="navbar-brand" href="#">
+            <img src="jeacsLogo.PNG" width="70" height="70" alt=""></img>
+        </a>
+        <ul className="navbar-nav mr-auto">
+            <li className="nav-item active">
+                <NavLink to="/" className="nav-item nav-link">Home</NavLink>
+            </li>
+            <li className="nav-item">
+                <NavLink to="/games" className="nav-item nav-link">Games</NavLink> 
+            </li>
+        </ul>
 
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav ml-auto">
-
-          <a class="nav-item nav-link active" href="#">Sign In <span class="sr-only">(current)</span></a>
-          <a class="nav-item nav-link" href="#">Log In</a>
-
+        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div className="navbar-nav ml-auto">
+                <a className="nav-item nav-link active" href="#">Sign In <span className="sr-only">(current)</span></a>
+                <a className="nav-item nav-link" href="#">Log In</a>
+            </div>
         </div>
-      </div>
-    </nav>
-  )
+        </nav>
+    )
 }
 
 export default Navbar;

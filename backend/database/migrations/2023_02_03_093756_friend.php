@@ -20,8 +20,8 @@ return new class extends Migration
             $table->enum('status',['accepted', 'pending', 'rejected'])->default('pending');
 
            
-            $table->foreign('userRequestId')->references('id')->on('user')->onDelete('cascade');
-            $table->foreign('userRequestedId')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('userRequestId')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('userRequestedId')->references('id')->on('users')->onDelete('cascade');
 
             $table->primary(['userRequestId', 'userRequestedId'])->index();
             

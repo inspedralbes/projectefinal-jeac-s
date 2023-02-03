@@ -1,6 +1,7 @@
 body {
   background-image: url('backgroundImage.png');
-  background-repeat: no-repeat;
+  background-repeat: repeat;
+  background-size: cover;
   height: 100vh;
   background-color: gray;
 }

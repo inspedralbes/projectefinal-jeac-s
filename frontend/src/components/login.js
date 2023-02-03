@@ -10,7 +10,7 @@ function LoginForm() {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8000/api/login', {
+      const response = await fetch('http://localhost:8000/api/setPlayerData', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',          

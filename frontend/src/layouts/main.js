@@ -10,20 +10,6 @@ import LoginForm from '../components/login'
 
 
 function Main() {
-<<<<<<< HEAD
-    return (
-        <div>
-            <HashRouter>
-                <Navbar></Navbar>
-                <Routes>
-                    <Route path="/" element={<Home/>} />
-                    <Route path="/games" element={<Games/>} />
-                    <Route path="/UploadGame" element={<UploadGame/>} />
-                </Routes>
-            </HashRouter>
-
-        </div>
-=======
   return (
     <div>
       <HashRouter>
@@ -32,13 +18,11 @@ function Main() {
             <Route path="/" element={<Home/>} />
             <Route path="/games" element={<Games/>} />
             <Route path="/upload" element={<Upload/>} />
-
             <Route path="/SignIn" element={<Signin/>} />
             <Route path="/login" element={<LoginForm/>} />
           </Routes>
       </HashRouter>
     </div>
->>>>>>> develop
   )
 }
 

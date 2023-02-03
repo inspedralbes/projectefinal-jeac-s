@@ -12,7 +12,7 @@ const UploadForm = () => {
 
 const onClick = () => {
     if(!name | !img | !zip ) {
-        alert('AAAAAAAAAAAAAAAAAAAAAAAA')
+        alert('Name img and zip ')
         return
     }
 

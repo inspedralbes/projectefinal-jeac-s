@@ -31,3 +31,9 @@ code {
 .carousel-inner{
   padding: 20px;
 }
+
+.canvasGame{
+  border: red solid 2px;
+  display: block;
+  margin: auto auto;
+}

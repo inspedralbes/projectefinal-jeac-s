@@ -22,16 +22,15 @@ function Navbar() {
         <img src="jeacsLogo.PNG" width="70" height="70" alt=""></img>
       </a>
       <ul class="navbar-nav mr-auto">
-        <NavLink to="/">
-          <li class="nav-item active">
-            <a class="nav-item nav-link">Home</a>
-          </li>
-        </NavLink>
-        <NavLink to="/games">
-          <li class="nav-item">
-            <a class="nav-item nav-link">Games</a>
-          </li>
-        </NavLink>
+        <li class="nav-item active">
+          <a class="nav-item nav-link"><NavLink to="/">Home</NavLink></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-item nav-link"><NavLink to="/games">Games</NavLink></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-item nav-link"><NavLink to="/upload">Upload</NavLink></a>
+        </li>
       </ul>
 
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">

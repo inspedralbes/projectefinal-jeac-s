@@ -2,6 +2,7 @@ function Home() {
     return (
         
 
+
       <div class="container">
       <div class="News">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">

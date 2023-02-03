@@ -13,6 +13,7 @@ class PlayersController extends Controller
     public function store(Request $request)
     {
         $player = new Player;
+        $player->name = $request->name;
         $player->email = $request->email;
         $player->psswd = Hash::make($request->psswd);
 

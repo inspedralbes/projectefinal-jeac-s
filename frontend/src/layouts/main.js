@@ -4,6 +4,7 @@ import Games from '../components/games'
 import Home from '../components/home'
 import Signin from '../components/signin'
 import LoginForm from '../components/login'
+import UploadGame from '../components/UploadGame'
 
 
 function Main() {
@@ -14,6 +15,7 @@ function Main() {
           <Routes>
             <Route path="/" element={<Home/>} />
             <Route path="/games" element={<Games/>} />
+            <Route path="/UploadGame" element={<UploadGame/>} />
             <Route path="/SignIn" element={<Signin/>} />
             <Route path="/login" element={<LoginForm/>} />
           </Routes>

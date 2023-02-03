@@ -17,6 +17,11 @@ function Navbar() {
             <a class="nav-item nav-link">Games</a>
           </li>
         </NavLink>
+        <NavLink to="/UploadGame">
+          <li class="nav-item">
+            <a class="nav-item nav-link">Upload Games</a>
+          </li>
+        </NavLink>
       </ul>
 
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">

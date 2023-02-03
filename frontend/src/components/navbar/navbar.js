@@ -19,7 +19,7 @@ function Navbar() {
         <div class="navbar-nav ml-auto">
 
           <a class="nav-item nav-link active"><NavLink to="/SignIn">Sign In</NavLink></a>
-          <a class="nav-item nav-link"><NavLink to="/LogIn">Log In</NavLink></a>
+          <a class="nav-item nav-link"><NavLink to="/login">Log In</NavLink></a>
 
         </div>
       </div>

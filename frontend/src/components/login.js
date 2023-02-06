@@ -35,7 +35,7 @@ function LoginForm() {
       <Container>
         <Row className="d-flex justify-content-center align-items-center">
           <Col md={8} lg={6} xs={12}>
-            <Card className="px-4 rounded bg-dark">
+            <Card className="px-4 rounded bg-dark"><br></br>
               <Card.Body>
                 <div className="mb-3 mt-md-4">
                   <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">

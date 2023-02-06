@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 function Signin() {
     const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -16,7 +17,7 @@ function Signin() {
             headers: {
             'Content-Type': 'application/json',          
             },
-            body: JSON.stringify({ name, email, password }),
+            body: JSON.stringify({ name, username, email, password }),
         });
 
         if (!response.ok) {
@@ -38,6 +39,11 @@ function Signin() {
           <Form.Group controlId="formBasicName">
             <Form.Label>Name</Form.Label>
             <Form.Control type="text" placeholder="Enter name" value={name} onChange={(event) => setName(event.target.value)}/>
+          </Form.Group>
+
+          <Form.Group controlId="formBasicName">
+            <Form.Label>Username</Form.Label>
+            <Form.Control type="text" placeholder="Enter username" value={username} onChange={(event) => setUsername(event.target.value)}/>
           </Form.Group>
 
           <Form.Group controlId="formBasicEmail">

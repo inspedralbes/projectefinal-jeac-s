@@ -1,4 +1,9 @@
-var config = {
+import Phaser from "phaser";
+
+export function game() {
+    
+
+    var config = {
     type: Phaser.canvas,
     width: 800,
     height: 600,
@@ -32,6 +37,7 @@ function preload ()
 function create ()
 {
     //   Bullet 1 (600px in 6 seconds)
+    
 
     this.add.image(0, 200, 'ground').setOrigin(0);
 
@@ -75,4 +81,6 @@ function update (time, delta)
     {
         bullet2.x = 64;
     }
+}
+
 }

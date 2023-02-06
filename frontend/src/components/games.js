@@ -1,30 +1,73 @@
-import useScript from "./UseScript";
+import {game} from '../Games/marioGameModule.js';
+import {game2} from '../Games/marioGame.js';
+import {Ballgame} from '../Games/BallGame/index.js';
+
+import React from "react";
+import AddTripButton from './ChangeComponentOnClick.js';
+import { useState } from 'react'
+import Upload from './upload.js';
+
 
 
 
 function Games() {
-    // useScript('//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js', false)
-    // useScript('frontend/Games/marioGame.js', true)
-    
 
-    const onClick = () => {
-        const script = document.createElement('script');
-
-        script.src = 'frontend/Games/marioGame.js';
-        script.type = ('module')
+    const [state, setState] = useState('start')
+    const games = [
+            {
+                id: 1,  
+                name: 'BallGame',
+                
+            },
+            {
+                id: 2,  
+                name: 'MarioGame',
+               
+            },
+            {
+                id: 3,  
+                name: 'Food Shopping',
+               
+            },
+        ]
         
 
-        document.body.appendChild(script);
+
+    const onClick1 = () => {
+
+        game2();
+    }
+
+    const onClick2 = () => {
+
+        Ballgame();
     }
 
 
     return (
-        <div>
+        <div>   
             <h1>Los JUEGUITOS</h1>
 
-            <button onClick={onClick}>Play</button>
+
+            {games.map(( game) => (
+                <button>{game.name}</button>
+            ))}
+            {state === 'start' && (
+                <AddTripButton addTrip={() => setState('add-trip') } />
+            )}
+
+            {state === 'add-trip' && <Upload />}
+            {/* <button onClick={onClick1}>Mario Game</button>
+            <button onClick={onClick2}>BallGame</button> */}
+
+
+
+
 
             <canvas id="canvas" className="canvasGame"></canvas>
+
+            <canvas id="canvas2" className="canvasGame2"></canvas>
+
 
 
         </div>

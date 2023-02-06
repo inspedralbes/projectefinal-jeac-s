@@ -37,3 +37,7 @@ code {
   display: block;
   margin: auto auto;
 }
+
+.canvasGame2{
+  border: green solid 2px;
+}

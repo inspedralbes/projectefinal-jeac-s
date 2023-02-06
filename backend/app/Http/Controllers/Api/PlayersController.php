@@ -14,6 +14,7 @@ class PlayersController extends Controller
     {
         $player = new Player;
         $player->name = $request->name;
+        $player->username = $request->username;
         $player->email = $request->email;
         $player->psswd = Hash::make($request->psswd);
 

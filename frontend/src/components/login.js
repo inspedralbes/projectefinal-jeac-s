@@ -2,22 +2,20 @@ import React, { useState } from 'react';
 import { FormControl } from 'react-bootstrap';
 
 function LoginForm() {
-  const [name, setName] = useState('');
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [psswd, setPsswd] = useState('');
   const [error, setError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8000/api/setPlayerData', {
+      const response = await fetch('http://localhost:8000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',          
         },
-        body: JSON.stringify({ name, username, email, password }),
+        body: JSON.stringify({ username, psswd }),
       });
 
       if (!response.ok) {
@@ -35,18 +33,9 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit}>
       {error && <p>{error.message}</p>}
+      
       <div>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="name"
-          id="name"
-          name="name"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="name">Username:</label>
+        <label htmlFor="username">Username:</label>
         <input
           type="username"
           id="username"
@@ -55,24 +44,15 @@ function LoginForm() {
           onChange={(event) => setUsername(event.target.value)}
         />
       </div>
+      
       <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password:</label>
+        <label htmlFor="psswd">Password:</label>
         <input
           type="password"
           id="password"
           name="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
+          value={psswd}
+          onChange={(event) => setPsswd(event.target.value)}
         />
       </div>
       <button type="submit">Login</button>

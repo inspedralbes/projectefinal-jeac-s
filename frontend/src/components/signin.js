@@ -5,19 +5,19 @@ function Signin() {
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [psswd, setPsswd] = useState('');
     const [error, setError] = useState(null);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-        const response = await fetch('http://localhost:8000/api/setPlayerData', {
+        const response = await fetch('http://localhost:8000/api/register', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',          
             },
-            body: JSON.stringify({ name, username, email, password }),
+            body: JSON.stringify({ name, username, email, psswd }),
         });
 
         if (!response.ok) {
@@ -53,7 +53,7 @@ function Signin() {
 
           <Form.Group controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)}/>
+            <Form.Control type="password" placeholder="Password" value={psswd} onChange={(event) => setPsswd(event.target.value)}/>
           </Form.Group>
 
           <Button variant="primary" type="submit">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormControl } from 'react-bootstrap';
+import {Card, Row, Col, Form, Button, Container } from 'react-bootstrap';
 
 function LoginForm() {
   const [username, setUsername] = useState('');
@@ -13,7 +13,7 @@ function LoginForm() {
       const response = await fetch('http://localhost:8000/api/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',          
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, psswd }),
       });
@@ -26,37 +26,51 @@ function LoginForm() {
       console.log(data);
     } catch (error) {
       setError(error);
-      
+
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {error && <p>{error.message}</p>}
-      
-      <div>
-        <label htmlFor="username">Username:</label>
-        <input
-          type="username"
-          id="username"
-          name="username"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-        />
-      </div>
-      
-      <div>
-        <label htmlFor="psswd">Password:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={psswd}
-          onChange={(event) => setPsswd(event.target.value)}
-        />
-      </div>
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <Container>
+        <Row className="d-flex justify-content-center align-items-center">
+          <Col md={8} lg={6} xs={12}>
+            <Card className="px-4 rounded bg-dark">
+              <Card.Body>
+                <div className="mb-3 mt-md-4">
+                  <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
+                    Log In
+                  </h2>
+                  <div className="mb-3">
+                    <Form onSubmit={handleSubmit}>
+                      {error && <p>{error.message}</p>}
+
+                      <Form.Group controlId="formBasicName">
+                        <Form.Label className='text-light'>Username</Form.Label>
+                        <Form.Control type="text" placeholder="Enter username" value={username}
+                          onChange={(event) => setUsername(event.target.value)} required />
+                      </Form.Group>
+                      <br></br>
+
+                      <Form.Group controlId="formBasicPassword">
+                        <Form.Label className='text-light'>Password</Form.Label>
+                        <Form.Control type="password" placeholder="Password" value={psswd}
+                          onChange={(event) => setPsswd(event.target.value)} required />
+                      </Form.Group><br></br>
+
+                      <Button variant="primary" type="submit">
+                        Submit
+                      </Button>
+                    </Form>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </div>
+
   );
 }
 

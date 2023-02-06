@@ -3,6 +3,7 @@ import { FormControl } from 'react-bootstrap';
 
 function LoginForm() {
   const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -16,7 +17,7 @@ function LoginForm() {
         headers: {
           'Content-Type': 'application/json',          
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, username, email, password }),
       });
 
       if (!response.ok) {
@@ -42,6 +43,16 @@ function LoginForm() {
           name="name"
           value={name}
           onChange={(event) => setName(event.target.value)}
+        />
+      </div>
+      <div>
+        <label htmlFor="name">Username:</label>
+        <input
+          type="username"
+          id="username"
+          name="username"
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
         />
       </div>
       <div>

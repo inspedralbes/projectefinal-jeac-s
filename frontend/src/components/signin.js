@@ -1,24 +1,24 @@
-import {Card, Row, Col, Form, Button, Container } from 'react-bootstrap';
+import { Card, Row, Col, Form, Button, Container } from 'react-bootstrap';
 import React, { useState } from 'react';
 
 function Signin() {
-    const [name, setName] = useState('');
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [psswd, setPsswd] = useState('');
-    const [error, setError] = useState(null);
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [psswd, setPsswd] = useState('');
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-        try {
-        const response = await fetch('http://localhost:8000/api/register', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',          
-            },
-            body: JSON.stringify({ name, username, email, psswd }),
-        });
+    try {
+      const response = await fetch('http://localhost:8000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, username, email, psswd }),
+      });
 
       if (!response.ok) {
         throw new Error(response.statusText);

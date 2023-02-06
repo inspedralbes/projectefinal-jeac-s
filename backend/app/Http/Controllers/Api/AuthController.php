@@ -41,6 +41,7 @@ class AuthController extends Controller
                 } else {
                     $message = "Incorrect password!!";
                     return response()->json([
+
                         $message,
                         500
                     ]);

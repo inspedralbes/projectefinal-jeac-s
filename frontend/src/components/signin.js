@@ -1,4 +1,4 @@
-import { Card, Row, Col, Form, Button, Container } from 'react-bootstrap';
+import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import React, { useState } from 'react';
 
 function Signin() {
@@ -36,6 +36,7 @@ function Signin() {
       <Container>
         <Row className="d-flex justify-content-center align-items-center">
           <Col md={8} lg={6} xs={12}>
+            <br></br>
             <Card className="px-4 rounded bg-dark">
               <Card.Body>
                 <div className="mb-3 mt-md-4">
@@ -70,6 +71,7 @@ function Signin() {
                       <Button variant="primary" type="submit">
                         Submit
                       </Button>
+
                     </Form>
                   </div>
                 </div>

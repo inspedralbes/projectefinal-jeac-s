@@ -2,33 +2,15 @@ import {Card, Row, Col, Form, Button, Container } from 'react-bootstrap';
 import React, { useState } from 'react';
 
 function Signin() {
-<<<<<<< HEAD
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
-=======
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [psswd, setPsswd] = useState('');
     const [error, setError] = useState(null);
->>>>>>> develop
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-<<<<<<< HEAD
-    try {
-      const response = await fetch('http://localhost:8000/api/setPlayerData', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, username, email, password }),
-      });
-=======
         try {
         const response = await fetch('http://localhost:8000/api/register', {
             method: 'POST',
@@ -37,7 +19,6 @@ function Signin() {
             },
             body: JSON.stringify({ name, username, email, psswd }),
         });
->>>>>>> develop
 
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -81,17 +62,10 @@ function Signin() {
                         <Form.Control type="email" placeholder="Enter email" value={email} onChange={(event) => setEmail(event.target.value)} required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"></Form.Control>
                       </Form.Group><br></br>
 
-<<<<<<< HEAD
                       <Form.Group controlId="formBasicPassword">
                         <Form.Label className='text-light'>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
+                        <Form.Control type="password" placeholder="Password" value={psswd} onChange={(event) => setPsswd(event.target.value)} required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
                       </Form.Group><br></br>
-=======
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" value={psswd} onChange={(event) => setPsswd(event.target.value)}/>
-          </Form.Group>
->>>>>>> develop
 
                       <Button variant="primary" type="submit">
                         Submit

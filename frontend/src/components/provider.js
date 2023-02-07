@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions } from './store';
 import { Navigate } from 'react-router-dom';
+
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [psswd, setPassword] = useState('');
@@ -23,6 +24,7 @@ const LoginForm = () => {
             const data = await response.json();
             if (data.isLoggedIn) {
                 dispatch(actions.login());
+                console.log(data[0]);
             } else {
                 dispatch(actions.logout());
             }
@@ -30,10 +32,6 @@ const LoginForm = () => {
             console.error(error);
         }
     };
-
-    if (isLoggedIn) {
-        return <Navigate to="/" replace={true} />;
-    }
 
     return (
         <form onSubmit={handleSubmit}>
@@ -52,7 +50,7 @@ const LoginForm = () => {
                 />
             </div>
             <button type="submit">Login</button>
-            {isLoggedIn ? <p>You are logged in</p> : <p>You are not logged in</p>}
+            {isLoggedIn ? <p>Welcome, {username}!</p> : <p>You are not logged in</p>}
         </form>
     );
 

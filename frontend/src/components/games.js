@@ -5,7 +5,7 @@ import { NavLink } from'react-router-dom';
 const Games = ({ play }) => {
 
     return (
-        <div className="games">
+        <div className="games" style={{ width: '18rem'}}>
                 <Card className='gameCard'>
                     <Card.Img variant="top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ56p-a6_szW03gPqT8FZJEAqyg-tznGlwcSA&usqp=CAU" />
                     <Card.Body>
@@ -17,9 +17,6 @@ const Games = ({ play }) => {
                             to additional content. This content is a little bit longer.
                         </Card.Text>
                     </Card.Body>
-                    <Card.Footer>
-                        <small className="text-muted">Last updated 3 mins ago</small>
-                    </Card.Footer>
                 </Card>
         </div>
     )

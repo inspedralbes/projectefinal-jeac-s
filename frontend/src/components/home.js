@@ -62,7 +62,12 @@ function Home() {
             
                 <div className='funcionalities__uploadGame' >
                     <NavLink to="/upload">
-                        <img src={imgUploadGame} alt='KOKOKOKOK' className='img__funcionalities'></img>
+                        <figure>
+                            <img src={imgUploadGame} alt='KOKOKOKOK' className='img__funcionalities'></img>
+                        </figure>
+                        <span>
+                            SPAN
+                        </span>
                     </NavLink>
 
                     {/* <NavLink to='/game'><Button className='btn btn-danger'> Juego 1 </Button></NavLink> */}

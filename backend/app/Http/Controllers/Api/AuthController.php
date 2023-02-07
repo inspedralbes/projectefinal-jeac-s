@@ -36,14 +36,15 @@ class AuthController extends Controller
                 if (Hash::check($request->psswd, $player->psswd)) {
                     return response()->json([
                         $player,
-                        200
+                        200,
+                        'isLoggedIn' => true,
                     ]);
                 } else {
                     $message = "Incorrect password!!";
                     return response()->json([
-
                         $message,
-                        500
+                        500,
+                        'isLoggedIn' => false,
                     ]);
                 }
             }
@@ -51,7 +52,8 @@ class AuthController extends Controller
             $message = "This player doesn't exist!";
             return response()->json([
                 $message,
-                500
+                500,
+                'isLoggedIn' => false,
             ]);
         }
     }

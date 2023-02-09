@@ -26,6 +26,10 @@ function Signin() {
 
       const data = await response.json();
       console.log(data);
+      if (data.isRegistered) {
+        console.log('Succes register')
+        alert('You have registered succesfully');
+      }
     } catch (error) {
       setError(error);
 

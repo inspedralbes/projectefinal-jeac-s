@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions } from './store';
-import { Navigate } from 'react-router-dom';
+import { saveData } from './actions';
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [psswd, setPassword] = useState('');
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
+    const data = useSelector((state) => state.data);
+
     const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
@@ -22,9 +24,10 @@ const LoginForm = () => {
             });
 
             const data = await response.json();
+
             if (data.isLoggedIn) {
                 dispatch(actions.login());
-                console.log(data[0]);
+                dispatch(saveData(data[0]));
             } else {
                 dispatch(actions.logout());
             }
@@ -50,10 +53,23 @@ const LoginForm = () => {
                 />
             </div>
             <button type="submit">Login</button>
-            {isLoggedIn ? <p>Welcome, {username}!</p> : <p>You are not logged in</p>}
         </form>
     );
-
 };
 
-export default LoginForm;
+const UserInfo = () => {
+    const data = useSelector(state => state.data);
+    const isLoggedIn = useSelector((state) => state.isLoggedIn);
+    return (
+        <div>
+            { <h2>User Information</h2> }
+            { <p>Name: {data.name}</p> }
+            { <p>Username: {data.username}</p> }
+            { <p>Email: {data.email}</p> } 
+        </div>
+    );
+};
+
+
+
+export { LoginForm, UserInfo };

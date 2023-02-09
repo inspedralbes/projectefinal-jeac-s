@@ -3,22 +3,25 @@ import { createStore, combineReducers } from 'redux';
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
 
-const isLoggedIn = (state = false, action) => {
+const initialState = {
+  isLoggedIn: false,
+  data: {}
+};
+
+const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN:
-      return true;
-    case LOGOUT:
-      return false;
-    default:
-      return state;
+      case 'LOGIN':
+          return { ...state, isLoggedIn: true };
+      case 'LOGOUT':
+          return { ...state, isLoggedIn: false };
+      case 'SAVE_DATA':
+          return { ...state, data: action.payload };
+      default:
+          return state;
   }
 };
 
-const reducers = combineReducers({
-  isLoggedIn,
-});
-
-const store = createStore(reducers);
+const store = createStore(reducer);
 
 const actions = {
   login: () => ({ type: LOGIN }),

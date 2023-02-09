@@ -26,6 +26,9 @@ function Navbar() {
 
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ml-auto">
+        <NavLink to="/profile">
+            <a class="nav-item nav-link">Profile</a>
+          </NavLink>
           <NavLink to="/SignIn">
             <a class="nav-item nav-link">Sign In</a>
           </NavLink>

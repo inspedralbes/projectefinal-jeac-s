@@ -57,19 +57,6 @@ const LoginForm = () => {
     );
 };
 
-const UserInfo = () => {
-    const data = useSelector(state => state.data);
-    const isLoggedIn = useSelector((state) => state.isLoggedIn);
-    return (
-        <div>
-            { <h2>User Information</h2> }
-            { <p>Name: {data.name}</p> }
-            { <p>Username: {data.username}</p> }
-            { <p>Email: {data.email}</p> } 
-        </div>
-    );
-};
 
 
-
-export { LoginForm, UserInfo };
+export default LoginForm;

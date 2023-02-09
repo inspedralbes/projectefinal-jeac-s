@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { LoginForm } from './provider';
+import LoginForm from './provider_login';
 import { store } from './store';
 
 

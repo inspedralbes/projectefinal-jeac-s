@@ -39,3 +39,17 @@ code {
   margin: auto auto;
 }
 
+#carouselExampleCaptions{
+  height:auto;
+  width: 50%;
+  margin: auto;
+  padding: 10px;
+
+}
+
+.landingPage__funcionalities{
+  width: 50%;
+  margin: auto;
+  padding: 10px;
+}
+

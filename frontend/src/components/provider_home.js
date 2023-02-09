@@ -5,13 +5,8 @@ import { useSelector } from 'react-redux';
 import { NavLink } from "react-router-dom"
 
 function Home() {
-    const data = useSelector(state => state.data);
-    const isLoggedIn = useSelector((state) => state.isLoggedIn);
-
     return (
         <div>
-            {isLoggedIn ? <p>Username: {data.name}</p> : <p>You are not logged in</p>}
-
             <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>

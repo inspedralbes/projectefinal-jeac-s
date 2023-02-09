@@ -1,9 +1,13 @@
 import { NavLink } from "react-router-dom"
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { actions } from '../store';
+
 
 function Navbar() {
+
   const data = useSelector(state => state.data);
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  
 
   return (
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -29,26 +33,29 @@ function Navbar() {
       </ul>
 
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-       
-          {isLoggedIn ?
-             <div class="navbar-nav ml-auto">
-              <NavLink to="/profile">
-                <a class="nav-item nav-link">Profile</a>
-              </NavLink>
-              <a class="nav-item nav-link">Log Out</a>
-            </div> : 
-            <div class="navbar-nav ml-auto">
-              <NavLink to="/SignIn">
-                <a class="nav-item nav-link">Sign In</a>
-              </NavLink>
 
-              <NavLink to="/login">
-                <a class="nav-item nav-link">Log In</a>
-              </NavLink>
-            </div>}
+        {isLoggedIn ?
+          <div class="navbar-nav ml-auto">
+            <NavLink to="/profile">
+              <a class="nav-item nav-link">Profile</a>
+            </NavLink>
+        
+              <a class="nav-item nav-link">Log Out</a>
+           
+          </div> :
+          <div class="navbar-nav ml-auto">
+            <NavLink to="/SignIn">
+              <a class="nav-item nav-link">Sign In</a>
+            </NavLink>
+
+            <NavLink to="/login">
+              <a class="nav-item nav-link">Log In</a>
+            </NavLink>
+          </div>}
       </div>
     </nav>
   )
 }
+
 
 export default Navbar;

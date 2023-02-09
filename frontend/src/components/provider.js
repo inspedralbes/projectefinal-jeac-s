@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions } from './store';
+import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import { saveData } from './actions';
 
 const LoginForm = () => {
@@ -28,6 +29,7 @@ const LoginForm = () => {
             if (data.isLoggedIn) {
                 dispatch(actions.login());
                 dispatch(saveData(data[0]));
+                window.location.href = 'http://localhost:3000/#/';
             } else {
                 dispatch(actions.logout());
             }
@@ -37,23 +39,43 @@ const LoginForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-            </div>
-            <div>
-                <input
-                    type="password"
-                    value={psswd}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </div>
-            <button type="submit">Login</button>
-        </form>
+        <div>
+      <Container>
+        <Row className="d-flex justify-content-center align-items-center">
+          <Col md={8} lg={6} xs={12}>
+            <br></br>
+            <Card className="px-4 rounded bg-dark">
+              <Card.Body>
+                <div className="mb-3 mt-md-4">
+                  <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
+                    Sign In
+                  </h2>
+                  <div className="mb-3">
+                    <Form onSubmit={handleSubmit}>
+                      <Form.Group controlId="formBasicName">
+                        <Form.Label className='text-light'>Username</Form.Label>
+                        <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                      </Form.Group>
+                      <br></br>
+
+                      <Form.Group controlId="formBasicPassword">
+                        <Form.Label className='text-light'>Password</Form.Label>
+                        <Form.Control type="password" placeholder="Password"  value={psswd} onChange={(e) => setPassword(e.target.value)} />
+                      </Form.Group><br></br>
+
+                      <Button variant="primary" type="submit">
+                        Submit
+                      </Button>
+
+                    </Form>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </div>
     );
 };
 

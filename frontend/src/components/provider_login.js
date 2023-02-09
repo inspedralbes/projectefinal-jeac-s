@@ -29,7 +29,6 @@ const LoginForm = () => {
             if (data.isLoggedIn) {
                 dispatch(actions.login());
                 dispatch(saveData(data[0]));
-                window.location.href = 'http://localhost:3000/#/';
             } else {
                 dispatch(actions.logout());
             }
@@ -62,7 +61,7 @@ const LoginForm = () => {
                         <Form.Label className='text-light'>Password</Form.Label>
                         <Form.Control type="password" placeholder="Password"  value={psswd} onChange={(e) => setPassword(e.target.value)} />
                       </Form.Group><br></br>
-
+                    
                       <Button variant="primary" type="submit">
                         Submit
                       </Button>

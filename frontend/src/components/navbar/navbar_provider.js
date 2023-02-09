@@ -1,13 +1,19 @@
 import { NavLink } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux';
 import { actions } from '../store';
+import { saveData } from '../actions';
 
 
 function Navbar() {
 
   const data = useSelector(state => state.data);
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
-  
+  const dispatch = useDispatch();
+
+  function logout() {
+    dispatch(actions.logout());
+  }
+
 
   return (
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -39,9 +45,9 @@ function Navbar() {
             <NavLink to="/profile">
               <a class="nav-item nav-link">Profile</a>
             </NavLink>
-        
-              <a class="nav-item nav-link">Log Out</a>
-           
+            <NavLink to="/">
+              <a class="nav-item nav-link" onClick={() => logout()}>Log Out</a>
+            </NavLink>
           </div> :
           <div class="navbar-nav ml-auto">
             <NavLink to="/SignIn">
@@ -53,7 +59,7 @@ function Navbar() {
             </NavLink>
           </div>}
       </div>
-    </nav>
+    </nav >
   )
 }
 

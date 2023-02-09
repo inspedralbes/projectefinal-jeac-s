@@ -27,7 +27,7 @@ function Home() {
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="mhw2.png" class="d-block w-100" alt="..."></img>
+                        <img src="mhw.png" class="d-block w-100" alt="..."></img>
                         <div class="carousel-caption d-none d-md-block">
                             <h5>Second slide label</h5>
                             <p>Some representative placeholder content for the second slide.</p>

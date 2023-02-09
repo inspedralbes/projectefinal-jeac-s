@@ -29,7 +29,6 @@ const LoginForm = () => {
             if (data.isLoggedIn) {
                 dispatch(actions.login());
                 dispatch(saveData(data[0]));
-                window.location.href = 'http://localhost:3000/#/';
             } else {
                 dispatch(actions.logout());
             }

@@ -35,6 +35,7 @@ function Navbar() {
           <NavLink to="/login">
             <a class="nav-item nav-link">Log In</a>
           </NavLink>
+            <a class="nav-item nav-link">Log Out</a>
         </div>
       </div>
     </nav>

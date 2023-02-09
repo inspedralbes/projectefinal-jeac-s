@@ -21,11 +21,12 @@ class AuthController extends Controller
         try {
             if ($player->save()) {
                 $message = "Registered correctly.";
-                return response()->json([$message, 200]);
+                return response()->json([$message, 200, 'isRegistered' => true]);
+
             }
         } catch (QueryException $ex) {
             $message = "Couldn't register.";
-            return response()->json([$message, 500]);
+            return response()->json([$message, 500, 'isRegistered' => false]);
         }
     }
     public function login(Request $request)

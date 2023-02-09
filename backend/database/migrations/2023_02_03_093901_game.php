@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->binary('img')->nullable();
-            $table->string('description');
+            $table->binary('zip')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

@@ -28,7 +28,7 @@ function Home() {
                             </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="valo.jfif" class="d-block w-100" alt="Valo"></img>
+                        <img src="valo.jfif" class="d-block w-100" alt="Valo    "></img>
                             <div class="carousel-caption d-none d-md-block">
                                 <h5>Third slide label</h5>
                                 <p>Some representative placeholder content for the third slide.</p>

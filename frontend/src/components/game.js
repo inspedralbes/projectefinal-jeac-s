@@ -1,4 +1,4 @@
-// import {Ballgame} from '../Games/BallGame/index.js';
+import {Ballgame} from '../Games/BallGame/BallGame/index.js';
 import { useState } from 'react'
  
 
@@ -8,7 +8,7 @@ import { useState } from 'react'
 
 function Game(game) {
     const onClick= () => {
-        // Ballgame();
+        Ballgame();
 
     }
 

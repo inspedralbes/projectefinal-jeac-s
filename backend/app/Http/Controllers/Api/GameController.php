@@ -45,7 +45,7 @@ class GameController extends Controller
         $file_new_path = $file->storeAs($dir_path . 'zip' , 'filename', 'local');
         $zipFile = $zip->open(Storage::disk('local')->path($file_new_path));
         if ($zipFile === TRUE) {
-            $zip->extractTo(base_path('\frontend\Games')); 
+            $zip->extractTo(base_path('../frontend/src/Games/'. $request->name )); 
             $zip->close();
         }
         return $game->id;

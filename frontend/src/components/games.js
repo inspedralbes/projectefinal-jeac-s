@@ -1,6 +1,6 @@
-import {game} from '../Games/marioGameModule.js';
-import {game2} from '../Games/marioGame.js';
-import {Ballgame} from '../Games/BallGame/index.js';
+// import {game} from '../Games/marioGameModule.js';
+// import {game2} from '../Games/marioGame.js';
+// import {Ballgame} from '../Games/BallGame/index.js';
 
 import React from "react";
 import AddTripButton from './ChangeComponentOnClick.js';
@@ -11,6 +11,7 @@ import Button  from 'react-bootstrap/Button';
 import { NavLink } from'react-router-dom';
 
 import './games.css';
+import GameCard from './gameCard.js';
 
 
 
@@ -75,10 +76,37 @@ import './games.css';
 
 
 const Games = ({ play }) => {
+    const games = [
+                    {
+                        id: 1,  
+                        name: 'BallGame',
+                        
+                    },
+                    {
+                        id: 2,  
+                        name: 'MarioGame',
+                       
+                    },
+                    {
+                        id: 3,  
+                        name: 'Food Shopping',
+                       
+                    },
+                ]
 
     return (
         <div className="games">
-                <Card className='gameCard'>
+                
+                {games.map((game) => (
+                    <GameCard key={game.id} game={game} />
+
+                ))}
+                
+                
+                
+                
+                
+                {/* <Card className='gameCard'>
                     <Card.Img variant="top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ56p-a6_szW03gPqT8FZJEAqyg-tznGlwcSA&usqp=CAU" />
                     <Card.Body>
                         <Card.Title>
@@ -92,7 +120,7 @@ const Games = ({ play }) => {
                     <Card.Footer>
                         <small className="text-muted">Last updated 3 mins ago</small>
                     </Card.Footer>
-                </Card>
+                </Card> */}
         </div>
     )
 }

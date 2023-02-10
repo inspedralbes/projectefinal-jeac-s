@@ -7,6 +7,7 @@ import Home from '../components/home'
 import Upload from '../components/upload.js';
 import Signin from '../components/signin'
 import LoginForm from '../components/login'
+import Game from '../components/game.js'
 
 
 function Main() {
@@ -20,6 +21,8 @@ function Main() {
             <Route path="/upload" element={<Upload/>} />
             <Route path="/SignIn" element={<Signin/>} />
             <Route path="/login" element={<LoginForm/>} />
+            <Route path="/game" element={<Game/>} />
+
           </Routes>
       </HashRouter>
     </div>

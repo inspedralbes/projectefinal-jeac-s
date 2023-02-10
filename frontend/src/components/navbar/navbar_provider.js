@@ -1,8 +1,6 @@
 import { NavLink } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux';
 import { actions } from '../store';
-import { saveData } from '../actions';
-
 
 function Navbar() {
 

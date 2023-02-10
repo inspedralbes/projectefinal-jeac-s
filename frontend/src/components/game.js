@@ -21,11 +21,10 @@ function Game(game) {
 
     return (
         <div className="game">
-               <h1>AQUÍ SE JUEGA</h1> 
                <div id="game">
                <canvas id="canvas" className="canvasGame"></canvas>
                 </div>
-               <button onClick={onClick}>Adksaj</button>
+               <button onClick={onClick}>Play</button>
                <button onClick={refreshPage}>Refresh</button>
 
         </div>

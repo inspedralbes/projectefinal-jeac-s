@@ -20,7 +20,7 @@ function Game(game) {
     } 
 
     return (
-        <div className="game">
+        <div className="game"><br></br>
                <div id="game">
                <canvas id="canvas" className="canvasGame"></canvas>
                 </div>

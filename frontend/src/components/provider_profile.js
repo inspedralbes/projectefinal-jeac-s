@@ -8,14 +8,21 @@ const UserInfo = () => {
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     return (
         <div>
-            { <h2>User Information</h2> }
-            { <p>Name: {data.name}</p> }
-            { <p>Username: {data.username}</p> }
-            { <p>Email: {data.email}</p> } 
+            {isLoggedIn ?
+                <div>
+                    < h2 > User Information</h2 >
+                    <p>Name: {data.name}</p>
+                    <p>Username: {data.username}</p>
+                    <p>Email: {data.email}</p>
+                </div >
+                :
+                <div>
+                    <h2>You are not logged in</h2></div>
+            }
         </div>
-    );
+    )
 };
 
 
 
-export default UserInfo ;
+export default UserInfo;

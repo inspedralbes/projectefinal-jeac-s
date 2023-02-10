@@ -30,6 +30,8 @@ const LoginForm = () => {
       if (data.isLoggedIn) {
         dispatch(actions.login());
         dispatch(saveData(data[0]));
+        navigate("/")
+
       } else {
         dispatch(actions.logout());
       }
@@ -40,7 +42,7 @@ const LoginForm = () => {
 
   return (
     <div>
-      {isLoggedIn ? navigate("/") :
+      {isLoggedIn ? <h2>You are already logged in</h2> :
         <Container>
           <Row className="d-flex justify-content-center align-items-center">
             <Col md={8} lg={6} xs={12}>
@@ -49,7 +51,7 @@ const LoginForm = () => {
                 <Card.Body>
                   <div className="mb-3 mt-md-4">
                     <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
-                      Sign In
+                      Log In
                     </h2>
                     <div className="mb-3">
                       <Form onSubmit={handleSubmit}>

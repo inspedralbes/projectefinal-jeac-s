@@ -3,16 +3,9 @@ import {destroy} from '../Games/BallGame/BallGame/index.js';
 import { useState } from 'react'
 import { $CombinedState } from 'redux';
  
-
-
-
-
-
 function Game(game) {
     const onClick= () => {
         Ballgame();
-
-
     }
 
        

@@ -1,5 +1,6 @@
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 function Signin() {
   const [name, setName] = useState('');
@@ -7,6 +8,7 @@ function Signin() {
   const [email, setEmail] = useState('');
   const [psswd, setPsswd] = useState('');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,7 +30,7 @@ function Signin() {
       console.log(data);
       if (data.isRegistered) {
         console.log('Succes register')
-        alert('You have registered succesfully');
+        navigate("/login")
       }
     } catch (error) {
       setError(error);
@@ -72,7 +74,7 @@ function Signin() {
                         <Form.Control type="password" placeholder="Password" value={psswd} onChange={(event) => setPsswd(event.target.value)} required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
                       </Form.Group><br></br>
 
-                      <Button variant="primary" type="submit">
+                      <Button variant="primary" type="submit" >
                         Submit
                       </Button>
 

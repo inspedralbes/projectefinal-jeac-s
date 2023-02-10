@@ -34,7 +34,6 @@ class GameController extends Controller
         $game = new Game();
         $game->name = $request->name;
         $game->img = $request->img;
-        $game->zip = $request->zip;
         $game->description = $request->description;
         info("Nom del joc: =>".$request->name);
         $game->save();

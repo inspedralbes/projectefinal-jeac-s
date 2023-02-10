@@ -9,45 +9,64 @@ const UploadForm = () => {
     const [categories, setCategories] = useState([])
     const [error, setError] = useState(null);
 
+    /**
+     * 
+     * @param {Funcion para convertir el ZIP en BLOB} dataURI 
+     * @returns 
+     */
     function dataURItoBlob(dataURI) {
-        // convert base64 to raw binary data held in a string
-        // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
         var byteString = atob(dataURI.split(',')[1]);
-        // separate out the mime component
         var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-        // write the bytes of the string to an ArrayBuffer
         var ab = new ArrayBuffer(byteString.length);
-        // create a view into the buffer
         var ia = new Uint8Array(ab);
-        // set the bytes of the buffer to the correct values
         for (var i = 0; i < byteString.length; i++) {
             ia[i] = byteString.charCodeAt(i);
         }
-        // write the ArrayBuffer to a blob, and you're done
         var blob = new Blob([ab], {type: mimeString});
         return blob;
       
       }
 
+
+
     const onClick = async () => {
         var file = document.getElementById("uploadZip").files[0];
+        var fileImagen = document.getElementById("uploadImg").files[0];
         var reader = new FileReader();
+        var imagen = new FileReader();
+
         reader.onload = function() {
-        console.log(reader.result);
-        let blobObj = dataURItoBlob(reader.result)
-        console.log("AAA", blobObj)
-        hacerFetch(blobObj);
+        let blobZip = dataURItoBlob(reader.result)
+        let blobImg = dataURItoBlob(reader.result)
+
+        hacerFetch(blobZip, blobImg);
+        };
+        imagen.onload = function() {
+            let blobImg = dataURItoBlob(imagen.result)
+    
+            hacerFetch(blobImg);
         };
         reader.readAsDataURL(file);
+        reader.readAsDataURL(fileImagen);
 
-        async function hacerFetch(blobObj){
+        async function hacerFetch(blobZip, blobImg){
             try {
-                console.log("frefer", blobObj);
+                let fecha = new Date();
+                let diaActual = fecha.getDate();
+                let mesActual = fecha.getMonth();
+                let añoActual = fecha.getFullYear()
+                let minutos = fecha.getMinutes();
+                let segundos = fecha.getSeconds();
+                let milisegundos = fecha.getMilliseconds();
+
+                let nombreArchivo = name + "_" + diaActual + "/" + mesActual + "/" + añoActual + "/" + minutos + "/" + segundos + "/" + milisegundos;
+                console.log(nombreArchivo);
+
+                console.log("frefer", blobZip);
                 const formData = new FormData();
-                // FormData.append = {name, img, zip, description};
                 formData.append('name', name);
-                formData.append('img', img);
-                formData.append('zip', blobObj, 'img.zip');
+                formData.append('img', blobImg, img);
+                formData.append('zip', blobZip, nombreArchivo);
                 formData.append('description', description);
                 const response = await fetch('http://localhost:8000/api/upload', {
                     method: 'POST',
@@ -79,12 +98,12 @@ const UploadForm = () => {
 
             <div>
                 <label>Image Game</label>
-                <input type='file' accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)}></input>
+                <input id='uploadImg' type='file' accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)}></input>
             </div>
 
             <div>
                 <label>Zip Game</label>
-                <input id='uploadZip' type='file'  value={zip} onChange={(e) => setZip(e.target.value)}></input>
+                <input id='uploadZip' type='file' accept='.zip' value={zip} onChange={(e) => setZip(e.target.value)}></input>
             </div>
 
             <div>
@@ -95,15 +114,15 @@ const UploadForm = () => {
                 <label>Categories</label>
                     <div>
                         <input type="checkbox" id="Arcade" name="categories" value="arcade" />
-                        <label for="Arcade">Arcade</label>
+                        <label htmlFor="Arcade">Arcade</label>
                     </div>
                     <div>
                         <input type="checkbox" id="Multiplayer" name="categories" value="multiplayer" />
-                        <label for="Multiplayer">Multiplayer</label>
+                        <label htmlFor="Multiplayer">Multiplayer</label>
                     </div>
                     <div>
                         <input type="checkbox" id="Platformer" name="categories" value="platformer" />
-                        <label for="Platformer">Platformer</label>
+                        <label htmlFor="Platformer">Platformer</label>
                     </div>
             </div>
 

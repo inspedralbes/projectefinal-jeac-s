@@ -17,5 +17,3 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/upload', [GameController::class, 'upload']);
 
-Route::post('/extract-zip', [GameController::class, 'extractUploadedZip']);
-

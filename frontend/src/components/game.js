@@ -10,6 +10,7 @@ function Game(game) {
     const onClick= () => {
         Ballgame();
 
+
     }
 
     const refreshPage = () => {

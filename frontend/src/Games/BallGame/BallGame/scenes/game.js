@@ -260,6 +260,7 @@ export class Game extends Phaser.Scene {
         this.scene.start('congratulations');
       }
       //endGame(this.score);
+      // game.destroy(true, false)
     }
 
     createAnimations() {

@@ -1,5 +1,9 @@
-import { NavLink } from "react-router-dom"
+import React from 'react';
+import { Provider } from 'react-redux';
+import NavBar from './navbar_provider';
+import { store } from '../store';
 
+<<<<<<< HEAD
 function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -37,5 +41,13 @@ function Navbar() {
         </nav>
     )
 }
+=======
 
-export default Navbar;
+const App = () => (
+  <Provider store={store}>
+    <NavBar />
+  </Provider>
+);
+>>>>>>> 89dba2732f4407efee13efc4ef35f4fd3a258a75
+
+export default App;

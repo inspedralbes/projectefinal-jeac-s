@@ -1,8 +1,7 @@
+import imgDemoGame from './img/imgDemoGame.png';
+import imgUploadGame from './img/imgUploadGame.jpg';
 import React from 'react';
-import { Provider } from 'react-redux';
-import Home from './provider_home';
-import { store } from './store';
-
+import { NavLink } from "react-router-dom"
 
 function Home() {
     return (
@@ -16,24 +15,24 @@ function Home() {
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         <img src="games.jpg" class="d-block w-100" alt="..."></img>
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>First slide label</h5>
-                                <p>Some representative placeholder content for the first slide.</p>
-                            </div>
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>First slide label</h5>
+                            <p>Some representative placeholder content for the first slide.</p>
+                        </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="mhw2.png" class="d-block w-100" alt="..."></img>
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>Second slide label</h5>
-                                <p>Some representative placeholder content for the second slide.</p>
-                            </div>
+                        <img src="mhw.png" class="d-block w-100" alt="..."></img>
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Second slide label</h5>
+                            <p>Some representative placeholder content for the second slide.</p>
+                        </div>
                     </div>
                     <div class="carousel-item">
                         <img src="valo.jfif" class="d-block w-100" alt="..."></img>
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>Third slide label</h5>
-                                <p>Some representative placeholder content for the third slide.</p>
-                            </div>
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Third slide label</h5>
+                            <p>Some representative placeholder content for the third slide.</p>
+                        </div>
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
@@ -46,4 +45,23 @@ function Home() {
                 </button>
             </div>
 
-export default App;
+            <div className='landingPage__funcionalities'>
+                <div className='funcionalities__play'>
+                    <NavLink to="/games">
+                        <img src={imgDemoGame} alt='KOKOKOKOK' className='img__funcionalities'></img>
+                    </NavLink>
+                </div>
+
+                <div className='funcionalities__uploadGame' >
+                    <NavLink to="/upload">
+                        <img src={imgUploadGame} alt='KOKOKOKOK' className='img__funcionalities'></img>
+                    </NavLink>
+
+                    {/* <NavLink to='/game'><Button className='btn btn-danger'> Juego 1 </Button></NavLink> */}
+                </div>
+            </div>
+        </div >
+    )
+}
+
+export default Home;

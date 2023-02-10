@@ -21,11 +21,12 @@ class AuthController extends Controller
         try {
             if ($player->save()) {
                 $message = "Registered correctly.";
-                return response()->json([$message, 200]);
+                return response()->json([$message, 200, 'isRegistered' => true]);
+
             }
         } catch (QueryException $ex) {
             $message = "Couldn't register.";
-            return response()->json([$message, 500]);
+            return response()->json([$message, 500, 'isRegistered' => false]);
         }
     }
     public function login(Request $request)
@@ -36,14 +37,15 @@ class AuthController extends Controller
                 if (Hash::check($request->psswd, $player->psswd)) {
                     return response()->json([
                         $player,
-                        200
+                        200,
+                        'isLoggedIn' => true,
                     ]);
                 } else {
-                    $message = "Incorrect password!";
+                    $message = "Incorrect password!!";
                     return response()->json([
-
                         $message,
-                        500
+                        500,
+                        'isLoggedIn' => false,
                     ]);
                 }
             }
@@ -51,7 +53,8 @@ class AuthController extends Controller
             $message = "This player doesn't exist!";
             return response()->json([
                 $message,
-                500
+                500,
+                'isLoggedIn' => false,
             ]);
         }
     }

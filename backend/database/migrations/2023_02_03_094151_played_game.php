@@ -20,7 +20,7 @@ return new class extends Migration
             $table->bigInteger('score');
 
             $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('gameId')->references('id')->on('game')->onDelete('cascade');
+            $table->foreign('gameId')->references('id')->on('games')->onDelete('cascade');
 
             $table->primary(['userId', 'gameId'])->index();
 

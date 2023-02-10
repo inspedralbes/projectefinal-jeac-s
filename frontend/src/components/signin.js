@@ -1,24 +1,24 @@
-import {Card, Row, Col, Form, Button, Container } from 'react-bootstrap';
+import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import React, { useState } from 'react';
 
 function Signin() {
-    const [name, setName] = useState('');
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [psswd, setPsswd] = useState('');
-    const [error, setError] = useState(null);
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [psswd, setPsswd] = useState('');
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-        try {
-        const response = await fetch('http://localhost:8000/api/register', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',          
-            },
-            body: JSON.stringify({ name, username, email, psswd }),
-        });
+    try {
+      const response = await fetch('http://localhost:8000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, username, email, psswd }),
+      });
 
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -26,6 +26,10 @@ function Signin() {
 
       const data = await response.json();
       console.log(data);
+      if (data.isRegistered) {
+        console.log('Succes register')
+        alert('You have registered succesfully');
+      }
     } catch (error) {
       setError(error);
 
@@ -36,6 +40,7 @@ function Signin() {
       <Container>
         <Row className="d-flex justify-content-center align-items-center">
           <Col md={8} lg={6} xs={12}>
+            <br></br>
             <Card className="px-4 rounded bg-dark">
               <Card.Body>
                 <div className="mb-3 mt-md-4">
@@ -70,6 +75,7 @@ function Signin() {
                       <Button variant="primary" type="submit">
                         Submit
                       </Button>
+
                     </Form>
                   </div>
                 </div>

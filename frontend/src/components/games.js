@@ -107,6 +107,8 @@ const Games = ({ play }) => {
                 
                 
                 {/* <Card className='gameCard'>
+        <div className="games" style={{ width: '18rem'}}>
+                <Card className='gameCard'>
                     <Card.Img variant="top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ56p-a6_szW03gPqT8FZJEAqyg-tznGlwcSA&usqp=CAU" />
                     <Card.Body>
                         <Card.Title>

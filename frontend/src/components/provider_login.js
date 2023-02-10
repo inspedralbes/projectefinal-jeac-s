@@ -49,7 +49,7 @@ const LoginForm = () => {
                 <Card.Body>
                   <div className="mb-3 mt-md-4">
                     <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
-                      Sign In
+                      Log In
                     </h2>
                     <div className="mb-3">
                       <Form onSubmit={handleSubmit}>

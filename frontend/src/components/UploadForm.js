@@ -95,7 +95,7 @@ const UploadForm = () => {
                 <Row className="d-flex justify-content-center align-items-center">
                     <Col md={8} lg={6} xs={12}>
                         <br></br>
-                        <Card className="px-4 rounded bg-secondary">
+                        <Card className="px-4 rounded bg-dark">
                             <Card.Body>
                                 <div className="mb-3 mt-md-4">
                                     <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">

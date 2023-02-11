@@ -4,10 +4,12 @@ import { actions } from './store';
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import { saveData } from './actions';
 import { useNavigate } from "react-router-dom";
+import Spinner from 'react-bootstrap/Spinner';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [psswd, setPassword] = useState('');
+  const [isLoading, setLoading] = useState(false);
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const data = useSelector((state) => state.data);
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const response = await fetch('http://localhost:8000/api/login', {
@@ -35,8 +38,10 @@ const LoginForm = () => {
       } else {
         dispatch(actions.logout());
       }
+      setLoading(false)
     } catch (error) {
       console.error(error);
+      setLoading(false)
     }
   };
 
@@ -66,8 +71,18 @@ const LoginForm = () => {
                           <Form.Control type="password" placeholder="Password" value={psswd} onChange={(e) => setPassword(e.target.value)} />
                         </Form.Group><br></br>
 
-                        <Button variant="primary" type="submit">
-                          Submit
+                        <Button variant="primary" type="submit" disabled={isLoading}>
+                          {isLoading ? (
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                          ) : (
+                            'Login'
+                          )}
                         </Button>
                       </Form>
                     </div>

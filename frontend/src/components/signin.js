@@ -1,6 +1,7 @@
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import Spinner from 'react-bootstrap/Spinner';
 
 function Signin() {
   const [name, setName] = useState('');
@@ -8,10 +9,13 @@ function Signin() {
   const [email, setEmail] = useState('');
   const [psswd, setPsswd] = useState('');
   const [error, setError] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
     try {
       const response = await fetch('http://localhost:8000/api/register', {
@@ -29,12 +33,13 @@ function Signin() {
       const data = await response.json();
       console.log(data);
       if (data.isRegistered) {
-        console.log('Succes register')
         navigate("/login")
       }
+      setLoading(false);
+
     } catch (error) {
       setError(error);
-
+      setLoading(false);
     }
   };
   return (
@@ -74,8 +79,18 @@ function Signin() {
                         <Form.Control type="password" placeholder="Password" value={psswd} onChange={(event) => setPsswd(event.target.value)} required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
                       </Form.Group><br></br>
 
-                      <Button variant="primary" type="submit" >
-                        Submit
+                      <Button variant="primary" type="submit" disabled={isLoading}>
+                        {isLoading ? (
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          'Register'
+                        )}
                       </Button>
 
                     </Form>

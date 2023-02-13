@@ -2,7 +2,6 @@ import Navbar from '../components/navbar/navbar.js'
 import {BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 import Games from '../components/games'
 // import Game from '../components/game'
-import UploadGame from '../components/UploadGame'
 import Home from '../components/home'
 import Profile from '../components/profile.js';
 import Upload from '../components/upload.js';

@@ -20,11 +20,6 @@ function Navbar() {
       </a>
 
       <ul class="navbar-nav mr-auto">
-        <NavLink to="/">
-          <li class="nav-item">
-            <a class="nav-item nav-link">Home</a>
-          </li>
-        </NavLink>
         <NavLink to="/games">
           <li class="nav-item">
             <a class="nav-item nav-link">Games</a>

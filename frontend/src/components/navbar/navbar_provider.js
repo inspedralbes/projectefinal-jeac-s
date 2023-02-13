@@ -46,7 +46,7 @@ function Navbar() {
             </NavLink>
           </div> :
           <div class="navbar-nav ml-auto">
-            <NavLink to="/SignIn">
+            <NavLink to="/signin">
               <a class="nav-item nav-link">Sign In</a>
             </NavLink>
 

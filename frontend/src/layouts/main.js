@@ -20,7 +20,7 @@ function Main() {
             <Route path="/games" element={<Games/>} />
             <Route path="/upload" element={<Upload/>} />
             <Route path="/profile" element={<Profile/>} />
-            <Route path="/SignIn" element={<Signin/>} />
+            <Route path="/signin" element={<Signin/>} />
             <Route path="/login" element={<LoginForm/>} />
             <Route path="/game" element={<Game/>} />
 

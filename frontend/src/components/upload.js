@@ -1,11 +1,12 @@
-import UploadForm from "./UploadForm";
+import UploadForm from "./upload_provider";
+import React from 'react';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
-function Upload() {
-    return (
-        <div>
-            <UploadForm />
-        </div>
-    )
-}
-
-export default Upload;      
+const Upload = () => (
+    <Provider store={store}>
+      <UploadForm />
+    </Provider>
+  );
+  
+  export default Upload;     

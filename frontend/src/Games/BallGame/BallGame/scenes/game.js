@@ -5,7 +5,7 @@ import { Ball } from '../components/Ball.js';
 import Phaser from "phaser";
 
 // import { start } from '../../../script.js';
-// import { endGame } from '../../../script.js';
+import { endGame } from '../../../../components/score.js';
 
 
 
@@ -259,7 +259,7 @@ export class Game extends Phaser.Scene {
         // this.winSample.play();
         this.scene.start('congratulations');
       }
-      //endGame(this.score);
+      endGame(this.score);
       // game.destroy(true, false)
     }
 

@@ -1,7 +1,6 @@
 
-async function endGame(totalScore){
-    console.log(totalScore);
-    // points = 100;
+async function endGame(score){
+    console.log(score);
     
     try {
         const response = await fetch('http://localhost:8000/api/saveScore', {
@@ -9,13 +8,12 @@ async function endGame(totalScore){
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ totalScore }),
+          body: JSON.stringify({ score }),
         });
-  
         const data = await response.json();
         console.log(data);
 
-        console.log(data.totalScore);
+        console.log(data.score);
   
         
     } catch (error) {

@@ -4,29 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Player;
+use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request\Api;
+use Illuminate\Support\Facades\Auth;
+
 
 class PlayerController extends Controller
 {
     public function saveScore(Request $request)
     {
-        $players = new Player();
-        if (Player::where('email', $request->email)->exists()) {
-            $players->totalScore = $request->totalScore;
-            $players->save();
-        }
 
-        
-        // $page = Page::find($id);
-        // Page::where('id', $id)->update(array('image' => 'asdasd'));
-        // // Make sure you've got the Page model
-        // if($page) {
-        //     $page->image = 'imagepath';
-        //     $page->save();
-        // }
     }
+
+
 
     /**
      * Display a listing of the resource.

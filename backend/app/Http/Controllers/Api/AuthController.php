@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Player;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
 
@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $player = new Player;
+        $player = new User;
         $player->name = $request->name;
         $player->username = $request->username;
         $player->email = $request->email;
@@ -32,7 +32,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try {
-            $player = Player::where('username', $request->username)->firstOrFail();
+            $player = User::where('username', $request->username)->firstOrFail();
             if ($player != null) {
                 if (Hash::check($request->psswd, $player->psswd)) {
                     return response()->json([

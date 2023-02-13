@@ -53,6 +53,7 @@ class AuthController extends Controller
                         $player,
                         200,
                         'isLoggedIn' => true,
+
                     ]);
                 } else {
                     $message = "Incorrect password!!";
@@ -71,5 +72,16 @@ class AuthController extends Controller
                 'isLoggedIn' => false,
             ]);
         }
+    }
+
+    public function saveScore(Request $request)
+    {
+        $validatedData = $request->validate([
+            'id' => 'required|integer',
+            'totalScore' => 'required|integer'
+        ]);
+        $player = User::where('id', $validatedData['id'])->firstOrFail();
+        $player->totalScore = $validatedData['totalScore'];
+        $player->save();
     }
 }

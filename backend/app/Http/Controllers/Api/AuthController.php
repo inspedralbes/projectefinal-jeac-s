@@ -72,29 +72,4 @@ class AuthController extends Controller
             ]);
         }
     }
-    public function saveScore(Request $request)
-    {
-        $validatedData = $request->validate([
-            'score' => 'required|integer',
-        ]);
-    
-        $user = Auth::user();
-        if ($user) {
-            DB::table('users')
-                ->where('id', $user->id)
-                ->update(['score' => $validatedData['score']]);
-    
-            return response()->json([
-                'message' => 'Score updated successfully.',
-                'isUpdated' => true,
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'You must be logged in to update score.',
-                'isUpdated' => false,
-            ]);
-        }
-    }
-    
-    
 }

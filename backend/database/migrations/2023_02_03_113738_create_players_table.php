@@ -19,6 +19,8 @@ class CreatePlayersTable extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('psswd');
+            $table->bigInteger('totalScore')->nullable();
+
             $table->timestamps();
         });
     }

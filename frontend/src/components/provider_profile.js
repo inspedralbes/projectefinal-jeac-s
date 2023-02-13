@@ -14,6 +14,8 @@ const UserInfo = () => {
                     <p>Name: {data.name}</p>
                     <p>Username: {data.username}</p>
                     <p>Email: {data.email}</p>
+                    <p>Score: {data.totalScore}</p>
+
                 </div >
                 :
                 <div>

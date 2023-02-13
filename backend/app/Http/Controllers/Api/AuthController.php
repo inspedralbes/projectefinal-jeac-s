@@ -7,34 +7,48 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+            'email' => 'required|email|unique:users',
+            'psswd' => 'required|string|min:6',
+        ]);
+
         $player = new User;
-        $player->name = $request->name;
-        $player->username = $request->username;
-        $player->email = $request->email;
-        $player->psswd = Hash::make($request->psswd);
+        $player->name = $validatedData['name'];
+        $player->username = $validatedData['username'];
+        $player->email = $validatedData['email'];
+        $player->psswd = Hash::make($validatedData['psswd']);
 
         try {
             if ($player->save()) {
                 $message = "Registered correctly.";
                 return response()->json([$message, 200, 'isRegistered' => true]);
-
             }
         } catch (QueryException $ex) {
             $message = "Couldn't register.";
             return response()->json([$message, 500, 'isRegistered' => false]);
         }
     }
+
     public function login(Request $request)
     {
+        $validatedData = $request->validate([
+            'username' => 'required|string|max:255',
+            'psswd' => 'required|string|min:6',
+        ]);
+
         try {
-            $player = User::where('username', $request->username)->firstOrFail();
+            $player = User::where('username', $validatedData['username'])->firstOrFail();
             if ($player != null) {
-                if (Hash::check($request->psswd, $player->psswd)) {
+                if (Hash::check($validatedData['psswd'], $player->psswd)) {
                     return response()->json([
                         $player,
                         200,
@@ -58,6 +72,29 @@ class AuthController extends Controller
             ]);
         }
     }
-
+    public function saveScore(Request $request)
+    {
+        $validatedData = $request->validate([
+            'score' => 'required|integer',
+        ]);
+    
+        $user = Auth::user();
+        if ($user) {
+            DB::table('users')
+                ->where('id', $user->id)
+                ->update(['score' => $validatedData['score']]);
+    
+            return response()->json([
+                'message' => 'Score updated successfully.',
+                'isUpdated' => true,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'You must be logged in to update score.',
+                'isUpdated' => false,
+            ]);
+        }
+    }
+    
     
 }

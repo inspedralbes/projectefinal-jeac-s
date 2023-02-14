@@ -22,7 +22,9 @@ const UploadForm = () => {
         for (var i = 0; i < byteString.length; i++) {
             ia[i] = byteString.charCodeAt(i);
         }
+        
         var blob = new Blob([ab], { type: mimeString });
+       
         return blob;
 
     }
@@ -50,6 +52,8 @@ const UploadForm = () => {
         reader.readAsDataURL(fileImagen);
 
         async function hacerFetch(blobZip, blobImg) {
+            console.log("Zip: ", blobZip, " IMG: ", blobImg);
+
             try {
                 let fecha = new Date();
                 let diaActual = fecha.getDate();
@@ -65,7 +69,7 @@ const UploadForm = () => {
                 console.log("frefer", blobZip);
                 const formData = new FormData();
                 formData.append('name', name);
-                formData.append('img', blobImg, img);
+                // formData.append('img', blobImg, img);
                 formData.append('zip', blobZip, nombreArchivo);
                 formData.append('description', description);
                 const response = await fetch('http://localhost:8000/api/upload', {
@@ -82,6 +86,29 @@ const UploadForm = () => {
 
                 const data = await response.json();
                 console.log(data);
+                    // try{
+                    //     const formData2 = new FormData();
+                    //     formData2.append('img', blobImg, img);
+                    //     const response = await fetch('http://localhost:8000/api/uploadImage', {
+                    //     method: 'POST',
+                    //     headers: {
+                    //         'Accept': '*/*'
+                    //     },
+                    //     body: formData2,
+                    // });    
+                    // if (!response.ok) {
+                    //     throw new Error(response.statusText);
+                    // }
+
+                    // const data2 = await response.json();
+                    // console.log(data2);
+                    
+                // } catch (error) {
+                //         setError(error);
+        
+                //     }            
+                    
+                
             } catch (error) {
                 setError(error);
 
@@ -111,7 +138,7 @@ const UploadForm = () => {
 
                                             <Form.Group controlId="formBasicImageGame">
                                                 <Form.Label className='text-light'>Image Game</Form.Label>
-                                                <Form.Control id='uploadImg' type='file' accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)} />
+                                                <Form.Control id='uploadImg' type='file' value={img} onChange={(e) => setImg(e.target.value)} />
                                             </Form.Group><br></br>
 
                                             <Form.Group controlId="formBasicZipGame">
@@ -153,7 +180,7 @@ const UploadForm = () => {
                                                 ))}
                                             </Form.Group><br></br>
 
-                                            <Button variant="primary" type="submit" onClick={onClick}>
+                                            <Button variant="primary"  onClick={onClick}>
                                                 Submit
                                             </Button>
 

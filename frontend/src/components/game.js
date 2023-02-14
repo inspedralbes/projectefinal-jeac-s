@@ -2,8 +2,8 @@ import {Ballgame} from '../Games/BallGame/BallGame/index.js';
 import {destroy} from '../Games/BallGame/BallGame/index.js';
 import { useState } from 'react'
 import { $CombinedState } from 'redux';
- 
-function Game(game) {
+
+function Game() {
     const onClick= () => {
         Ballgame();
     }
@@ -32,3 +32,6 @@ function Game(game) {
 }
 
 export default Game;
+
+
+

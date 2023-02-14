@@ -32,7 +32,7 @@ const LoginForm = () => {
       console.log(data);
       if (data.isLoggedIn) {
         dispatch(actions.login());
-        dispatch(saveData(data[0]));
+        dispatch(saveData(data));
         navigate("/")
 
       } else {

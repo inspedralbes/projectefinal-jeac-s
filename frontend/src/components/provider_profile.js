@@ -11,10 +11,10 @@ const UserInfo = () => {
             {isLoggedIn ?
                 <div>
                     < h2 > User Information</h2 >
-                    <p>Name: {data.name}</p>
-                    <p>Username: {data.username}</p>
-                    <p>Email: {data.email}</p>
-                    <p>Score: {data.totalScore}</p>
+                    <p>Name: {data[1].name}</p>
+                    <p>Username: {data[1].username}</p>
+                    <p>Email: {data[1].email}</p>
+                    <p>Score: {data[1].totalScore}</p>
 
                 </div >
                 :

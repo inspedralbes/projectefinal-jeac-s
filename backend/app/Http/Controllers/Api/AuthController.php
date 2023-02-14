@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+
 
 class AuthController extends Controller
 {
@@ -45,33 +45,13 @@ class AuthController extends Controller
             'psswd' => 'required|string|min:6',
         ]);
 
-        try {
-            $player = User::where('username', $validatedData['username'])->firstOrFail();
-            if ($player != null) {
-                if (Hash::check($validatedData['psswd'], $player->psswd)) {
-                    return response()->json([
-                        $player,
-                        200,
-                        'isLoggedIn' => true,
+        if (Auth::attempt($validatedData)) {
+            $user = Auth::user();
+            $token = $user->createToken('token')->plainTextToken;
+            $cookie = cookie('cookie_token', $token, 60 * 24);
+            return response(["token"=>$token])->withoutCookie($cookie);
+        } 
 
-                    ]);
-                } else {
-                    $message = "Incorrect password!!";
-                    return response()->json([
-                        $message,
-                        500,
-                        'isLoggedIn' => false,
-                    ]);
-                }
-            }
-        } catch (\Throwable $th) {
-            $message = "This player doesn't exist!";
-            return response()->json([
-                $message,
-                500,
-                'isLoggedIn' => false,
-            ]);
-        }
     }
 
     public function saveScore(Request $request)

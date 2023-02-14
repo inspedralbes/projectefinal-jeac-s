@@ -1,13 +1,7 @@
-import { useSelector } from 'react-redux';
-
-function GetId() {
-  const data = useSelector(state => state.data);
-  return data.id;
-}
 
 async function endGame(totalScore){
     console.log(totalScore);
-    const id = GetId();
+    const id = 7;
     try {
         const response = await fetch('http://localhost:8000/api/saveScore', {
           method: 'POST',
@@ -17,7 +11,6 @@ async function endGame(totalScore){
           body: JSON.stringify({ totalScore, id }),
         });
         const data = await response.json();
-
         
     } catch (error) {
         console.error(error);

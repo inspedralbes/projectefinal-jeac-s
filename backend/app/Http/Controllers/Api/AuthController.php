@@ -83,5 +83,7 @@ class AuthController extends Controller
         $player = User::where('id', $validatedData['id'])->firstOrFail();
         $player->totalScore = $validatedData['totalScore'];
         $player->save();
+
+        return response()->json(['message' => 'Score saved successfully', $player->id]);
     }
 }

@@ -18,26 +18,24 @@ function Navbar() {
       <a class="navbar-brand" href="#">
         <img src="jeacsLogo.PNG" width="70" height="70" alt=""></img>
       </a>
+
       <ul class="navbar-nav mr-auto">
-        <NavLink to="/">
-          <li class="nav-item">
-            <a class="nav-item nav-link">Home</a>
-          </li>
-        </NavLink>
         <NavLink to="/games">
           <li class="nav-item">
             <a class="nav-item nav-link">Games</a>
           </li>
         </NavLink>
-        <NavLink to="/upload">
-          <li class="nav-item">
-            <a class="nav-item nav-link">Upload</a>
-          </li>
-        </NavLink>
+        {isLoggedIn ?
+          <NavLink to="/upload">
+            <li class="nav-item">
+              <a class="nav-item nav-link">Upload</a>
+            </li>
+          </NavLink> :
+          <a></a>
+        }
       </ul>
 
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-
         {isLoggedIn ?
           <div class="navbar-nav ml-auto">
             <NavLink to="/profile">
@@ -48,7 +46,7 @@ function Navbar() {
             </NavLink>
           </div> :
           <div class="navbar-nav ml-auto">
-            <NavLink to="/SignIn">
+            <NavLink to="/signin">
               <a class="nav-item nav-link">Sign In</a>
             </NavLink>
 
@@ -60,6 +58,5 @@ function Navbar() {
     </nav >
   )
 }
-
 
 export default Navbar;

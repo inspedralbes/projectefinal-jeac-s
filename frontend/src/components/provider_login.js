@@ -29,10 +29,11 @@ const LoginForm = () => {
       });
 
       const data = await response.json();
-      console.log(data);
+      console.log(data[0]);
       if (data.isLoggedIn) {
         dispatch(actions.login());
         dispatch(saveData(data));
+        localStorage.setItem('access_token', data[0]);
         navigate("/")
 
       } else {

@@ -1,11 +1,14 @@
 
 async function endGame(totalScore){
     console.log(totalScore);
+    const token = localStorage.getItem('access_token');
+
     try {
         const response = await fetch('http://localhost:8000/api/saveScore', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify({ totalScore }),
         });

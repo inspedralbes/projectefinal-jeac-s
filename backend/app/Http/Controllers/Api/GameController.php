@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use ZipArchive;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Game;
 use Illuminate\Http\Request;
@@ -51,9 +52,6 @@ class GameController extends Controller
         return $game->id;
     }
 
- 
-
-
     public function show($id)
     {
        //
@@ -73,5 +71,10 @@ class GameController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function listGames(){
+        $game = Game::all();
+        return response()->json(["games" => $game], Response::HTTP_OK);
     }
 }

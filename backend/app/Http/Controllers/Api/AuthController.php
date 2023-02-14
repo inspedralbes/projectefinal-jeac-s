@@ -50,12 +50,16 @@ class AuthController extends Controller
         } else {
             return response(['isLoggedIn' => false]);
         }
-    }
+    }       
 
     public function saveScore(Request $request)
     {
         $user = Auth::user();
-        $user->score = $request->score;
+        $user->totalScore = $request->totalScore;
         $user->save();
-    }
+    
+        return response()->json([
+            'data' => $user->toArray() ?? (object) []
+        ]);
+    }    
 }

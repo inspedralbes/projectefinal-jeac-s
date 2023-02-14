@@ -8,27 +8,25 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
-
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users',
+        // return response()->json(["message" => "OK"]);
+        $request->validate([
+            'name' => 'required',
             'email' => 'required|email|unique:users',
-            'psswd' => 'required|string|min:6',
+            'password' => 'required',
         ]);
 
-        $player = new User;
-        $player->name = $validatedData['name'];
-        $player->username = $validatedData['username'];
-        $player->email = $validatedData['email'];
-        $player->psswd = Hash::make($validatedData['psswd']);
-
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
         try {
-            if ($player->save()) {
+            if ($user->save()) {
                 $message = "Registered correctly.";
                 return response()->json([$message, 200, 'isRegistered' => true]);
             }
@@ -40,30 +38,26 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validatedData = $request->validate([
-            'username' => 'required|string|max:255',
-            'psswd' => 'required|string|min:6',
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
-        if (Auth::attempt($validatedData)) {
+        if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $token = $user->createToken('token')->plainTextToken;
             $cookie = cookie('cookie_token', $token, 60 * 24);
-            return response(["token"=>$token])->withoutCookie($cookie);
-        } 
-
+            return response([$token, $user, 'isLoggedIn' => true]);
+        } else {
+            return response(['isLoggedIn' => false]);
+        }
     }
 
     public function saveScore(Request $request)
     {
-        $validatedData = $request->validate([
-            'id' => 'required|integer',
-            'totalScore' => 'required|integer'
+        return response()->json([
+            "message" => 'userProfile OK', 
+            "userData" => auth()->user()
         ]);
-        $player = User::where('id', $validatedData['id'])->firstOrFail();
-        $player->totalScore = $validatedData['totalScore'];
-        $player->save();
-
-        return response()->json(['message' => 'Score saved successfully', $player->id]);
-    }
+    }       
 }

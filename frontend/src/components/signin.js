@@ -5,9 +5,8 @@ import Spinner from 'react-bootstrap/Spinner';
 
 function Signin() {
   const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [psswd, setPsswd] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
@@ -23,7 +22,7 @@ function Signin() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, username, email, psswd }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       if (!response.ok) {
@@ -62,13 +61,6 @@ function Signin() {
                         <Form.Control type="text" placeholder="Enter name" value={name} onChange={(event) => setName(event.target.value)} required />
                       </Form.Group>
                       <br></br>
-
-                      <Form.Group controlId="formBasicName">
-                        <Form.Label className='text-light'>Username</Form.Label>
-                        <Form.Control type="text" placeholder="Enter username" value={username} onChange={(event) => setUsername(event.target.value)} required />
-                      </Form.Group>
-                      <br></br>
-
                       <Form.Group controlId="formBasicEmail">
                         <Form.Label className='text-light'>Email address</Form.Label>
                         <Form.Control type="email" placeholder="Enter email" value={email} onChange={(event) => setEmail(event.target.value)} required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"></Form.Control>
@@ -76,7 +68,7 @@ function Signin() {
 
                       <Form.Group controlId="formBasicPassword">
                         <Form.Label className='text-light'>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" value={psswd} onChange={(event) => setPsswd(event.target.value)} required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
+                        <Form.Control type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
                       </Form.Group><br></br>
 
                       <Button variant="primary" type="submit" disabled={isLoading}>

@@ -13,4 +13,6 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/upload', [GameController::class, 'upload']);
 
-Route::post('/saveScore', [AuthController::class, 'saveScore']);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/saveScore', [AuthController::class, 'saveScore']);
+});

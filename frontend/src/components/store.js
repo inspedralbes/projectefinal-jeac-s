@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
+const SAVEDATA = 'SAVE_DATA';
 
 const initialState = {
   isLoggedIn: false,
@@ -34,6 +35,7 @@ const persistor = persistStore(store);
 const actions = {
   login: () => ({ type: LOGIN }),
   logout: () => ({ type: LOGOUT }),
+  saveData: (data) => ({ type: SAVEDATA, payload: data})
 };
 
 export { store, persistor, actions };

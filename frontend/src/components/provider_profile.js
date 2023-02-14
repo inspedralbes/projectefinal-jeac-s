@@ -1,29 +1,21 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { actions } from './store';
-import { saveData } from './actions';
+import { useSelector } from 'react-redux';
 
 const UserInfo = () => {
-    const data = useSelector(state => state.data);
-    const isLoggedIn = useSelector((state) => state.isLoggedIn);
-    return (
-        <div>
-            {isLoggedIn ?
-                <div>
-                    < h2 > User Information</h2 >
-                    <p>Name: {data[1].name}</p>
-                    <p>Email: {data[1].email}</p>
-                    <p>Score: {data[1].totalScore}</p>
+  const data = useSelector(state => state.data);
+  const isLoggedIn = useSelector(state => state.isLoggedIn);
 
-                </div >
-                :
-                <div>
-                    <h2>You are not logged in</h2></div>
-            }
-        </div>
-    )
+  if (!isLoggedIn) {
+    return <div>You are not logged in</div>;
+  }
+
+  return (
+    <div>
+      <h2>User Information</h2>
+      <p>Name: {data.data.name}</p>
+      <p>Email: {data.data.email}</p>
+      <p>Score: {data.data.totalScore}</p>
+    </div>
+  );
 };
-
-
 
 export default UserInfo;

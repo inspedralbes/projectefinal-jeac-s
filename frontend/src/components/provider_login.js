@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions } from './store';
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
-import { saveData } from './actions';
 import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 
@@ -29,10 +28,9 @@ const LoginForm = () => {
       });
 
       const data = await response.json();
-      console.log(data[0]);
+      console.log(data);
       if (data.isLoggedIn) {
         dispatch(actions.login());
-        dispatch(saveData(data));
         localStorage.setItem('access_token', data[0]);
         navigate("/")
 
@@ -61,10 +59,10 @@ const LoginForm = () => {
                     </h2>
                     <div className="mb-3">
                       <Form onSubmit={handleSubmit}>
-                      <Form.Group controlId="formBasicEmail">
-                        <Form.Label className='text-light'>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" value={email} onChange={(event) => setEmail(event.target.value)}></Form.Control>
-                      </Form.Group><br></br>
+                        <Form.Group controlId="formBasicEmail">
+                          <Form.Label className='text-light'>Email address</Form.Label>
+                          <Form.Control type="email" placeholder="Enter email" value={email} onChange={(event) => setEmail(event.target.value)}></Form.Control>
+                        </Form.Group><br></br>
 
                         <Form.Group controlId="formBasicPassword">
                           <Form.Label className='text-light'>Password</Form.Label>

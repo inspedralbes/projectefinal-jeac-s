@@ -45,9 +45,9 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $user->createToken('token')->plainTextToken;
-            $cookie = cookie('cookie_token', $token, 60 * 24);
-            return response([$token, $user, 'isLoggedIn' => true]);
+            // $token = $user->createToken('token')->plainTextToken;
+            // $cookie = cookie('cookie_token', $token, 60 * 24);
+            return response([$user, 'isLoggedIn' => true]);
         } else {
             return response(['isLoggedIn' => false]);
         }
@@ -55,9 +55,8 @@ class AuthController extends Controller
 
     public function saveScore(Request $request)
     {
-        return response()->json([
-            "message" => 'userProfile OK', 
-            "userData" => auth()->user()
-        ]);
-    }       
+        $user = Auth::user();
+        $user->totalScore = $request->totalScore ;
+        $user->save();
+    }
 }

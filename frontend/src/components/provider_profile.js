@@ -49,10 +49,10 @@ const UserInfo = () => {
     <div>
       {isLoggedIn ?
         <div>
-          <h2>User Information</h2>
-          <p>Name: {data.data.name}</p>
-          <p>Email: {data.data.email}</p>
-          <p>Score: {data.data.totalScore}</p>
+          <h1>User Information</h1>
+          <h2>Name: {data.data.name}</h2>
+          <h2>Email: {data.data.email}</h2>
+          <h2>Score: {data.data.totalScore}</h2>
           <Container>
             <Form onSubmit={changeName}>
               <Form.Group controlId="formBasicName"><br></br>

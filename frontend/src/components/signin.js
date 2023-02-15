@@ -17,7 +17,7 @@ function Signin() {
     setLoading(true);
 
     try {
-      const response = await fetch('../../../backend/public/api/register', {
+      const response = await fetch('http://localhost:8000/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +84,6 @@ function Signin() {
                           'Register'
                         )}
                       </Button>
-
                     </Form>
                   </div>
                 </div>

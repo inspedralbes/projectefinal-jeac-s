@@ -9,7 +9,6 @@ const UserInfo = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const userInfo = useSelector((state) => state.data);
-  console.log(userInfo);
   const dispatch = useDispatch();
 
   const changeName = async (e) => {

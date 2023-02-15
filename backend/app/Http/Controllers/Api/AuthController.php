@@ -55,7 +55,7 @@ class AuthController extends Controller
     public function saveScore(Request $request)
     {
         $user = Auth::user();
-        $user->totalScore = $request->totalScore;
+        $user->totalScore += $request->totalScore;
         $user->save(); 
         return $user;
 

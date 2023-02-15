@@ -18,7 +18,6 @@ function Signin() {
 
     try {
       const response = await fetch('http://localhost:8000/api/register', {
-      const response = await fetch('https://web.jeacsgames.alumnes.inspedralbes.cat/#/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

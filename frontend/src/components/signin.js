@@ -17,7 +17,7 @@ function Signin() {
     setLoading(true);
 
     try {
-      const response = await fetch('../../../backend/public/api/register', {
+      const response = await fetch('https://web.jeacsgames.alumnes.inspedralbes.cat/#/signin/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

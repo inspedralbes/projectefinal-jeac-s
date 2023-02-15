@@ -11,34 +11,38 @@ use App\Http\Controllers\Controller;
 
 class GameController extends Controller
 {
-
+    
     public function index()
     {
         // $games = Game::find($id);
         // return $games->data;
     }
-
+    
     public function index_jugar(){
         // $games = Game::find($id);
         // return $games->data;
     }
-
-
+    
+    
     public function create()
     {
         //
     }
-
+    
     public function upload(Request $request)
-    {
-        
+    {        
         $game = new Game();
         $game->name = $request->name;
-        $game->img = $request->img;
-        $game->description = $request->description;
-        info("Nom del joc: =>".$request->name);
-        $game->save();
+
+        $file2 = $request->img;
+        $file2->move(base_path('../frontend/public/ImageGames/'), $file2->getClientOriginalName());
         
+        $game->img = base_path('../frontend/public/ImageGames/');
+        $game->description = $request->description;
+        
+        info("Nom del joc: =>".$request->name);
+        
+        $game->save();
         
         $dir_path = date('Y') . '/' . date('m') . '/';
         $file = request()->zip;
@@ -46,7 +50,7 @@ class GameController extends Controller
         $file_new_path = $file->storeAs($dir_path . 'zip' , 'filename', 'local');
         $zipFile = $zip->open(Storage::disk('local')->path($file_new_path));
         if ($zipFile === TRUE) {
-            $zip->extractTo(base_path('../frontend/src/Games/'. $request->name )); 
+            $zip->extractTo(base_path('../frontend/public/Games/'. $request->name )); 
             $zip->close();
         }
         return $game->id;
@@ -54,25 +58,25 @@ class GameController extends Controller
 
     public function show($id)
     {
-       //
+        //
     }
-
-
+    
+    
     public function edit($id)
     {
         //
     }
-
+    
     public function update(Request $request, $id)
     {
         //
     }
-
+    
     public function destroy($id)
     {
         //
     }
-
+    
     public function listGames(){
         $game = Game::all();
         return response()->json(["games" => $game], Response::HTTP_OK);

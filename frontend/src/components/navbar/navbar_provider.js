@@ -10,6 +10,7 @@ function Navbar() {
 
   function logout() {
     dispatch(actions.logout());
+    localStorage.setItem('access_token', "0");
   }
 
 

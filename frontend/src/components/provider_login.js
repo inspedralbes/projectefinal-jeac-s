@@ -33,9 +33,8 @@ const LoginForm = () => {
         localStorage.setItem('access_token', data[0]);
         navigate("/")
 
-      } else {
-        dispatch(actions.logout());
-      }
+      } 
+      
       setLoading(false)
     } catch (error) {
       console.error(error);

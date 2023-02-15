@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { actions } from './store';
+import { store, actions } from './store';
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
@@ -10,7 +10,6 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setLoading] = useState(false);
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
-  const data = useSelector((state) => state.data);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -31,6 +30,7 @@ const LoginForm = () => {
       console.log(data);
       if (data.isLoggedIn) {
         dispatch(actions.login());
+        store.dispatch(actions.saveData(data[1]));
         localStorage.setItem('access_token', data[0]);
         navigate("/")
 

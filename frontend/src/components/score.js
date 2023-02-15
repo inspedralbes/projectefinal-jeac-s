@@ -15,7 +15,6 @@ async function endGame(totalScore) {
       body: JSON.stringify({ totalScore }),
     });
     const data = await response.json();
-    store.dispatch(actions.saveData(data));
   } catch (error) {
     console.error(error);
   }

@@ -56,31 +56,23 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         $user->totalScore = $request->totalScore;
-        $user->save();
-    
-        return response()->json([
-            'data' => $user->toArray() ?? (object) []
-        ]);
+        $user->save(); 
+        return $user;
 
     }    
+
     public function changeName(Request $request)
     {
         $user = Auth::user();
         $user->name = $request->name;
         $user->save();
-    
-        return response()->json([
-            'data' => $user->toArray() ?? (object) []
-        ]);
+        return $user;
     } 
     public function changeEmail(Request $request)
     {
         $user = Auth::user();
         $user->email = $request->email;
-        $user->save();
-    
-        return response()->json([
-            'data' => $user->toArray() ?? (object) []
-        ]);
+        $user->save();    
+        return $user;
     } 
 }

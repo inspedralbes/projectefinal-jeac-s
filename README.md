@@ -10,7 +10,7 @@ HEU DE MODIFICAR AQUEST DOCUMENT AMB LA VOSTRA INFORMACIÖ:
 * Albert, Eric, Jaume, Carlos
 * https://design.penpot.app/#/workspace/4755a563-5b43-8015-8001-ec5059834358/4755a563-5b43-8015-8001-ec50930233f2?page-id=4755a563-5b43-8015-8001-ec50930233f3 
 * https://tree.taiga.io/project/carlosgomezfuentes-jeacs/
-* URL de preproducció 
+* URL de preproducció: http://web.jeacsgames.alumnes.inspedralbes.cat/
 * http://jeacs.alumnes.inspedralbes.cat/
 # Tecnologias utilizadas en este proyecto:
 * NPM

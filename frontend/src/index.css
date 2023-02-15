@@ -29,10 +29,6 @@ code {
   grid-area: ListGames;
 }
 
-.carousel-inner{
-  padding: 20px;
-}
-
 .canvasGame{
   border: red solid 2px;
   display: block;
@@ -42,8 +38,7 @@ code {
 .canvasGame2{
   border: green solid 2px;
 }
-#carouselExampleCaptions{
-  height:auto;
+#carouselExampleCaptions {
   width: 50%;
   margin: auto;
   padding: 10px;

@@ -14,7 +14,7 @@ function Game() {
         // $(document)
         // $('#canvas').load('http://localhost:3000/?#/game');
         destroy();
-        document.getElementById("game").innerHTML=`<canvas id="canvas" class="canvasGame"></canvas>`;
+        document.getElementById("game").innerHTML=`<canvas id="canvas" className="canvasGame"></canvas>`;
         
 
     } 

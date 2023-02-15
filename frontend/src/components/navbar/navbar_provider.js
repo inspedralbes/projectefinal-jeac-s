@@ -31,17 +31,26 @@ function Navbar() {
             <a className="nav-item nav-link">BallGame</a>
           </li>
         </NavLink>
+
         {isLoggedIn ?
-          <NavLink to="/upload">
+          (<NavLink to="/upload">
             <li className="nav-item">
               <a className="nav-item nav-link">Upload</a>
             </li>
-          </NavLink> :
-          <div></div>
+          </NavLink>) :
+          null
         }
       </ul>
 
       <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div className="navbar-nav ml-auto">
+
+          <NavLink to="/ranking">
+            <li className="nav-item">
+              <a className="nav-item nav-link">Ranking</a>
+            </li>
+          </NavLink>
+        </div>
         {isLoggedIn ?
           <div className="navbar-nav ml-auto">
             <NavLink to="/profile">

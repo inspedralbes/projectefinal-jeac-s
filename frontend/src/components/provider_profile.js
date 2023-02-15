@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { store, actions } from './store'; // import the Redux store
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 
 const UserInfo = () => {
@@ -12,6 +12,27 @@ const UserInfo = () => {
   const dispatch = useDispatch();
   const [showSuccessMessagePassword, setShowSuccessMessagePassword] = useState(false);
   const [showSuccessMessageName, setShowSuccessMessageName] = useState(false);
+  useEffect(() => {
+    async function fetchUsers() {
+      if (isLoggedIn) {
+        try {
+          const response = await fetch('http://localhost:8000/api/showProfile', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          const data = await response.json();
+          dispatch(actions.saveData(data));
+
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+    fetchUsers();
+  }, []);
 
   const changeName = async (e) => {
     e.preventDefault();
@@ -32,6 +53,7 @@ const UserInfo = () => {
       console.error(error);
     }
   };
+
   const changePassword = async (e) => {
     e.preventDefault();
     try {
@@ -50,24 +72,26 @@ const UserInfo = () => {
       console.error(error);
     }
   };
+
+
   return (
     <div>
       {isLoggedIn ?
         <div>
-          <h1>User Information</h1>
-          <h2>Name: {userInfo.name}</h2>
-          <h2>Email: {userInfo.email}</h2>
-          <h2>Score: {userInfo.totalScore}</h2>
+          <p className="ranking_font_size">User Information</p>
+          <p className="ranking_font_size">Name: {userInfo.name}</p>
+          <p className="ranking_font_size">Email: {userInfo.email}</p>
+          <p className="ranking_font_size">Score: {userInfo.totalScore}</p>
 
           <Container>
             <Form onSubmit={changeName}>
               <Form.Group controlId="formBasicName"><br></br>
-              <Form.Label>Name</Form.Label>
+                <Form.Label>Name</Form.Label>
                 <Form.Control type="name" placeholder="Enter name" value={name} onChange={(event) => setName(event.target.value)}></Form.Control>
               </Form.Group>
               <Button variant="primary" type="submit" >Change Name
               </Button>
-              <div class="texto_verde">{showSuccessMessageName && <p >Name change successful!</p>}</div>
+              <div className="texto_verde">{showSuccessMessageName && <p>Name change successful!</p>}</div>
             </Form>
             <Form onSubmit={changePassword}><br></br>
               <Form.Group controlId="formBasicPassword">
@@ -76,11 +100,11 @@ const UserInfo = () => {
               </Form.Group>
               <Button variant="primary" type="submit" >Change Password
               </Button>
-              <div class="texto_verde">{showSuccessMessagePassword && <p >Password change successful!</p>}</div>
+              <div className="texto_verde">{showSuccessMessagePassword && <p>Password change successful!</p>}</div>
             </Form>
           </Container>
         </div> :
-        <h2>You need to be logged in</h2>
+        <p className="ranking_font_size">You need to be logged in</p>
       }
     </div>
   );

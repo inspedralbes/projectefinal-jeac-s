@@ -50,15 +50,21 @@ class AuthController extends Controller
         } else {
             return response(['isLoggedIn' => false]);
         }
-    }       
+    }
+
+    public function showProfile()
+    {
+        $user = Auth::user();
+        return response()->json($user);
+    }
 
     public function saveScore(Request $request)
     {
         $user = Auth::user();
         $user->totalScore += $request->totalScore;
-        $user->save(); 
+        $user->save();
         return $user;
-    }    
+    }
 
     public function changeName(Request $request)
     {
@@ -66,13 +72,19 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->save();
         return $user;
-    } 
-    
+    }
+
     public function changePassword(Request $request)
     {
         $user = Auth::user();
         $user->password = Hash::make($request->password);
-        $user->save();    
+        $user->save();
         return $user;
-    } 
+    }
+
+    public function getRanking()
+    {
+        $users = User::orderByDesc('totalScore')->get();
+        return response()->json($users);
+    }
 }

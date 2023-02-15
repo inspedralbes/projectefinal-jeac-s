@@ -8,6 +8,7 @@ import Upload from '../components/upload.js';
 import Signin from '../components/signin'
 import LoginForm from '../components/login'
 import Game from '../components/game.js'
+import GetRanking from '../components/ranking.js'
 
 
 function Main() {
@@ -23,6 +24,7 @@ function Main() {
             <Route path="/signin" element={<Signin/>} />
             <Route path="/login" element={<LoginForm/>} />
             <Route path="/game" element={<Game/>} />
+            <Route path="/ranking" element={<GetRanking/>} />
 
           </Routes>
       </HashRouter>

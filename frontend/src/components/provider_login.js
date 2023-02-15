@@ -44,7 +44,7 @@ const LoginForm = () => {
 
   return (
     <div>
-      {isLoggedIn ? <h2>You are already logged in</h2> :
+      {isLoggedIn ? <p className="ranking_font_size">You are already logged in</p> :
         <Container>
           <Row className="d-flex justify-content-center align-items-center">
             <Col md={8} lg={6} xs={12}>

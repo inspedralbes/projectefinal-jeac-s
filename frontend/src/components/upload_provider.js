@@ -27,64 +27,110 @@ const UploadForm = () => {
         var blob = new Blob([ab], { type: mimeString });
         return blob;
     }
+    function saveBlobs(blob, type){
+        let blobZip;
+        let blobImg;
+        var fileImagen = document.getElementById("uploadImg").files[0];
+
+        blobZip = blob;
+        console.log("blobZip", blobZip);
+
+
+        
+        var imagen = new FileReader();
+
+        imagen.onload = async function () {
+            blobImg = dataURItoBlob(imagen.result);
+            hacerFetch(blobZip, blobImg);
+
+        };
+
+        imagen.readAsDataURL(fileImagen);
+
+
+
+        // if (type == "zip"){
+        //     blobZip = blob; 
+        //     console.log("blobZip", blobZip);
+        //     console.log("blob", blob);
+        // }
+        // else {
+        //     blobImg = blob; 
+        //     console.log("blobImg", blobImg);
+        //     console.log("blob", blob);
+        // }
+
+        // if (blobImg != null && blobZip != null){
+        //     hacerFetch(blobZip, blobImg);
+        //     console.log("VV");
+
+        // }
+        // else{
+        //     console.log("F");
+        // }
+    }
     
     const onClick = async () => {
+       
+
         var file = document.getElementById("uploadZip").files[0];
         var fileImagen = document.getElementById("uploadImg").files[0];
         var reader = new FileReader();
-        var imagen = new FileReader();
+        // var imagen = new FileReader();
 
         reader.onload = function () {
-            let blobZip = dataURItoBlob(reader.result)
-            let blobImg = dataURItoBlob(reader.result)
-
-            hacerFetch(blobZip, blobImg);
+            let blobresult = dataURItoBlob(reader.result)
+            saveBlobs(blobresult, 'zip');
+ 
         };
-        imagen.onload = function () {
-            let blobImg = dataURItoBlob(imagen.result)
+        // imagen.onload = async function () {
+        //     let blobresult = dataURItoBlob(imagen.result)
+        //     await saveBlobs(blobresult, 'img');
 
-            hacerFetch(blobImg);
-        };
+        // };
         reader.readAsDataURL(file);
-        reader.readAsDataURL(fileImagen);
+        // imagen.readAsDataURL(fileImagen);
+        
+    }
+    async function hacerFetch(blobZip, blobImg) {
+        try {
+            console.log("Zip", blobZip);
+            console.log("Img", blobImg);
 
-        async function hacerFetch(blobZip, blobImg) {
-            try {
-                let fecha = new Date();
-                let diaActual = fecha.getDate();
-                let mesActual = fecha.getMonth();
-                let añoActual = fecha.getFullYear()
-                let minutos = fecha.getMinutes();
-                let segundos = fecha.getSeconds();
-                let milisegundos = fecha.getMilliseconds();
+            let fecha = new Date();
+            let diaActual = fecha.getDate();
+            let mesActual = fecha.getMonth();
+            let añoActual = fecha.getFullYear()
+            let minutos = fecha.getMinutes();
+            let segundos = fecha.getSeconds();
+            let milisegundos = fecha.getMilliseconds();
 
-                let nombreArchivo = name + "_" + diaActual + "/" + mesActual + "/" + añoActual + "/" + minutos + "/" + segundos + "/" + milisegundos;
-                console.log(nombreArchivo);
+            let nombreArchivo = name + "_" + diaActual + "/" + mesActual + "/" + añoActual + "/" + minutos + "/" + segundos + "/" + milisegundos;
+            console.log(nombreArchivo);
 
-                console.log("frefer", blobZip);
-                const formData = new FormData();
-                formData.append('name', name);
-                formData.append('img', blobImg, img);
-                formData.append('zip', blobZip, nombreArchivo);
-                formData.append('description', description);
-                const response = await fetch('http://localhost:8000/api/upload', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': '*/*'
-                    },
-                    body: formData,
-                });
+            console.log("frefer", blobZip);
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('img', blobImg, img);
+            formData.append('zip', blobZip, nombreArchivo);
+            formData.append('description', description);
+            const response = await fetch('http://localhost:8000/api/upload', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*'
+                },
+                body: formData,
+            });
 
-                if (!response.ok) {
-                    throw new Error(response.statusText);
-                }
-
-                const data = await response.json();
-                console.log(data);
-            } catch (error) {
-                setError(error);
-
+            if (!response.ok) {
+                throw new Error(response.statusText);
             }
+
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            setError(error);
+
         }
     }
     return (
@@ -108,12 +154,12 @@ const UploadForm = () => {
                                                 </Form.Group>
                                                 <br></br>
 
-                                                <Form.Group controlId="formBasicImageGame">
+                                                <Form.Group>
                                                     <Form.Label className='text-light'>Image Game</Form.Label>
                                                     <Form.Control id='uploadImg' type='file' accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)} />
                                                 </Form.Group><br></br>
 
-                                                <Form.Group controlId="formBasicZipGame">
+                                                <Form.Group>
                                                     <Form.Label className='text-light'>Zip Game</Form.Label>
                                                     <Form.Control id='uploadZip' type='file' accept='.zip' value={zip} onChange={(e) => setZip(e.target.value)} />
                                                 </Form.Group><br></br>
@@ -152,7 +198,7 @@ const UploadForm = () => {
                                                     ))}
                                                 </Form.Group><br></br>
 
-                                                <Button variant="primary" type="submit" onClick={onClick}>
+                                                <Button variant="primary" onClick={onClick}>
                                                     Submit
                                                 </Button>
 

@@ -17,8 +17,8 @@ code {
   grid-template-rows: 1fr 1fr;
   gap: 0px 0px;
   grid-template-areas:
-      "News"
-      "ListGames";
+    "News"
+    "ListGames";
 }
 
 .News {
@@ -29,25 +29,30 @@ code {
   grid-area: ListGames;
 }
 
-.canvasGame{
+.canvasGame {
   border: red solid 2px;
   display: block;
   margin: auto auto;
 }
 
-.canvasGame2{
+.canvasGame2 {
   border: green solid 2px;
 }
+
 #carouselExampleCaptions {
   width: 50%;
   margin: auto;
   padding: 10px;
-
 }
 
-.landingPage__funcionalities{
+.landingPage__funcionalities {
   width: 50%;
   margin: auto;
   padding: 10px;
 }
 
+.texto_verde {
+  color: green;
+  font-size: 20px;
+  background-color: black;
+}

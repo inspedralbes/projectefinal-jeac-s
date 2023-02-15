@@ -58,7 +58,6 @@ class AuthController extends Controller
         $user->totalScore += $request->totalScore;
         $user->save(); 
         return $user;
-
     }    
 
     public function changeName(Request $request)
@@ -68,10 +67,11 @@ class AuthController extends Controller
         $user->save();
         return $user;
     } 
-    public function changeEmail(Request $request)
+    
+    public function changePassword(Request $request)
     {
         $user = Auth::user();
-        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
         $user->save();    
         return $user;
     } 

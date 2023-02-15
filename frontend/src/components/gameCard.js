@@ -58,22 +58,23 @@ function GameCard({game}) {
             //     image.src = image;
             //     document.getElementById("game").appendChild(image);
 
-            let blob = new Blob([game.img], {type: 'image/png'});
-            let img = document.getElementById("banner_img");
+            // let blob = new Blob([game.img], {type: 'image/png'});
+            // let img = document.getElementById("banner_img");
             
-            let reader = new FileReader();
-            reader.readAsDataURL(blob); // converts the blob to base64 and calls onload
+            // let reader = new FileReader();
+            // reader.readAsDataURL(blob); // converts the blob to base64 and calls onload
             
-            reader.onload = function() {
-                img.src = reader.result;
-            };
+            // reader.onload = function() {
+            //     console.log(reader.result);
+            //     img.src = reader.result;
+            // };
 
       };
 
     
     return (
         <Card className='gameCard'>
-                        <button onClick={click2}>AAAAAA</button>
+                        {/* <button onClick={click2}>AAAAAA</button> */}
 
                     <Card.Img id='banner_img' variant="top" src="" />
                     <Card.Body>

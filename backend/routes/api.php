@@ -14,10 +14,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::prefix('api')->group(function () {
 
     Route::post('/register', [AuthController::class, 'register']);
-    
+ 
+});
+   
     Route::post('/login', [AuthController::class, 'login']);
 
     Route::post('/upload', [GameController::class, 'upload']);
 
     Route::get('/gamesList', [GameController::class, 'listGames']);
-});

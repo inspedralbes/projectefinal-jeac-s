@@ -26,6 +26,11 @@ function Navbar() {
             <a className="nav-item nav-link">Games</a>
           </li>
         </NavLink>
+        <NavLink to="/game">
+          <li className="nav-item">
+            <a className="nav-item nav-link">BallGame</a>
+          </li>
+        </NavLink>
         {isLoggedIn ?
           <NavLink to="/upload">
             <li className="nav-item">

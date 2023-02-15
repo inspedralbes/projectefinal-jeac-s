@@ -17,14 +17,14 @@ const persistConfig = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-      case 'LOGIN':
-          return { ...state, isLoggedIn: true };
-      case 'LOGOUT':
-          return { ...state, isLoggedIn: false };
-      case 'SAVE_DATA':
-          return { ...state, data: action.payload };
-      default:
-          return state;
+    case 'LOGIN':
+      return { ...state, isLoggedIn: true };
+    case 'LOGOUT':
+      return { ...initialState, isLoggedIn: false };
+    case 'SAVE_DATA':
+      return { ...state, data: action.payload };
+    default:
+      return state;
   }
 };
 const persistedReducer = persistReducer(persistConfig, reducer);
@@ -35,7 +35,7 @@ const persistor = persistStore(store);
 const actions = {
   login: () => ({ type: LOGIN }),
   logout: () => ({ type: LOGOUT }),
-  saveData: (data) => ({ type: SAVEDATA, payload: data})
+  saveData: (data) => ({ type: SAVEDATA, payload: data })
 };
 
 export { store, persistor, actions };

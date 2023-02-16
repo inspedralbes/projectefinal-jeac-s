@@ -35,9 +35,9 @@ class GameController extends Controller
         $game->name = $request->name;
 
         $file2 = $request->img;
-        $file2->move(base_path('../frontend/public/ImageGames/'), $file2->getClientOriginalName());
+        $file2->move(base_path('../frontend/public/ImageGames/'. $request->name), $file2->getClientOriginalName());
         
-        $game->img = base_path('../frontend/public/ImageGames/');
+        $game->img = './ImageGames/'. $request->name . '/' . $file2->getClientOriginalName();
         $game->description = $request->description;
         
         info("Nom del joc: =>".$request->name);

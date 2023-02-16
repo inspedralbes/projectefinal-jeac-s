@@ -1,19 +1,19 @@
-//import {Ballgame} from '../Games/BallGame/BallGame/index.js';
-import {destroy} from '../Games/BallGame/BallGame/index.js';
+// import {Ballgame} from '../Games/BallGame/BallGame/index.js';
+// import {destroy} from '../Games/BallGame/BallGame/index.js';
 import { useState } from 'react'
 import { $CombinedState } from 'redux';
 
-var Ballgame = load();
-async function  load(){
-    Ballgame  = await import('../Games/BallGame/BallGame/index.js');   
-}
+// var Ballgame = load();
+// async function  load(){
+//     Ballgame  = await import('../Games/BallGame/BallGame/index.js');   
+// }
 //var str = "import {Ballgame} from  ";
 
 //eval (str);
 
 function Game() {
     const onClick= () => {
-        Ballgame();
+        // Ballgame();
     }
 
        
@@ -21,7 +21,7 @@ function Game() {
         // window.location.reload();
         // $(document)
         // $('#canvas').load('http://localhost:3000/?#/game');
-        destroy();
+        // destroy();
         document.getElementById("game").innerHTML=`<canvas id="canvas" class="canvasGame"></canvas>`;
         
 

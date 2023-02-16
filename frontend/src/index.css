@@ -11,6 +11,13 @@ code {
     monospace;
 }
 
+table, th, td, tr {
+  border: 2px solid black;
+  text-align: center;
+  margin: 20px;
+  padding: 20px;
+}
+
 .container {
   display: grid;
   grid-template-columns: 1fr;

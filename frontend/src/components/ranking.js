@@ -31,6 +31,7 @@ function GetRanking() {
         <table>
           <thead>
             <tr>
+              <th className="ranking_font_size">#</th>
               <th className="ranking_font_size">Name</th>
               <th className="ranking_font_size">Score</th>
             </tr>
@@ -38,7 +39,8 @@ function GetRanking() {
           <tbody>
             {users.map((user, index) => (
               <tr key={user.id}>
-                <td className="ranking_font_size">{`${index + 1}. ${user.name}`}</td>
+                <td className="ranking_font_size">{index + 1}</td>
+                <td className="ranking_font_size">{user.name}</td>
                 <td className="ranking_font_size">{user.totalScore}</td>
               </tr>
             ))}

@@ -1,20 +1,22 @@
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 
 function Home() {
     return (
         <Carousel id="carouselExampleCaptions"  >
             <Carousel.Item>
-                <img
-                    className="d-block w-100"
-                    src="valo.png"
-                    alt="Slide 1"
-
-                />
-                <Carousel.Caption>
-                    <h3>Slide 1</h3>
-                    <p>This is the first slide.</p>
-                </Carousel.Caption>
+                <NavLink to="/game">
+                    <img
+                        className="d-block w-100"
+                        src="imgDemoGame.png"
+                        alt="Slide 1"
+                    />
+                </NavLink>
+                {/* <Carousel.Caption>
+                        <h3>BallGame</h3>
+                        <p>You can play the BallGame by clicking this image.</p>
+                    </Carousel.Caption> */}
             </Carousel.Item>
             <Carousel.Item>
                 <img

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Game;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use File;
 
 class GameController extends Controller
 {
@@ -38,8 +39,7 @@ class GameController extends Controller
         $game->img = './ImageGames/'. $request->name . '/' . $file2->getClientOriginalName();
         $game->description = $request->description;
         
-        // $path = base_path('../frontend/src/Games'. $request->name . '/./ ');
-        // rename($path . '/initGame.js', base_path('../frontend/src/InitGames'. $request->name . '/initGame.js'));
+        
         info("Nom del joc: =>".$request->name);
         
         
@@ -49,11 +49,20 @@ class GameController extends Controller
         $file_new_path = $file->storeAs($dir_path . 'zip' , 'filename', 'local');
         $zipFile = $zip->open(Storage::disk('local')->path($file_new_path));
         if ($zipFile === TRUE) {
-            $zip->extractTo(base_path('../frontend/src/Games'. $request->name )); 
+            $zip->extractTo(base_path('../frontend/src/Games/'. $request->name )); 
             $zip->close();
+            // $path = base_path('../frontend/src/Games'. $request->name . '/./ ');
+            
+            
         }
-        
-        // $game->initScript='/src/InitGames' . $request->name . '/initGame.js';
+        $path = base_path('../frontend/src/Games'. $request->name . '/./initGame.js');
+            
+
+            info("Ruta del init => " .$path);
+            File::move($path . base_path('../frontend/src/InitGames'. $request->name . '/initGame.js'));
+
+
+        $game->initScript='/src/InitGames' . $request->name . '/initGame.js';
 
         $game->save();
 

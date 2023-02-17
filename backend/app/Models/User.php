@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'totalScore'
     ];
 
     protected $hidden = [

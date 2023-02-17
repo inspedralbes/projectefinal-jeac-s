@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { actions } from './store';
+import { store, actions } from './store';
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
-import { saveData } from './actions';
 import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 
 const LoginForm = () => {
-  const [username, setUsername] = useState('');
-  const [psswd, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setLoading] = useState(false);
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
-  const data = useSelector((state) => state.data);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -25,19 +23,18 @@ const LoginForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, psswd }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
-
       if (data.isLoggedIn) {
         dispatch(actions.login());
-        dispatch(saveData(data[0]));
+        store.dispatch(actions.saveData(data[1]));
+        localStorage.setItem('access_token', data[0]);
         navigate("/")
 
-      } else {
-        dispatch(actions.logout());
-      }
+      } 
+      
       setLoading(false)
     } catch (error) {
       console.error(error);
@@ -47,7 +44,7 @@ const LoginForm = () => {
 
   return (
     <div>
-      {isLoggedIn ? <h2>You are already logged in</h2> :
+      {isLoggedIn ? <p className="ranking_font_size">You are already logged in</p> :
         <Container>
           <Row className="d-flex justify-content-center align-items-center">
             <Col md={8} lg={6} xs={12}>
@@ -60,15 +57,14 @@ const LoginForm = () => {
                     </h2>
                     <div className="mb-3">
                       <Form onSubmit={handleSubmit}>
-                        <Form.Group controlId="formBasicName">
-                          <Form.Label className='text-light'>Username</Form.Label>
-                          <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                        </Form.Group>
-                        <br></br>
+                        <Form.Group controlId="formBasicEmail">
+                          <Form.Label className='text-light'>Email address</Form.Label>
+                          <Form.Control type="email" placeholder="Enter email" value={email} onChange={(event) => setEmail(event.target.value)}></Form.Control>
+                        </Form.Group><br></br>
 
                         <Form.Group controlId="formBasicPassword">
                           <Form.Label className='text-light'>Password</Form.Label>
-                          <Form.Control type="password" placeholder="Password" value={psswd} onChange={(e) => setPassword(e.target.value)} />
+                          <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </Form.Group><br></br>
 
                         <Button variant="primary" type="submit" disabled={isLoading}>

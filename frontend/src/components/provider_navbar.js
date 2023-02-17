@@ -37,7 +37,17 @@ function Navbar() {
             <li className="nav-item">
               <a className="nav-item nav-link">Upload</a>
             </li>
-          </NavLink>) :
+          </NavLink>
+          ) :
+          null
+        }
+         {isLoggedIn ?
+          (<NavLink to="/gameStore">
+            <li className="nav-item">
+              <a className="nav-item nav-link">Game Store</a>
+            </li>
+          </NavLink>
+          ) :
           null
         }
       </ul>

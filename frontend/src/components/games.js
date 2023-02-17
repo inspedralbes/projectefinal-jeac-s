@@ -39,7 +39,7 @@ class Games extends Component {
 
     
     render() {
-        return <div>
+        return <div className="cartasGrid">
             {this.state.data.map((game) => (
                     <GameCard key={game.id} game={game} />
                 ))}

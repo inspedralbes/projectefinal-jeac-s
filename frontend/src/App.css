@@ -28,6 +28,20 @@
   color: #61dafb;
 }
 
+/* .gameCard{
+  padding: 2%;
+  width: 30%;
+  height: 20%;
+  margin: 1%;
+  display: grid;
+  grid-template-columns: auto;
+} */
+
+/* .cartitas{
+  display: grid;
+  grid-template-columns: auto;
+} */
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

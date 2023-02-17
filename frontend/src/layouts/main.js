@@ -9,6 +9,7 @@ import Signin from '../components/signin'
 import LoginForm from '../components/login.js'
 import Game from '../components/game.js'
 import GetRanking from '../components/ranking.js'
+import GetGameStore from '../components/gameStore.js'
 
 
 function Main() {
@@ -25,7 +26,7 @@ function Main() {
             <Route path="/login" element={<LoginForm/>} />
             <Route path="/game" element={<Game/>} />
             <Route path="/ranking" element={<GetRanking/>} />
-
+            <Route path="/gameStore" element={<GetGameStore/>} />
           </Routes>
       </HashRouter>
     </div>

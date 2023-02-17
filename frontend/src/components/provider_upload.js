@@ -138,6 +138,43 @@ const UploadForm = () => {
             {isLoggedIn ?
                 <Container>
                     <Row className="d-flex justify-content-center align-items-center">
+                        <Col md={4} lg={6} xs={12}>
+                        <br></br>
+                        <Card className="px-4 rounded bg-dark text-light">
+                                <Card.Body>
+                                    <div className="mb-3 mt-md-4">
+                                        <h2 className="fw-bold mb-2 text-center text-uppercase">
+                                            Instructions
+                                        </h2>
+                                        <div className="mb-3">
+                                           Instructions to follow in order to upload your zip and image from your game so it can be played in the website
+                                        </div>
+                                        <div className="mb-3">
+                                           1. Es necesario introducir un nombre para el juego que se va a cargar a la web.
+
+                                        </div>
+
+                                        <div className="mb-3">
+                                           2. Se debe subir una imagen en formato <b>.png</b> para la miniatura del juego.
+                                        </div>
+
+                                        <div className="mb-3">
+                                           3. Es <b>obligatorio</b> subir el juego hecho con <b>PHASER</b> en formatio <b>.zip</b>. <br></br>
+                                           El juego tiene que contener un script denominado <b>initGames.js</b> el qual contenga la configuracion del PHASER.<br></br>
+                                           <br></br><img src='initGame.PNG' width='450' height='450'></img>
+                                        </div>
+
+                                        <div className="mb-3">
+                                           4. Se deberia añadir una descripcion adecuada a las caracteristicas del juego.
+                                        </div>
+
+                                        <div className="mb-3">
+                                           5. Se podrá añadir categorias a los juegos.
+                                        </div>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        </Col>
                         <Col md={8} lg={6} xs={12}>
                             <br></br>
                             <Card className="px-4 rounded bg-dark">
@@ -153,22 +190,22 @@ const UploadForm = () => {
                                                     <Form.Control type='text' placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
                                                 </Form.Group>
                                                 <br></br>
-    
+
                                                 <Form.Group>
                                                     <Form.Label className='text-light'>Image Game</Form.Label>
                                                     <Form.Control id='uploadImg' type='file' accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)} />
                                                 </Form.Group><br></br>
-    
+
                                                 <Form.Group>
                                                     <Form.Label className='text-light'>Zip Game</Form.Label>
                                                     <Form.Control id='uploadZip' type='file' accept='.zip' value={zip} onChange={(e) => setZip(e.target.value)} />
                                                 </Form.Group><br></br>
-    
+
                                                 <Form.Group controlId="formBasicDescription">
                                                     <Form.Label className='text-light'>Description</Form.Label>
                                                     <Form.Control placeholder="Add a description" rows='5' cols='50' value={description} onChange={(e) => setDescription(e.target.value)} />
                                                 </Form.Group><br></br>
-    
+
                                                 <Form.Group controlId="formBasicCategories">
                                                     <Form.Label className='text-light'>Categories</Form.Label>
                                                     {['checkbox'].map((type) => (
@@ -197,25 +234,22 @@ const UploadForm = () => {
                                                         </div>
                                                     ))}
                                                 </Form.Group><br></br>
-    
+
                                                 <Button variant="primary" onClick={onClick}>
                                                     Submit
-                                                </Button>    
+                                                </Button>
                                             </Form>
-                                        </div>    
-                                    </div>    
+                                        </div>
+                                    </div>
                                 </Card.Body>
                             </Card>
                         </Col>
-                        <Col md={4} lg={6} xs={12}>
-                            <div>My div content here</div>
-                        </Col>
-                    </Row>    
+                    </Row>
                 </Container>
                 : <h2>You need to be logged in to upload games!</h2>
             }
         </div>
-    );    
+    );
 }
 
 export default UploadForm

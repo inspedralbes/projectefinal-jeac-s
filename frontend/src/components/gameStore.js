@@ -15,18 +15,18 @@ function getGameStore() {
                                 <div className="mb-3 mt-md-4">
                                 <div class="text-center">
                                     <div>
-                                        <img src="pf1.png" class="rounded" alt="..." width="40%" height="40%"></img>
+                                        <img src="pf1.png" class="rounded-circle" alt="..." width="40%" height="40%"></img>
                                         <p>Funny and cute</p>
                                         <h4>200 Jeacs</h4>
                                     </div>
                                     <div>
-                                        <img src="pf2.png" class="rounded" alt="..." width="40%" height="40%"></img>
+                                        <img src="pf2.png" class="rounded-circle" alt="..." width="40%" height="40%"></img>
                                         <p>Hard Gamer</p>
                                         <h4>200 Jeacs</h4>
                                         
                                     </div>
                                     <div>
-                                        <img src="pf3.png" class="rounded" alt="..." width="40%" height="40%"></img>
+                                        <img src="pf3.png" class="rounded-circle" alt="..." width="40%" height="40%"></img>
                                         <p>The immortal one</p>
                                         <h4>250 Jeacs</h4>
                                     </div>

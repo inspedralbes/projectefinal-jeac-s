@@ -1,11 +1,24 @@
 //import {Ballgame} from '../Games/BallGame/BallGame/index.js';
-import {destroy} from '../Games/BallGame/BallGame/index.js';
+// import {destroy} from '../../public/Games/BallGame/BallGame/index.js';
+// import {destroy} from '../../public/Games/BallGame/BallGame/index.js';
+
 import { useState } from 'react'
 import { $CombinedState } from 'redux';
 
-var Ballgame = load();
-async function  load(){
-    Ballgame  = await import('../Games/BallGame/BallGame/index.js');   
+ function  load(){
+    var jsFile = 'initGame.js';
+    let Ballgame  = import(`/src/InitGames/${jsFile}`).then( (module) => {
+        
+        console.log(module) 
+        window.myTest = module;
+
+        console.log("Name => ", module.test);
+       module.Ballgame();
+
+    }).catch( (error)=>{
+        console.log("ERROR LOADING MODULE =>", error);
+    });  
+
 }
 //var str = "import {Ballgame} from  ";
 
@@ -13,7 +26,7 @@ async function  load(){
 
 function Game() {
     const onClick= () => {
-        Ballgame();
+        load();
     }
 
        
@@ -21,7 +34,7 @@ function Game() {
         // window.location.reload();
         // $(document)
         // $('#canvas').load('http://localhost:3000/?#/game');
-        destroy();
+        // destroy();
         document.getElementById("game").innerHTML=`<canvas id="canvas" class="canvasGame"></canvas>`;
         
 
@@ -32,7 +45,7 @@ function Game() {
                <div id="game">
                <canvas id="canvas" className="canvasGame"></canvas>
                 </div>
-               <button onClick={onClick}>Play</button>
+               <button onClick={load}>Play</button>
                <button onClick={refreshPage}>Refresh</button>
 
         </div>

@@ -79,9 +79,8 @@ table, th, td, tr {
   height: 45%;
 }
 .texto_verde {
-  color: green;
+  color: white  ;
   font-size: 20px;
-  background-color: black;
 }
 
 .ranking_font_size {
@@ -91,3 +90,4 @@ table, th, td, tr {
 .imagen_ranking {
   height: 30px
 }
+

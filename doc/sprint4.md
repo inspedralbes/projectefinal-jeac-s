@@ -10,7 +10,7 @@ La data final del Sprint 4 serà el dia 21/04/2023
 
 #### Conceptes
 
--Cambiar el boostrap por tailwind.css y mejorar disseño 
--Acabar la funcionalidad de subir juegos pero con node.js 
--Empezar la funcionalidad de tienda de puntos 
--Seguir con la tarea de subirlo a produccion 
+-Cambiar el boostrap por tailwind.css y mejorar disseño  
+-Acabar la funcionalidad de subir juegos pero con node.js   
+-Empezar la funcionalidad de tienda de puntos  
+-Seguir con la tarea de subirlo a produccion  

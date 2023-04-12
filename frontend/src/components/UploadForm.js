@@ -72,7 +72,7 @@ const UploadForm = () => {
                 // formData.append('img', blobImg, img);
                 formData.append('zip', blobZip, nombreArchivo);
                 formData.append('description', description);
-                const response = await fetch('http://localhost:8000/api/upload', {
+                const response = await fetch('http://jeacsgames.alumnes.inspedralbes.cat/api/upload', {
                     method: 'POST',
                     headers: {
                         'Accept': '*/*'
@@ -89,7 +89,7 @@ const UploadForm = () => {
                     // try{
                     //     const formData2 = new FormData();
                     //     formData2.append('img', blobImg, img);
-                    //     const response = await fetch('http://localhost:8000/api/uploadImage', {
+                    //     const response = await fetch('http://jeacsgames.alumnes.inspedralbes.cat/api/uploadImage', {
                     //     method: 'POST',
                     //     headers: {
                     //         'Accept': '*/*'

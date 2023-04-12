@@ -20,7 +20,7 @@ class Games extends Component {
 
     async componentDidMount() {
      try {
-        const response = await fetch('http://localhost:8000/api/gamesList', {
+        const response = await fetch('http://jeacsgames.alumnes.inspedralbes.cat/api/gamesList', {
             method: 'GET',
         });
 

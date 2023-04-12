@@ -16,7 +16,7 @@ const UserInfo = () => {
     async function fetchUsers() {
       if (isLoggedIn) {
         try {
-          const response = await fetch('http://localhost:8000/api/showProfile', {
+          const response = await fetch('http://jeacsgames.alumnes.inspedralbes.cat/api/showProfile', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const UserInfo = () => {
   const changeName = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/api/changeName', {
+      const response = await fetch('http://jeacsgames.alumnes.inspedralbes.cat/api/changeName', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const UserInfo = () => {
   const changePassword = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/api/changePassword', {
+      const response = await fetch('http://jeacsgames.alumnes.inspedralbes.cat/api/changePassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

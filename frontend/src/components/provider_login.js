@@ -18,7 +18,7 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/login', {
+      const response = await fetch('http://jeacsgames.alumnes.inspedralbes.cat/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

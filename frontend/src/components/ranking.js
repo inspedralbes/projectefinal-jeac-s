@@ -8,7 +8,7 @@ function GetRanking() {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const response = await fetch('http://localhost:8000/api/getRanking', {
+        const response = await fetch('http://jeacsgames.alumnes.inspedralbes.cat/api/getRanking', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

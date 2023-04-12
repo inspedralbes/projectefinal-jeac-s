@@ -114,7 +114,7 @@ const UploadForm = () => {
             formData.append('img', blobImg, img);
             formData.append('zip', blobZip, nombreArchivo);
             formData.append('description', description);
-            const response = await fetch('http://localhost:8000/api/upload', {
+            const response = await fetch('http://jeacsgames.alumnes.inspedralbes.cat/api/upload', {
                 method: 'POST',
                 headers: {
                     'Accept': '*/*'

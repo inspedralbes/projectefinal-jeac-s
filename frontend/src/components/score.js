@@ -8,7 +8,7 @@ async function endGame(totalScore) {
   if (token)
     if (token != "0") {
       try {
-        const response = await fetch('http://localhost:8000/api/saveScore', {
+        const response = await fetch('http://jeacsgames.alumnes.inspedralbes.cat/api/saveScore', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

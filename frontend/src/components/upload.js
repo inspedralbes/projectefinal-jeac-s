@@ -3,9 +3,10 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store';
 
-const Upload = () => (
+const Upload = ({socket}) => (
     <Provider store={store}>
-      <UploadForm />
+      {console.log("ASSdsfasdfasd", socket)}
+      <UploadForm socket={socket}/>
     </Provider>
   );
   

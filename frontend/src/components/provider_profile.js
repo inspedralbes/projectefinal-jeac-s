@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { store, actions } from './store'; // import the Redux store
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
+import routes from '../index.js';
 
 const UserInfo = () => {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
@@ -16,7 +17,7 @@ const UserInfo = () => {
     async function fetchUsers() {
       if (isLoggedIn) {
         try {
-          const response = await fetch('http://localhost:8000/api/showProfile', {
+          const response = await fetch(routes.fetchLaravel + '/api/showProfile', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -37,7 +38,7 @@ const UserInfo = () => {
   const changeName = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/api/changeName', {
+      const response = await fetch(routes.fetchLaravel + '/api/changeName', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

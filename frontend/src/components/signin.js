@@ -2,6 +2,7 @@ import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstra
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
+import routes from '../index.js';
 
 function Signin() {
   const [name, setName] = useState('');
@@ -17,7 +18,7 @@ function Signin() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/register', {
+      const response = await fetch(routes.fetchLaravel + '/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

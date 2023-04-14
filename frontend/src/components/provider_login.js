@@ -4,6 +4,7 @@ import { store, actions } from './store';
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
+import routes from '../index.js';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/login', {
+      const response = await fetch(routes.fetchLaravel + '/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

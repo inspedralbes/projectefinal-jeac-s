@@ -11,6 +11,8 @@ import { NavLink } from'react-router-dom';
 
 import GameCard from './gameCard.js';
 
+import routes from "../index.js";
+
 class Games extends Component {
     constructor() {
         super();
@@ -20,7 +22,7 @@ class Games extends Component {
 
     async componentDidMount() {
      try {
-        const response = await fetch('http://localhost:8000/api/gamesList', {
+        const response = await fetch(routes.fetchLaravel + '/api/gamesList', {
             method: 'GET',
         });
 

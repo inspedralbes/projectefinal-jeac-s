@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { store, actions } from './store'; // import the Redux store
+import routes from '../index';
 
 async function endGame(totalScore) {
   console.log(totalScore);
@@ -8,7 +9,7 @@ async function endGame(totalScore) {
   if (token)
     if (token != "0") {
       try {
-        const response = await fetch('http://localhost:8000/api/saveScore', {
+        const response = await fetch(routes.fetchLaravel + '/api/saveScore', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

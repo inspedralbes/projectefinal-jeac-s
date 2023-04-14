@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
+import routes from '../index.js';
 
 function GetRanking() {
   const [users, setUsers] = useState([]);
@@ -8,7 +9,7 @@ function GetRanking() {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const response = await fetch('http://localhost:8000/api/getRanking', {
+        const response = await fetch(routes.fetchLaravel + '/api/getRanking', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

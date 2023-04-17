@@ -1,46 +1,30 @@
 const express = require('express');
-const app = express();
 const unzipper = require('unzipper');
 var fs = require('fs');
 const cors = require("cors");
 
 
-const http = require('http');
-
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-
 const multer = require('multer');
 const upload = multer({ dest: 'extractedFiles/' }); // Establece el directorio de destino para los archivos cargados
 
-const io = new Server(server);
+const app = express();
+
+const http = require("http");
+const server = http.createServer(app);
 
 
 const PORT = 7878;
 const host = "0.0.0.0";
 
-// const socketIO = require("socket.io")(server, {
-//   cors: {
-//     origin: true,
-//     credentials: true,
-//   },
-//   path: "/node/",
-// });
+const socketIO = require("socket.io")(server, {
+  cors: {
+    origin: true,
+    credentials: true,
+  },
+  path: "/node/",
+});
 
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept, authorization"
-    );
-    res.header("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
-    next();
-  });
-
-
-
-io.on('connection', (socket) => {
+socketIO.on('connection', (socket) => {
     console.log('Socket connected');
   
     socket.on('file-upload', (file) => {

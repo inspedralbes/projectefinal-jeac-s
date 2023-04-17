@@ -16,7 +16,8 @@ import LoginForm from './components/login.js'
 import Game from './components/game.js'
 import GetRanking from './components/ranking.js'
 import GetGameStore from './components/gameStore.js'
-import { io, socketIO} from "socket.io-client";
+import socketIO from "socket.io-client";
+
 import './App.css';
 
 const routes = {
@@ -24,10 +25,15 @@ const routes = {
   wsNode: "http://localhost:7878",
 };
 
-//const socket = io(routes.wsNode);
-const socket = io();
-
-
+var socket = socketIO(routes.wsNode, {
+  withCredentials: true,
+  cors: {
+    origin: "*",
+    credentials: true,
+  },
+  path: "/node/",
+  transports: ["websocket"],
+});
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

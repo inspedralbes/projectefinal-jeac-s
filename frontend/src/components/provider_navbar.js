@@ -63,7 +63,7 @@ function Navbar() {
         </div>
         {isLoggedIn ?
           <div className="navbar-nav ml-auto">
-            <NavLink to="/profile">
+            <NavLink to="/profile/userInfo">
               <a className="nav-item nav-link">Profile</a>
             </NavLink>
             <NavLink to="/">

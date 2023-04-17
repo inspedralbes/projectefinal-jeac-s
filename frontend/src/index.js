@@ -5,11 +5,11 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 import Navbar from './components/navbar.js'
-import {BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 import Games from './pages/games'
 // import Game from '../components/game'
 import Home from './pages/home'
-import Profile from './pages/profile.js';
+import UserInfo from './pages/userInfo.js';
 import Upload from './pages/upload.js';
 import Signin from './pages/signin'
 import LoginForm from './pages/login.js'
@@ -39,21 +39,23 @@ var socket = socketIO(routes.wsNode, {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-   <div>
+    <div>
       <HashRouter>
         <Navbar></Navbar>
         {console.log("socket 1", socket)}
-          <Routes>
-            <Route path="/" element={<Home/>} />
-            <Route path="/games" element={<Games/>} />
-            <Route path="/upload" element={<Upload socket={socket}/>}/>
-            <Route path="/profile" element={<Profile/>} />
-            <Route path="/signin" element={<Signin/>} />
-            <Route path="/login" element={<LoginForm/>} />
-            <Route path="/game" element={<Game/>} />
-            <Route path="/ranking" element={<GetRanking/>} />
-            <Route path="/gameStore" element={<GetGameStore/>} />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/games" element={<Games />} />
+          <Route path="/upload" element={<Upload socket={socket} />} />
+          <Route path="/profile/" element={<UserInfo />} >
+            <Route path="userInfo" element={<UserInfo />} />
+          </Route>
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="/ranking" element={<GetRanking />} />
+          <Route path="/gameStore" element={<GetGameStore />} />
+        </Routes>
       </HashRouter>
     </div>
   </React.StrictMode>

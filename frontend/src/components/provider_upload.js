@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+
 
 const UploadForm = ({socket}) => {
     const [name, setName] = useState('')
@@ -14,11 +15,47 @@ const UploadForm = ({socket}) => {
 
     const [file, setFile] = useState(null);
 
+
+    const [fileName, setFileName] = useState(null);
+  const [fileData, setFileData] = useState(null);
+
+useEffect(()  => {
+
+        // Receive file data from server
+        socket.on('fileData', (data) => {
+            console.log("Datadadda", data);
+            setFileName('my-file.txt');
+            setFileData(data);
+        });
+
+        return () => {
+          socket.off('fileData');
+        };
+      }, []);
+
+      
     function onClick() {
         let file = document.getElementById("uploadZip").files[0];
         console.log("soket", socket);
-        socket.emit('file-upload', file);
+        
+        // const formData = new FormData();
+        // formData.append('file', file);
+        
+        // console.log("formData", formData);
+        // console.log("file", file);
 
+        const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = (event) => {
+      const fileData = {
+        name: file.name,
+        type: file.type,
+        data: event.target.result,
+      };
+
+        socket.emit('file-upload', fileData);
+    };
     }
 
     /**

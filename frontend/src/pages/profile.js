@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import  UserInfo  from './provider_profile';
-import { store } from './store';
+import  UserInfo  from '../components/provider_profile';
+import { store } from '../components/store';
 
 
 const App = () => (

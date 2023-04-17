@@ -6,16 +6,16 @@ import reportWebVitals from './reportWebVitals';
 
 import Navbar from './components/navbar.js'
 import {BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
-import Games from './components/games'
+import Games from './pages/games'
 // import Game from '../components/game'
-import Home from './components/home'
-import Profile from './components/profile.js';
-import Upload from './components/upload.js';
-import Signin from './components/signin'
-import LoginForm from './components/login.js'
-import Game from './components/game.js'
-import GetRanking from './components/ranking.js'
-import GetGameStore from './components/gameStore.js'
+import Home from './pages/home'
+import Profile from './pages/profile.js';
+import Upload from './pages/upload.js';
+import Signin from './pages/signin'
+import LoginForm from './pages/login.js'
+import Game from './pages/game.js'
+import GetRanking from './pages/ranking.js'
+import GetGameStore from './pages/gameStore.js'
 import socketIO from "socket.io-client";
 
 import './App.css';

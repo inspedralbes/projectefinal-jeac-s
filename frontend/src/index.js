@@ -10,6 +10,7 @@ import Games from './pages/games'
 // import Game from '../components/game'
 import Home from './pages/home'
 import UserInfo from './pages/userInfo.js';
+import Historial from './pages/historial.js';
 import Upload from './pages/upload.js';
 import Signin from './pages/signin'
 import LoginForm from './pages/login.js'
@@ -47,9 +48,8 @@ root.render(
           <Route path="/" element={<Home />} />
           <Route path="/games" element={<Games />} />
           <Route path="/upload" element={<Upload socket={socket} />} />
-          <Route path="/profile/" element={<UserInfo />} >
-            <Route path="userInfo" element={<UserInfo />} />
-          </Route>
+          <Route path="/userInfo" element={<UserInfo />} />
+          <Route path="/historial" element={<Historial />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/game" element={<Game />} />

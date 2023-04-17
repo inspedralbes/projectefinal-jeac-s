@@ -13,6 +13,7 @@ const UserInfo = () => {
   const dispatch = useDispatch();
   const [showSuccessMessagePassword, setShowSuccessMessagePassword] = useState(false);
   const [showSuccessMessageName, setShowSuccessMessageName] = useState(false);
+  console.log(userInfo);
   useEffect(() => {
     async function fetchUsers() {
       if (isLoggedIn) {

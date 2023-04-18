@@ -21,6 +21,9 @@ const upload = multer({ dest: 'extractedFiles/' }); // Establece el directorio d
 const http = require("http");
 const server = http.createServer(app);
 
+app.use(express.static('public'));
+
+
 
 const PORT = 7878;
 const host = "0.0.0.0";

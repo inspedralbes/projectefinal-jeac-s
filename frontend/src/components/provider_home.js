@@ -4,45 +4,16 @@ import { NavLink } from 'react-router-dom';
 
 function Home() {
     return (
-        <Carousel id="carouselExampleCaptions"  >
-            <Carousel.Item>
-                <NavLink to="/game">
-                    <img
-                        className="d-block w-100"
-                        src="imgDemoGame.png"
-                        alt="Slide 1"
-                    />
-                </NavLink>
-                {/* <Carousel.Caption>
-                        <h3>BallGame</h3>
-                        <p>You can play the BallGame by clicking this image.</p>
-                    </Carousel.Caption> */}
-            </Carousel.Item>
-            <Carousel.Item>
-                <img
-                    className="d-block w-100"
-                    src="mhw.png"
-                    alt="Slide 2"
-
-                />
-                <Carousel.Caption>
-                    <h3>Slide 2</h3>
-                    <p>This is the second slide.</p>
-                </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item>
-                <img
-                    className="d-block w-100"
-                    src="games.png"
-                    alt="Slide 3"
-
-                />
-                <Carousel.Caption>
-                    <h3>Slide 3</h3>
-                    <p>This is the third slide.</p>
-                </Carousel.Caption>
-            </Carousel.Item>
-        </Carousel>
+        <div class="flex h-screen justify-center items-center min-h-screen bg-[url('../public/akihabaraNeo.jpg')] bg-cover bg-no-repeat bg-center bg-fixed" >
+            <div class="p-10 opacity-90 text-center bg-purple-300 rounded-lg">
+                <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-violet-800 md:text-5xl lg:text-6xl dark:text-white">JEAC'S GAMES</h1>
+                <p class="mb-6 text-lg font-normal text-fuchsia-950 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400"> Pagina web social on pots disfrutar de jocs, pujar els teus propis i competir per cosmetics!</p>
+                <a href="#" class=" inline-flex items-center justify-center px-5 py-3 text-base font-medium text-white bg-emerald-700 rounded-lg hover:bg-violet-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
+                    Play Now!
+                    <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </a>
+            </div>
+        </div>
     );
 }
 

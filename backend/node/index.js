@@ -61,48 +61,50 @@ socketIO.on('connection', (socket) => {
         .pipe(unzipper.Extract({ path: 'extractedFiles/' }))
         .on('close', () => {
           console.log('Extraction complete!');
-        });
 
-      const initGamePath = path.join('extractedFiles', 'initGame.js');
-      const imagesFolderPath = path.join('extractedFiles', 'images');
-      const scriptsFolderPath = path.join('extractedFiles', 'scripts');
-
-      fs.readFile(filepath, 'utf-8', (error, data) => {
-        if (error) {
-          console.error(error);
-          return;
-        }
-
-        const containsInitGame = data.includes('initGame.js');
-        const containsImagesFolder = fs.existsSync(imagesFolderPath);
-        const containsScriptFolder = fs.existsSync(scriptsFolderPath);
-
-        console.log(`File ${filename} contains initGame.js: ${containsInitGame}`);
-        console.log(`File ${filename} contains images folder: ${containsImagesFolder}`);
-        console.log(`File ${filename} contains scripts folder: ${containsScriptFolder}`);
-        
-        if (containsInitGame & containsImagesFolder & containsScriptFolder) {
-          console.log("Zip correct");
-
-          const filePath = path.join('extractedFiles', 'initGame.js');
-          const fileName = path.parse(filePath).name;
-          fs.readFile(filePath, (err, data) => {
-            if (err) {
-              console.error(err);
+          const initGamePath = path.join('extractedFiles', 'initGame.js');
+          const imagesFolderPath = path.join('extractedFiles', 'images');
+          const scriptsFolderPath = path.join('extractedFiles', 'scripts');
+    
+          fs.readFile(filepath, 'utf-8', (error, data) => {
+            if (error) {
+              console.error(error);
               return;
             }
-            console.log("Hola");
-            console.log("datda", fileName);
-            let data3 = [
-              {
-                name: fileName,
-                file: data
-              }
-            ]
-            socket.emit('fileData', data3);
+    
+            const containsInitGame = data.includes('initGame.js');
+            const containsImagesFolder = fs.existsSync(imagesFolderPath);
+            const containsScriptFolder = fs.existsSync(scriptsFolderPath);
+    
+            console.log(`File ${filename} contains initGame.js: ${containsInitGame}`);
+            console.log(`File ${filename} contains images folder: ${containsImagesFolder}`);
+            console.log(`File ${filename} contains scripts folder: ${containsScriptFolder}`);
+            
+            if (containsInitGame & containsImagesFolder & containsScriptFolder) {
+              console.log("Zip correct");
+    
+              const filePath = path.join('extractedFiles', 'initGame.js');
+              const fileName = path.parse(filePath).name;
+              fs.readFile(filePath, (err, data) => {
+                if (err) {
+                  console.error(err);
+                  return;
+                }
+                console.log("filename", fileName);
+                console.log("datda", data);
+    
+                let data3 = [
+                  {
+                    name: fileName,
+                    file: data
+                  }
+                ]
+                socket.emit('fileData', data3);
+              });
+            }
           });
-        }
-      });
+          
+        });
 
       //const filePath = req.file.path;
 

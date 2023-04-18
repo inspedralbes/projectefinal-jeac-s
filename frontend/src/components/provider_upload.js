@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import saveAs from 'file-saver';
 
 
-const UploadForm = ({socket}) => {
+const UploadForm = ({ socket }) => {
     const [name, setName] = useState('')
     const [img, setImg] = useState('')
     const [zip, setZip] = useState('')
@@ -17,45 +18,57 @@ const UploadForm = ({socket}) => {
 
 
     const [fileName, setFileName] = useState(null);
-  const [fileData, setFileData] = useState(null);
+    const [fileData, setFileData] = useState(null);
 
-useEffect(()  => {
+    useEffect(() => {
 
         // Receive file data from server
         socket.on('fileData', (data) => {
             console.log("Datadadda", data);
-            setFileName('my-file.txt');
-            setFileData(data);
+            //setFileName('my-file.txt');
+            //setFileData(data);
+
+            // Convertir buffer a objeto File
+            const file = new File([data], 'initGame.js', { type: 'text/javascript' });
+
+            // Leer contenido del archivo
+            const reader = new FileReader();
+            reader.onload = () => {
+                const fileContent = reader.result;
+                // Guardar archivo en carpeta de juegos
+                saveAs(file, 'Unicorn/archivo.js');
+            };
+            reader.readAsText(file);
         });
 
         return () => {
-          socket.off('fileData');
+            socket.off('fileData');
         };
-      }, []);
+    }, []);
 
-      
+
     function onClick() {
         let file = document.getElementById("uploadZip").files[0];
         console.log("soket", socket);
-        
+
         // const formData = new FormData();
         // formData.append('file', file);
-        
+
         // console.log("formData", formData);
         // console.log("file", file);
 
         const reader = new FileReader();
-    reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
 
-    reader.onload = (event) => {
-      const fileData = {
-        name: file.name,
-        type: file.type,
-        data: event.target.result,
-      };
+        reader.onload = (event) => {
+            const fileData = {
+                name: file.name,
+                type: file.type,
+                data: event.target.result,
+            };
 
-        socket.emit('file-upload', fileData);
-    };
+            socket.emit('file-upload', fileData);
+        };
     }
 
     /**
@@ -117,185 +130,185 @@ useEffect(()  => {
     // }
 
 
-// const onClick = async () => {
+    // const onClick = async () => {
 
-//     var file = document.getElementById("uploadZip").files[0];
-//     var fileImagen = document.getElementById("uploadImg").files[0];
-//     var reader = new FileReader();
-//     // var imagen = new FileReader();
+    //     var file = document.getElementById("uploadZip").files[0];
+    //     var fileImagen = document.getElementById("uploadImg").files[0];
+    //     var reader = new FileReader();
+    //     // var imagen = new FileReader();
 
-//     reader.onload = function () {
-//         let blobresult = dataURItoBlob(reader.result)
-//         saveBlobs(blobresult, 'zip');
+    //     reader.onload = function () {
+    //         let blobresult = dataURItoBlob(reader.result)
+    //         saveBlobs(blobresult, 'zip');
 
-//     };
-//     // imagen.onload = async function () {
-//     //     let blobresult = dataURItoBlob(imagen.result)
-//     //     await saveBlobs(blobresult, 'img');
+    //     };
+    //     // imagen.onload = async function () {
+    //     //     let blobresult = dataURItoBlob(imagen.result)
+    //     //     await saveBlobs(blobresult, 'img');
 
-//     // };
-//     reader.readAsDataURL(file);
-//     // imagen.readAsDataURL(fileImagen);
+    //     // };
+    //     reader.readAsDataURL(file);
+    //     // imagen.readAsDataURL(fileImagen);
 
-// }
-// async function hacerFetch(blobZip, blobImg) {
-//     try {
-//         console.log("Zip", blobZip);
-//         console.log("Img", blobImg);
+    // }
+    // async function hacerFetch(blobZip, blobImg) {
+    //     try {
+    //         console.log("Zip", blobZip);
+    //         console.log("Img", blobImg);
 
-//         let fecha = new Date();
-//         let diaActual = fecha.getDate();
-//         let mesActual = fecha.getMonth();
-//         let añoActual = fecha.getFullYear()
-//         let minutos = fecha.getMinutes();
-//         let segundos = fecha.getSeconds();
-//         let milisegundos = fecha.getMilliseconds();
+    //         let fecha = new Date();
+    //         let diaActual = fecha.getDate();
+    //         let mesActual = fecha.getMonth();
+    //         let añoActual = fecha.getFullYear()
+    //         let minutos = fecha.getMinutes();
+    //         let segundos = fecha.getSeconds();
+    //         let milisegundos = fecha.getMilliseconds();
 
-//         let nombreArchivo = name + "_" + diaActual + "/" + mesActual + "/" + añoActual + "/" + minutos + "/" + segundos + "/" + milisegundos;
-//         console.log(nombreArchivo);
+    //         let nombreArchivo = name + "_" + diaActual + "/" + mesActual + "/" + añoActual + "/" + minutos + "/" + segundos + "/" + milisegundos;
+    //         console.log(nombreArchivo);
 
-//         console.log("frefer", blobZip);
-//         const formData = new FormData();
-//         formData.append('name', name);
-//         formData.append('img', blobImg, img);
-//         formData.append('zip', blobZip, nombreArchivo);
-//         formData.append('description', description);
-//         const response = await fetch('http://localhost:8000/api/upload', {
-//             method: 'POST',
-//             headers: {
-//                 'Accept': '*/*'
-//             },
-//             body: formData,
-//         });
+    //         console.log("frefer", blobZip);
+    //         const formData = new FormData();
+    //         formData.append('name', name);
+    //         formData.append('img', blobImg, img);
+    //         formData.append('zip', blobZip, nombreArchivo);
+    //         formData.append('description', description);
+    //         const response = await fetch('http://localhost:8000/api/upload', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Accept': '*/*'
+    //             },
+    //             body: formData,
+    //         });
 
-//         if (!response.ok) {
-//             throw new Error(response.statusText);
-//         }
+    //         if (!response.ok) {
+    //             throw new Error(response.statusText);
+    //         }
 
-//         const data = await response.json();
-//         console.log(data);
-//     } catch (error) {
-//         setError(error);
+    //         const data = await response.json();
+    //         console.log(data);
+    //     } catch (error) {
+    //         setError(error);
 
-//     }
+    //     }
 
-return (
-    <div>
-        {isLoggedIn ?
-            <Container>
-                <Row className="d-flex justify-content-center align-items-center">
-                    <Col md={4} lg={6} xs={12}>
-                        <br></br>
-                        <Card className="px-4 rounded bg-dark text-light">
-                            <Card.Body>
-                                <div className="mb-3 mt-md-4">
-                                    <h2 className="fw-bold mb-2 text-center text-uppercase">
-                                        Instructions
-                                    </h2>
-                                    <div className="mb-3">
-                                        Instructions to follow in order to upload your zip and image from your game so it can be played in the website
+    return (
+        <div>
+            {isLoggedIn ?
+                <Container>
+                    <Row className="d-flex justify-content-center align-items-center">
+                        <Col md={4} lg={6} xs={12}>
+                            <br></br>
+                            <Card className="px-4 rounded bg-dark text-light">
+                                <Card.Body>
+                                    <div className="mb-3 mt-md-4">
+                                        <h2 className="fw-bold mb-2 text-center text-uppercase">
+                                            Instructions
+                                        </h2>
+                                        <div className="mb-3">
+                                            Instructions to follow in order to upload your zip and image from your game so it can be played in the website
+                                        </div>
+                                        <div className="mb-3">
+                                            1. Es necesario introducir un nombre para el juego que se va a cargar a la web.
+
+                                        </div>
+
+                                        <div className="mb-3">
+                                            2. Se debe subir una imagen en formato <b>.png</b> para la miniatura del juego.
+                                        </div>
+
+                                        <div className="mb-3">
+                                            3. Es <b>obligatorio</b> subir el juego hecho con <b>PHASER</b> en formatio <b>.zip</b>. <br></br>
+                                            El juego tiene que contener un script denominado <b>initGames.js</b> el qual contenga la configuracion del PHASER.<br></br>
+                                            <br></br><img src='initGame.PNG' width='450' height='450'></img>
+                                        </div>
+
+                                        <div className="mb-3">
+                                            4. Se deberia añadir una descripcion adecuada a las caracteristicas del juego.
+                                        </div>
+
+                                        <div className="mb-3">
+                                            5. Se podrá añadir categorias a los juegos.
+                                        </div>
                                     </div>
-                                    <div className="mb-3">
-                                        1. Es necesario introducir un nombre para el juego que se va a cargar a la web.
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                        <Col md={8} lg={6} xs={12}>
+                            <br></br>
+                            <Card className="px-4 rounded bg-dark">
+                                <Card.Body>
+                                    <div className="mb-3 mt-md-4">
+                                        <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
+                                            Upload a Game
+                                        </h2>
+                                        <div className="mb-3">
+                                            <Form>
+                                                <Form.Group controlId="formBasicNameGame">
+                                                    <Form.Label className='text-light'>Name Game</Form.Label>
+                                                    <Form.Control type='text' placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+                                                </Form.Group>
+                                                <br></br>
 
+                                                <Form.Group>
+                                                    <Form.Label className='text-light'>Image Game</Form.Label>
+                                                    <Form.Control id='uploadImg' type='file' accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)} />
+                                                </Form.Group><br></br>
+
+                                                <Form.Group>
+                                                    <Form.Label className='text-light'>Zip Game</Form.Label>
+                                                    <Form.Control id='uploadZip' type='file' accept='.zip' value={zip} onChange={(e) => setZip(e.target.value)} />
+                                                </Form.Group><br></br>
+
+                                                <Form.Group controlId="formBasicDescription">
+                                                    <Form.Label className='text-light'>Description</Form.Label>
+                                                    <Form.Control placeholder="Add a description" rows='5' cols='50' value={description} onChange={(e) => setDescription(e.target.value)} />
+                                                </Form.Group><br></br>
+
+                                                <Form.Group controlId="formBasicCategories">
+                                                    <Form.Label className='text-light'>Categories</Form.Label>
+                                                    {['checkbox'].map((type) => (
+                                                        <div key={`inline-${type}`} className="mb-3 text-light">
+                                                            <Form.Check
+                                                                inline
+                                                                label="Arcade"
+                                                                name="group1"
+                                                                type={type}
+                                                                id={`inline-${type}-1`}
+                                                            />
+                                                            <Form.Check
+                                                                inline
+                                                                label="Action"
+                                                                name="group1"
+                                                                type={type}
+                                                                id={`inline-${type}-2`}
+                                                            />
+                                                            <Form.Check
+                                                                inline
+                                                                label="Figthing"
+                                                                name="group1"
+                                                                type={type}
+                                                                id={`inline-${type}-3`}
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </Form.Group><br></br>
+
+                                                <Button variant="primary" onClick={onClick}>
+                                                    Submit
+                                                </Button>
+                                            </Form>
+                                        </div>
                                     </div>
-
-                                    <div className="mb-3">
-                                        2. Se debe subir una imagen en formato <b>.png</b> para la miniatura del juego.
-                                    </div>
-
-                                    <div className="mb-3">
-                                        3. Es <b>obligatorio</b> subir el juego hecho con <b>PHASER</b> en formatio <b>.zip</b>. <br></br>
-                                        El juego tiene que contener un script denominado <b>initGames.js</b> el qual contenga la configuracion del PHASER.<br></br>
-                                        <br></br><img src='initGame.PNG' width='450' height='450'></img>
-                                    </div>
-
-                                    <div className="mb-3">
-                                        4. Se deberia añadir una descripcion adecuada a las caracteristicas del juego.
-                                    </div>
-
-                                    <div className="mb-3">
-                                        5. Se podrá añadir categorias a los juegos.
-                                    </div>
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col md={8} lg={6} xs={12}>
-                        <br></br>
-                        <Card className="px-4 rounded bg-dark">
-                            <Card.Body>
-                                <div className="mb-3 mt-md-4">
-                                    <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
-                                        Upload a Game
-                                    </h2>
-                                    <div className="mb-3">
-                                        <Form>
-                                            <Form.Group controlId="formBasicNameGame">
-                                                <Form.Label className='text-light'>Name Game</Form.Label>
-                                                <Form.Control type='text' placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-                                            </Form.Group>
-                                            <br></br>
-
-                                            <Form.Group>
-                                                <Form.Label className='text-light'>Image Game</Form.Label>
-                                                <Form.Control id='uploadImg' type='file' accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)} />
-                                            </Form.Group><br></br>
-
-                                            <Form.Group>
-                                                <Form.Label className='text-light'>Zip Game</Form.Label>
-                                                <Form.Control id='uploadZip' type='file' accept='.zip' value={zip} onChange={(e) => setZip(e.target.value)} />
-                                            </Form.Group><br></br>
-
-                                            <Form.Group controlId="formBasicDescription">
-                                                <Form.Label className='text-light'>Description</Form.Label>
-                                                <Form.Control placeholder="Add a description" rows='5' cols='50' value={description} onChange={(e) => setDescription(e.target.value)} />
-                                            </Form.Group><br></br>
-
-                                            <Form.Group controlId="formBasicCategories">
-                                                <Form.Label className='text-light'>Categories</Form.Label>
-                                                {['checkbox'].map((type) => (
-                                                    <div key={`inline-${type}`} className="mb-3 text-light">
-                                                        <Form.Check
-                                                            inline
-                                                            label="Arcade"
-                                                            name="group1"
-                                                            type={type}
-                                                            id={`inline-${type}-1`}
-                                                        />
-                                                        <Form.Check
-                                                            inline
-                                                            label="Action"
-                                                            name="group1"
-                                                            type={type}
-                                                            id={`inline-${type}-2`}
-                                                        />
-                                                        <Form.Check
-                                                            inline
-                                                            label="Figthing"
-                                                            name="group1"
-                                                            type={type}
-                                                            id={`inline-${type}-3`}
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </Form.Group><br></br>
-
-                                            <Button variant="primary" onClick={onClick}>
-                                                Submit
-                                            </Button>
-                                        </Form>
-                                    </div>
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-            </Container>
-            : <h2>You need to be logged in to upload games!</h2>
-        }
-    </div>
-);
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Container>
+                : <h2>You need to be logged in to upload games!</h2>
+            }
+        </div>
+    );
 
 }
 export default UploadForm

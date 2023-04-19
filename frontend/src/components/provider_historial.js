@@ -7,8 +7,7 @@ import routes from '../index.js';
 const Historial = () => {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
   const token = localStorage.getItem('access_token');
-  const infoPlayedGame = useSelector((state) => state.data);
-  const dispatch = useDispatch();
+  const [playedGames, setPlayedGames] = useState([]);
 
   useEffect(() => {
     async function fetchPlayedGame() {
@@ -21,10 +20,9 @@ const Historial = () => {
               'Authorization': `Bearer ${token}`,
             },
           });
-          const data = await response.json();
-          dispatch(actions.saveData(data));
-          console.log(data);
-
+          const infoPlayedGame = await response.json();
+          console.log(infoPlayedGame);
+          setPlayedGames(infoPlayedGame);
         } catch (error) {
           console.error(error);
         }
@@ -35,13 +33,18 @@ const Historial = () => {
 
   return (
     <div>
-      {isLoggedIn ?
-        <p className="ranking_font_size">Name: <h4>{infoPlayedGame}</h4></p>
-        :
-        <p className="ranking_font_size">You need to be logged in</p>
-      }
+      <h2>Historial</h2>
+      {playedGames.map((game, userId) => (
+        <Card key={userId}>
+          <Card.Body>
+            <Card.Title>Juego: {game.name}</Card.Title>
+            <Card.Text>Puntos: {game.score}</Card.Text>
+          </Card.Body>
+        </Card>
+      ))}
     </div>
   );
 };
+
 
 export default Historial;

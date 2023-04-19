@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GameController;
 use App\Http\Controllers\Api\PlayedGameController;
+use App\Http\Controllers\Api\StoreController;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/showProfile', [AuthController::class, 'showProfile']);
@@ -29,3 +30,7 @@ Route::get('/getRanking', [AuthController::class, 'getRanking']);
 Route::post('/createPlayedGame', [PlayedGameController::class, 'createPlayedGame']);
 
 Route::get('/showPlayedGame', [PlayedGameController::class, 'showPlayedGame']);
+
+Route::post('/createStoreItem', [StoreController::class, 'createStoreItem']);
+
+Route::get('/getStoreItems', [StoreController::class, 'getStoreItems']);

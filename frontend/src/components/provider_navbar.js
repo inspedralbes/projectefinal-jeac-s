@@ -42,9 +42,9 @@ function Navbar() {
           null
         }
          {isLoggedIn ?
-          (<NavLink to="/gameStore">
+          (<NavLink to="/store">
             <li className="nav-item">
-              <a className="nav-item nav-link">Game Store</a>
+              <a className="nav-item nav-link">Store</a>
             </li>
           </NavLink>
           ) :

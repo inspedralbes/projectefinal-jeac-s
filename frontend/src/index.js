@@ -16,7 +16,7 @@ import Signin from './pages/signin'
 import LoginForm from './pages/login.js'
 import Game from './pages/game.js'
 import GetRanking from './pages/ranking.js'
-import GetGameStore from './pages/gameStore.js'
+import Store from './pages/store.js'
 import socketIO from "socket.io-client";
 
 import './App.css';
@@ -54,7 +54,7 @@ root.render(
           <Route path="/login" element={<LoginForm />} />
           <Route path="/game" element={<Game />} />
           <Route path="/ranking" element={<GetRanking />} />
-          <Route path="/gameStore" element={<GetGameStore />} />
+          <Route path="/store" element={<Store />} />
         </Routes>
       </HashRouter>
     </div>

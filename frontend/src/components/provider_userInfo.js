@@ -94,6 +94,8 @@ const UserInfo = () => {
                         <p className="ranking_font_size">Name: <h4>{userInfo.name}</h4></p>
                         <p className="ranking_font_size">Email: <h4>{userInfo.email}</h4></p>
                         <p className="ranking_font_size">Score: <h4>{userInfo.totalScore}</h4></p>
+                        <p className="ranking_font_size">Jeacstars: <h4>{userInfo.jeacstars}</h4></p>
+
                       </div>
 
                       <div>

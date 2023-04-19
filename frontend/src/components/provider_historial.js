@@ -3,6 +3,7 @@ import { store, actions } from './store'; // import the Redux store
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import routes from '../index.js';
+import moment from 'moment';
 
 const Historial = () => {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
@@ -42,6 +43,7 @@ const Historial = () => {
               <Card.Body>
                 <Card.Title>Juego: {game.name}</Card.Title>
                 <Card.Text>Puntos: {game.score}</Card.Text>
+                <Card.Text>Fecha: {moment(game.created_at).format('DD MMM YYYY HH:mm:ss')}</Card.Text>
               </Card.Body>
             </Card>
           ))}

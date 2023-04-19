@@ -16,13 +16,15 @@ const app = express();
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
 
+app.get('/', (req, res) => {  
+  res.sendFile(__dirname + '/public/build/index.html');
+});
 const upload = multer({ dest: 'extractedFiles/' }); // Establece el directorio de destino para los archivos cargados
 
 const http = require("http");
 const server = http.createServer(app);
 
 app.use(express.static('public'));
-
 
 
 const PORT = 7878;
@@ -35,6 +37,13 @@ const socketIO = require("socket.io")(server, {
   },
   path: "/node/",
 });
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', '*')
+  res.header("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
+  next()
+})
 
 socketIO.on('connection', (socket) => {
   console.log('Socket connected');

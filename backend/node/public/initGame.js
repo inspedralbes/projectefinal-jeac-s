@@ -1,12 +1,13 @@
 import Phaser from "phaser";
 
-export function game2() {
+function game2() {
+    console.log("Llega aqui");
 
 var config = {
     type: Phaser.canvas,
     width: 1200,
     height: 800,
-    canvas: document.getElementById('canvas2'),    
+    canvas: document.getElementById('canvas'),    
     parent: 'phaser-example',
     backgroundColor: '#9adaea',
     useTicker: true,
@@ -16,6 +17,7 @@ var config = {
         update: update
     }
 };
+
 
 var bullet1;
 var bullet2;
@@ -85,4 +87,4 @@ function update (time, delta)
 
 var test = "Test d'exportació multiple";
 var test2 = "aixo no s'ha de veure!";
-export { game2, test };
+export default game2;

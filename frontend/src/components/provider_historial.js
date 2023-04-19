@@ -8,12 +8,13 @@ const Historial = () => {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
   const token = localStorage.getItem('access_token');
   const [playedGames, setPlayedGames] = useState([]);
+  const userInfo = useSelector((state) => state.data);
 
   useEffect(() => {
     async function fetchPlayedGame() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(routes.fetchLaravel + `/api/showPlayedGame?userId=27`, {
+          const response = await fetch(routes.fetchLaravel + `/api/showPlayedGame?userId=${userInfo.id}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -33,18 +34,22 @@ const Historial = () => {
 
   return (
     <div>
-      <h2>Historial</h2>
-      {playedGames.map((game, userId) => (
-        <Card key={userId}>
-          <Card.Body>
-            <Card.Title>Juego: {game.name}</Card.Title>
-            <Card.Text>Puntos: {game.score}</Card.Text>
-          </Card.Body>
-        </Card>
-      ))}
+      {isLoggedIn ?
+        <Container>
+          <h2>Historial</h2>
+          {playedGames.map((game, userId) => (
+            <Card key={userId}>
+              <Card.Body>
+                <Card.Title>Juego: {game.name}</Card.Title>
+                <Card.Text>Puntos: {game.score}</Card.Text>
+              </Card.Body>
+            </Card>
+          ))}
+        </Container> :
+        <p className="ranking_font_size">You need to be logged in</p>
+      }
     </div>
   );
 };
-
 
 export default Historial;

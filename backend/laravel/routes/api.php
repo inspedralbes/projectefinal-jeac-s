@@ -37,4 +37,6 @@ Route::get('/getStoreItems', [StoreController::class, 'getStoreItems']);
 
 Route::post('/buyItems', [StoreController::class, 'buyItems']);
 
+Route::post('/sellItems', [StoreController::class, 'sellItems']);
+
 Route::get('/getBoughtItems', [StoreController::class, 'getBoughtItems']);

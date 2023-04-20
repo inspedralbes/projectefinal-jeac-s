@@ -10,6 +10,8 @@ const UserInfo = () => {
   const token = localStorage.getItem('access_token');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [storeItems, setStoreItems] = useState([]);
+  const [boughtItems, setBoughtItems] = useState([]);
   const userInfo = useSelector((state) => state.data);
   const dispatch = useDispatch();
   const [showSuccessMessagePassword, setShowSuccessMessagePassword] = useState(false);
@@ -35,6 +37,46 @@ const UserInfo = () => {
       }
     }
     fetchUsers();
+
+    async function fetchStoreItems() {
+      if (isLoggedIn) {
+        try {
+          const response = await fetch(routes.fetchLaravel + `/api/getStoreItems`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          const storeItems = await response.json();
+          console.log(storeItems);
+          setStoreItems(storeItems);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+    fetchStoreItems();
+
+    async function fetchBoughtItems() {
+      if (isLoggedIn) {
+        try {
+          const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          const boughtItems = await response.json();
+          console.log(boughtItems);
+          setBoughtItems(boughtItems);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+    fetchBoughtItems();
   }, []);
 
   const changeName = async (e) => {
@@ -83,6 +125,29 @@ const UserInfo = () => {
     console.log(name);
   }
 
+  async function sellItem(userId, itemId) {
+    if (isLoggedIn) {
+      try {
+        const a = await fetch(routes.fetchLaravel + `/api/sellItems`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({ userId, itemId }),
+        });
+        const b = await a.json();
+        console.log(b);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
+  const purchasedItems = storeItems.filter(item => {
+    return boughtItems.some(boughtItem => boughtItem.userId === userInfo.id && boughtItem.itemId === item.id);
+  });
+
   return (
     <div class="flex h-screen justify-center items-center bg-violet-400">
       {isLoggedIn ?
@@ -101,6 +166,19 @@ const UserInfo = () => {
           </nav>
           <br></br>
           <div className="mb-3 mt-md-4">
+          <div style={{ display: 'flex'}}>
+            {
+              purchasedItems.map((item, id) => (
+                <div key={id} style={{ marginRight: '10px' }}>
+                  <h2>Item: {item.name}</h2>
+                  <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
+                  <p>Description: {item.description}</p>
+                  <p>Price: {item.price} Jeacstars</p>
+                  <button id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button>
+                </div>
+              ))
+            }
+            </div>
             <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
               User Info
             </h2>
@@ -110,7 +188,6 @@ const UserInfo = () => {
                 <p className="ranking_font_size">Email: <h4>{userInfo.email}</h4></p>
                 <p className="ranking_font_size">Score: <h4>{userInfo.totalScore}</h4></p>
                 <p className="ranking_font_size">Jeacstars: <h4>{userInfo.jeacstars}</h4></p>
-
               </div>
 
               <div>
@@ -126,7 +203,6 @@ const UserInfo = () => {
               </div>
 
               <div>
-
                 <Form onSubmit={changePassword}><br></br>
                   <Form.Group controlId="formBasicPassword">
                     <Form.Label>Password (Must have 1 capital letter, 1 lowercase letter, 1 number and a minimum length of 8)</Form.Label>
@@ -138,7 +214,6 @@ const UserInfo = () => {
                 </Form>
               </div>
             </div>
-
           </div>
         </div>
         :

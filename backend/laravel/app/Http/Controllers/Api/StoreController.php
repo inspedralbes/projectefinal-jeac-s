@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Store;
+use App\Models\User;
 use App\Models\User_x_items;
+use Illuminate\Support\Facades\DB;
 
 class StoreController extends Controller
 {
@@ -18,7 +20,7 @@ class StoreController extends Controller
         $store->image_url = $request->image_url;
         $store->save();
     }
-    
+
     public function getStoreItems()
     {
         $storeItems = Store::all();
@@ -27,11 +29,60 @@ class StoreController extends Controller
 
     public function buyItems(Request $request)
     {
-        $items = new User_x_items;
-        $items->userId = $request->userId;
-        $items->itemId = $request->itemId;
+        $userId = $request->userId;
+        $itemId = $request->itemId;
 
-        $items->save();
+        // Obtener el usuario y el item
+        $user = User::find($userId);
+        $item = Store::find($itemId);
+
+        // Verificar si el usuario tiene suficiente dinero
+        if ($user->jeacstars < $item->price) {
+            return response()->json(['message' => 'No tienes suficiente dinero para comprar este item'], 400);
+        }
+
+        // Restar el precio del item al dinero total del usuario
+        $user->jeacstars -= $item->price;
+        $user->save();
+
+        // Guardar la información de la compra
+        $purchase = new User_x_items;
+        $purchase->userId = $userId;
+        $purchase->itemId = $itemId;
+        $purchase->save();
+
+        return response()->json(['message' => 'Item comprado exitosamente'], 200);
+    }
+
+    public function sellItems(Request $request)
+    {
+        $userId = $request->userId;
+        $itemId = $request->itemId;
+
+        // Obtener el usuario y el item
+        $user = User::find($userId);
+        $item = Store::find($itemId);
+
+        // Verificar si el usuario posee el item
+        $purchase = User_x_items::where([
+            ['userId', '=', $userId],
+            ['itemId', '=', $itemId]
+        ])->first();
+        if (!$purchase) {
+            return response()->json(['message' => 'No posees este item'], 400);
+        }
+
+        // Sumar el precio del item al dinero total del usuario
+        $user->jeacstars += $item->price;
+        $user->save();
+
+        // Eliminar la información de la compra
+        DB::table('user_x_items')
+            ->where('userId', $userId)
+            ->where('itemId', $itemId)
+            ->delete();
+
+        return response()->json(['message' => 'Item vendido exitosamente'], 200);
     }
 
     public function getBoughtItems()

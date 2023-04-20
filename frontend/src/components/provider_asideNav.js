@@ -89,7 +89,7 @@ function AsideNav() {
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/game" element={<Game />} />
                     <Route path="/ranking" element={<GetRanking />} />
-                    <Route path="/gameStore" element={<GetGameStore />} />
+                    <Route path="/store" element={<GetGameStore />} />
                 </Routes>
             </div>
 

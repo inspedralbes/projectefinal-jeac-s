@@ -16,7 +16,7 @@ import Signin from './pages/signin'
 import LoginForm from './pages/login.js'
 import Game from './pages/game.js'
 import GetRanking from './pages/ranking.js'
-import Store from './pages/store.js'
+import Store from './pages/storeItems.js'
 import socketIO from "socket.io-client";
 
 import './App.css';

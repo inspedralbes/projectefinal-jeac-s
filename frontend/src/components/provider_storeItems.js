@@ -34,18 +34,16 @@ const Tienda = () => {
   return (
     <div>
       {isLoggedIn ?      
-        <Container>
+        <div>
           {storeItems.map((item, id) => (
-            <Card key={id}>
-              <Card.Body>
-                <Card.Title>Item: {item.name}</Card.Title>
-                <Image src={item.image_url} style={{ width: '150px', height: '150px' }} />
-                <Card.Text>Description: {item.description}</Card.Text>
-                <Card.Text>Price: {item.price} Jeacstars</Card.Text>
-              </Card.Body>
-            </Card>
+            <div key={id}>
+                <h2>Item: {item.name}</h2>
+                <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
+                <p>Description: {item.description}</p>
+                <p>Price: {item.price} Jeacstars</p>
+            </div>
           ))}
-        </Container> :
+        </div> :
         <p className="ranking_font_size">You need to be logged in</p>
       }
     </div>

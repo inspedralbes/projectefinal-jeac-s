@@ -20,9 +20,12 @@ class StoreController extends Controller
     public function getStoreItems()
     {
         $storeItems = Store::all();
-    
+
         return $storeItems;
     }
-    
-    
+
+    public function buyItems(Request $request)
+    {
+        
+    }
 }

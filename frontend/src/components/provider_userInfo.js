@@ -1,8 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { store, actions } from './store'; // import the Redux store
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
+import { Card, Row, Col, Form, Button, Container } from 'react-bootstrap';
 import routes from '../index.js';
+import { NavLink } from 'react-router-dom';
 
 const UserInfo = () => {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
@@ -13,7 +14,7 @@ const UserInfo = () => {
   const dispatch = useDispatch();
   const [showSuccessMessagePassword, setShowSuccessMessagePassword] = useState(false);
   const [showSuccessMessageName, setShowSuccessMessageName] = useState(false);
-  console.log(userInfo);
+  
   useEffect(() => {
     async function fetchUsers() {
       if (isLoggedIn) {
@@ -75,19 +76,33 @@ const UserInfo = () => {
     }
   };
 
+  let changeViewName = "userinfo";
+
+  function changeView(name){
+    changeViewName = name;
+    console.log(name);
+  }
 
   return (
-    <div>
+    <div class="flex h-screen justify-center items-center bg-violet-400">
       {isLoggedIn ?
-        <Container>
-          <Row className="d-flex justify-content-center align-items-center">
-            <Col md={8} lg={6} xs={12}>
+      <div>
+          <nav class="backdrop-filter backdrop-blur-l bg-opacity-30 border-b border-gray-200">
+            <div class="flex space-x-4">
+
+              <a onClick={() => changeView("userinfo")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">User Info</a>
+
+              <a onClick={() => changeView("historial")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Historial</a>
+
+              <a onClick={() => changeView("coleccion")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Coleccionables</a>
+
+              <a onClick={() => changeView("logros")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logros</a>
+            </div>
+          </nav>
               <br></br>
-              <Card className="px-4 rounded bg-dark text-light">
-                <Card.Body>
                   <div className="mb-3 mt-md-4">
                     <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
-                      Profile
+                      User Info
                     </h2>
                     <div className="mb-3 mt-md-4">
                       <div class="text-center">
@@ -125,13 +140,25 @@ const UserInfo = () => {
                     </div>
 
                   </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container >
+        </div>
         :
-        <p className="ranking_font_size">You need to be logged in</p>
+        <div >
+          <div class="p-10 opacity-90 text-center bg-purple-300 rounded-lg">
+            <p class="mb-6 text-lg font-normal text-fuchsia-950 lg:text-2xl sm:px-16 xl:px-48 dark:text-gray-400"> No estas registrado :( </p>
+            <p class="mb-6 text-lg font-normal text-fuchsia-950 lg:text-2xl sm:px-16 xl:px-48 dark:text-gray-400">Si quieres customizar tu perfil INICIA SESION o REGISTRATE!</p>
+            <NavLink to="/login">
+              <a href="#" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-white bg-emerald-700 rounded-lg hover:bg-violet-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
+                Inicia Sesion!
+              </a>
+            </NavLink>
+            <a> </a>
+            <NavLink to="/signin">
+              <a href="#" class=" inline-flex items-center justify-center px-5 py-3 text-base font-medium text-white bg-emerald-700 rounded-lg hover:bg-violet-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
+                Registrate!
+              </a>
+            </NavLink>
+          </div>
+        </div>
       }
     </div>
   );

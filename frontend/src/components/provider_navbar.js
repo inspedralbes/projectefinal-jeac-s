@@ -15,72 +15,83 @@ function Navbar() {
 
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a className="navbar-brand" href="#">
-        <img src="jeacsLogo.PNG" width="70" height="70" alt=""></img>
-      </a>
+      <nav class="bg-gray-800">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div class="relative flex h-16 items-center justify-between">
+            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+              
+            </div>
+            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <div class="flex flex-shrink-0 items-center">
+                <img class="block h-8 w-auto lg:hidden" src="jeacsLogo.PNG" alt="Your Company"></img>
+                <img class="hidden h-8 w-auto lg:block" src="jeacsLogo.PNG" alt="Your Company"></img>
+              </div>
+              <div class="hidden sm:ml-6 sm:block">
+                <div class="flex space-x-4">
 
-      <ul className="navbar-nav mr-auto">
-        <NavLink to="/games">
-          <li className="nav-item">
-            <a className="nav-item nav-link">Games</a>
-          </li>
-        </NavLink>
-        <NavLink to="/game">
-          <li className="nav-item">
-            <a className="nav-item nav-link">BallGame</a>
-          </li>
-        </NavLink>
+                  <a href="#" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Home</a>
 
-        {isLoggedIn ?
-          (<NavLink to="/upload">
-            <li className="nav-item">
-              <a className="nav-item nav-link">Upload</a>
-            </li>
-          </NavLink>
-          ) :
-          null
-        }
-         {isLoggedIn ?
-          (<NavLink to="/store">
-            <li className="nav-item">
-              <a className="nav-item nav-link">Store</a>
-            </li>
-          </NavLink>
-          ) :
-          null
-        }
-      </ul>
+                  <NavLink to="/games">
+                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Games</a>
+                  </NavLink>
 
-      <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div className="navbar-nav ml-auto">
+                  <NavLink to="/game">
+                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">BallGame</a>
+                  </NavLink>
 
-          <NavLink to="/ranking">
-            <li className="nav-item">
-              <a className="nav-item nav-link">Ranking</a>
-            </li>
-          </NavLink>
+                  <NavLink to="/ranking">
+                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Ranking</a>
+                  </NavLink>
+
+                  
+
+                  {isLoggedIn ?
+                    (
+                      <NavLink to="/gameStore">
+                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Game Store</a>
+                      </NavLink>
+                    )
+                    : null
+                  }
+
+                  {isLoggedIn ?
+                    (
+                      <NavLink to="/upload">
+                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Upload</a>
+                      </NavLink>
+                    )
+                    : null
+                  }
+
+                </div>
+              </div>
+            </div>
+            {isLoggedIn ?
+              (<div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <div class="relative ml-3">
+                  <div>
+                    <button type="button" class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true" data-dropdown-toggle="dropdown">
+                      <span class="sr-only">Open user menu</span>
+                      <img class="h-12 w-12 rounded-full" src="pf3.PNG" alt=""></img>
+                    </button> 
+                  </div>  
+
+                </div>
+              </div>)
+              : <div className="navbar-nav ml-auto">
+                <NavLink to="/signin">
+                  <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Sign In</a>
+                </NavLink>
+
+                <NavLink to="/login">
+                  <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Log In</a>
+                </NavLink>
+              </div>
+            }
+          </div>
         </div>
-        {isLoggedIn ?
-          <div className="navbar-nav ml-auto">
-            <NavLink to="/userInfo">
-              <a className="nav-item nav-link">Profile</a>
-            </NavLink>
-            <NavLink to="/">
-              <a className="nav-item nav-link" onClick={() => logout()}>Log Out</a>
-            </NavLink>
-          </div> :
-          <div className="navbar-nav ml-auto">
-            <NavLink to="/signin">
-              <a className="nav-item nav-link">Sign In</a>
-            </NavLink>
-
-            <NavLink to="/login">
-              <a className="nav-item nav-link">Log In</a>
-            </NavLink>
-          </div>}
-      </div>
-    </nav >
+      </nav>
+      
   )
 }
 

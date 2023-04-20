@@ -4,20 +4,8 @@ import './index.css';
 
 import reportWebVitals from './reportWebVitals';
 
-import Navbar from './components/navbar.js'
-import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
-import Games from './pages/games'
-// import Game from '../components/game'
-import Home from './pages/home'
-import UserInfo from './pages/userInfo.js';
-import Historial from './pages/historial.js';
-import Upload from './pages/upload.js';
-import Signin from './pages/signin'
-import LoginForm from './pages/login.js'
-import Game from './pages/game.js'
-import GetRanking from './pages/ranking.js'
-import Store from './pages/storeItems.js'
-import socketIO from "socket.io-client";
+import AsideNav from './components/asideNav.js';
+import {HashRouter} from "react-router-dom";
 
 import './App.css';
 
@@ -26,36 +14,12 @@ const routes = {
   wsNode: "http://localhost:7878",
 };
 
-var socket = socketIO(routes.wsNode, {
-  withCredentials: true,
-  cors: {
-    origin: "*",
-    credentials: true,
-  },
-  path: "/node/",
-  transports: ["websocket"],
-});
-
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <div>
       <HashRouter>
-        <Navbar></Navbar>
-        {console.log("socket 1", socket)}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/games" element={<Games />} />
-          <Route path="/upload" element={<Upload socket={socket} />} />
-          <Route path="/userInfo" element={<UserInfo />} />
-          <Route path="/historial" element={<Historial />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/ranking" element={<GetRanking />} />
-          <Route path="/store" element={<Store />} />
-        </Routes>
+        <AsideNav></AsideNav>
       </HashRouter>
     </div>
   </React.StrictMode>

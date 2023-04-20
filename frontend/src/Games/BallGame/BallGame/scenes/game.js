@@ -4,6 +4,7 @@ import { Platform } from '../components/Platform.js';
 import { Ball } from '../components/Ball.js';
 import Phaser from "phaser";
 
+
 // import { start } from '../../../script.js';
 import { endGame } from '../../../../components/score.js';
 
@@ -18,7 +19,6 @@ export class Game extends Phaser.Scene {
       super({ key: 'game' });
     }
 
-    
     init() {
       this.phaseConstructor = new PhaseConstructor(this);
       this.score = 0;
@@ -31,7 +31,6 @@ export class Game extends Phaser.Scene {
 
     preload() {
       
-
       this.load.image('background', './images/background.png');
       this.load.image('gameover', './images/gameover.png');
       this.load.image('platform', '../images/platform.png');

@@ -7,6 +7,22 @@ import routes from "../index.js";
 import { useState } from 'react'
 import { $CombinedState } from 'redux';
 
+//import Phaser from "phaser";
+//var imports = "import Phaser from 'phaser'";
+//eval (imports)
+
+var Phaser = null;
+import('phaser')
+  .then((module) => {
+    // use the imported module here
+    Phaser= module;
+    console.log(Phaser);
+  })
+  .catch((error) => {
+    // handle any errors that occur while loading the module
+  });
+
+console.log(Phaser);
 
 async function aaa() {
     
@@ -16,15 +32,16 @@ function load() {
 
     const scriptUrl = routes.wsNode + '/hola.txt';
 
-fetch('http://localhost:7878/hola.txt', {
+fetch('http://localhost:7878/BallGame/initGame.js', {
     method: 'GET',
     mode: 'same-origin',
 })
-  .then(response => {console.log(response); 
-    response.text()})
+  .then(response => response.text())
   .then(scriptText => {
       console.log(scriptText);
-    eval(scriptText);
+    //eval(scriptText);
+    const scriptFn = new Function(scriptText);
+    scriptFn();
     console.log('Script ejecutado exitosamente.');
   })
   .catch(error => console.error('Error al recuperar y ejecutar el script:', error));
@@ -61,7 +78,7 @@ fetch('http://localhost:7878/hola.txt', {
 
 //eval (str);
 
-function Game() {
+function GamePrueba() {
     // useEffect(() => {
     //     importModule();
     // });
@@ -97,7 +114,7 @@ function Game() {
     )
 }
 
-export default Game;
+export default GamePrueba;
 
 
 

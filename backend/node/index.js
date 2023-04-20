@@ -1,14 +1,29 @@
-const express = require('express');
-const unzipper = require('unzipper');
-const path = require('path');
+// const express = require('express');
+// const unzipper = require('unzipper');
+// const path = require('path');
 
-var fs = require('fs');
-const cors = require("cors");
+// var fs = require('fs');
+// const cors = require("cors");
 
 
-const multer = require('multer');
-const bodyParser = require('body-parser');
+// const multer = require('multer');
+// const bodyParser = require('body-parser');
+//const http = require("http");
 
+import  express from "express";
+import unzipper from "unzipper";
+
+import path from "path";
+
+import cors from "cors";
+
+import multer from "multer";
+
+import bodyParser from "body-parser";
+
+import http from "http";
+
+import { Server } from "socket.io";
 
 
 const app = express();
@@ -16,12 +31,11 @@ const app = express();
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
 
-app.get('/', (req, res) => {  
-  res.sendFile(__dirname + '/public/build/index.html');
-});
+
 const upload = multer({ dest: 'extractedFiles/' }); // Establece el directorio de destino para los archivos cargados
 
-const http = require("http");
+
+
 const server = http.createServer(app);
 
 app.use(express.static('public'));
@@ -30,13 +44,22 @@ app.use(express.static('public'));
 const PORT = 7878;
 const host = "0.0.0.0";
 
-const socketIO = require("socket.io")(server, {
-  cors: {
-    origin: true,
-    credentials: true,
-  },
-  path: "/node/",
-});
+
+// const socketIO = require("socket.io")(server, {
+//   cors: {
+//     origin: true,
+//     credentials: true,
+//   },
+//   path: "/node/",
+// });
+
+const socketIO = new Server(server, {
+    cors: {
+      origin: true,
+      credentials: true,
+    },
+    path: "/node/",
+  });
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')

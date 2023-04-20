@@ -3,16 +3,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { actions } from './store';
 import Navbar from './navbar.js'
 import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
-import Games from './games'
+import Games from '../pages/games'
 // import Game from '../components/game'
-import Home from './home'
-import Profile from './profile.js';
-import Upload from './upload.js';
-import Signin from './signin'
-import LoginForm from './login.js'
-import Game from './game.js'
-import GetRanking from './ranking.js'
-import GetGameStore from './gameStore.js'
+import Home from '../pages/home'
+import Profile from '../pages/userInfo.js';
+import Upload from '../pages/upload.js';
+import Signin from '../pages/signin'
+import LoginForm from '../pages/login.js'
+import Game from '../pages/game.js'
+import GetRanking from '../pages/ranking.js'
+import GetGameStore from '../pages/gameStore.js'
 import socketIO from "socket.io-client";
 
 function AsideNav() {

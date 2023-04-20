@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Store;
+use App\Models\User_x_items;
 
 class StoreController extends Controller
 {
@@ -26,6 +27,15 @@ class StoreController extends Controller
 
     public function buyItems(Request $request)
     {
-        
+
+    }
+
+    public function userItems(Request $request)
+    {
+        $items = new User_x_items;
+        $items->userId = $request->userId;
+        $items->itemId = $request->itemId;
+
+        $items->save();
     }
 }

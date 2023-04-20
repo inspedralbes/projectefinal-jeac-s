@@ -34,3 +34,5 @@ Route::get('/showPlayedGame', [PlayedGameController::class, 'showPlayedGame']);
 Route::post('/createStoreItem', [StoreController::class, 'createStoreItem']);
 
 Route::get('/getStoreItems', [StoreController::class, 'getStoreItems']);
+
+Route::post('/userItems', [StoreController::class, 'userItems']);

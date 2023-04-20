@@ -1,7 +1,5 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { store, actions } from './store'; // import the Redux store
+import { useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Form, Button, Container, NavLink, Image } from 'react-bootstrap';
 import routes from '../index.js';
 
 const Tienda = () => {
@@ -31,16 +29,35 @@ const Tienda = () => {
     fetchStoreItems();
   }, []);
 
+  async function prova() {
+    if (isLoggedIn) {
+      try {
+        const response = await fetch(routes.fetchLaravel + `/api/showProfile`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
   return (
     <div>
-      {isLoggedIn ?      
+      {isLoggedIn ?
         <div>
           {storeItems.map((item, id) => (
             <div key={id}>
-                <h2>Item: {item.name}</h2>
-                <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
-                <p>Description: {item.description}</p>
-                <p>Price: {item.price} Jeacstars</p>
+              <h2>Item: {item.name}</h2>
+              <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
+              <p>Description: {item.description}</p>
+              <p>Price: {item.price} Jeacstars</p>
+              <button onClick={prova}>Buy</button>
             </div>
           ))}
         </div> :

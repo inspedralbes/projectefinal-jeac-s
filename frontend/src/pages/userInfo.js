@@ -1,11 +1,12 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import LoginForm from './provider_login';
-import { store } from './store';
+import  UserInfo  from '../components/provider_userInfo';
+import { store } from '../components/store';
+
 
 const App = () => (
   <Provider store={store}>
-    <LoginForm />
+    <UserInfo />
   </Provider>
 );
 

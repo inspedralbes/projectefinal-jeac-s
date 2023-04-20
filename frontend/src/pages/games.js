@@ -9,7 +9,7 @@ import Card from 'react-bootstrap/Card';
 import Button  from 'react-bootstrap/Button';
 import { NavLink } from'react-router-dom';
 
-import GameCard from './gameCard.js';
+import GameCard from '../components/gameCard.js';
 
 import routes from "../index.js";
 

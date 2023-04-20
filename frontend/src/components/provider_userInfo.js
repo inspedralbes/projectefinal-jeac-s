@@ -14,7 +14,7 @@ const UserInfo = () => {
   const dispatch = useDispatch();
   const [showSuccessMessagePassword, setShowSuccessMessagePassword] = useState(false);
   const [showSuccessMessageName, setShowSuccessMessageName] = useState(false);
-  
+
   useEffect(() => {
     async function fetchUsers() {
       if (isLoggedIn) {
@@ -78,7 +78,7 @@ const UserInfo = () => {
 
   let changeViewName = "userinfo";
 
-  function changeView(name){
+  function changeView(name) {
     changeViewName = name;
     console.log(name);
   }
@@ -86,7 +86,7 @@ const UserInfo = () => {
   return (
     <div class="flex h-screen justify-center items-center bg-violet-400">
       {isLoggedIn ?
-      <div>
+        <div>
           <nav class="backdrop-filter backdrop-blur-l bg-opacity-30 border-b border-gray-200">
             <div class="flex space-x-4">
 
@@ -99,47 +99,47 @@ const UserInfo = () => {
               <a onClick={() => changeView("logros")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logros</a>
             </div>
           </nav>
-              <br></br>
-                  <div className="mb-3 mt-md-4">
-                    <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
-                      User Info
-                    </h2>
-                    <div className="mb-3 mt-md-4">
-                      <div class="text-center">
-                        <p className="ranking_font_size">Name: <h4>{userInfo.name}</h4></p>
-                        <p className="ranking_font_size">Email: <h4>{userInfo.email}</h4></p>
-                        <p className="ranking_font_size">Score: <h4>{userInfo.totalScore}</h4></p>
-                        <p className="ranking_font_size">Jeacstars: <h4>{userInfo.jeacstars}</h4></p>
+          <br></br>
+          <div className="mb-3 mt-md-4">
+            <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
+              User Info
+            </h2>
+            <div className="mb-3 mt-md-4">
+              <div class="text-center">
+                <p className="ranking_font_size">Name: <h4>{userInfo.name}</h4></p>
+                <p className="ranking_font_size">Email: <h4>{userInfo.email}</h4></p>
+                <p className="ranking_font_size">Score: <h4>{userInfo.totalScore}</h4></p>
+                <p className="ranking_font_size">Jeacstars: <h4>{userInfo.jeacstars}</h4></p>
 
-                      </div>
+              </div>
 
-                      <div>
-                        <Form onSubmit={changeName}>
-                          <Form.Group controlId="formBasicName"><br></br>
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control type="name" placeholder="Enter name" value={name} onChange={(event) => setName(event.target.value)}></Form.Control>
-                          </Form.Group>
-                          <Button variant="primary" type="submit" >Change Name
-                          </Button>
-                          <div className="texto_verde">{showSuccessMessageName && <p>Name change successful!</p>}</div>
-                        </Form>
-                      </div>
+              <div>
+                <Form onSubmit={changeName}>
+                  <Form.Group controlId="formBasicName"><br></br>
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control type="name" placeholder="Enter name" value={name} onChange={(event) => setName(event.target.value)}></Form.Control>
+                  </Form.Group>
+                  <Button variant="primary" type="submit" >Change Name
+                  </Button>
+                  <div className="texto_verde">{showSuccessMessageName && <p>Name change successful!</p>}</div>
+                </Form>
+              </div>
 
-                      <div>
+              <div>
 
-                        <Form onSubmit={changePassword}><br></br>
-                          <Form.Group controlId="formBasicPassword">
-                            <Form.Label>Password (Must have 1 capital letter, 1 lowercase letter, 1 number and a minimum length of 8)</Form.Label>
-                            <Form.Control type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
-                          </Form.Group>
-                          <Button variant="primary" type="submit" >Change Password
-                          </Button>
-                          <div className="texto_verde">{showSuccessMessagePassword && <p>Password change successful!</p>}</div>
-                        </Form>
-                      </div>
-                    </div>
+                <Form onSubmit={changePassword}><br></br>
+                  <Form.Group controlId="formBasicPassword">
+                    <Form.Label>Password (Must have 1 capital letter, 1 lowercase letter, 1 number and a minimum length of 8)</Form.Label>
+                    <Form.Control type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
+                  </Form.Group>
+                  <Button variant="primary" type="submit" >Change Password
+                  </Button>
+                  <div className="texto_verde">{showSuccessMessagePassword && <p>Password change successful!</p>}</div>
+                </Form>
+              </div>
+            </div>
 
-                  </div>
+          </div>
         </div>
         :
         <div >

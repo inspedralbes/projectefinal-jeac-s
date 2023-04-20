@@ -18,24 +18,25 @@ class StoreController extends Controller
         $store->image_url = $request->image_url;
         $store->save();
     }
+    
     public function getStoreItems()
     {
         $storeItems = Store::all();
-
         return $storeItems;
     }
 
     public function buyItems(Request $request)
-    {
-
-    }
-
-    public function userItems(Request $request)
     {
         $items = new User_x_items;
         $items->userId = $request->userId;
         $items->itemId = $request->itemId;
 
         $items->save();
+    }
+
+    public function getBoughtItems()
+    {
+        $items = User_x_items::all();
+        return $items;
     }
 }

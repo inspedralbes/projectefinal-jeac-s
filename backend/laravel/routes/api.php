@@ -35,4 +35,6 @@ Route::post('/createStoreItem', [StoreController::class, 'createStoreItem']);
 
 Route::get('/getStoreItems', [StoreController::class, 'getStoreItems']);
 
-Route::post('/userItems', [StoreController::class, 'userItems']);
+Route::post('/buyItems', [StoreController::class, 'buyItems']);
+
+Route::get('/getBoughtItems', [StoreController::class, 'getBoughtItems']);

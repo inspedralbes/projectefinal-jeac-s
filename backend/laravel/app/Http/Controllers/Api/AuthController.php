@@ -26,6 +26,9 @@ class AuthController extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->totalScore = 0;
+        $user->jeacstars = 0;
+        $user->avatar = null;
+
         try {
             if ($user->save()) {
                 $message = "Registered correctly.";

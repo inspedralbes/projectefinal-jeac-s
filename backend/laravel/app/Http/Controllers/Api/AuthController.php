@@ -63,6 +63,7 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         $user->totalScore += $request->totalScore;
+        $user->jeacstars += $request->totalScore * 0.5;
         $user->save();
         return $user;
     }

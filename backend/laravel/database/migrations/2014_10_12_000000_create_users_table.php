@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->bigInteger('totalScore')->nullable();
+            $table->bigInteger('jeacstars')->default(0);
             $table->timestamps();
 
         });

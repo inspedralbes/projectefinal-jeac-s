@@ -106,7 +106,7 @@ function GamePrueba() {
     return (
         <div className="game"><br></br>
             <div id="game">
-                <canvas id="canvas" className="canvasGame"></canvas>
+                <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
             </div>
             <button onClick={load}>Play</button>
             <button onClick={refreshPage}>Refresh</button>

@@ -8,6 +8,53 @@
 // import { endGame } from '../../../../components/score.js';
 
 
+var LiveCounter = null;
+import('../../../BallGame/components/Live-counter.js')
+  .then((module) => {
+    // use the imported module here
+    LiveCounter= module;
+    console.log(LiveCounter);
+  })
+  .catch((error) => {
+    console.log("Error en Game import", error);
+  });
+
+  var PhaseConstructor = null;
+import('../../../BallGame/components/Levels/Phase-Constructor.js')
+  .then((module) => {
+    // use the imported module here
+    PhaseConstructor= module;
+    console.log(PhaseConstructor);
+  })
+  .catch((error) => {
+    console.log("Error en Game import", error);
+  });
+
+  var Platform = null;
+import('../../../BallGame/components/Platform.js')
+  .then((module) => {
+    // use the imported module here
+    Platform= module;
+    console.log(Platform);
+  })
+  .catch((error) => {
+    console.log("Error en Game import", error);
+  });
+
+  var Ball = null;
+import('../../../BallGame/components/Ball.js')
+  .then((module) => {
+    // use the imported module here
+    Ball= module;
+    console.log(Ball);
+  })
+  .catch((error) => {
+    console.log("Error en Game import", error);
+  });
+
+ 
+
+
 
 const initialLives = 6;
 const initialSpeedX = -60;
@@ -20,11 +67,12 @@ export class Game extends Phaser.Scene {
 
     
     init() {
-      this.phaseConstructor = new PhaseConstructor(this);
+      console.log("Game ejecutandose");
+      this.phaseConstructor = new PhaseConstructor.PhaseConstructor(this);
       this.score = 0;
-      this.liveCounter = new LiveCounter(this, initialLives);
-      this.ball = new Ball(this);
-      this.platform = new Platform(this);
+      this.liveCounter = new LiveCounter.LiveCounter(this, initialLives);
+      this.ball = new Ball.Ball(this);
+      this.platform = new Platform.Platform(this);
       this.glueRecordVelocityX = initialSpeedX; 
 
     }

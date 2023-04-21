@@ -1,8 +1,63 @@
-import { Phase } from './Phase.js'
-import { Diamonds } from "../Diamonds.js";
-import { LivePower } from '../Powers/Live-Power.js';
-import { LargePlatformPower } from '../Powers/LargePlatform-Power.js';
-import { GluePower } from '../Powers/GluePower.js';
+// import { Phase } from './Phase.js'
+// import { Diamonds } from "../Diamonds.js";
+// import { LivePower } from '../Powers/Live-Power.js';
+// import { LargePlatformPower } from '../Powers/LargePlatform-Power.js';
+// import { GluePower } from '../Powers/GluePower.js';
+
+var Phase = null;
+import('../../../BallGame/components/Levels/Phase.js')
+  .then((module) => {
+    // use the imported module here
+    Phase = module;
+    console.log(Phase);
+  })
+  .catch((error) => {
+    console.log("Error en Game import", error);
+  });
+
+  var Diamonds = null;
+  import('../../../BallGame/components/Diamonds.js')
+    .then((module) => {
+      // use the imported module here
+      Diamonds = module;
+      console.log(Diamonds);
+    })
+    .catch((error) => {
+      console.log("Error en Game import", error);
+    });
+
+var LivePower = null;
+import('../../../BallGame/components/Powers/Live-Power.js')
+  .then((module) => {
+    // use the imported module here
+    LivePower = module;
+    console.log(LivePower);
+  })
+  .catch((error) => {
+    console.log("Error en Game import", error);
+  });
+
+var LargePlatformPower = null;
+import('../Powers/LargePlatform-Power.js')
+  .then((module) => {
+    // use the imported module here
+    LargePlatformPower = module;
+    console.log(LargePlatformPower);
+  })
+  .catch((error) => {
+    console.log("Error en Game import", error);
+  });
+
+var GluePower = null;
+import('../../../BallGame/components/Powers/GluePower.js')
+  .then((module) => {
+    // use the imported module here
+    GluePower = module;
+    console.log(GluePower);
+  })
+  .catch((error) => {
+    console.log("Error en Game import", error);
+  });
 
 export class Phase4 extends Phase {
 

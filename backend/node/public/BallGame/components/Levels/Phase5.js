@@ -1,4 +1,14 @@
-import { Phase } from './Phase.js'
+// import { Phase } from './Phase.js'
+var Phase = null;
+import('../../../BallGame/components/Levels/Phase.js')
+  .then((module) => {
+    // use the imported module here
+    Phase = module;
+    console.log(Phase);
+  })
+  .catch((error) => {
+    console.log("Error en Game import", error);
+  });
 
 export class Phase5 extends Phase {
 

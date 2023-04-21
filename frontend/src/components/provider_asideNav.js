@@ -12,7 +12,7 @@ import Signin from '../pages/signin'
 import LoginForm from '../pages/login.js'
 import Game from '../pages/game.js'
 import GetRanking from '../pages/ranking.js'
-import GetGameStore from '../pages/storeItems.js'
+import GetGameStore from '../pages/storeItems'
 import socketIO from "socket.io-client";
 
 function AsideNav() {
@@ -49,7 +49,7 @@ function AsideNav() {
 
                 <NavLink to="/profile">
                     <div class="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                        <img class="h-10 w-12 rounded-full" src="pf3.PNG" alt=""></img>
                     </div>
                 </NavLink>
 
@@ -89,7 +89,7 @@ function AsideNav() {
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/game" element={<Game />} />
                     <Route path="/ranking" element={<GetRanking />} />
-                    <Route path="/store" element={<GetGameStore />} />
+                    <Route path="/gameStore" element={<GetGameStore />} />
                 </Routes>
             </div>
 

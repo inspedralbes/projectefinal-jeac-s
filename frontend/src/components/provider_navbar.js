@@ -31,19 +31,9 @@ function Navbar() {
 
                   <a href="#" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Home</a>
 
-                  <NavLink to="/games">
-                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Games</a>
-                  </NavLink>
-
                   <NavLink to="/game">
                     <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">BallGame</a>
-                  </NavLink>
-
-                  <NavLink to="/ranking">
-                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Ranking</a>
-                  </NavLink>
-
-                  
+                  </NavLink>                  
 
                   {isLoggedIn ?
                     (
@@ -72,7 +62,7 @@ function Navbar() {
                   <div>
                     <button type="button" class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true" data-dropdown-toggle="dropdown">
                       <span class="sr-only">Open user menu</span>
-                      <img class="h-12 w-12 rounded-full" src="pf3.PNG" alt=""></img>
+                      
                     </button> 
                   </div>  
 

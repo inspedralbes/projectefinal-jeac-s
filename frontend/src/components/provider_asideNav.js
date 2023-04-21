@@ -12,7 +12,7 @@ import Signin from '../pages/signin'
 import LoginForm from '../pages/login.js'
 import Game from '../pages/game.js'
 import GetRanking from '../pages/ranking.js'
-import GetGameStore from '../pages/storeItems'
+import GetGameStore from '../pages/storeItems.js'
 import socketIO from "socket.io-client";
 
 function AsideNav() {
@@ -47,7 +47,7 @@ function AsideNav() {
 
             <aside class="h-full w-16 flex flex-col space-y-10 items-center justify-center relative bg-gray-800 text-white">
 
-                <NavLink to="/profile">
+                 <NavLink to="/profile">
                     <div class="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
                         <img class="h-10 w-12 rounded-full" src="pf3.PNG" alt=""></img>
                     </div>
@@ -89,7 +89,7 @@ function AsideNav() {
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/game" element={<Game />} />
                     <Route path="/ranking" element={<GetRanking />} />
-                    <Route path="/gameStore" element={<GetGameStore />} />
+                    <Route path="/store" element={<GetGameStore />} />
                 </Routes>
             </div>
 

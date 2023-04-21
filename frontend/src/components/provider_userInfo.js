@@ -173,7 +173,7 @@ const UserInfo = () => {
                   <h2>Item: {item.name}</h2>
                   <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
                   <p>Description: {item.description}</p>
-                  <p>Price: {item.price} Jeacstars</p>
+                  <p>Price: {item.price} <img class = "w-10 h-10" src = "JeacstarNF.png"></img></p> 
                   <button id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button>
                 </div>
               ))
@@ -187,7 +187,7 @@ const UserInfo = () => {
                 <p className="ranking_font_size">Name: <h4>{userInfo.name}</h4></p>
                 <p className="ranking_font_size">Email: <h4>{userInfo.email}</h4></p>
                 <p className="ranking_font_size">Score: <h4>{userInfo.totalScore}</h4></p>
-                <p className="ranking_font_size">Jeacstars: <h4>{userInfo.jeacstars}</h4></p>
+                <p className="ranking_font_size">Jeacstars: <h4>{userInfo.jeacstars}</h4><img class = "w-10 h-10" src = "JeacstarNF.png"></img></p>
               </div>
 
               <div>

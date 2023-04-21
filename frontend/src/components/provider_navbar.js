@@ -23,8 +23,8 @@ function Navbar() {
             </div>
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
               <div class="flex flex-shrink-0 items-center">
-                <img class="block h-8 w-auto lg:hidden" src="jeacsLogo.PNG" alt="Your Company"></img>
-                <img class="hidden h-8 w-auto lg:block" src="jeacsLogo.PNG" alt="Your Company"></img>
+                <img class="block h-8 w-auto lg:hidden" src="LogoBuenoSNB.png" alt="Your Company"></img>
+                <img class="hidden h-8 w-auto lg:block" src="LogoBuenoS.png" alt="Your Company"></img>
               </div>
               <div class="hidden sm:ml-6 sm:block">
                 <div class="flex space-x-4">

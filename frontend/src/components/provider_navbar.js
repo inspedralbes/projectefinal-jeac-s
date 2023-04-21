@@ -22,7 +22,8 @@ function Navbar() {
               
             </div>
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-              <div class="flex flex-shrink-0 items-center">
+              <div class="flex flex-shrink-0 items-center">+
+               
                 <img class="block h-8 w-auto lg:hidden" src="LogoLargo.png" alt="Your Company"></img>
                 <img class="hidden h-8 w-auto lg:block" src="LogoLargo.png" alt="Your Company"></img>
               </div>

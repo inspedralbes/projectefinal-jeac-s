@@ -173,7 +173,7 @@ const UserInfo = () => {
                   <h2>Item: {item.name}</h2>
                   <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
                   <p>Description: {item.description}</p>
-                  <p>Price: {item.price} <img class = "w-10 h-10" src = "JeacstarNF.png"></img></p> 
+                  <p>Price: {item.price * 0.5} <img class = "w-10 h-10" src = "JeacstarNF.png"></img></p> 
                   <button id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button>
                 </div>
               ))

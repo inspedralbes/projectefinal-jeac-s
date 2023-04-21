@@ -73,7 +73,7 @@ class StoreController extends Controller
         }
 
         // Sumar el precio del item al dinero total del usuario
-        $user->jeacstars += $item->price;
+        $user->jeacstars += $item->price * 0.5;
         $user->save();
 
         // Eliminar la información de la compra

@@ -18,11 +18,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->bigInteger('totalScore')->nullable();
+            $table->bigInteger('totalScore')->default(0);
             $table->bigInteger('jeacstars')->default(0);
-            $table->string('avatar')->nullable();
-            $table->timestamps();
+            $table->bigInteger('avatar')->unsigned();
 
+            $table->foreign('avatar')->references('id')->on('stores')->onDelete('cascade');
+
+            $table->timestamps();            
         });
     }
 

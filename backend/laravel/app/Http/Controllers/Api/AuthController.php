@@ -25,7 +25,6 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->avatar = 0;
 
         try {
             if ($user->save()) {

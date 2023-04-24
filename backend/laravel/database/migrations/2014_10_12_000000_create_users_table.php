@@ -20,9 +20,6 @@ return new class extends Migration
             $table->string('password');
             $table->bigInteger('totalScore')->default(0);
             $table->bigInteger('jeacstars')->default(0);
-            $table->bigInteger('avatar')->unsigned();
-
-            $table->foreign('avatar')->references('id')->on('stores')->onDelete('cascade');
 
             $table->timestamps();            
         });

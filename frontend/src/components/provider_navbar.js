@@ -3,16 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { actions } from './store';
 
 function Navbar() {
-
-  const data = useSelector(state => state.data);
+  
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
-  const dispatch = useDispatch();
-
-  function logout() {
-    dispatch(actions.logout());
-    localStorage.setItem('access_token', "0");
-  }
-
 
   return (
       <nav class="bg-gray-800">

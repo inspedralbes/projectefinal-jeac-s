@@ -135,7 +135,7 @@ const UserInfo = () => {
           },
           body: JSON.stringify({ userId, itemId }),
         });
-        const b = await a.json();
+        console.log(a);
       } catch (error) {
         console.error(error);
       }

@@ -25,13 +25,13 @@ const reducer = (state = initialState, action) => {
     case 'LOGIN':
       return { ...state, isLoggedIn: true };
     case 'LOGOUT':
-      return { ...initialState, isLoggedIn: false };
+      return { ...state, isLoggedIn: false, data: {} };
     case 'SAVE_DATA':
       return { ...state, data: action.payload };
     case 'GET_STORE_ITEMS':
       return { ...state, storeItems: action.payload };
     case 'UPDATE_BOUGHT_ITEMS':
-      return { ...state, boughtItems: action.payload };
+      return { ...state, boughtItems: action.payload }; 
     default:
       return state;
   }

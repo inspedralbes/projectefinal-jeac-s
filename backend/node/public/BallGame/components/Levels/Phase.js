@@ -1,5 +1,6 @@
 export class Phase {
-    constructor(scene) {
+  constructor(scene) {
+      console.trace(scene);
       this.relatedScene = scene;
       this.powers = [];
 

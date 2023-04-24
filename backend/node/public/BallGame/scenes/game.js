@@ -6,68 +6,112 @@
 
 // // import { start } from '../../../script.js';
 // import { endGame } from '../../../../components/score.js';
+let LiveCounter = null;
+let PhaseConstructor = null;
+let Platform = null;
+
+let Ball = null;
+
+export function imports() {
+
+  Promise.all([
+    import('../../../BallGame/components/Live-counter.js'),
+    import('../../../BallGame/components/Levels/Phase-Constructor.js'),
+    import('../../../BallGame/components/Platform.js'),
+    import('../../../BallGame/components/Ball.js'),
+  ])
+    .then(([liveCounter, phaseConstructor, platform, ball]) => {
+      // Save the imported modules to variables
+      LiveCounter = liveCounter;
+      PhaseConstructor = phaseConstructor;
+      Platform = platform;
+      Ball = ball;
+      console.trace("Import Game");
+    
+    })
+    .catch((error) => {
+      console.log('Error importing modules game.js:', error);
+    });
+
+}
 
 
-var LiveCounter = null;
-import('../../../BallGame/components/Live-counter.js')
-  .then((module) => {
-    // use the imported module here
-    LiveCounter= module;
-    console.log(LiveCounter);
-  })
-  .catch((error) => {
-    console.log("Error en Game import", error);
-  });
+// var LiveCounter = null;
+// import('../../../BallGame/components/Live-counter.js')
+//   .then((module) => {
+//     // use the imported module here
+//     LiveCounter= module;
+//     console.log(LiveCounter);
+//   })
+//   .catch((error) => {
+//     console.log("Error en Game import", error);
+//   });
 
-  var PhaseConstructor = null;
-import('../../../BallGame/components/Levels/Phase-Constructor.js')
-  .then((module) => {
-    // use the imported module here
-    PhaseConstructor= module;
-    console.log(PhaseConstructor);
-  })
-  .catch((error) => {
-    console.log("Error en Game import", error);
-  });
+//   var PhaseConstructor = null;
+// import('../../../BallGame/components/Levels/Phase-Constructor.js')
+//   .then((module) => {
+//     // use the imported module here
+//     PhaseConstructor= module;
+//     console.log(PhaseConstructor);
+//   })
+//   .catch((error) => {
+//     console.log("Error en Game import", error);
+//   });
 
-  var Platform = null;
-import('../../../BallGame/components/Platform.js')
-  .then((module) => {
-    // use the imported module here
-    Platform= module;
-    console.log(Platform);
-  })
-  .catch((error) => {
-    console.log("Error en Game import", error);
-  });
+//   var Platform = null;
+// import('../../../BallGame/components/Platform.js')
+//   .then((module) => {
+//     // use the imported module here
+//     Platform= module;
+//     console.log(Platform);
+//   })
+//   .catch((error) => {
+//     console.log("Error en Game import", error);
+//   });
 
-  var Ball = null;
-import('../../../BallGame/components/Ball.js')
-  .then((module) => {
-    // use the imported module here
-    Ball= module;
-    console.log(Ball);
-  })
-  .catch((error) => {
-    console.log("Error en Game import", error);
-  });
+//   var Ball = null;
+// import('../../../BallGame/components/Ball.js')
+//   .then((module) => {
+//     // use the imported module here
+//     Ball= module;
+//     console.log(Ball);
+//   })
+//   .catch((error) => {
+//     console.log("Error en Game import", error);
+//   });
 
  
 
+  // async function init2 () {
+  //   await imports();
+  // }
 
+  // await init2();
 
 const initialLives = 6;
 const initialSpeedX = -60;
 
 export class Game extends Phaser.Scene {
 
-    constructor() {
-      super({ key: 'game' });
-    }
-
-    
+  
+  constructor() {
+    super({ key: 'game' });
+  }
+  
+  // async Doimports() {
+  //   await imports();
+  // }
+  
+  
     init() {
-      console.log("Game ejecutandose");
+      //this.Doimports();
+      console.log("Game ejecutandoseAAAAAAAAAA");
+      console.log("Game Ball", Ball);
+      console.log("Game PhaseConstructor", PhaseConstructor);
+      console.log("Game LiveCounter", LiveCounter);
+
+
+
       this.phaseConstructor = new PhaseConstructor.PhaseConstructor(this);
       this.score = 0;
       this.liveCounter = new LiveCounter.LiveCounter(this, initialLives);
@@ -80,28 +124,28 @@ export class Game extends Phaser.Scene {
     preload() {
       
 
-      this.load.image('background', './images/background.png');
-      this.load.image('gameover', './images/gameover.png');
-      this.load.image('platform', '../images/platform.png');
-      this.load.image('ball', '../images/ball.png');
-      this.load.image('bluebrick', '../images/brickBlue.png');
-      this.load.image('blackbrick', '../images/brickBlack.png');
-      this.load.image('greenbrick', '../images/brickGreen.png');
-      this.load.image('orangebrick', '../images/brickOrange.png');
-      this.load.image('greybrick', '../images/brickGrey.png');
-      this.load.image('whitebrick', '../images/brickWhite.png');
-      this.load.image('yellowbrick', '../images/brickYellow.png');
+      this.load.image('background', '../BallGame/images/background.png');
+      this.load.image('gameover', '../BallGame/images/gameover.png');
+      this.load.image('platform', '../BallGame/images/platform.png');
+      this.load.image('ball', '../BallGame/images/ball.png');
+      this.load.image('bluebrick', '../BallGame/images/brickBlue.png');
+      this.load.image('blackbrick', '../BallGame/images/brickBlack.png');
+      this.load.image('greenbrick', '../BallGame/images/brickGreen.png');
+      this.load.image('orangebrick', '../BallGame/images/brickOrange.png');
+      this.load.image('greybrick', '../BallGame/images/brickGrey.png');
+      this.load.image('whitebrick', '../BallGame/images/brickWhite.png');
+      this.load.image('yellowbrick', '../BallGame/images/brickYellow.png');
 
       this.load.spritesheet('bluediamond',
-      '../images/blue_diamond-sprites.png',
+      '../BallGame/images/blue_diamond-sprites.png',
       { frameWidth: 48, frameHeight: 48 }
     );
     this.load.spritesheet('reddiamond',
-      '../images/red_diamond-sprites.png',
+      '../BallGame/images/red_diamond-sprites.png',
       { frameWidth: 48, frameHeight: 48 }
     );
     this.load.spritesheet('greendiamond',
-      '../images/green_diamond-sprites.png',
+      '../BallGame/images/green_diamond-sprites.png',
       { frameWidth: 48, frameHeight: 48 }
     );
 
@@ -307,7 +351,7 @@ export class Game extends Phaser.Scene {
         // this.winSample.play();
         this.scene.start('congratulations');
       }
-      endGame(this.score);
+      //endGame(this.score);
     }
 
     createAnimations() {

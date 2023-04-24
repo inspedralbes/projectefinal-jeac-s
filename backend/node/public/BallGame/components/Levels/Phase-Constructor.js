@@ -34,6 +34,8 @@ async function imports() {
        Phase5 = phase5;
        Phase6 = phase6;
        console.log("Phase6", Phase6.Phase6);
+
+       console.log("Phase1", Phase1);
   
     })
     .catch((error) => {
@@ -108,18 +110,26 @@ async function imports() {
 //     console.log("Error en Game import", error);
 //   });
 
+async function init () {
+  await imports();
+}
+
+await init();
+
 export class PhaseConstructor {
 
-  constructor(scene) {
-    this.init(scene);
-  }
+  // constructor(scene) {
+  //   this.init(scene);
+  // }
 
-  async init (scene) {
-    await imports();
+  constructor(scene) {
+    //await imports();
 
     this.relatedScene = scene;
     console.log( "this.relatedScene",  this.relatedScene);
-    console.log( "Phase6",  Phase6);
+    console.trace( "Phase6",  Phase6);
+    console.trace( "Phase1",  Phase1);
+
 
     this.phases = [
       Phase6.Phase6,
@@ -131,10 +141,9 @@ export class PhaseConstructor {
     ];
   }
 
-
   create() {
-    let CurrenPhaseClass = this.phases.pop();
     console.log(this.phases);
+    let CurrenPhaseClass = this.phases.pop();
     console.log("CurrenPhaseClass", CurrenPhaseClass);
     this.currentPhase = new CurrenPhaseClass(this.relatedScene);
     return this.currentPhase.create();

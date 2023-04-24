@@ -4,6 +4,7 @@ export class RestartButton {
     }
   
     preload() {
+        console.log(this.relatedScene);
         this.relatedScene.load.spritesheet('button', './images/restart.png', { frameWidth: 190, frameHeight: 49 });
     }
 

@@ -149,7 +149,7 @@ const UserInfo = () => {
   });
 
   return (
-    <div class="flex h-screen justify-center items-center bg-violet-400">
+    <div class="bg-retro-neo flex h-screen justify-center items-center ">
       {isLoggedIn ?
         <div>
           <nav class="backdrop-filter backdrop-blur-l bg-opacity-30 border-b border-gray-200">
@@ -217,7 +217,7 @@ const UserInfo = () => {
           </div>
         </div>
         :
-        <div >
+        <div>
           <div class="p-10 opacity-90 text-center bg-purple-300 rounded-lg">
             <p class="mb-6 text-lg font-normal text-fuchsia-950 lg:text-2xl sm:px-16 xl:px-48 dark:text-gray-400"> No estas registrado :( </p>
             <p class="mb-6 text-lg font-normal text-fuchsia-950 lg:text-2xl sm:px-16 xl:px-48 dark:text-gray-400">Si quieres customizar tu perfil INICIA SESION o REGISTRATE!</p>

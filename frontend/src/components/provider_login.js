@@ -43,7 +43,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div class="flex h-screen justify-center items-center min-h-screen bg-[url('../public/retroNeo.jpg')] bg-cover bg-no-repeat bg-center bg-fixed">
+    <div class="flex h-screen justify-center items-center min-h-screen bg-retro-neo bg-cover bg-no-repeat bg-center bg-fixed">
       {isLoggedIn ? <p className="ranking_font_size">You are already logged in</p> :
         <div class="container h-full w-2/4 p-10">
           <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">

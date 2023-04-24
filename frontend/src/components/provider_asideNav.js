@@ -57,7 +57,6 @@ function AsideNav() {
                         },
                     });
                     const storeItems = await response.json();
-                    console.log(storeItems);
                     setStoreItems(storeItems);
                 } catch (error) {
                     console.error(error);
@@ -77,7 +76,6 @@ function AsideNav() {
                         },
                     });
                     const boughtItems = await response.json();
-                    console.log(boughtItems);
                     setBoughtItems(boughtItems);
                 } catch (error) {
                     console.error(error);
@@ -94,7 +92,6 @@ function AsideNav() {
     });
     const images = result.length > 0 ? result : ['plata.png'];
 
-    console.log(images);
     return (
         <div class="h-screen w-full bg-white relative flex overflow-hidden">
             <aside class="h-full w-16 flex flex-col space-y-10 items-center justify-center relative bg-gray-800 text-white">

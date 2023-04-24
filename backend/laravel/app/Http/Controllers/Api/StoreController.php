@@ -49,7 +49,6 @@ class StoreController extends Controller
         $purchase = new User_x_items;
         $purchase->userId = $userId;
         $purchase->itemId = $itemId;
-        $purchase->avatar = true;
         $purchase->save();
 
         return response()->json(['message' => 'Item comprado exitosamente'], 200);
@@ -95,9 +94,14 @@ class StoreController extends Controller
 
     public function setAvatar(Request $request)
     {
+        $userId = $request->userId;
         $itemId = $request->itemId;
-        $item = User_x_items::find($itemId);
 
-        return $item;
+        $item = User_x_items::where('userId', $userId)->where('itemId', $itemId)->first();
+
+        User_x_items::where('itemId', '=', $item->itemId)->update(['avatar' => true]);
+        User_x_items::where('itemId', '<>', $item->itemId)->update(['avatar' => false]);
+
+        $item->save();
     }
 }

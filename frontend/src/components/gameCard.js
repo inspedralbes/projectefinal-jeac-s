@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import Button  from 'react-bootstrap/Button';
 import { NavLink } from'react-router-dom';
-import Game from './game';
+import Game from '../pages/game';
 import { lazy } from 'react';
 import { useState } from 'react'
 

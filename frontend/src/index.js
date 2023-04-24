@@ -1,13 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+
 import reportWebVitals from './reportWebVitals';
+
+import AsideNav from './components/asideNav.js';
+import {HashRouter} from "react-router-dom";
+
+import './App.css';
+
+const routes = {
+  fetchLaravel: "http://localhost:8000",
+  wsNode: "http://localhost:7878",
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <div>
+      <HashRouter>
+        <AsideNav></AsideNav>
+      </HashRouter>
+    </div>
   </React.StrictMode>
 );
 
@@ -15,3 +29,6 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+
+export default routes;

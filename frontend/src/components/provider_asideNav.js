@@ -49,8 +49,12 @@ function AsideNav() {
 
         if (isLoggedIn) {
             const matchingItems = boughtItems.filter(item => item.avatar && item.userId === userInfo.id);
-            const userAvatarItem = storeItems.find(item => item.id === matchingItems[0].itemId);
-            imgAvatar = userAvatarItem.image_url;
+            if (matchingItems.length > 0) {
+                const userAvatarItem = storeItems.find(item => item.id === matchingItems[0].itemId);
+                imgAvatar = userAvatarItem.image_url;
+            } else {
+                imgAvatar = "plata.png";
+            }
         }
         return imgAvatar
     }

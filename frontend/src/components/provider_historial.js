@@ -15,7 +15,7 @@ const Historial = () => {
     async function fetchPlayedGame() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(routes.fetchLaravel + `/api/showPlayedGame?userId=${userInfo.id}`, {
+          const response = await fetch( `${routes.fetchLaravel}/api/showPlayedGame?userId=${userInfo.id}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

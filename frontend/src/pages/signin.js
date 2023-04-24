@@ -18,7 +18,7 @@ function Signin() {
     setLoading(true);
 
     try {
-      const response = await fetch(routes.fetchLaravel + '/api/register', {
+      const response = await fetch(`${routes.fetchLaravel}/api/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

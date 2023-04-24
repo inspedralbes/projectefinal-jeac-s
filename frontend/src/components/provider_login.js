@@ -18,7 +18,7 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(routes.fetchLaravel + '/api/login', {
+      const response = await fetch(`${routes.fetchLaravel}/api/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

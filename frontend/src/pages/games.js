@@ -8,9 +8,7 @@ import Upload from './upload.js';
 import Card from 'react-bootstrap/Card';
 import Button  from 'react-bootstrap/Button';
 import { NavLink } from'react-router-dom';
-
 import GameCard from '../components/gameCard.js';
-
 import routes from "../index.js";
 
 class Games extends Component {
@@ -22,7 +20,7 @@ class Games extends Component {
 
     async componentDidMount() {
      try {
-        const response = await fetch(routes.fetchLaravel + '/api/gamesList', {
+        const response = await fetch(`${routes.fetchLaravel}/api/gamesList`, {
             method: 'GET',
         });
 

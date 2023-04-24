@@ -21,7 +21,7 @@ const UserInfo = () => {
     async function fetchUsers() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(routes.fetchLaravel + '/api/showProfile', {
+          const response = await fetch(`${routes.fetchLaravel}/api/showProfile`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ const UserInfo = () => {
     async function fetchStoreItems() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(routes.fetchLaravel + `/api/getStoreItems`, {
+          const response = await fetch(`${routes.fetchLaravel}/api/getStoreItems`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ const UserInfo = () => {
     async function fetchBoughtItems() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+          const response = await fetch(`${routes.fetchLaravel}/api/getBoughtItems`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ const UserInfo = () => {
   const changeName = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(routes.fetchLaravel + '/api/changeName', {
+      const response = await fetch(`${routes.fetchLaravel}/api/changeName`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ const UserInfo = () => {
   const changePassword = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/api/changePassword', {
+      const response = await fetch(`${routes.fetchLaravel}/api/changePassword`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ const UserInfo = () => {
   async function sellItem(userId, itemId) {
     if (isLoggedIn) {
       try {
-        const a = await fetch(routes.fetchLaravel + `/api/sellItems`, {
+        const a = await fetch(`${routes.fetchLaravel}/api/sellItems`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

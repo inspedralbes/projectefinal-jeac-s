@@ -15,7 +15,7 @@ const Tienda = () => {
     async function fetchStoreItems() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(routes.fetchLaravel + `/api/getStoreItems`, {
+          const response = await fetch(`${routes.fetchLaravel}/api/getStoreItems`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ const Tienda = () => {
     async function fetchBoughtItems() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+          const response = await fetch(`${routes.fetchLaravel}/api/getBoughtItems`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const Tienda = () => {
   async function buyItem(userId, itemId) {
     if (isLoggedIn) {
       try {
-        const a = await fetch(routes.fetchLaravel + `/api/buyItems`, {
+        const a = await fetch(`${routes.fetchLaravel}/api/buyItems`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

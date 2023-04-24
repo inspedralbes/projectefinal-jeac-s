@@ -9,7 +9,7 @@ function GetRanking() {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const response = await fetch(routes.fetchLaravel + '/api/getRanking', {
+        const response = await fetch(`${routes.fetchLaravel}/api/getRanking`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

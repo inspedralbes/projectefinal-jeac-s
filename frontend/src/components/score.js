@@ -11,7 +11,7 @@ async function endGame(totalScore) {
   if (token)
     if (token != "0") {
       try {
-        const response = await fetch(routes.fetchLaravel + '/api/saveScore', {
+        const response = await fetch(`${routes.fetchLaravel}/api/saveScore`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ async function endGame(totalScore) {
         store.dispatch(actions.saveData(data));
         const userId = data.id;
         
-        await fetch(routes.fetchLaravel + '/api/createPlayedGame', {
+        await fetch(`${routes.fetchLaravel}/api/createPlayedGame`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

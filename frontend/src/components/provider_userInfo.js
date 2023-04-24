@@ -137,12 +137,29 @@ const UserInfo = () => {
           body: JSON.stringify({ userId, itemId }),
         });
         const b = await a.json();
-        console.log(b);
       } catch (error) {
         console.error(error);
       }
     }
   }
+
+  // async function setAvatar(userId, itemId) {
+  //   if (isLoggedIn) {
+  //     try {
+  //       const a = await fetch(routes.fetchLaravel + `/api/setAvatar`, {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'Authorization': `Bearer ${token}`,
+  //         },
+  //         body: JSON.stringify({ userId, itemId }),
+  //       });
+  //       const b = await a.json();
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  // }
 
   const purchasedItems = storeItems.filter(item => {
     return boughtItems.some(boughtItem => boughtItem.userId === userInfo.id && boughtItem.itemId === item.id);
@@ -174,7 +191,9 @@ const UserInfo = () => {
                   <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
                   <p>Description: {item.description}</p>
                   <p>Price: {item.price * 0.5} <img class = "w-10 h-10" src = "JeacstarNF.png"></img></p> 
-                  <button id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button>
+                  <button id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button><br></br>
+                  {/* <button id={item.id} onClick={() => setAvatar(userInfo.id, item.id)}>Set as Avatar</button> */}
+
                 </div>
               ))
             }

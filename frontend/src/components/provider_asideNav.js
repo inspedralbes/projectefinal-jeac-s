@@ -21,9 +21,10 @@ import React, { useState, useEffect } from 'react';
 function AsideNav() {
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const dispatch = useDispatch();
-    const [storeItems, setStoreItems] = useState([]);
-    const [boughtItems, setBoughtItems] = useState([]);
-    const token = localStorage.getItem('access_token');
+    const storeItems = useSelector((state) => state.storeItems);
+    console.log(storeItems);
+    const boughtItems = useSelector((state) => state.boughtItems);
+    console.log(boughtItems);
 
     const routes = {
         fetchLaravel: "http://localhost:8000",
@@ -45,52 +46,10 @@ function AsideNav() {
         localStorage.setItem('access_token', "0");
     }
 
-    useEffect(() => {
-        async function fetchStoreItems() {
-            if (isLoggedIn) {
-                try {
-                    const response = await fetch(routes.fetchLaravel + `/api/getStoreItems`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`,
-                        },
-                    });
-                    const storeItems = await response.json();
-                    setStoreItems(storeItems);
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-        }
-        fetchStoreItems();
+    const boughtItemsAvatar = boughtItems.find(avatar => avatar.avatar === 1);
+    const itemWithImage = storeItems.find(item => item.id === boughtItemsAvatar.itemId);
 
-        async function fetchBoughtItems() {
-            if (isLoggedIn) {
-                try {
-                    const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`,
-                        },
-                    });
-                    const boughtItems = await response.json();
-                    setBoughtItems(boughtItems);
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-        }
-        fetchBoughtItems();
-    }, []);
-
-    const filteredItems = boughtItems.filter(item => item.avatar === 1);
-    const result = filteredItems.map(item => {
-      const foundItem = storeItems.find(firstItem => firstItem.id === item.itemId);
-      return foundItem ? foundItem.image_url : null;
-    });
-    const images = result.length > 0 ? result : ['plata.png'];
+    console.log(itemWithImage.image_url);
 
     return (
         <div class="h-screen w-full bg-white relative flex overflow-hidden">
@@ -98,7 +57,7 @@ function AsideNav() {
                 <NavLink to="/profile">
                     <div class="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
                         {isLoggedIn ?
-                            <img class="h-10 w-12 rounded-full" src={images} alt=""></img>
+                            <img class="h-10 w-12 rounded-full" src={itemWithImage.image_url} alt=""></img>
                             : <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
                         }
 

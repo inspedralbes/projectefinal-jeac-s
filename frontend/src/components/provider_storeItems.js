@@ -66,6 +66,19 @@ const Tienda = () => {
       } catch (error) {
         console.error(error);
       }
+      try {
+        const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        const boughtItems = await response.json();
+        setBoughtItems(boughtItems);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 

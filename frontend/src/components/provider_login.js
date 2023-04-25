@@ -12,6 +12,7 @@ const LoginForm = () => {
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const token = localStorage.getItem('access_token');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +33,6 @@ const LoginForm = () => {
         store.dispatch(actions.saveData(data[1]));
         localStorage.setItem('access_token', data[0]);
         navigate("/")
-
       }
 
       setLoading(false)
@@ -40,14 +40,42 @@ const LoginForm = () => {
       console.error(error);
       setLoading(false)
     }
-  };
+
+    try {
+      const response = await fetch(routes.fetchLaravel + `/api/getStoreItems`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      const storeItems = await response.json();
+      dispatch(actions.saveStoreItems(storeItems));
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      const boughtItems = await response.json();
+      dispatch(actions.saveBoughtItems(boughtItems));
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div class="flex h-screen justify-center items-center min-h-screen bg-retro-neo bg-cover bg-no-repeat bg-center bg-fixed">
       {isLoggedIn ? <p className="ranking_font_size">You are already logged in</p> :
         <div class="container h-full w-2/4 p-10">
           <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
-            <div class="p-4">  
+            <div class="p-4">
               <div class="md:m-6 md:p-12">
                 <div class="text-center">
                   <img

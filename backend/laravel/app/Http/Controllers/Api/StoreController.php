@@ -104,12 +104,32 @@ class StoreController extends Controller
             User_x_items::where('userId', $userId)
                 ->where('itemId', $itemId)
                 ->update(['avatar' => true]);
-    
+
             User_x_items::where('userId', $userId)
                 ->where('itemId', '<>', $itemId)
                 ->update(['avatar' => false]);
-    
+
             $item->save();
         }
-}
+    }
+
+    public function setBGImage(Request $request)
+    {
+        $userId = $request->userId;
+        $itemId = $request->itemId;
+
+        $items = User_x_items::where('userId', $userId)->where('itemId', $itemId)->get();
+
+        foreach ($items as $item) {
+            User_x_items::where('userId', $userId)
+                ->where('itemId', $itemId)
+                ->update(['bgImage' => true]);
+
+            User_x_items::where('userId', $userId)
+                ->where('itemId', '<>', $itemId)
+                ->update(['bgImage' => false]);
+
+            $item->save();
+        }
+    }
 }

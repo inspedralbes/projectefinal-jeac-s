@@ -56,6 +56,8 @@ function AsideNav() {
                 } else {
                     imgAvatar = "Controller.jpg";
                 }
+            } else {
+                imgAvatar = "Controller.jpg";
             }
         }
         return imgAvatar

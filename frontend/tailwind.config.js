@@ -10,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'image-all': "url('/public/Background_future.jpg')",
+        'image-all': "url('../public/Background_future.jpg')",
         }
     },
   },

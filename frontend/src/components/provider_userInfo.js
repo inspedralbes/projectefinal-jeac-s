@@ -184,9 +184,38 @@ const UserInfo = () => {
     }
   }
 
+  async function setBGImage(userId, itemId) {
+    if (isLoggedIn) {
+      try {
+        const a = await fetch(routes.fetchLaravel + `/api/setBGImage`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({ userId, itemId }),
+        });
+        const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        const boughtItems = await response.json();
+        setBoughtItems(boughtItems);
+        dispatch(actions.saveBoughtItems(boughtItems));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
   const purchasedItems = storeItems.filter(item => {
     return boughtItems.some(boughtItem => boughtItem.userId === userInfo.id && boughtItem.itemId === item.id);
   });
+  console.log(purchasedItems);
+
 
   return (
     <div class="bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
@@ -215,7 +244,8 @@ const UserInfo = () => {
                     <p>Description: {item.description}</p>
                     <p>Price: {item.price * 0.5} <img class="w-10 h-10" src="JeacstarNF.png"></img></p>
                     <button id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button><br></br>
-                    <button id={item.id} onClick={() => { setAvatar(userInfo.id, item.id) }}>Set as Avatar</button>
+                    <button id={item.id} onClick={() => { setAvatar(userInfo.id, item.id) }}>Set as Avatar</button><br></br>
+                    <button id={item.id} onClick={() => { setBGImage(userInfo.id, item.id) }}>Set as Background Image</button>
                   </div>
                 ))
               }

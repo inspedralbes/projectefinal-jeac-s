@@ -54,7 +54,7 @@ function AsideNav() {
                     const userAvatarItem = storeItems.find(item => item.id === matchingItems[0].itemId);
                     imgAvatar = userAvatarItem.image_url;
                 } else {
-                    imgAvatar = "Controller.png";
+                    imgAvatar = "Controller.jpg";
                 }
             }
         }

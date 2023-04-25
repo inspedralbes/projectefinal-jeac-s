@@ -1,25 +1,6 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { store, actions } from './store'; // import the Redux store
-import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Form, Button, Container } from 'react-bootstrap';
-import routes from '../index.js';
-import { NavLink } from 'react-router-dom';
+import BGImage from "../frontend/src/components/backgroundImages.js"
 
-function avatar() {
-  const [storeItems, setStoreItems] = useState([]);
-  const [boughtItems, setBoughtItems] = useState([]);
-  let imgAvatar = "";
-
-
-  const matchingItems = boughtItems.filter(item => item.avatar && item.userId === userInfo.id);
-  const userAvatarItem = storeItems.find(item => item.id === matchingItems[0].itemId);
-  imgAvatar = userAvatarItem.image_url;
-
-  return imgAvatar
-}
-
-
-
+const backgroundImage = BGImage();
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -31,7 +12,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'image-all': `url('../public/${avatar()}')`,
+        'image-all': `url('../public/${backgroundImage}')`
       }
     },
   },

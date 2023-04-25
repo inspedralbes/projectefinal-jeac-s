@@ -60,7 +60,6 @@ function AsideNav() {
                 imgAvatar = "Controller.jpg";
             }
         }
-
         return imgAvatar
     }
 

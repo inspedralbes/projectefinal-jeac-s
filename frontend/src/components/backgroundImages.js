@@ -1,12 +1,9 @@
 import { useSelector } from 'react-redux';
 
 function BGImage() {
-    const isLoggedIn = useSelector((state) => state.isLoggedIn);
-    const storeItems = useSelector((state) => state.storeItems);
-    const boughtItems = useSelector((state) => state.boughtItems);
-    const userInfo = useSelector((state) => state.data);
+    // const isLoggedIn = useSelector((state) => state.isLoggedIn);
 
-    const imgAvatar = "Controller.jpg"
+    const imgAvatar = "Background_planets.jpg"
 
     return imgAvatar
 }

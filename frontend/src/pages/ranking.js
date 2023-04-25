@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import routes from '../index.js';
 
 function GetRanking() {
@@ -35,32 +34,32 @@ function GetRanking() {
                 {isLoading ? (
                   <p className="ranking_font_size">Loading...</p>
                 ) : (
-                  <table class="table-fixed ">
-                    <thead>
+                  <table class="rounded-lg border-separate w-full text-sm text-left text-violet-100 dark:text-violet-100">
+                    <thead class = "text-x text-white uppercase bg-violet-600 dark:text-white">
                       <tr>
-                        <th className="ranking_font_size">#</th>
+                        <th className="ranking_font_size">Position</th>
                         <th className="ranking_font_size">Name</th>
                         <th className="ranking_font_size">Score</th>
                       </tr>
                     </thead>
                     <tbody>
                       {users.map((user, index) => (
-                        <tr key={user.id}>
-                          <td className="ranking_font_size">
+                        <tr class="bg-violet-500 border-b border-violet-400" key={user.id}>
+                          <td class="w-1/3 px-6 py-4 font-medium text-violet-50 whitespace-nowrap dark:text-violet-100" className="ranking_font_size">
                             {index < 3 ? (
                               index === 0 ? (
-                                <img src="oro.png" alt="oro" class="imagen_ranking" />
+                                <img src="oro.png" alt="oro" class="h-20" />
                               ) : index === 1 ? (
-                                <img src="plata.png" alt="plata" class="imagen_ranking" />
+                                <img src="plata.png" alt="plata" class="h-20" />
                               ) : (
-                                <img src="bronce.png" alt="gold" class="imagen_ranking" />
+                                <img src="bronce.png" alt="gold" class="h-20" />
                               )
                             ) : (
                               index + 1
                             )}
                           </td>
-                          <td className="ranking_font_size">{user.name}</td>
-                          <td className="ranking_font_size">{user.totalScore}</td>
+                          <td class = "w-1/3" className="ranking_font_size">{user.name}</td>
+                          <td class = "w-1/3" className="ranking_font_size">{user.totalScore}</td>
                         </tr>
                       ))}
                     </tbody>

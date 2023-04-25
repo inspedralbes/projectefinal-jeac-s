@@ -7,7 +7,7 @@ function Home() {
             <div class="text-center">
                 <img src="LogoBuenoSNB.PNG" class="inline-flex items-center rounded-full scale-125"></img>
 
-                <p class="mb-6 mt-6 text-lg font-normal text-white lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400"> Pagina web social donde puedes disfrutar de juegos, subir los tuyos propios y competir por cosmeticos!</p>
+                <p class="mb-6 mt-6 text-lg font-normal text-white lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400"> Social web page where you can enjoy playing games, upload your own and compete to gain cosmetics!</p>
 
                 <NavLink to="/games">
                     <a href="#" class="w-1/2 h-20 inline-flex items-center justify-center px-5 py-3 text-base font-medium text-white bg-gradient-to-r from-violet-400 to-fuchsia-800 rounded-full hover:bg-violet-400 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">

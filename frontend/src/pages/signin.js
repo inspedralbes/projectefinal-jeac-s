@@ -42,7 +42,7 @@ function Signin() {
     }
   };
   return (
-    <div class="flex h-screen justify-center items-center min-h-screen bg-retro-neo bg-cover bg-no-repeat bg-center bg-fixed">
+    <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
       {isLoggedIn ? <p className="ranking_font_size">You are already logged in</p> :
         <div class="container h-full p-10">
           <div

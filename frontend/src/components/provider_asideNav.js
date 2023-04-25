@@ -48,12 +48,14 @@ function AsideNav() {
         let imgAvatar = "";
 
         if (isLoggedIn) {
-            const matchingItems = boughtItems.filter(item => item.avatar && item.userId === userInfo.id);
-            if (matchingItems.length > 0) {
-                const userAvatarItem = storeItems.find(item => item.id === matchingItems[0].itemId);
-                imgAvatar = userAvatarItem.image_url;
-            } else {
-                imgAvatar = "plata.png";
+            if (boughtItems.length > 0) {
+                const matchingItems = boughtItems.filter(item => item.avatar && item.userId === userInfo.id);
+                if (matchingItems.length > 0) {
+                    const userAvatarItem = storeItems.find(item => item.id === matchingItems[0].itemId);
+                    imgAvatar = userAvatarItem.image_url;
+                } else {
+                    imgAvatar = "plata.png";
+                }
             }
         }
         return imgAvatar

@@ -105,9 +105,9 @@ var test2 = "aixo no s'ha de veure!";
 
  async function Ballgame() {
     Promise.all([
-      import('../../../BallGame/scenes/game.js'),
-      import('../../../BallGame/scenes/congratulations.js'),
-      import('../../../BallGame/scenes/gameover.js'),
+      import('../../../GamesFiles/BallGame/scenes/game.js'),
+      import('../../../GamesFiles/BallGame/scenes/congratulations.js'),
+      import('../../../GamesFiles/BallGame/scenes/gameover.js'),
     ])
       .then(([gameModule, congratulationsModule, gameoverModule]) => {
         // Save the imported modules to variables

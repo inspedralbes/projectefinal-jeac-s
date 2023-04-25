@@ -15,10 +15,10 @@ let Ball = null;
 export function imports() {
 
   Promise.all([
-    import('../../../BallGame/components/Live-counter.js'),
-    import('../../../BallGame/components/Levels/Phase-Constructor.js'),
-    import('../../../BallGame/components/Platform.js'),
-    import('../../../BallGame/components/Ball.js'),
+    import('../../../GamesFiles/BallGame/components/Live-counter.js'),
+    import('../../../GamesFiles/BallGame/components/Levels/Phase-Constructor.js'),
+    import('../../../GamesFiles/BallGame/components/Platform.js'),
+    import('../../../GamesFiles/BallGame/components/Ball.js'),
   ])
     .then(([liveCounter, phaseConstructor, platform, ball]) => {
       // Save the imported modules to variables
@@ -124,28 +124,28 @@ export class Game extends Phaser.Scene {
     preload() {
       
 
-      this.load.image('background', '../BallGame/images/background.png');
-      this.load.image('gameover', '../BallGame/images/gameover.png');
-      this.load.image('platform', '../BallGame/images/platform.png');
-      this.load.image('ball', '../BallGame/images/ball.png');
-      this.load.image('bluebrick', '../BallGame/images/brickBlue.png');
-      this.load.image('blackbrick', '../BallGame/images/brickBlack.png');
-      this.load.image('greenbrick', '../BallGame/images/brickGreen.png');
-      this.load.image('orangebrick', '../BallGame/images/brickOrange.png');
-      this.load.image('greybrick', '../BallGame/images/brickGrey.png');
-      this.load.image('whitebrick', '../BallGame/images/brickWhite.png');
-      this.load.image('yellowbrick', '../BallGame/images/brickYellow.png');
+      this.load.image('background', '../GamesFiles/BallGame/images/background.png');
+      this.load.image('gameover', '../GamesFiles/BallGame/images/gameover.png');
+      this.load.image('platform', '../GamesFiles/BallGame/images/platform.png');
+      this.load.image('ball', '../GamesFiles/BallGame/images/ball.png');
+      this.load.image('bluebrick', '../GamesFiles/BallGame/images/brickBlue.png');
+      this.load.image('blackbrick', '../GamesFiles/BallGame/images/brickBlack.png');
+      this.load.image('greenbrick', '../GamesFiles/BallGame/images/brickGreen.png');
+      this.load.image('orangebrick', '../GamesFiles/BallGame/images/brickOrange.png');
+      this.load.image('greybrick', '../GamesFiles/BallGame/images/brickGrey.png');
+      this.load.image('whitebrick', '../GamesFiles/BallGame/images/brickWhite.png');
+      this.load.image('yellowbrick', '../GamesFiles/BallGame/images/brickYellow.png');
 
       this.load.spritesheet('bluediamond',
-      '../BallGame/images/blue_diamond-sprites.png',
+      '../GamesFiles/BallGame/images/blue_diamond-sprites.png',
       { frameWidth: 48, frameHeight: 48 }
     );
     this.load.spritesheet('reddiamond',
-      '../BallGame/images/red_diamond-sprites.png',
+      '../GamesFiles/BallGame/images/red_diamond-sprites.png',
       { frameWidth: 48, frameHeight: 48 }
     );
     this.load.spritesheet('greendiamond',
-      '../BallGame/images/green_diamond-sprites.png',
+      '../GamesFiles/BallGame/images/green_diamond-sprites.png',
       { frameWidth: 48, frameHeight: 48 }
     );
 

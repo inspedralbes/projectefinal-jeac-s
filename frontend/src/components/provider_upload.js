@@ -23,33 +23,18 @@ const UploadForm = ({ socket }) => {
     useEffect(() => {
 
         // Receive file data from server
-        socket.on('fileData', (data) => {
-            console.log("Datadadda", data);
-            //setFileName('my-file.txt');
-            //setFileData(data);
 
-            // Convertir buffer a objeto File
-            const file = new File([data], 'initGame.js', { type: 'text/javascript' });
-
-            // Leer contenido del archivo
-            const reader = new FileReader();
-            reader.onload = () => {
-                const fileContent = reader.result;
-                // Guardar archivo en carpeta de juegos
-                saveAs(file, 'Unicorn/archivo.js');
-            };
-            reader.readAsText(file);
-        });
-
-        return () => {
-            socket.off('fileData');
-        };
     }, []);
 
+    useEffect(() => {
+        socket.on('upload_error', function (msg) {
+            console.log('Error!', msg);
+        });
+    });
 
-    function onClick() {
+
+    function UploadGame() {
         let file = document.getElementById("uploadZip").files[0];
-        console.log("soket", socket);
 
         // const formData = new FormData();
         // formData.append('file', file);
@@ -67,7 +52,13 @@ const UploadForm = ({ socket }) => {
                 data: event.target.result,
             };
 
-            socket.emit('file-upload', fileData);
+            const ZipFile = {
+                name: name,
+                file: fileData
+            }
+            console.log("File Name", ZipFile);
+
+            socket.emit('file-upload', ZipFile);
         };
     }
 
@@ -294,7 +285,7 @@ const UploadForm = ({ socket }) => {
                                                     ))}
                                                 </Form.Group><br></br>
 
-                                                <Button variant="primary" onClick={onClick}>
+                                                <Button variant="primary" onClick={UploadGame}>
                                                     Submit
                                                 </Button>
                                             </Form>

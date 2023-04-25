@@ -10,8 +10,8 @@ import {HashRouter} from "react-router-dom";
 import './App.css';
 
 const routes = {
-  fetchLaravel: "http://localhost:8000",
-  wsNode: "http://localhost:7878",
+  fetchLaravel: "https://jeacs.alumnes.inspedralbes.cat/laravel",
+  wsNode: "https://jeacs.alumnes.inspedralbes.cat/node",
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

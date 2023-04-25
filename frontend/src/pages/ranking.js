@@ -34,10 +34,11 @@ function GetRanking() {
                 <h1 class = "text-white text-xl font-bold">RANKING</h1>
                 <br></br>
                 {isLoading ? (
-                  <p className="ranking_font_size">Loading...</p>
+                  <p class = "text-white" className="ranking_font_size">Loading...</p>
                 ) : (
-                  <table class="overflow-y-auto rounded-lg border-separate w-full text-sm text-left text-violet-100 dark:text-violet-100">
-                    <thead class = "text-center text-x text-white uppercase bg-violet-600 dark:text-white">
+                  <div class = "overflow-y-auto">
+                  <table class=" rounded-lg border-separate w-full text-sm text-left text-violet-100 dark:text-violet-100">
+                    <thead class = "text-x text-white uppercase bg-violet-600 dark:text-white">
                       <tr>
                         <th className="ranking_font_size">Position</th>
                         <th className="ranking_font_size">Name</th>
@@ -47,25 +48,26 @@ function GetRanking() {
                     <tbody>
                       {users.map((user, index) => (
                         <tr class="bg-violet-500 border-b border-violet-400" key={user.id}>
-                          <td class=" text-center w-1/3 px-6 py-4 font-medium text-violet-50 whitespace-nowrap dark:text-violet-100" className="ranking_font_size">
+                          <td class=" w-1/3 px-6 py-4 font-medium text-violet-50 whitespace-nowrap dark:text-violet-100" className="ranking_font_size">
                             {index < 3 ? (
                               index === 0 ? (
-                                <img src="oro.png" alt="oro" class="" />
+                                <img src="oro.png" alt="oro" class="w-20" />
                               ) : index === 1 ? (
-                                <img src="plata.png" alt="plata" class="" />
+                                <img src="plata.png" alt="plata" class="w-20" />
                               ) : (
-                                <img src="bronce.png" alt="gold" class="" />
+                                <img src="bronce.png" alt="gold" class="w-20" />
                               )
                             ) : (
                               index + 1
                             )}
                           </td>
-                          <td class = "w-1/3 text-center" className="ranking_font_size">{user.name}</td>
-                          <td class = "w-1/3 text-center" className="ranking_font_size">{user.totalScore}</td>
+                          <td class = "w-1/3" className="ranking_font_size">{user.name}</td>
+                          <td class = "w-1/3" className="ranking_font_size">{user.totalScore}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
+                  </div>
                 )}
               </div >
             </div>

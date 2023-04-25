@@ -12,6 +12,7 @@ const UserInfo = () => {
   const [password, setPassword] = useState('');
   const [storeItems, setStoreItems] = useState([]);
   const [boughtItems, setBoughtItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const userInfo = useSelector((state) => state.data);
   const dispatch = useDispatch();
   const [showSuccessMessagePassword, setShowSuccessMessagePassword] = useState(false);
@@ -70,6 +71,7 @@ const UserInfo = () => {
           const boughtItems = await response.json();
           setBoughtItems(boughtItems);
           dispatch(actions.saveBoughtItems(boughtItems));
+          setIsLoading(true);
         } catch (error) {
           console.error(error);
         }
@@ -261,24 +263,28 @@ const UserInfo = () => {
                   }
 
 
+                  {isLoading ?
+                    <div>
+                      {activeTab === "tab3" &&
+                        <div className="mb-3 mt-md-4">
+                          <div style={{ display: 'flex' }}>
+                            {
+                              purchasedItems.map((item, id) => (
+                                <div key={id} style={{ marginRight: '10px' }}>
+                                  <h2>Item: {item.name}</h2>
+                                  <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
+                                  <p>Description: {item.description}</p>
+                                  <p>Price: {item.price * 0.5} <img class="w-10 h-10" src="JeacstarNF.png"></img></p>
+                                  <button id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button><br></br>
+                                  <button id={item.id} onClick={() => { setAvatar(userInfo.id, item.id) }}>Set as Avatar</button>
+                                </div>
+                              ))
+                            }
+                          </div>
+                        </div>}
+                    </div> :
+                    <p>Loading...</p>
 
-                  {activeTab === "tab3" &&
-                    <div className="mb-3 mt-md-4">
-                      <div style={{ display: 'flex' }}>
-                        {
-                          purchasedItems.map((item, id) => (
-                            <div key={id} style={{ marginRight: '10px' }}>
-                              <h2>Item: {item.name}</h2>
-                              <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
-                              <p>Description: {item.description}</p>
-                              <p>Price: {item.price * 0.5} <img class="w-10 h-10" src="JeacstarNF.png"></img></p>
-                              <button id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button><br></br>
-                              <button id={item.id} onClick={() => { setAvatar(userInfo.id, item.id) }}>Set as Avatar</button>
-                            </div>
-                          ))
-                        }
-                      </div>
-                    </div>
                   }
 
                   {activeTab === "tab4" && <div>Content for Tab 4</div>}

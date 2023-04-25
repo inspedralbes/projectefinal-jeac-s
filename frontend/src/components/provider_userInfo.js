@@ -189,7 +189,7 @@ const UserInfo = () => {
   });
 
   return (
-    <div class="bg-retro-neo bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
+    <div class="bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
       {isLoggedIn ?
         <div>
           <nav class="backdrop-filter backdrop-blur-l bg-opacity-30 border-b border-gray-200">

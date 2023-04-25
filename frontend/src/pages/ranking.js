@@ -25,7 +25,7 @@ function GetRanking() {
   }, []);
 
   return (
-    <div class="bg-retro-neo bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center">
+    <div class="bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center">
       <div class="container h-full w-2/4 p-10">
         <div class=" block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
           <div class="p-4">

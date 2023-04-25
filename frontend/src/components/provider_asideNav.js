@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux';
 import { actions } from './store';
 import Navbar from './navbar.js'
-import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Games from '../pages/games'
 // import Game from '../components/game'
 import Home from '../pages/home'

@@ -1,23 +1,23 @@
 // import { RestartButton } from "../components/restart-button.js";
 // import Phaser from "phaser";
 
-var RestartButton = null;
-import('../components/restart-button.js')
-  .then((module) => {
-    // use the imported module here
-    RestartButton = module;
-    console.log(RestartButton.RestartButton);
-  })
-  .catch((error) => {
-    console.log("Error en Game import", error);
-  });
+// var RestartButton = null;
+// import('../components/restart-button.js')
+//   .then((module) => {
+//     // use the imported module here
+//     RestartButton = module;
+//     console.log(RestartButton.RestartButton);
+//   })
+//   .catch((error) => {
+//     console.log("Error en Game import", error);
+//   });
 
-// import { RestartButton } from "../components/restart-button.js";
+import { RestartButton } from "../components/restart-button.js";
 
 export class Gameover extends Phaser.Scene {
   constructor() {
     super({ key: 'gameover' });
-    this.restartButton = new RestartButton.RestartButton(this);
+    this.restartButton = new RestartButton(this);
   }
 
   preload() {
@@ -27,7 +27,7 @@ export class Gameover extends Phaser.Scene {
 
   create() {
     this.add.image(410, 250, 'background');
-    this.restasrtButton.create();
+    this.restartButton.create();
     this.gameoverImage = this.add.image(400, 90, 'gameover');
   }
 }

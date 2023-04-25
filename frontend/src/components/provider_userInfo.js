@@ -260,7 +260,7 @@ const UserInfo = () => {
                     </div>
                   }
 
-                  {activeTab === "tab2" && <div>Content for Tab 2</div>}
+
 
                   {activeTab === "tab3" &&
                     <div className="mb-3 mt-md-4">
@@ -280,6 +280,8 @@ const UserInfo = () => {
                       </div>
                     </div>
                   }
+
+                  {activeTab === "tab4" && <div>Content for Tab 4</div>}
 
                 </div>
               </div>

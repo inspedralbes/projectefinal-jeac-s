@@ -23,7 +23,6 @@ const Historial = () => {
             },
           });
           const infoPlayedGame = await response.json();
-          console.log(infoPlayedGame);
           setPlayedGames(infoPlayedGame);
         } catch (error) {
           console.error(error);

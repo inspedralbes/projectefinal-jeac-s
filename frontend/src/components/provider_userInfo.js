@@ -30,7 +30,6 @@ const UserInfo = () => {
           });
           const data = await response.json();
           dispatch(actions.saveData(data));
-
         } catch (error) {
           console.error(error);
         }
@@ -49,8 +48,8 @@ const UserInfo = () => {
             },
           });
           const storeItems = await response.json();
-          console.log(storeItems);
           setStoreItems(storeItems);
+          dispatch(actions.saveStoreItems(storeItems));
         } catch (error) {
           console.error(error);
         }
@@ -69,8 +68,8 @@ const UserInfo = () => {
             },
           });
           const boughtItems = await response.json();
-          console.log(boughtItems);
           setBoughtItems(boughtItems);
+          dispatch(actions.saveBoughtItems(boughtItems));
         } catch (error) {
           console.error(error);
         }
@@ -136,8 +135,34 @@ const UserInfo = () => {
           },
           body: JSON.stringify({ userId, itemId }),
         });
-        const b = await a.json();
-        console.log(b);
+        console.log(a);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
+  async function setAvatar(userId, itemId) {
+    if (isLoggedIn) {
+      try {
+        const a = await fetch(routes.fetchLaravel + `/api/setAvatar`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({ userId, itemId }),
+        });
+        const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        const boughtItems = await response.json();
+        setBoughtItems(boughtItems);
+        dispatch(actions.saveBoughtItems(boughtItems));
       } catch (error) {
         console.error(error);
       }
@@ -149,7 +174,7 @@ const UserInfo = () => {
   });
 
   return (
-    <div class="flex h-screen justify-center items-center bg-violet-400">
+    <div class="bg-retro-neo bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
       {isLoggedIn ?
         <div>
           <nav class="backdrop-filter backdrop-blur-l bg-opacity-30 border-b border-gray-200">
@@ -166,18 +191,19 @@ const UserInfo = () => {
           </nav>
           <br></br>
           <div className="mb-3 mt-md-4">
-          <div style={{ display: 'flex'}}>
-            {
-              purchasedItems.map((item, id) => (
-                <div key={id} style={{ marginRight: '10px' }}>
-                  <h2>Item: {item.name}</h2>
-                  <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
-                  <p>Description: {item.description}</p>
-                  <p>Price: {item.price} Jeacstars</p>
-                  <button id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button>
-                </div>
-              ))
-            }
+            <div style={{ display: 'flex' }}>
+              {
+                purchasedItems.map((item, id) => (
+                  <div key={id} style={{ marginRight: '10px' }}>
+                    <h2>Item: {item.name}</h2>
+                    <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
+                    <p>Description: {item.description}</p>
+                    <p>Price: {item.price * 0.5} <img class="w-10 h-10" src="JeacstarNF.png"></img></p>
+                    <button id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button><br></br>
+                    <button id={item.id} onClick={() => { setAvatar(userInfo.id, item.id) }}>Set as Avatar</button>
+                  </div>
+                ))
+              }
             </div>
             <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
               User Info
@@ -187,7 +213,7 @@ const UserInfo = () => {
                 <p className="ranking_font_size">Name: <h4>{userInfo.name}</h4></p>
                 <p className="ranking_font_size">Email: <h4>{userInfo.email}</h4></p>
                 <p className="ranking_font_size">Score: <h4>{userInfo.totalScore}</h4></p>
-                <p className="ranking_font_size">Jeacstars: <h4>{userInfo.jeacstars}</h4></p>
+                <p className="ranking_font_size">Jeacstars: <h4>{userInfo.jeacstars}</h4><img class="w-10 h-10" src="JeacstarNF.png"></img></p>
               </div>
 
               <div>
@@ -217,7 +243,7 @@ const UserInfo = () => {
           </div>
         </div>
         :
-        <div >
+        <div>
           <div class="p-10 opacity-90 text-center bg-purple-300 rounded-lg">
             <p class="mb-6 text-lg font-normal text-fuchsia-950 lg:text-2xl sm:px-16 xl:px-48 dark:text-gray-400"> No estas registrado :( </p>
             <p class="mb-6 text-lg font-normal text-fuchsia-950 lg:text-2xl sm:px-16 xl:px-48 dark:text-gray-400">Si quieres customizar tu perfil INICIA SESION o REGISTRATE!</p>

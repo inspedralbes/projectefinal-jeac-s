@@ -3,16 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { actions } from './store';
 
 function Navbar() {
-
-  const data = useSelector(state => state.data);
+  
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
-  const dispatch = useDispatch();
-
-  function logout() {
-    dispatch(actions.logout());
-    localStorage.setItem('access_token', "0");
-  }
-
 
   return (
       <nav class="bg-gray-800">
@@ -23,27 +15,17 @@ function Navbar() {
             </div>
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
               <div class="flex flex-shrink-0 items-center">
-                <img class="block h-8 w-auto lg:hidden" src="jeacsLogo.PNG" alt="Your Company"></img>
-                <img class="hidden h-8 w-auto lg:block" src="jeacsLogo.PNG" alt="Your Company"></img>
+              <NavLink to="/">
+                <img class="block h-8 w-auto lg:hidden" src="LogoLargo.png" alt="Your Company"></img>
+                <img class="hidden h-8 w-auto lg:block" src="LogoLargo.png" alt="Your Company"></img>
+                </NavLink>
               </div>
               <div class="hidden sm:ml-6 sm:block">
                 <div class="flex space-x-4">
 
-                  <a href="#" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Home</a>
-
-                  <NavLink to="/games">
-                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Games</a>
-                  </NavLink>
-
                   <NavLink to="/game">
                     <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">BallGame</a>
-                  </NavLink>
-
-                  <NavLink to="/ranking">
-                    <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Ranking</a>
-                  </NavLink>
-
-                  
+                  </NavLink>                  
 
                   {isLoggedIn ?
                     (
@@ -72,7 +54,7 @@ function Navbar() {
                   <div>
                     <button type="button" class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true" data-dropdown-toggle="dropdown">
                       <span class="sr-only">Open user menu</span>
-                      <img class="h-12 w-12 rounded-full" src="pf3.PNG" alt=""></img>
+                      
                     </button> 
                   </div>  
 

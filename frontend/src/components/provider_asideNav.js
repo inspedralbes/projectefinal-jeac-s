@@ -14,13 +14,16 @@ import Game from '../pages/game.js'
 import GetRanking from '../pages/ranking.js'
 import GetGameStore from '../pages/storeItems.js'
 import socketIO from "socket.io-client";
+import Historial from "../pages/historial.js"
+import React, { useState, useEffect } from 'react';
+
 
 function AsideNav() {
-
-    const data = useSelector(state => state.data);
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const dispatch = useDispatch();
-
+    const storeItems = useSelector((state) => state.storeItems);
+    const boughtItems = useSelector((state) => state.boughtItems);
+    const userInfo = useSelector((state) => state.data);
     const routes = {
         fetchLaravel: "http://localhost:8000",
         wsNode: "http://localhost:7878",
@@ -41,15 +44,33 @@ function AsideNav() {
         localStorage.setItem('access_token', "0");
     }
 
+    function avatar() {
+        let imgAvatar = "";
+
+        if (isLoggedIn) {
+            if (boughtItems.length > 0) {
+                const matchingItems = boughtItems.filter(item => item.avatar && item.userId === userInfo.id);
+                if (matchingItems.length > 0) {
+                    const userAvatarItem = storeItems.find(item => item.id === matchingItems[0].itemId);
+                    imgAvatar = userAvatarItem.image_url;
+                } else {
+                    imgAvatar = "plata.png";
+                }
+            }
+        }
+        return imgAvatar
+    }
+
     return (
         <div class="h-screen w-full bg-white relative flex overflow-hidden">
-
-
             <aside class="h-full w-16 flex flex-col space-y-10 items-center justify-center relative bg-gray-800 text-white">
-
                 <NavLink to="/profile">
                     <div class="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                        {isLoggedIn ?
+                            <img class="h-10 w-12 rounded-full" src={avatar()} alt=""></img>
+                            : <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                        }
+
                     </div>
                 </NavLink>
 
@@ -79,7 +100,6 @@ function AsideNav() {
             <div class="w-full h-full flex flex-col justify-between">
 
                 <Navbar></Navbar>
-                {console.log("socket 1", socket)}
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/games" element={<Games />} />
@@ -90,6 +110,7 @@ function AsideNav() {
                     <Route path="/game" element={<Game />} />
                     <Route path="/ranking" element={<GetRanking />} />
                     <Route path="/store" element={<GetGameStore />} />
+                    <Route path="/historial" element={<Historial />} />
                 </Routes>
             </div>
 

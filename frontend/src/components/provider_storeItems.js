@@ -23,7 +23,6 @@ const Tienda = () => {
             },
           });
           const storeItems = await response.json();
-          console.log(storeItems);
           setStoreItems(storeItems);
         } catch (error) {
           console.error(error);
@@ -43,7 +42,6 @@ const Tienda = () => {
             },
           });
           const boughtItems = await response.json();
-          console.log(boughtItems);
           setBoughtItems(boughtItems);
           setIsLoading(true)
         } catch (error) {
@@ -65,9 +63,6 @@ const Tienda = () => {
           },
           body: JSON.stringify({ userId, itemId }),
         });
-        const b = await a.json();
-        console.log(b);
-
       } catch (error) {
         console.error(error);
       }
@@ -90,7 +85,8 @@ const Tienda = () => {
                     <h2>Item: {item.name}</h2>
                     <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
                     <p>Description: {item.description}</p>
-                    <p>Price: {item.price} Jeacstars</p>
+                    <p class="inline">Price: {item.price}</p>
+                    <img class="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>
                     <button id={item.id} onClick={() => buyItem(userInfo.id, item.id)}>Buy</button>
                   </div>
                 ))

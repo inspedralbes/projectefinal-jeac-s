@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 function Home() {
     return (
-        <div class="flex h-screen justify-center items-center min-h-screen bg-[url('../public/retroNeo.jpg')] bg-cover bg-no-repeat bg-center bg-fixed" >
+        <div class="flex h-screen justify-center items-center min-h-screen bg-retro-neo bg-cover bg-no-repeat bg-center bg-fixed" >
             <div class="text-center">
                 <img src="LogoBuenoSNB.PNG" class="inline-flex items-center rounded-full scale-125"></img>
 

@@ -117,12 +117,7 @@ const UserInfo = () => {
     }
   };
 
-  let changeViewName = "userinfo";
 
-  function changeView(name) {
-    changeViewName = name;
-    console.log(name);
-  }
 
   async function sellItem(userId, itemId) {
     if (isLoggedIn) {
@@ -188,71 +183,105 @@ const UserInfo = () => {
     return boughtItems.some(boughtItem => boughtItem.userId === userInfo.id && boughtItem.itemId === item.id);
   });
 
+
+  const [activeTab, setActiveTab] = useState("tab1"); // initialize active tab to tab1
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab); // update active tab based on the tab clicked
+  };
+
   return (
-    <div class="bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
+    <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
       {isLoggedIn ?
-        <div>
-          <nav class="backdrop-filter backdrop-blur-l bg-opacity-30 border-b border-gray-200">
-            <div class="flex space-x-4">
+        <div class=" container h-full w-3/4 p-10">
+          <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
+            <div class="p-4">
+              <div class="md:m-6 md:p-12">
+                <div class="text-center">
+                  <nav class="backdrop-filter backdrop-blur-l bg-opacity-30 border-b border-gray-200">
+                    <div class="flex space-x-4">
 
-              <a onClick={() => changeView("userinfo")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">User Info</a>
+                      <li className={activeTab === "tab1" ? "active" : ""}>
+                        <a onClick={() => handleTabClick("tab1")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">User Info</a>
+                      </li>
 
-              <a onClick={() => changeView("historial")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Historial</a>
+                      <li className={activeTab === "tab2" ? "active" : ""}>
+                        <a onClick={() => handleTabClick("tab2")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Historial</a>
+                      </li>
 
-              <a onClick={() => changeView("coleccion")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Coleccionables</a>
+                      <li className={activeTab === "tab3" ? "active" : ""}>
+                        <a onClick={() => handleTabClick("tab3")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Coleccionables</a>
+                      </li>
 
-              <a onClick={() => changeView("logros")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logros</a>
-            </div>
-          </nav>
-          <br></br>
-          <div className="mb-3 mt-md-4">
-            <div style={{ display: 'flex' }}>
-              {
-                purchasedItems.map((item, id) => (
-                  <div key={id} style={{ marginRight: '10px' }}>
-                    <h2>Item: {item.name}</h2>
-                    <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
-                    <p>Description: {item.description}</p>
-                    <p>Price: {item.price * 0.5} <img class="w-10 h-10" src="JeacstarNF.png"></img></p>
-                    <button id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button><br></br>
-                    <button id={item.id} onClick={() => { setAvatar(userInfo.id, item.id) }}>Set as Avatar</button>
-                  </div>
-                ))
-              }
-            </div>
-            <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
-              User Info
-            </h2>
-            <div className="mb-3 mt-md-4">
-              <div class="text-center">
-                <p className="ranking_font_size">Name: <h4>{userInfo.name}</h4></p>
-                <p className="ranking_font_size">Email: <h4>{userInfo.email}</h4></p>
-                <p className="ranking_font_size">Score: <h4>{userInfo.totalScore}</h4></p>
-                <p className="ranking_font_size">Jeacstars: <h4>{userInfo.jeacstars}</h4><img class="w-10 h-10" src="JeacstarNF.png"></img></p>
-              </div>
+                      <li className={activeTab === "tab4" ? "active" : ""}>
+                        <a onClick={() => handleTabClick("tab4")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logros</a>
+                      </li>
+                    </div>
+                  </nav>
+                  <br></br>
 
-              <div>
-                <Form onSubmit={changeName}>
-                  <Form.Group controlId="formBasicName"><br></br>
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control type="name" placeholder="Enter name" value={name} onChange={(event) => setName(event.target.value)}></Form.Control>
-                  </Form.Group>
-                  <Button variant="primary" type="submit" >Change Name
-                  </Button>
-                  <div className="texto_verde">{showSuccessMessageName && <p>Name change successful!</p>}</div>
-                </Form>
-              </div>
+                  {activeTab === "tab1" &&
+                    <div>
+                      <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
+                        User Info
+                      </h2>
+                      <div className="mb-3 mt-md-4">
+                        <div class="text-center">
+                          <p className="ranking_font_size">Name: <h4>{userInfo.name}</h4></p>
+                          <p className="ranking_font_size">Email: <h4>{userInfo.email}</h4></p>
+                          <p className="ranking_font_size">Score: <h4>{userInfo.totalScore}</h4></p>
+                          <p className="ranking_font_size">Jeacstars: <h4>{userInfo.jeacstars}</h4><img class="w-10 h-10" src="JeacstarNF.png"></img></p>
+                        </div>
 
-              <div>
-                <Form onSubmit={changePassword}><br></br>
-                  <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Password (Must have 1 capital letter, 1 lowercase letter, 1 number and a minimum length of 8)</Form.Label>
-                    <Form.Control type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
-                  </Form.Group>
-                  <Button variant="primary" type="submit" >Change Password
-                  </Button>
-                  <div className="texto_verde">{showSuccessMessagePassword && <p>Password change successful!</p>}</div>
-                </Form>
+                        <div>
+                          <Form onSubmit={changeName}>
+                            <Form.Group controlId="formBasicName"><br></br>
+                              <Form.Label>Name</Form.Label>
+                              <Form.Control type="name" placeholder="Enter name" value={name} onChange={(event) => setName(event.target.value)}></Form.Control>
+                            </Form.Group>
+                            <Button variant="primary" type="submit" >Change Name
+                            </Button>
+                            <div className="texto_verde">{showSuccessMessageName && <p>Name change successful!</p>}</div>
+                          </Form>
+                        </div>
+
+                        <div>
+                          <Form onSubmit={changePassword}><br></br>
+                            <Form.Group controlId="formBasicPassword">
+                              <Form.Label>Password (Must have 1 capital letter, 1 lowercase letter, 1 number and a minimum length of 8)</Form.Label>
+                              <Form.Control type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
+                            </Form.Group>
+                            <Button variant="primary" type="submit" >Change Password
+                            </Button>
+                            <div className="texto_verde">{showSuccessMessagePassword && <p>Password change successful!</p>}</div>
+                          </Form>
+                        </div>
+                      </div>
+                    </div>
+                  }
+
+                  {activeTab === "tab2" && <div>Content for Tab 2</div>}
+
+                  {activeTab === "tab3" &&
+                    <div className="mb-3 mt-md-4">
+                      <div style={{ display: 'flex' }}>
+                        {
+                          purchasedItems.map((item, id) => (
+                            <div key={id} style={{ marginRight: '10px' }}>
+                              <h2>Item: {item.name}</h2>
+                              <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
+                              <p>Description: {item.description}</p>
+                              <p>Price: {item.price * 0.5} <img class="w-10 h-10" src="JeacstarNF.png"></img></p>
+                              <button id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button><br></br>
+                              <button id={item.id} onClick={() => { setAvatar(userInfo.id, item.id) }}>Set as Avatar</button>
+                            </div>
+                          ))
+                        }
+                      </div>
+                    </div>
+                  }
+
+                </div>
               </div>
             </div>
           </div>
@@ -276,7 +305,7 @@ const UserInfo = () => {
           </div>
         </div>
       }
-    </div>
+    </div >
   );
 };
 

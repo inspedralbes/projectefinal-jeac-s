@@ -36,8 +36,8 @@ function GetRanking() {
                 {isLoading ? (
                   <p class = "text-white" className="ranking_font_size">Loading...</p>
                 ) : (
-                  <div class = "overflow-y-auto">
-                  <table class=" rounded-lg border-separate w-full text-sm text-left text-violet-100 dark:text-violet-100">
+                  <div>
+                  <table class="overflow-scroll rounded-lg border-separate w-full text-sm text-left text-violet-100 dark:text-violet-100">
                     <thead class = "text-x text-white uppercase bg-violet-600 dark:text-white">
                       <tr>
                         <th className="ranking_font_size">Position</th>

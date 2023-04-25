@@ -214,8 +214,6 @@ const UserInfo = () => {
   const purchasedItems = storeItems.filter(item => {
     return boughtItems.some(boughtItem => boughtItem.userId === userInfo.id && boughtItem.itemId === item.id);
   });
-  console.log(purchasedItems);
-
 
   return (
     <div class="bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">

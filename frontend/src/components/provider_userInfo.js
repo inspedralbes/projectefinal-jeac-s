@@ -135,9 +135,24 @@ const UserInfo = () => {
           },
           body: JSON.stringify({ userId, itemId }),
         });
-        console.log(a);
       } catch (error) {
         console.error(error);
+      }
+
+      try {
+        const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        const boughtItems = await response.json();
+        setBoughtItems(boughtItems);
+        dispatch(actions.saveBoughtItems(boughtItems));
+      } catch (error) {
+        console.error(error);
+
       }
     }
   }

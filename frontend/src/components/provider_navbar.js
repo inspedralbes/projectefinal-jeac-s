@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux';
-import { actions } from './store';
 
 function Navbar() {
   

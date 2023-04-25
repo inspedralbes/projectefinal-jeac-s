@@ -23,7 +23,6 @@ const Tienda = () => {
             },
           });
           const storeItems = await response.json();
-          console.log(storeItems);
           setStoreItems(storeItems);
         } catch (error) {
           console.error(error);
@@ -43,7 +42,6 @@ const Tienda = () => {
             },
           });
           const boughtItems = await response.json();
-          console.log(boughtItems);
           setBoughtItems(boughtItems);
           setIsLoading(true)
         } catch (error) {
@@ -65,9 +63,6 @@ const Tienda = () => {
           },
           body: JSON.stringify({ userId, itemId }),
         });
-        const b = await a.json();
-        console.log(b);
-
       } catch (error) {
         console.error(error);
       }

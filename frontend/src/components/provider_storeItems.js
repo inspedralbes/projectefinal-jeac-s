@@ -8,7 +8,6 @@ const Tienda = () => {
   const [storeItems, setStoreItems] = useState([]);
   const [boughtItems, setBoughtItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
   const userInfo = useSelector((state) => state.data);
 
   useEffect(() => {
@@ -24,7 +23,6 @@ const Tienda = () => {
             mode: 'same-origin',
           });
           const storeItems = await response.json();
-          console.log(storeItems);
           setStoreItems(storeItems);
         } catch (error) {
           console.error(error);
@@ -45,7 +43,6 @@ const Tienda = () => {
             mode: 'same-origin',
           });
           const boughtItems = await response.json();
-          console.log(boughtItems);
           setBoughtItems(boughtItems);
           setIsLoading(true)
         } catch (error) {
@@ -68,9 +65,19 @@ const Tienda = () => {
           mode: 'same-origin',
           body: JSON.stringify({ userId, itemId }),
         });
-        const b = await a.json();
-        console.log(b);
-
+      } catch (error) {
+        console.error(error);
+      }
+      try {
+        const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        const boughtItems = await response.json();
+        setBoughtItems(boughtItems);
       } catch (error) {
         console.error(error);
       }
@@ -87,23 +94,28 @@ const Tienda = () => {
         <div>
           {isLoading ?
             <div>
-              {
-                itemsToBuy.map((item, id) => (
-                  <div key={id}>
-                    <h2>Item: {item.name}</h2>
-                    <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
-                    <p>Description: {item.description}</p>
-                    <p class="inline">Price: {item.price}</p>
-                    <img class="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>
-                    <button id={item.id} onClick={() => buyItem(userInfo.id, item.id)}>Buy</button>
-                  </div>
-                ))
+              {itemsToBuy.length > 0 ?
+                <div>
+                  {
+                    itemsToBuy.map((item, id) => (
+                      <div key={id}>
+                        <h2>Item: {item.name}</h2>
+                        <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
+                        <p>Description: {item.description}</p>
+                        <p class="inline">Price: {item.price}</p>
+                        <img class="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>
+                        <button id={item.id} onClick={() => buyItem(userInfo.id, item.id)}>Buy</button>
+                      </div>
+                    ))
+                  }
+                </div> :
+                <p>No items left</p>
               }
             </div> :
             <p>Loading...</p>
           }
         </div> :
-        <p className="ranking_font_size">You need to be logged in</p>
+        <p>You need to be logged in</p>
       }
     </div>
   );

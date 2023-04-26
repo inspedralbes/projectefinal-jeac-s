@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('user_x_items', function (Blueprint $table) {
             $table->bigInteger('userId')->unsigned();
             $table->bigInteger('itemId')->unsigned();
+            $table->boolean('avatar')->default(false);
+            $table->boolean('bgImage')->default(false);
 
             $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('itemId')->references('id')->on('stores')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

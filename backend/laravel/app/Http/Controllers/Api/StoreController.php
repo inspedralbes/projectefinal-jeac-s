@@ -66,10 +66,11 @@ class StoreController extends Controller
         // Verificar si el usuario posee el item
         $purchase = User_x_items::where([
             ['userId', '=', $userId],
-            ['itemId', '=', $itemId]
+            ['itemId', '=', $itemId],
+            ['avatar', '=', false]
         ])->first();
         if (!$purchase) {
-            return response()->json(['message' => 'No posees este item'], 400);
+            return response()->json(['message' => 'No posees este item o no puedes venderlo'], 400);
         }
 
         // Sumar el precio del item al dinero total del usuario
@@ -89,5 +90,46 @@ class StoreController extends Controller
     {
         $items = User_x_items::all();
         return $items;
+    }
+
+
+    public function setAvatar(Request $request)
+    {
+        $userId = $request->userId;
+        $itemId = $request->itemId;
+
+        $items = User_x_items::where('userId', $userId)->where('itemId', $itemId)->get();
+
+        foreach ($items as $item) {
+            User_x_items::where('userId', $userId)
+                ->where('itemId', $itemId)
+                ->update(['avatar' => true]);
+
+            User_x_items::where('userId', $userId)
+                ->where('itemId', '<>', $itemId)
+                ->update(['avatar' => false]);
+
+            $item->save();
+        }
+    }
+
+    public function setBGImage(Request $request)
+    {
+        $userId = $request->userId;
+        $itemId = $request->itemId;
+
+        $items = User_x_items::where('userId', $userId)->where('itemId', $itemId)->get();
+
+        foreach ($items as $item) {
+            User_x_items::where('userId', $userId)
+                ->where('itemId', $itemId)
+                ->update(['bgImage' => true]);
+
+            User_x_items::where('userId', $userId)
+                ->where('itemId', '<>', $itemId)
+                ->update(['bgImage' => false]);
+
+            $item->save();
+        }
     }
 }

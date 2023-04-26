@@ -1,3 +1,5 @@
+
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -6,7 +8,11 @@ module.exports = {
     "./src/pages/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'image-all': "url('/public/retroNeo.jpg')",
+        }
+    },
   },
   plugins: [],
   darkMode: 'class',

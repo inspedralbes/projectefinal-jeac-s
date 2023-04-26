@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux';
 import { actions } from './store';
 import Navbar from './navbar.js'
-import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Games from '../pages/games'
 // import Game from '../components/game'
 import Home from '../pages/home'
@@ -14,7 +14,6 @@ import Game from '../pages/game.js'
 import GetRanking from '../pages/ranking.js'
 import GetGameStore from '../pages/storeItems.js'
 import socketIO from "socket.io-client";
-import Historial from "../pages/historial.js"
 import React, { useState, useEffect } from 'react';
 
 
@@ -54,8 +53,10 @@ function AsideNav() {
                     const userAvatarItem = storeItems.find(item => item.id === matchingItems[0].itemId);
                     imgAvatar = userAvatarItem.image_url;
                 } else {
-                    imgAvatar = "plata.png";
+                    imgAvatar = "Controller.jpg";
                 }
+            } else {
+                imgAvatar = "Controller.jpg";
             }
         }
         return imgAvatar
@@ -110,7 +111,6 @@ function AsideNav() {
                     <Route path="/game" element={<Game socket={socket}/>} />
                     <Route path="/ranking" element={<GetRanking />} />
                     <Route path="/store" element={<GetGameStore />} />
-                    <Route path="/historial" element={<Historial />} />
                 </Routes>
             </div>
 

@@ -1,3 +1,5 @@
+
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -8,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'retro-neo':  "url('/public/retroNeo.jpg')"
+        'image-all': "url('/public/retroNeo.jpg')",
         }
     },
   },

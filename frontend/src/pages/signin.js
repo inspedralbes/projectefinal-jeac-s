@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, NavLink } from "react-router-dom";
 import routes from '../index.js';
+import { useTranslation } from 'react-i18next';
 
 function Signin() {
   const [name, setName] = useState('');
@@ -10,6 +11,7 @@ function Signin() {
   const [error, setError] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
 
@@ -42,8 +44,11 @@ function Signin() {
     }
   };
   return (
-    <div class="flex h-screen justify-center items-center min-h-screen bg-retro-neo bg-cover bg-no-repeat bg-center bg-fixed">
-      {isLoggedIn ? <p className="ranking_font_size">You are already logged in</p> :
+    <div class="overflow-auto flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
+      {isLoggedIn ?
+        <p>
+          {t('signInAlreadyLoggedIn')}
+        </p> :
         <div class="container h-full p-10">
           <div
             class="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
@@ -59,17 +64,19 @@ function Signin() {
                           src="LogoBuenoSNB.png"
                           alt="logo" />
                         <h4 class="mb-12 mt-1 pb-1 text-xl font-semibold text-white">
-                          We are the Jeac's Games Team
+                          {t('signInMensajeJeacs')}
                         </h4>
                       </div>
 
                       <form onSubmit={handleSubmit}>
-                        <p class="mb-4 text-white">Please submit the information detailed below to create an account</p>
+                        <p class="mb-4 text-white">
+                          {t('singInSubmitMensaje')}
+                        </p>
                         <div class="border-2 border-fuchsia-600 relative mb-4 mt-10" data-te-input-wrapper-init>
                           <label
                             for="exampleFormControlInput1"
-                            class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
-                          >Username
+                            class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
+                            {t('signInUsername')}
                           </label>
                           <br></br>
                           <input
@@ -81,29 +88,33 @@ function Signin() {
                         <div class="border-2 border-fuchsia-600 relative mb-4 " data-te-input-wrapper-init>
                           <label
                             for="exampleFormControlInput11"
-                            class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
-                          >Email
+                            class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
+                            {t('signInEmail')}
                           </label>
-                          
+
                           <br></br>
                           <input
                             class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                             type="email" placeholder="Enter email" value={email} onChange={(event) => setEmail(event.target.value)} required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"></input>
                         </div>
-                        <a class = "text-neutral-500">Must have @, must have domain extension (Ex: jeacs@gmail.com)</a>
+                        <a class="text-neutral-500">
+                          {t('signInEmailMustHave')}
+                        </a>
                         <br></br><br></br>
                         <div class="border-2 border-fuchsia-600 relative mb-4 " data-te-input-wrapper-init>
                           <label
                             for="exampleFormControlInput11"
-                            class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
-                          >Password
+                            class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
+                            {t('signInPassword')}
                           </label>
                           <br></br>
                           <input
                             class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                             type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
                         </div>
-                        <a class = "text-neutral-500">10 character length, one special character, one upper case (Ex: Pedralbes2022!)</a>
+                        <a class="text-neutral-500">
+                          {t('signInPasswordMustHave')}
+                        </a>
                         <br></br><br></br>
 
                         <div class="mb-12 pb-1 pt-1 text-center">
@@ -119,24 +130,27 @@ function Signin() {
                                   <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
                                   <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
                                 </svg>
-                                <span class="sr-only">Loading...</span>
                               </div>
                             ) : (
-                              "Sign In"
+                              <p>
+                                {t('signIn')}
+                              </p>
                             )}
                           </button>
 
                         </div>
 
                         <div class="flex items-center justify-between pb-6">
-                          <p class="mb-0 mr-2 text-white">Already have an account?</p>
+                          <p class="mb-0 mr-2 text-white">
+                            {t('signInAlreadyAcc')}
+                          </p>
                           <NavLink to="/login">
                             <button
                               type="button"
                               class="text-white inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
                               data-te-ripple-init
                               data-te-ripple-color="light">
-                              Login
+                              {t('logIn')}
                             </button>
                           </NavLink>
                         </div>

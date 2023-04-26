@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import saveAs from 'file-saver';
+import { useTranslation } from 'react-i18next';
 
 let pathimagen = '';
 
@@ -13,6 +14,7 @@ const UploadForm = ({ socket }) => {
     const [categories, setCategories] = useState([])
     const [error, setError] = useState(null);
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
+    const { t } = useTranslation();
 
     const [pathInit, setPathInit] = useState('');
     const [pathImg, setPathImg] = useState('');
@@ -333,7 +335,9 @@ const UploadForm = ({ socket }) => {
                         </Col>
                     </Row>
                 </Container>
-                : <h2>You need to be logged in to upload games!</h2>
+                : <h2>
+                    {t('mensajeErrorNotLoggedInUpload')}
+                </h2>
             }
         </div>
     );

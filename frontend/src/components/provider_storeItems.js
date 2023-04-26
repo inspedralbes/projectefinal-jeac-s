@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import routes from '../index.js';
+import { useTranslation } from 'react-i18next';
 
 const Tienda = () => {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
@@ -8,8 +9,8 @@ const Tienda = () => {
   const [storeItems, setStoreItems] = useState([]);
   const [boughtItems, setBoughtItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
   const userInfo = useSelector((state) => state.data);
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function fetchStoreItems() {
@@ -66,6 +67,19 @@ const Tienda = () => {
       } catch (error) {
         console.error(error);
       }
+      try {
+        const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        const boughtItems = await response.json();
+        setBoughtItems(boughtItems);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
@@ -79,23 +93,31 @@ const Tienda = () => {
         <div>
           {isLoading ?
             <div>
-              {
-                itemsToBuy.map((item, id) => (
-                  <div key={id}>
-                    <h2>Item: {item.name}</h2>
-                    <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
-                    <p>Description: {item.description}</p>
-                    <p class="inline">Price: {item.price}</p>
-                    <img class="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>
-                    <button id={item.id} onClick={() => buyItem(userInfo.id, item.id)}>Buy</button>
-                  </div>
-                ))
+              {itemsToBuy.length > 0 ?
+                <div>
+                  {
+                    itemsToBuy.map((item, id) => (
+                      <div key={id}>
+                        <h2>Item: {item.name}</h2>
+                        <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
+                        <p>Description: {item.description}</p>
+                        <p class="inline">Price: {item.price}</p>
+                        <img class="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>
+                        <button id={item.id} onClick={() => buyItem(userInfo.id, item.id)}>Buy</button>
+                      </div>
+                    ))
+                  }
+                </div> :
+                <p>No items left</p>
               }
             </div> :
             <p>Loading...</p>
           }
         </div> :
-        <p className="ranking_font_size">You need to be logged in</p>
+        <p>
+          {t('mensajeErrorNotLoggedInStore')}
+
+        </p>
       }
     </div>
   );

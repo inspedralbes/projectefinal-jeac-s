@@ -106,13 +106,13 @@ const Tienda = () => {
                     ))
                   }
                 </div> :
-                <p className="ranking_font_size">No items left</p>
+                <p>No items left</p>
               }
             </div> :
             <p>Loading...</p>
           }
         </div> :
-        <p className="ranking_font_size">You need to be logged in</p>
+        <p>You need to be logged in</p>
       }
     </div>
   );

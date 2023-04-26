@@ -34,21 +34,21 @@ function GetRanking() {
                 <h1 class = "text-white text-xl font-bold">RANKING</h1>
                 <br></br>
                 {isLoading ? (
-                  <p class = "text-white" className="ranking_font_size">Loading...</p>
+                  <p class = "text-white">Loading...</p>
                 ) : (
                   <div>
-                  <table class="overflow-scroll rounded-lg border-separate w-full text-sm text-left text-violet-100 dark:text-violet-100">
+                  <table class="overflow-auto rounded-lg border-separate w-full text-sm text-left text-violet-100 dark:text-violet-100">
                     <thead class = "text-x text-white uppercase bg-violet-600 dark:text-white">
                       <tr>
-                        <th className="ranking_font_size">Position</th>
-                        <th className="ranking_font_size">Name</th>
-                        <th className="ranking_font_size">Score</th>
+                        <th>Position</th>
+                        <th>Name</th>
+                        <th>Score</th>
                       </tr>
                     </thead>
                     <tbody>
                       {users.map((user, index) => (
                         <tr class="bg-violet-500 border-b border-violet-400" key={user.id}>
-                          <td class=" w-1/3 px-6 py-4 font-medium text-violet-50 whitespace-nowrap dark:text-violet-100" className="ranking_font_size">
+                          <td class=" w-1/3 px-6 py-4 font-medium text-violet-50 whitespace-nowrap dark:text-violet-100" >
                             {index < 3 ? (
                               index === 0 ? (
                                 <img src="oro.png" alt="oro" class="w-20" />
@@ -61,8 +61,8 @@ function GetRanking() {
                               index + 1
                             )}
                           </td>
-                          <td class = "w-1/3" className="ranking_font_size">{user.name}</td>
-                          <td class = "w-1/3" className="ranking_font_size">{user.totalScore}</td>
+                          <td class = "w-1/3" >{user.name}</td>
+                          <td class = "w-1/3" >{user.totalScore}</td>
                         </tr>
                       ))}
                     </tbody>

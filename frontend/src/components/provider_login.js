@@ -72,7 +72,7 @@ const LoginForm = () => {
 
   return (
     <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
-      {isLoggedIn ? <p className="ranking_font_size">You are already logged in</p> :
+      {isLoggedIn ? <p>You are already logged in</p> :
         <div class="container h-full w-2/4 p-10">
           <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
             <div class="p-4">

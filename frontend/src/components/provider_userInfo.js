@@ -3,7 +3,7 @@ import { store, actions } from './store'; // import the Redux store
 import React, { useState, useEffect } from 'react';
 import routes from '../index.js';
 import { NavLink } from 'react-router-dom';
-import classNames from "classnames";
+import moment from 'moment';
 
 const UserInfo = () => {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
@@ -13,6 +13,7 @@ const UserInfo = () => {
   const [storeItems, setStoreItems] = useState([]);
   const [boughtItems, setBoughtItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [playedGames, setPlayedGames] = useState([]);
   const userInfo = useSelector((state) => state.data);
   const dispatch = useDispatch();
   const [showSuccessMessagePassword, setShowSuccessMessagePassword] = useState(false);
@@ -78,6 +79,25 @@ const UserInfo = () => {
       }
     }
     fetchBoughtItems();
+
+    async function fetchPlayedGame() {
+      if (isLoggedIn) {
+        try {
+          const response = await fetch(routes.fetchLaravel + `/api/showPlayedGame?userId=${userInfo.id}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          const infoPlayedGame = await response.json();
+          setPlayedGames(infoPlayedGame);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+    fetchPlayedGame();
   }, []);
 
   const changeName = async (e) => {
@@ -199,23 +219,23 @@ const UserInfo = () => {
           <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
             <div class="p-4">
               <div class="md:m-6 md:p-12">
-                <div class="text-center">
+                <div class="text-center text-white">
                   <nav class="backdrop-filter backdrop-blur-l bg-opacity-30 border-b border-gray-200">
                     <div class="flex space-x-4">
 
-                      <li className= {`w-1/4 list-none ${activeTab === "tab1" ? "active" : ""}`}>
+                      <li className={`w-1/4 list-none ${activeTab === "tab1" ? "active" : ""}`}>
                         <a onClick={() => handleTabClick("tab1")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">User Info</a>
                       </li>
 
-                      <li className= {`w-1/4 list-none ${activeTab === "tab2" ? "active" : ""}`}>
+                      <li className={`w-1/4 list-none ${activeTab === "tab2" ? "active" : ""}`}>
                         <a onClick={() => handleTabClick("tab2")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Historial</a>
                       </li>
 
-                      <li className= {`w-1/4 list-none ${activeTab === "tab3" ? "active" : ""}`}>
+                      <li className={`w-1/4 list-none ${activeTab === "tab3" ? "active" : ""}`}>
                         <a onClick={() => handleTabClick("tab3")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Coleccionables</a>
                       </li>
 
-                      <li className= {`w-1/4 list-none ${activeTab === "tab4" ? "active" : ""}`}>
+                      <li className={`w-1/4 list-none ${activeTab === "tab4" ? "active" : ""}`}>
                         <a onClick={() => handleTabClick("tab4")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logros</a>
                       </li>
                     </div>
@@ -227,21 +247,21 @@ const UserInfo = () => {
                       <h2 class="text-white">
                         User Info
                       </h2>
-                      
+
                       <img></img>
-                      <div className="mb-3 mt-md-4">
+                      <div>
                         <div class="text-center text-white">
-                          <p className="ranking_font_size">Name: <h4>{userInfo.name}</h4></p>
-                          <p className="ranking_font_size">Email: <h4>{userInfo.email}</h4></p>
-                          <p className="ranking_font_size">Score: <h4>{userInfo.totalScore}</h4></p>
-                          <p className="ranking_font_size">Jeacstars: <h4>{userInfo.jeacstars}</h4><img class="w-10 h-10" src="JeacstarNF.png"></img></p>
+                          <p>Name: <h4>{userInfo.name}</h4></p>
+                          <p>Email: <h4>{userInfo.email}</h4></p>
+                          <p>Score: <h4>{userInfo.totalScore}</h4></p>
+                          <p>Jeacstars: <h4>{userInfo.jeacstars}</h4><img class="w-10 h-10" src="JeacstarNF.png"></img></p>
                         </div>
 
                         <form onSubmit={changeName}>
                           <div class="border-2 border-fuchsia-600 relative mb-4 mt-10" data-te-input-wrapper-init>
                             <label
                               for="exampleFormControlInput1"
-                              class="text-neutral-400 pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                              class="text-gray-400 pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
                             >Change Name
                             </label>
                             <br></br>
@@ -259,8 +279,7 @@ const UserInfo = () => {
                           <br></br>
                           <div class="border-2 border-fuchsia-600 relative mb-4 " data-te-input-wrapper-init>
                             <label
-                              for="exampleFormControlInput11"
-                              class="text-neutral-400 pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                              class="text-gray-400 pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
                             >Password (Must have 1 capital letter, 1 lowercase letter, 1 number and a minimum length of 8)
                             </label>
                             <br></br>
@@ -277,11 +296,33 @@ const UserInfo = () => {
                     </div>
                   }
 
+                  {activeTab === "tab2" &&
+                    <div>
+                      {isLoading ?
+                        <div>
+                          <h2>Historial</h2>
+                          <br></br>
+                          {playedGames.map((game, userId) => (
+                            <div key={userId}>
+                              <div>
+                                <div>Juego: {game.name}</div>
+                                <div>Puntos: {game.score}</div>
+                                <div>Fecha: {moment(game.created_at).format('DD MMM YYYY HH:mm:ss')}</div>
+                              </div>
+                            </div>
+                          ))}</div> :
+                        <svg aria-hidden="true" class="inline-flex items-center w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                          <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                        </svg>
+                      }
+                    </div>
+                  }
 
                   {isLoading ?
                     <div>
                       {activeTab === "tab3" &&
-                        <div className="mb-3 mt-md-4">
+                        <div>
                           <div style={{ display: 'flex' }}>
                             {
                               purchasedItems.map((item, id) => (
@@ -304,7 +345,7 @@ const UserInfo = () => {
                     </svg>
                   }
 
-                  {activeTab === "tab4" && <div>Content for Tab 4</div>}
+                  {activeTab === "tab4" && <div>NEW FEATURE IN THE NEAR FUTURE</div>}
 
                 </div>
               </div>

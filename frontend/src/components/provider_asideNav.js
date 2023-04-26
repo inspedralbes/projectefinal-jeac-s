@@ -14,7 +14,6 @@ import Game from '../pages/game.js'
 import GetRanking from '../pages/ranking.js'
 import GetGameStore from '../pages/storeItems.js'
 import socketIO from "socket.io-client";
-import Historial from "../pages/historial.js"
 import React, { useState, useEffect } from 'react';
 
 
@@ -112,7 +111,6 @@ function AsideNav() {
                     <Route path="/game" element={<Game />} />
                     <Route path="/ranking" element={<GetRanking />} />
                     <Route path="/store" element={<GetGameStore />} />
-                    <Route path="/historial" element={<Historial />} />
                 </Routes>
             </div>
 

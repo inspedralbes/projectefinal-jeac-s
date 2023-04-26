@@ -3,6 +3,7 @@ import { store, actions } from './store'; // import the Redux store
 import React, { useState, useEffect } from 'react';
 import routes from '../index.js';
 import { NavLink } from 'react-router-dom';
+import classNames from "classnames";
 
 const UserInfo = () => {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
@@ -200,19 +201,19 @@ const UserInfo = () => {
                   <nav class="backdrop-filter backdrop-blur-l bg-opacity-30 border-b border-gray-200">
                     <div class="flex space-x-4">
 
-                      <li className={activeTab === "tab1" ? "active" : ""}>
+                      <li className= {`w-1/4 list-none ${activeTab === "tab1" ? "active" : ""}`}>
                         <a onClick={() => handleTabClick("tab1")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">User Info</a>
                       </li>
 
-                      <li className={activeTab === "tab2" ? "active" : ""}>
+                      <li className= {`w-1/4 list-none ${activeTab === "tab2" ? "active" : ""}`}>
                         <a onClick={() => handleTabClick("tab2")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Historial</a>
                       </li>
 
-                      <li className={activeTab === "tab3" ? "active" : ""}>
+                      <li className= {`w-1/4 list-none ${activeTab === "tab3" ? "active" : ""}`}>
                         <a onClick={() => handleTabClick("tab3")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Coleccionables</a>
                       </li>
 
-                      <li className={activeTab === "tab4" ? "active" : ""}>
+                      <li className= {`w-1/4 list-none ${activeTab === "tab4" ? "active" : ""}`}>
                         <a onClick={() => handleTabClick("tab4")} class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logros</a>
                       </li>
                     </div>
@@ -224,6 +225,7 @@ const UserInfo = () => {
                       <h2 class="text-white">
                         User Info
                       </h2>
+                      
                       <img></img>
                       <div className="mb-3 mt-md-4">
                         <div class="text-center text-white">
@@ -246,7 +248,6 @@ const UserInfo = () => {
                               type="name" placeholder="Enter name" value={name} onChange={(event) => setName(event.target.value)} />
                           </div>
                           <div >{showSuccessMessageName && <p class="text-white">Name change successful!</p>}</div>
-                          <br></br>
                           <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded">
                             Change name
                           </button>

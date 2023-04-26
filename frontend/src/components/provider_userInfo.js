@@ -13,6 +13,7 @@ const UserInfo = () => {
   const [storeItems, setStoreItems] = useState([]);
   const [boughtItems, setBoughtItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingHistorial, setIsLoadingHistorial] = useState(false);
   const [playedGames, setPlayedGames] = useState([]);
   const userInfo = useSelector((state) => state.data);
   const dispatch = useDispatch();
@@ -92,6 +93,7 @@ const UserInfo = () => {
           });
           const infoPlayedGame = await response.json();
           setPlayedGames(infoPlayedGame);
+          setIsLoadingHistorial(true);
         } catch (error) {
           console.error(error);
         }
@@ -298,7 +300,7 @@ const UserInfo = () => {
 
                   {activeTab === "tab2" &&
                     <div>
-                      {isLoading ?
+                      {isLoadingHistorial ?
                         <div>
                           <h2>Historial</h2>
                           <br></br>

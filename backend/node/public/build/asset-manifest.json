@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/static/css/main.0107010f.css",
-    "main.js": "/static/js/main.2ba4f445.js",
+    "main.js": "/static/js/main.c2378ca1.js",
     "static/js/744.70473ffa.chunk.js": "/static/js/744.70473ffa.chunk.js",
     "static/js/787.cda612ba.chunk.js": "/static/js/787.cda612ba.chunk.js",
     "static/media/retroNeo.jpg": "/static/media/retroNeo.5d81dd3e85531f3898ba.jpg",
     "index.html": "/index.html",
     "main.0107010f.css.map": "/static/css/main.0107010f.css.map",
-    "main.2ba4f445.js.map": "/static/js/main.2ba4f445.js.map",
+    "main.c2378ca1.js.map": "/static/js/main.c2378ca1.js.map",
     "744.70473ffa.chunk.js.map": "/static/js/744.70473ffa.chunk.js.map",
     "787.cda612ba.chunk.js.map": "/static/js/787.cda612ba.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0107010f.css",
-    "static/js/main.2ba4f445.js"
+    "static/js/main.c2378ca1.js"
   ]
 }

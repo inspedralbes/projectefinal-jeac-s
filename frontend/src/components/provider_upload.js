@@ -3,15 +3,20 @@ import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstra
 import { useSelector, useDispatch } from 'react-redux';
 import saveAs from 'file-saver';
 
+let pathimagen = '';
 
 const UploadForm = ({ socket }) => {
-    const [name, setName] = useState('')
+    const [nameGame, setName] = useState('')
     const [img, setImg] = useState('')
     const [zip, setZip] = useState('')
     const [description, setDescription] = useState('')
     const [categories, setCategories] = useState([])
     const [error, setError] = useState(null);
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
+
+    const [pathInit, setPathInit] = useState('');
+    const [pathImg, setPathImg] = useState('');
+
 
 
     const [file, setFile] = useState(null);
@@ -21,20 +26,29 @@ const UploadForm = ({ socket }) => {
     const [fileData, setFileData] = useState(null);
 
     useEffect(() => {
-
-        // Receive file data from server
-
-    }, []);
-
-    useEffect(() => {
         socket.on('upload_error', function (msg) {
-            console.log('Error!', msg);
+            console.log('Node msg', msg);
         });
-    });
+        
+        socket.on('extraction_complete', function (path) {
+            console.log('Path', path);
+            setPathInit(path.initGame);
+            pathimagen = path.img;
+            console.log("AAAAAA", pathimagen);
+            setPathImg(path.img);
+            console.log("Nombre juego", nameGame);
+            hacerFetch();
 
+        });
+        return () => {
+            socket.off('extraction_complete');
+        };
+
+    }, [pathInit, pathImg]);
 
     function UploadGame() {
         let file = document.getElementById("uploadZip").files[0];
+        var fileImagen = document.getElementById("uploadImg").files[0];
 
         // const formData = new FormData();
         // formData.append('file', file);
@@ -45,6 +59,9 @@ const UploadForm = ({ socket }) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
 
+        const reader2 = new FileReader();
+        reader2.readAsDataURL(fileImagen);
+
         reader.onload = (event) => {
             const fileData = {
                 name: file.name,
@@ -52,14 +69,23 @@ const UploadForm = ({ socket }) => {
                 data: event.target.result,
             };
 
-            const ZipFile = {
-                name: name,
-                file: fileData
-            }
-            console.log("File Name", ZipFile);
+            reader2.onload = (event) => {
+                const fileDataImg = {
+                    name: fileImagen.name,
+                    type: fileImagen.type,
+                    data: event.target.result,
+                };
 
-            socket.emit('file-upload', ZipFile);
-        };
+                const Files = {
+                    name: nameGame,
+                    zip: fileData,
+                    img: fileDataImg
+                }
+                console.log("File Name", Files);
+
+                socket.emit('file-upload', Files);
+            }
+        }
     }
 
     /**
@@ -67,32 +93,31 @@ const UploadForm = ({ socket }) => {
      * @param {Funcion para convertir el ZIP en BLOB} dataURI 
      * @returns 
      */
-    // function dataURItoBlob(dataURI) {
-    //     var byteString = atob(dataURI.split(',')[1]);
-    //     var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-    //     var ab = new ArrayBuffer(byteString.length);
-    //     var ia = new Uint8Array(ab);
-    //     for (var i = 0; i < byteString.length; i++) {
-    //         ia[i] = byteString.charCodeAt(i);
-    //     }
-    //     var blob = new Blob([ab], { type: mimeString });
-    //     return blob;
-    // }
+    function dataURItoBlob(dataURI) {
+        var byteString = atob(dataURI.split(',')[1]);
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        var blob = new Blob([ab], { type: mimeString });
+        return blob;
+    }
+
     // function saveBlobs(blob, type) {
-    //     let blobZip;
+    //     //let blobZip;
     //     let blobImg;
-    //     var fileImagen = document.getElementById("uploadImg").files[0];
+    //     //var fileImagen = document.getElementById("uploadImg").files[0];
 
-    //     blobZip = blob;
-    //     console.log("blobZip", blobZip);
-
-
+    //     blobImg = blob;
+    //     //console.log("blobZip", blobZip);
 
     //     var imagen = new FileReader();
 
     //     imagen.onload = async function () {
     //         blobImg = dataURItoBlob(imagen.result);
-    //         hacerFetch(blobZip, blobImg);
+    //         //hacerFetch(blobZip, blobImg);
 
     //     };
 
@@ -100,89 +125,98 @@ const UploadForm = ({ socket }) => {
 
 
 
-    // if (type == "zip"){
-    //     blobZip = blob; 
-    //     console.log("blobZip", blobZip);
-    //     console.log("blob", blob);
-    // }
-    // else {
-    //     blobImg = blob; 
-    //     console.log("blobImg", blobImg);
-    //     console.log("blob", blob);
-    // }
-
-    // if (blobImg != null && blobZip != null){
-    //     hacerFetch(blobZip, blobImg);
-    //     console.log("VV");
-
-    // }
-    // else{
-    //     console.log("F");
-    // }
-
-
-    // const onClick = async () => {
-
-    //     var file = document.getElementById("uploadZip").files[0];
-    //     var fileImagen = document.getElementById("uploadImg").files[0];
-    //     var reader = new FileReader();
-    //     // var imagen = new FileReader();
-
-    //     reader.onload = function () {
-    //         let blobresult = dataURItoBlob(reader.result)
-    //         saveBlobs(blobresult, 'zip');
-
-    //     };
-    //     // imagen.onload = async function () {
-    //     //     let blobresult = dataURItoBlob(imagen.result)
-    //     //     await saveBlobs(blobresult, 'img');
-
-    //     // };
-    //     reader.readAsDataURL(file);
-    //     // imagen.readAsDataURL(fileImagen);
-
-    // }
-    // async function hacerFetch(blobZip, blobImg) {
-    //     try {
-    //         console.log("Zip", blobZip);
-    //         console.log("Img", blobImg);
-
-    //         let fecha = new Date();
-    //         let diaActual = fecha.getDate();
-    //         let mesActual = fecha.getMonth();
-    //         let añoActual = fecha.getFullYear()
-    //         let minutos = fecha.getMinutes();
-    //         let segundos = fecha.getSeconds();
-    //         let milisegundos = fecha.getMilliseconds();
-
-    //         let nombreArchivo = name + "_" + diaActual + "/" + mesActual + "/" + añoActual + "/" + minutos + "/" + segundos + "/" + milisegundos;
-    //         console.log(nombreArchivo);
-
-    //         console.log("frefer", blobZip);
-    //         const formData = new FormData();
-    //         formData.append('name', name);
-    //         formData.append('img', blobImg, img);
-    //         formData.append('zip', blobZip, nombreArchivo);
-    //         formData.append('description', description);
-    //         const response = await fetch('http://localhost:8000/api/upload', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Accept': '*/*'
-    //             },
-    //             body: formData,
-    //         });
-
-    //         if (!response.ok) {
-    //             throw new Error(response.statusText);
-    //         }
-
-    //         const data = await response.json();
-    //         console.log(data);
-    //     } catch (error) {
-    //         setError(error);
-
+    //     if (type == "zip") {
+    //         blobZip = blob;
+    //         console.log("blobZip", blobZip);
+    //         console.log("blob", blob);
+    //     }
+    //     else {
+    //         blobImg = blob;
+    //         console.log("blobImg", blobImg);
+    //         console.log("blob", blob);
     //     }
 
+    //     if (blobImg != null && blobZip != null) {
+    //         hacerFetch(blobZip, blobImg);
+    //         console.log("VV");
+
+    //     }
+    //     else {
+    //         console.log("F");
+    //     }
+
+    // }
+
+    const onClick = async () => {
+
+        //var file = document.getElementById("uploadZip").files[0];
+        var fileImagen = document.getElementById("uploadImg").files[0];
+        var reader = new FileReader();
+        // var imagen = new FileReader();
+
+        reader.onload = function () {
+            let blobresult = dataURItoBlob(reader.result)
+            //saveBlobs(blobresult, 'img');
+            hacerFetch(blobresult);
+
+        };
+        // imagen.onload = async function () {
+        //     let blobresult = dataURItoBlob(imagen.result)
+        //     await saveBlobs(blobresult, 'img');
+
+        // };
+        reader.readAsDataURL(fileImagen);
+        // imagen.readAsDataURL(fileImagen);
+
+    }
+    async function hacerFetch() {
+        try {
+            //console.log("Zip", blobZip);
+            //console.log("Img", blobImg);
+
+            // let fecha = new Date();
+            // let diaActual = fecha.getDate();
+            // let mesActual = fecha.getMonth();
+            // let añoActual = fecha.getFullYear()
+            // let minutos = fecha.getMinutes();
+            // let segundos = fecha.getSeconds();
+            // let milisegundos = fecha.getMilliseconds();
+
+            // let nombreArchivo = name + "_" + diaActual + "/" + mesActual + "/" + añoActual + "/" + minutos + "/" + segundos + "/" + milisegundos;
+            // console.log(nombreArchivo);
+
+            //console.log("frefer", blobZip);
+
+            let img = "http://localhost:7878" + pathImg;
+            let script = "http://localhost:7878" + pathInit;
+            console.log("Name", nameGame);
+            console.log("path img", pathImg);
+            console.log("path script", script);
+
+            const formData = new FormData();
+            formData.append('name', nameGame);
+            formData.append('img', img);
+            //formData.append('zip', blobZip, nombreArchivo);
+            formData.append('description', description);
+            formData.append('path', script);
+
+            const response = await fetch('http://localhost:8000/api/upload', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*'
+                },
+                body: formData,
+            });
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            setError(error);
+
+        }
+    }
     return (
         <div>
             {isLoggedIn ?
@@ -237,7 +271,10 @@ const UploadForm = ({ socket }) => {
                                             <Form>
                                                 <Form.Group controlId="formBasicNameGame">
                                                     <Form.Label className='text-light'>Name Game</Form.Label>
-                                                    <Form.Control type='text' placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+                                                    <Form.Control type='text' placeholder="Name" value={nameGame} onChange={(e) => {setName(e.target.value)
+                                                console.log("Input cambia", nameGame, "VAlue: ", e.target.value);    
+                                                }
+                                                } />
                                                 </Form.Group>
                                                 <br></br>
 
@@ -302,4 +339,4 @@ const UploadForm = ({ socket }) => {
     );
 
 }
-export default UploadForm
+export default UploadForm;

@@ -79,22 +79,22 @@ socketIO.on('connection', (socket) => {
 
     if (file.name != '') {
       const NameFolderExist = path.join('public', 'GamesFiles', file.name);
-      const containsImagesFolder = fs.existsSync(NameFolderExist);
+      const existNameFolder = fs.existsSync(NameFolderExist);
 
-      if (!containsImagesFolder) {
+      if (!existNameFolder) {
         const buffer = Buffer.from(
-          file.file.data.replace(/^data:([A-Za-z-+/]+);base64,/, ''),
+          file.zip.data.replace(/^data:([A-Za-z-+/]+);base64,/, ''),
           'base64'
         );
-  
-        const filename = `${Date.now()}-${file.file.name}`;
+
+        const zipName = `${Date.now()}-${file.zip.name}`;
   
         var dt = new Date();
         let time = dt.getDate() + "_" + (dt.getMonth() + 1) + "_" + dt.getFullYear()
   
         console.log("time", time);
   
-        const filepath = `public/GamesFiles/${filename}`;
+        const filepath = `public/GamesFiles/${zipName}`;
   
         fs.writeFile(filepath, buffer, (error) => {
           if (error) {
@@ -102,7 +102,7 @@ socketIO.on('connection', (socket) => {
             return;
           }
   
-          console.log(`File ${filename} saved`);
+          console.log(`File ${zipName} saved`);
   
   
           console.log('File saved to disk');
@@ -126,12 +126,35 @@ socketIO.on('connection', (socket) => {
                 const containsImagesFolder = fs.existsSync(imagesFolderPath);
                 const containsScriptFolder = fs.existsSync(scriptsFolderPath);
   
-                console.log(`File ${filename} contains initGame.js: ${containsInitGame}`);
-                console.log(`File ${filename} contains images folder: ${containsImagesFolder}`);
-                console.log(`File ${filename} contains scripts folder: ${containsScriptFolder}`);
+                console.log(`File ${zipName} contains initGame.js: ${containsInitGame}`);
+                console.log(`File ${zipName} contains images folder: ${containsImagesFolder}`);
+                console.log(`File ${zipName} contains scripts folder: ${containsScriptFolder}`);
   
                 if (containsInitGame & containsImagesFolder & containsScriptFolder) {
                   console.log("Zip correct");
+
+                  const imgbuffer = Buffer.from(
+                    file.img.data.replace(/^data:([A-Za-z-+/]+);base64,/, ''),
+                    'base64'
+                  );
+                  
+                  const folderPath = 'public/GamesImages/' + file.name;  
+                  const imgPath = `public/GamesImages/${file.name}/${file.img.name}`;
+
+                  fs.mkdir(folderPath, { recursive: true }, (err) => {
+                    if (err) {
+                      console.error(err);
+                      return;
+                    }
+                    console.log(`La carpeta ha sido creada.`);
+
+                    fs.writeFile(imgPath, imgbuffer, (error) => {
+                      if (error) {
+                        console.error(error);
+                        return;
+                      }
+                    });
+                  });
                 }
                 else {
                   console.log("Error validacion");
@@ -144,25 +167,25 @@ socketIO.on('connection', (socket) => {
                   });
                 }
   
-                fs.unlink(`./public/GamesFiles/${filename}`, (err) => {
+                fs.unlink(`./public/GamesFiles/${zipName}`, (err) => {
                   if (err) throw console.log("AAAA", err);;
                   console.log('path/file.txt was deleted');
                 });
 
-                socket.emit("upload_error", "Juego subido correctamente");
+                let routes = {
+                  initGame: `/GamesFiles/${file.name}/initGame.js`,
+                  img: `/GamesImages/${file.name}/${file.img.name}`
+                }
+
+                socket.emit("extraction_complete", routes);
 
               });
             });
         });
-
       }
-
       else {
         console.log("Nombre no disponible");
-
       }
-
-  
     }
     else {
       console.log("Nombre vacio");

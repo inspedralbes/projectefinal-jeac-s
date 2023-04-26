@@ -10,7 +10,7 @@ import './App.css';
 
 const routes = {
   fetchLaravel: "http://jeacs.alumnes.inspedralbes.cat/../laravel/public",
-  wsNode: "http://jeacs.alumnes.inspedralbes.cat/node",
+  wsNode: "http://jeacs.alumnes.inspedralbes.cat/../node/public",
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

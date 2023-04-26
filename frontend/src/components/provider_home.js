@@ -8,7 +8,7 @@ function Home() {
     return (
         <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed" >
             <div class="text-center">
-                <img src="LogoBuenoSNB.PNG" class="inline-flex items-center rounded-full scale-125"></img>
+                <img src="LogoBuenoSNB.png" class="inline-flex items-center rounded-full scale-125"></img>
 
                 <p class="mb-6 mt-6 text-lg font-normal text-white lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
                 {t('textoLanding')}

@@ -319,18 +319,11 @@ const UserInfo = () => {
                     </div>
                   }
 
-<<<<<<< HEAD
-                  {isLoading ?
-                    <div>
-                      {activeTab === "tab3" &&
-                        <div>
-=======
                   <div>
                     {activeTab === "tab3" &&
                       <div className="mb-3 mt-md-4">
                         {isLoading ?
 
->>>>>>> develop
                           <div style={{ display: 'flex' }}>
                             {
                               purchasedItems.map((item, id) => (

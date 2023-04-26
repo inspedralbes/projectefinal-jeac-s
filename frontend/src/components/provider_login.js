@@ -23,6 +23,7 @@ const LoginForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        mode: 'same-origin',
         body: JSON.stringify({ email, password }),
       });
 

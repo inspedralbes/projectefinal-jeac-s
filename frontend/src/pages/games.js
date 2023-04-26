@@ -22,6 +22,7 @@ class Games extends Component {
      try {
         const response = await fetch(`${routes.fetchLaravel}/api/gamesList`, {
             method: 'GET',
+            mode: 'same-origin',
         });
 
         if (!response.ok) {

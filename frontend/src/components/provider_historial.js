@@ -21,6 +21,7 @@ const Historial = () => {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
             },
+            mode: 'same-origin',
           });
           const infoPlayedGame = await response.json();
           console.log(infoPlayedGame);

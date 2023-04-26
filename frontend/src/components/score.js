@@ -17,6 +17,7 @@ async function endGame(totalScore) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
+          mode: 'same-origin',
           body: JSON.stringify({ totalScore }),
         });
         const data = await response.json();
@@ -29,6 +30,7 @@ async function endGame(totalScore) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
+          mode: 'same-origin',
           body: JSON.stringify({ userId, gameId, score }),
         });
 

@@ -21,6 +21,7 @@ const Tienda = () => {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
             },
+            mode: 'same-origin',
           });
           const storeItems = await response.json();
           console.log(storeItems);
@@ -41,6 +42,7 @@ const Tienda = () => {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
             },
+            mode: 'same-origin',
           });
           const boughtItems = await response.json();
           console.log(boughtItems);
@@ -63,6 +65,7 @@ const Tienda = () => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
+          mode: 'same-origin',
           body: JSON.stringify({ userId, itemId }),
         });
         const b = await a.json();

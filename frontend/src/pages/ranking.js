@@ -14,6 +14,7 @@ function GetRanking() {
           headers: {
             'Content-Type': 'application/json',
           },
+          mode: 'same-origin',
         });
         const data = await response.json();
         setUsers(data);

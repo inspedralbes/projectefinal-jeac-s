@@ -23,6 +23,7 @@ function Signin() {
         headers: {
           'Content-Type': 'application/json',
         },
+        mode: 'same-origin',
         body: JSON.stringify({ name, email, password }),
       });
 

@@ -23,6 +23,7 @@ const UserInfo = () => {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
             },
+            mode: 'same-origin',
           });
           const data = await response.json();
           dispatch(actions.saveData(data));
@@ -44,6 +45,7 @@ const UserInfo = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
+        mode: 'same-origin',
         body: JSON.stringify({ name }),
       });
       const data = await response.json();
@@ -64,6 +66,7 @@ const UserInfo = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
+        mode: 'same-origin',
         body: JSON.stringify({ password }),
       });
       const data = await response.json();

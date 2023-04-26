@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { store, actions } from './store'; // import the Redux store
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Form, Button, Container } from 'react-bootstrap';
 import routes from '../index.js';
 import { NavLink } from 'react-router-dom';
 
@@ -222,45 +221,58 @@ const UserInfo = () => {
 
                   {activeTab === "tab1" &&
                     <div>
-                      <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
+                      <h2 class="text-white">
                         User Info
                       </h2>
+                      <img></img>
                       <div className="mb-3 mt-md-4">
-                        <div class="text-center">
+                        <div class="text-center text-white">
                           <p className="ranking_font_size">Name: <h4>{userInfo.name}</h4></p>
                           <p className="ranking_font_size">Email: <h4>{userInfo.email}</h4></p>
                           <p className="ranking_font_size">Score: <h4>{userInfo.totalScore}</h4></p>
                           <p className="ranking_font_size">Jeacstars: <h4>{userInfo.jeacstars}</h4><img class="w-10 h-10" src="JeacstarNF.png"></img></p>
                         </div>
 
-                        <div>
-                          <Form onSubmit={changeName}>
-                            <Form.Group controlId="formBasicName"><br></br>
-                              <Form.Label>Name</Form.Label>
-                              <Form.Control type="name" placeholder="Enter name" value={name} onChange={(event) => setName(event.target.value)}></Form.Control>
-                            </Form.Group>
-                            <Button variant="primary" type="submit" >Change Name
-                            </Button>
-                            <div className="texto_verde">{showSuccessMessageName && <p>Name change successful!</p>}</div>
-                          </Form>
-                        </div>
+                        <form onSubmit={changeName}>
+                          <div class="border-2 border-fuchsia-600 relative mb-4 mt-10" data-te-input-wrapper-init>
+                            <label
+                              for="exampleFormControlInput1"
+                              class="text-neutral-400 pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                            >Change Name
+                            </label>
+                            <br></br>
+                            <input
+                              class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                              type="name" placeholder="Enter name" value={name} onChange={(event) => setName(event.target.value)} />
+                          </div>
+                          <div >{showSuccessMessageName && <p class="text-white">Name change successful!</p>}</div>
+                          <br></br>
+                          <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded">
+                            Change name
+                          </button>
+                        </form>
 
-                        <div>
-                          <Form onSubmit={changePassword}><br></br>
-                            <Form.Group controlId="formBasicPassword">
-                              <Form.Label>Password (Must have 1 capital letter, 1 lowercase letter, 1 number and a minimum length of 8)</Form.Label>
-                              <Form.Control type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
-                            </Form.Group>
-                            <Button variant="primary" type="submit" >Change Password
-                            </Button>
-                            <div className="texto_verde">{showSuccessMessagePassword && <p>Password change successful!</p>}</div>
-                          </Form>
-                        </div>
+                        <form onSubmit={changePassword}>
+                          <br></br>
+                          <div class="border-2 border-fuchsia-600 relative mb-4 " data-te-input-wrapper-init>
+                            <label
+                              for="exampleFormControlInput11"
+                              class="text-neutral-400 pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                            >Password (Must have 1 capital letter, 1 lowercase letter, 1 number and a minimum length of 8)
+                            </label>
+                            <br></br>
+                            <input
+                              class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 text-white"
+                              type="password" placeholder="Password" value={password} onChange={(event) => setPassword(event.target.value)} required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"></input>
+                          </div>
+                          <div>{showSuccessMessagePassword && <p class="text-white">Password change successful!</p>}</div>
+                          <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded">
+                            Change password
+                          </button>
+                        </form>
                       </div>
                     </div>
                   }
-
-
 
                   {activeTab === "tab3" &&
                     <div className="mb-3 mt-md-4">
@@ -268,12 +280,12 @@ const UserInfo = () => {
                         {
                           purchasedItems.map((item, id) => (
                             <div key={id} style={{ marginRight: '10px' }}>
-                              <h2>Item: {item.name}</h2>
+                              <h2 class="text-white">Item: {item.name}</h2>
                               <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
-                              <p>Description: {item.description}</p>
-                              <p>Price: {item.price * 0.5} <img class="w-10 h-10" src="JeacstarNF.png"></img></p>
-                              <button id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button><br></br>
-                              <button id={item.id} onClick={() => { setAvatar(userInfo.id, item.id) }}>Set as Avatar</button>
+                              <p class="text-white">Description: {item.description}</p>
+                              <p class="text-white">Price: {item.price * 0.5} <img class="w-10 h-10" src="JeacstarNF.png"></img></p>
+                              <button class="text-white" id={item.id} onClick={() => sellItem(userInfo.id, item.id)}>Sell Item</button><br></br>
+                              <button class="text-white" id={item.id} onClick={() => { setAvatar(userInfo.id, item.id) }}>Set as Avatar</button>
                             </div>
                           ))
                         }

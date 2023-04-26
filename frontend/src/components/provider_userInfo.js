@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import routes from '../index.js';
 import { NavLink } from 'react-router-dom';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 
 const UserInfo = () => {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
@@ -21,6 +22,7 @@ const UserInfo = () => {
   const dispatch = useDispatch();
   const [showSuccessMessagePassword, setShowSuccessMessagePassword] = useState(false);
   const [showSuccessMessageName, setShowSuccessMessageName] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function fetchUsers() {
@@ -225,8 +227,8 @@ const UserInfo = () => {
         if (matchingItems.length > 0) {
           const userAvatarItem = avatarStore.find(item => item.id === matchingItems[0].itemId);
           imgAvatar = userAvatarItem.image_url;
-        } 
-      } 
+        }
+      }
     }
     return imgAvatar
   }
@@ -378,17 +380,21 @@ const UserInfo = () => {
         :
         <div>
           <div class="p-10 opacity-90 text-center bg-purple-300 rounded-lg">
-            <p class="mb-6 text-lg font-normal text-fuchsia-950 lg:text-2xl sm:px-16 xl:px-48 dark:text-gray-400"> No estas registrado :( </p>
-            <p class="mb-6 text-lg font-normal text-fuchsia-950 lg:text-2xl sm:px-16 xl:px-48 dark:text-gray-400">Si quieres customizar tu perfil INICIA SESION o REGISTRATE!</p>
+            <p class="mb-6 text-lg font-normal text-fuchsia-950 lg:text-2xl sm:px-16 xl:px-48 dark:text-gray-400">
+              {t('profileNotLoggedIn')}
+            </p>
+            <p class="mb-6 text-lg font-normal text-fuchsia-950 lg:text-2xl sm:px-16 xl:px-48 dark:text-gray-400">
+            {t('profileNotLoggedIn2')}
+            </p>
             <NavLink to="/login">
               <a href="#" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-white bg-emerald-700 rounded-lg hover:bg-violet-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
-                Inicia Sesion!
+              {t('logIn')}
               </a>
             </NavLink>
             <a> </a>
             <NavLink to="/signin">
               <a href="#" class=" inline-flex items-center justify-center px-5 py-3 text-base font-medium text-white bg-emerald-700 rounded-lg hover:bg-violet-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
-                Registrate!
+              {t('signIn')}
               </a>
             </NavLink>
           </div>

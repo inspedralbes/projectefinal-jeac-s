@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import routes from '../index.js';
+import { useTranslation } from 'react-i18next';
 
 const Tienda = () => {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
@@ -9,6 +10,7 @@ const Tienda = () => {
   const [boughtItems, setBoughtItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const userInfo = useSelector((state) => state.data);
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function fetchStoreItems() {
@@ -112,7 +114,10 @@ const Tienda = () => {
             <p>Loading...</p>
           }
         </div> :
-        <p>You need to be logged in</p>
+        <p>
+          {t('mensajeErrorNotLoggedInStore')}
+
+        </p>
       }
     </div>
   );

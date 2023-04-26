@@ -15,6 +15,8 @@ const UserInfo = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [playedGames, setPlayedGames] = useState([]);
   const userInfo = useSelector((state) => state.data);
+  const avatarUserInfo = useSelector((state) => state.boughtItems);
+  const avatarStore = useSelector((state) => state.storeItems);
   const dispatch = useDispatch();
   const [showSuccessMessagePassword, setShowSuccessMessagePassword] = useState(false);
   const [showSuccessMessageName, setShowSuccessMessageName] = useState(false);
@@ -212,6 +214,21 @@ const UserInfo = () => {
     setActiveTab(tab); // update active tab based on the tab clicked
   };
 
+  function avatar() {
+    let imgAvatar = "";
+
+    if (isLoggedIn) {
+      if (avatarUserInfo.length > 0) {
+        const matchingItems = avatarUserInfo.filter(item => item.avatar && item.userId === userInfo.id);
+        if (matchingItems.length > 0) {
+          const userAvatarItem = avatarStore.find(item => item.id === matchingItems[0].itemId);
+          imgAvatar = userAvatarItem.image_url;
+        } 
+      } 
+    }
+    return imgAvatar
+  }
+
   return (
     <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
       {isLoggedIn ?
@@ -244,10 +261,10 @@ const UserInfo = () => {
 
                   {activeTab === "tab1" &&
                     <div>
+                      <img style={{ width: '150px', height: '150px' }} src={avatar()} alt=""></img>
                       <h2 class="text-white">
                         User Info
                       </h2>
-
                       <img></img>
                       <div>
                         <div class="text-center text-white">

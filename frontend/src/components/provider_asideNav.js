@@ -15,6 +15,7 @@ import GetRanking from '../pages/ranking.js'
 import GetGameStore from '../pages/storeItems.js'
 import socketIO from "socket.io-client";
 import React, { useState, useEffect } from 'react';
+import routes from '../index';
 
 
 function AsideNav() {
@@ -23,18 +24,14 @@ function AsideNav() {
     const storeItems = useSelector((state) => state.storeItems);
     const boughtItems = useSelector((state) => state.boughtItems);
     const userInfo = useSelector((state) => state.data);
-    const routes = {
-        fetchLaravel: "http://localhost:8000",
-        wsNode: "http://localhost:7878",
-    };
-
+   
     var socket = socketIO(routes.wsNode, {
         withCredentials: true,
         cors: {
             origin: "*",
             credentials: true,
         },
-        path: "/node/",
+        path: "/node/public/",
         transports: ["websocket"],
     });
 

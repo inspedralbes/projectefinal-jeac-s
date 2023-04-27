@@ -55,10 +55,10 @@ const host = "0.0.0.0";
 
 const socketIO = new Server(server, {
     cors: {
-      origin: true,
+      origin: "*",
       credentials: true,
     },
-    path: "/node/",
+    path: "/node/public/",
   });
 
 app.use((req, res, next) => {

@@ -10,7 +10,7 @@
 // const bodyParser = require('body-parser');
 //const http = require("http");
 
-import  express from "express";
+import express from "express";
 import unzipper from "unzipper";
 
 import path from "path";
@@ -54,12 +54,12 @@ const host = "0.0.0.0";
 // });
 
 const socketIO = new Server(server, {
-    cors: {
-      origin: "*",
-      credentials: true,
-    },
-    path: "/node/public/",
-  });
+  cors: {
+    origin: "*",
+    credentials: true,
+  },
+  path: "/node/public/",
+});
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
@@ -100,24 +100,24 @@ socketIO.on('connection', (socket) => {
           const initGamePath = path.join('extractedFiles', 'initGame.js');
           const imagesFolderPath = path.join('extractedFiles', 'images');
           const scriptsFolderPath = path.join('extractedFiles', 'scripts');
-    
+
           fs.readFile(filepath, 'utf-8', (error, data) => {
             if (error) {
               console.error(error);
               return;
             }
-    
+
             const containsInitGame = data.includes('initGame.js');
             const containsImagesFolder = fs.existsSync(imagesFolderPath);
             const containsScriptFolder = fs.existsSync(scriptsFolderPath);
-    
+
             console.log(`File ${filename} contains initGame.js: ${containsInitGame}`);
             console.log(`File ${filename} contains images folder: ${containsImagesFolder}`);
             console.log(`File ${filename} contains scripts folder: ${containsScriptFolder}`);
-            
+
             if (containsInitGame & containsImagesFolder & containsScriptFolder) {
               console.log("Zip correct");
-    
+
               const filePath = path.join('extractedFiles', 'initGame.js');
               const fileName = path.parse(filePath).name;
               fs.readFile(filePath, (err, data) => {
@@ -127,7 +127,7 @@ socketIO.on('connection', (socket) => {
                 }
                 console.log("filename", fileName);
                 console.log("datda", data);
-    
+
                 let data3 = [
                   {
                     name: fileName,
@@ -138,7 +138,7 @@ socketIO.on('connection', (socket) => {
               });
             }
           });
-          
+
         });
 
       //const filePath = req.file.path;

@@ -32,7 +32,7 @@ function load() {
 
     const scriptUrl = routes.wsNode + '/hola.txt';
 
-fetch(`${routes.fetchNode}/BallGame/initGame.js`, {
+fetch(`${routes.wsNode}/BallGame/initGame.js`, {
     method: 'GET',
     mode: 'same-origin',
 })

@@ -105,7 +105,7 @@ function AsideNav() {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/signin" element={<Signin />} />
                     <Route path="/login" element={<LoginForm />} />
-                    <Route path="/game" element={<Game />} />
+                    <Route path="/game" element={<Game socket={socket}/>} />
                     <Route path="/ranking" element={<GetRanking />} />
                     <Route path="/store" element={<GetGameStore />} />
                 </Routes>

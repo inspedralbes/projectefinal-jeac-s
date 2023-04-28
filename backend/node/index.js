@@ -190,50 +190,8 @@ socketIO.on('connection', (socket) => {
     else {
       console.log("Nombre vacio");
     }
-
-    //const filePath = req.file.path;
-
-    // const filePath = `extractedFiles/aaaa`;
-    // console.log("filePath", filePath);
-    // console.log("Ffile", file.path);
-    // fse.move(file.path, filePath, (err) => {
-    //   if (err) {
-    //     console.error('Error uploading file', err);
-    //     return;
-    //   }
-
-    //   fs.createReadStream(filePath)
-    //     .pipe(unzipper.Parse())
-    //     .on('entry', function (entry) {
-    //       const fileName = entry.path;
-
-    //       // check if the entry is the initGame.js file
-    //       if (fileName === 'initGame.js') {
-    //         console.log('initGame.js file exists!');
-    //         // do something with the file
-    //       }
-    //       else {
-    //           console.log('initGame.js file dont exists!');
-
-    //       }
-
-    //       // auto detect if it is a directory or a file
-    //       const type = entry.type; // 'Directory' or 'File'
-
-    //       // if it is a file, extract it to disk
-    //       if (type === 'File') {
-    //         const outputFilePath = `extractedFiles/${fileName}`;
-
-    //         entry.pipe(fs.createWriteStream(outputFilePath));
-    //       } else {
-    //         entry.autodrain();
-    //       }
-    //     })
-    //     .on('finish', () => {
-    //       console.log('Extraction complete!');
-    //     });
-
   });
+
 });
 
 server.listen(PORT, host, () => {

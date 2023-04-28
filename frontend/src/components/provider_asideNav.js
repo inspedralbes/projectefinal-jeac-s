@@ -31,7 +31,7 @@ function AsideNav() {
             origin: "*",
             credentials: true,
         },
-        path: "/node/public/",
+        path: "/node/",
         transports: ["websocket"],
     });
 

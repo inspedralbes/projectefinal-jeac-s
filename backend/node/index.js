@@ -58,7 +58,7 @@ const socketIO = new Server(server, {
     origin: "*",
     credentials: true,
   },
-  path: "/node/public/",
+  path: "/node/",
 });
 
 app.use((req, res, next) => {

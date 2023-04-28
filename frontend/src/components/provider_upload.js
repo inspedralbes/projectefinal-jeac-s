@@ -5,6 +5,9 @@ import saveAs from 'file-saver';
 import { useTranslation } from 'react-i18next';
 
 let pathimagen = '';
+let gameNamee = '';
+let descriptionGame = '';
+let pathScript = '';
 
 const UploadForm = ({ socket }) => {
     const [nameGame, setName] = useState('')
@@ -15,15 +18,9 @@ const UploadForm = ({ socket }) => {
     const [error, setError] = useState(null);
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const { t } = useTranslation();
-
     const [pathInit, setPathInit] = useState('');
     const [pathImg, setPathImg] = useState('');
-
-
-
     const [file, setFile] = useState(null);
-
-
     const [fileName, setFileName] = useState(null);
     const [fileData, setFileData] = useState(null);
 
@@ -33,12 +30,11 @@ const UploadForm = ({ socket }) => {
         });
         
         socket.on('extraction_complete', function (path) {
+            pathScript = path.initGame;
             console.log('Path', path);
-            setPathInit(path.initGame);
+
             pathimagen = path.img;
             console.log("AAAAAA", pathimagen);
-            setPathImg(path.img);
-            console.log("Nombre juego", nameGame);
             hacerFetch();
 
         });
@@ -46,7 +42,7 @@ const UploadForm = ({ socket }) => {
             socket.off('extraction_complete');
         };
 
-    }, [pathInit, pathImg]);
+    }, []);
 
     function UploadGame() {
         let file = document.getElementById("uploadZip").files[0];
@@ -57,6 +53,8 @@ const UploadForm = ({ socket }) => {
 
         // console.log("formData", formData);
         // console.log("file", file);
+        gameNamee = document.getElementById('nameGamee').value;
+        descriptionGame = document.getElementById('descriptionGamee').value;
 
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -189,17 +187,13 @@ const UploadForm = ({ socket }) => {
 
             //console.log("frefer", blobZip);
 
-            let img = "http://localhost:7878" + pathImg;
-            let script = "http://localhost:7878" + pathInit;
-            console.log("Name", nameGame);
-            console.log("path img", pathImg);
-            console.log("path script", script);
-
+            let img = "http://localhost:7878" + pathimagen;
+            let script = "http://localhost:7878" + pathScript;
             const formData = new FormData();
-            formData.append('name', nameGame);
+            formData.append('name', gameNamee);
             formData.append('img', img);
             //formData.append('zip', blobZip, nombreArchivo);
-            formData.append('description', description);
+            formData.append('description', descriptionGame);
             formData.append('path', script);
 
             const response = await fetch('http://localhost:8000/api/upload', {
@@ -271,9 +265,9 @@ const UploadForm = ({ socket }) => {
                                         </h2>
                                         <div className="mb-3">
                                             <Form>
-                                                <Form.Group controlId="formBasicNameGame">
+                                                <Form.Group>
                                                     <Form.Label className='text-light'>Name Game</Form.Label>
-                                                    <Form.Control type='text' placeholder="Name" value={nameGame} onChange={(e) => {setName(e.target.value)
+                                                    <Form.Control id="nameGamee" type='text' placeholder="Name" value={nameGame} onChange={(e) => {setName(e.target.value)
                                                 console.log("Input cambia", nameGame, "VAlue: ", e.target.value);    
                                                 }
                                                 } />
@@ -290,12 +284,12 @@ const UploadForm = ({ socket }) => {
                                                     <Form.Control id='uploadZip' type='file' accept='.zip' value={zip} onChange={(e) => setZip(e.target.value)} />
                                                 </Form.Group><br></br>
 
-                                                <Form.Group controlId="formBasicDescription">
+                                                <Form.Group>
                                                     <Form.Label className='text-light'>Description</Form.Label>
-                                                    <Form.Control placeholder="Add a description" rows='5' cols='50' value={description} onChange={(e) => setDescription(e.target.value)} />
+                                                    <Form.Control id="descriptionGamee" placeholder="Add a description" rows='5' cols='50' value={description} onChange={(e) => setDescription(e.target.value)} />
                                                 </Form.Group><br></br>
 
-                                                <Form.Group controlId="formBasicCategories">
+                                                <Form.Group>
                                                     <Form.Label className='text-light'>Categories</Form.Label>
                                                     {['checkbox'].map((type) => (
                                                         <div key={`inline-${type}`} className="mb-3 text-light">

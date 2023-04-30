@@ -56,17 +56,7 @@ function Navbar() {
             </div>
           </div>
           {isLoggedIn ?
-            (<div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-              <div class="relative ml-3">
-                <div>
-                  <button type="button" class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true" data-dropdown-toggle="dropdown">
-                    <span class="sr-only">Open user menu</span>
-
-                  </button>
-                </div>
-
-              </div>
-            </div>)
+          null
             : <div>
               <NavLink to="/signin">
                 <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">

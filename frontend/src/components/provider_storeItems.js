@@ -98,25 +98,30 @@ const Tienda = () => {
                   {
                     itemsToBuy.map((item, id) => (
                       <div key={id}>
-                        <h2>Item: {item.name}</h2>
+                        <h2>{t('itemsItem')}: {item.name}</h2>
                         <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
-                        <p>Description: {item.description}</p>
-                        <p class="inline">Price: {item.price}</p>
+                        <p>{t('itemsDesc')}: {item.description}</p>
+                        <p class="inline">{t('itemsPrice')}: {item.price}</p>
                         <img class="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>
-                        <button id={item.id} onClick={() => buyItem(userInfo.id, item.id)}>Buy</button>
+                        <button id={item.id} onClick={() => buyItem(userInfo.id, item.id)}>
+                          {t('storeBuyItem')}
+                        </button>
                       </div>
                     ))
                   }
                 </div> :
-                <p>No items left</p>
+                <p>
+                  {t('storeNoItemsLeft')}
+                </p>
               }
             </div> :
-            <p>Loading...</p>
+            <p>
+              {t('loading')}
+            </p>
           }
         </div> :
         <p>
           {t('mensajeErrorNotLoggedInStore')}
-
         </p>
       }
     </div>

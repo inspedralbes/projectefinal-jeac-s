@@ -67,7 +67,7 @@ function Game({ socket }) {
         <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
       </div>
       <button onClick={load}>BallGame</button>
-      <button onClick={clickGame}>Play Click Game</button>
+      <button onClick={clickGame}>ClickGame</button>
     </div>
   )
 }

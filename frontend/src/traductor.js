@@ -50,6 +50,10 @@ i18n.use(initReactI18next).init({
                 itemsPrice: 'Precio',
                 itemsSell: 'Vender',
                 itemsAvatar: 'Establecer como avatar',
+                navGameStore: 'Tienda',
+                navUpload: 'Subir juego',
+                storeBuyItem: 'Comprar',
+                storeNoItemsLeft: 'No quedan objetos en la tienda',
 
 
             }
@@ -99,6 +103,10 @@ i18n.use(initReactI18next).init({
                 itemsPrice: 'Price',
                 itemsSell: 'Sell item',
                 itemsAvatar: 'Set as avatar',
+                navGameStore: 'Store',
+                navUpload: 'Upload game',
+                storeBuyItem: 'Buy',
+                storeNoItemsLeft: 'No items left on the store',
 
             }
         },
@@ -147,6 +155,10 @@ i18n.use(initReactI18next).init({
                 itemsPrice: 'Preu',
                 itemsSell: 'Vendre',
                 itemsAvatar: 'Establir com a avatar',
+                navGameStore: 'Botiga',
+                navUpload: 'Pujar joc',
+                storeBuyItem: 'Comprar',
+                storeNoItemsLeft: 'No queden objectes a la botiga',
 
             }
         }

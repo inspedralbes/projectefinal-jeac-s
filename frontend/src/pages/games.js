@@ -40,8 +40,7 @@ class Games extends Component {
             {this.state.data.map((game) => (
                 <GameCard key={game.id} game={game} />
             ))}
-
-        </div>
+            </div>
     }
 }
 

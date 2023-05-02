@@ -1,37 +1,16 @@
-//import {Ballgame} from '../Games/BallGame/BallGame/index.js';
-// import {destroy} from '../../public/Games/BallGame/BallGame/index.js';
-// import {destroy} from '../../public/Games/BallGame/BallGame/index.js';
-import { useEffect } from "react";
-import routes from "../index.js";
-
-import { useState } from 'react'
-import { $CombinedState } from 'redux';
-import { Socket } from "socket.io-client";
-
-//import Phaser from "phaser";
-//var imports = "import Phaser from 'phaser'";
-//eval (imports)
 var Phaser = null;
-var cont = 0;
-var recibir = "Enviando de la plataforma al juego";
-var prova = 0;
 let data = [];
 
 import('phaser')
   .then((module) => {
-    // use the imported module here
     Phaser = module;
     console.log(Phaser);
   })
-  .catch((error) => {
-    // handle any errors that occur while loading the module
-  });
 
-
-function Game({ socket }) {
+function Game() {
   var obj = null;
 
-  function clickGame() {
+  function play() {
     fetch('http://localhost:7878/GamesFiles/ClickGame/initGame.js', {
       method: 'GET',
       mode: 'same-origin',
@@ -39,21 +18,18 @@ function Game({ socket }) {
       .then(response => response.text())
       .then(scriptText => {
         console.log(scriptText);
-        const scriptFn = new Function(scriptText + '; return executeGame()'); // se agrega el "return doThis()" para obtener el objeto
+        const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
         obj.init();
-        obj.enviar(cont);
-        obj.recibir(recibir);
         console.log(obj);
       })
-      .catch(error => console.error('Error al recuperar y ejecutar el script:', error));
   }
-  //Prepare data to send to server
-  socket.emit('datagame', data)
 
-  socket.on('datagame', function (data) {
-    console.log(data)
-  });
+  function test() {
+    var test = obj.enviar();
+    obj.recibir(test);
+    console.log(test);
+  }
 
 
   return (
@@ -61,12 +37,11 @@ function Game({ socket }) {
       <div id="game">
         <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
       </div>
-      <button onClick={clickGame}>ClickGame</button>
+      <button onClick={play}>PLAY</button><br></br>
+      <button onClick={test}>ENVIAR</button>
+
     </div>
   )
 }
 
 export default Game;
-
-
-

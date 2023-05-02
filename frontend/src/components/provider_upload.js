@@ -86,6 +86,10 @@ const UploadForm = ({ socket }) => {
                 }
                 console.log("File Name", Files);
 
+                console.log('Path');
+                console.log("AAAAAA");
+                console.log("Nombre juego");
+
                 socket.emit('file-upload', Files);
             }
         }

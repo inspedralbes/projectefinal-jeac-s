@@ -15,6 +15,7 @@ var Phaser = null;
 var cont = 0;
 var recibir = "Enviando de la plataforma al juego";
 var prova = 0;
+let data = [];
 
 import('phaser')
   .then((module) => {

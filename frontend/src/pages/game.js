@@ -1,4 +1,5 @@
 var Phaser = null;
+let data = [];
 
 import('phaser')
   .then((module) => {

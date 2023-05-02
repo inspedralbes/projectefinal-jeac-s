@@ -197,10 +197,12 @@ socketIO.on('connection', (socket) => {
     }
   });
 
+  socket.on('disconnect', () => {
+
+  });
+
 });
 
 server.listen(PORT, host, () => {
   console.log("Listening on *:" + PORT);
-});socket.on('disconnect', () => {
-
-  });
+});

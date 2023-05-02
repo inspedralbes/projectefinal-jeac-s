@@ -3,11 +3,6 @@
 // import {Ballgame} from '../Games/BallGame/index.js';
 
 import React, { Component } from "react";
-import { useState } from 'react'
-import Upload from './upload.js';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import { NavLink } from 'react-router-dom';
 
 import GameCard from '../components/gameCard.js';
 
@@ -45,8 +40,7 @@ class Games extends Component {
             {this.state.data.map((game) => (
                 <GameCard key={game.id} game={game} />
             ))}
-
-        </div>
+            </div>
     }
 }
 

@@ -1,3 +1,7 @@
+// Variables globales
+var contador = 0;
+var textoContador;
+
 function init() {
     // Inicializar el juego
     var config = {
@@ -14,9 +18,6 @@ function init() {
     var game = new Phaser.Game(config);
     return game;
 }
-// Variables globales
-var contador = 0;
-var textoContador;
 
 // Cargar imagen
 function preload() {
@@ -39,20 +40,19 @@ function create() {
         } else {
             contador++;
             textoContador.setText('Contador: ' + contador);
-            enviar(contador);
+            enviar();
         }
     });
     return imagen;
 }
 
-function enviar(cont) {
-    console.log(cont);
-    return cont;
+function enviar() {
+    return contador;
 }
 
-function recibir(item) {
-    console.log(item);
-    return item
+function recibir(test) {
+    console.log(test);
+    return test;
 }
 
 function endGame(cont) {
@@ -65,8 +65,9 @@ function executeGame() {
 
     obj.init = init;
     obj.enviar = enviar;
-    obj.endGame = endGame;
     obj.recibir = recibir;
+    obj.endGame = endGame;
+    console.log(obj);
 
     return obj;
 }

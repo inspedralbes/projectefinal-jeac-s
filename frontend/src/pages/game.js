@@ -60,6 +60,13 @@ function Game({ socket }) {
       })
       .catch(error => console.error('Error al recuperar y ejecutar el script:', error));
   }
+  //Prepare data to send to server
+  socket.emit('datagame', data)
+
+  socket.on('datagame', function (data) {
+    console.log(data)
+  });
+
 
   return (
     <div className="game"><br></br>

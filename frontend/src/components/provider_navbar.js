@@ -16,15 +16,15 @@ function Navbar() {
   return (
     <nav class="bg-gray-800">
       <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div class="relative flex h-16 items-center justify-between">
+        <div class="relative flex h-10 md:h-13 lg:h-16 items-center justify-between">
           <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
 
           </div>
           <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div class="flex flex-shrink-0 items-center">
               <NavLink to="/">
-                <img class="block h-8 w-auto lg:hidden" src="LogoLargo.png" alt="Your Company"></img>
-                <img class="hidden h-8 w-auto lg:block" src="LogoLargo.png" alt="Your Company"></img>
+                <img class="hidden w-auto md:h-6 md:block lg:h-8 lg:block " src="LogoLargo.png" alt="Your Company"></img>
+                <img class="hidden h-8 w-auto " src="LogoLargo.png" alt="Your Company"></img>
               </NavLink>
             </div>
             <div class="hidden sm:ml-6 sm:block">
@@ -62,13 +62,13 @@ function Navbar() {
             null
             : <div>
               <NavLink to="/signin">
-                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                <a href="#" class="text-gray-300 text-xs md:text-lg lg:text-lg hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
                   {t('signIn')}
                 </a>
               </NavLink>
 
               <NavLink to="/login">
-                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                <a href="#" class="text-gray-300 text-xs md:text-lg lg:text-lg hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
                   {t('logIn')}
                 </a>
               </NavLink>
@@ -76,9 +76,9 @@ function Navbar() {
 
           }
           &nbsp;&nbsp;&nbsp;&nbsp;
-          <img class="w-10" onClick={() => changeLanguage('es')} src="castellano.png"></img>&nbsp;&nbsp;&nbsp;
-          <img class="w-10" onClick={() => changeLanguage('en')} src="ingles.png"></img>&nbsp;&nbsp;&nbsp;
-          <img class="w-10" onClick={() => changeLanguage('cat')} src="catalan.png"></img>&nbsp;&nbsp;&nbsp;
+          <img class="w-5 md:w-7 lg:w-10" onClick={() => changeLanguage('es')} src="castellano.png"></img>&nbsp;&nbsp;&nbsp;
+          <img class="w-5 md:w-7 lg:w-10" onClick={() => changeLanguage('en')} src="ingles.png"></img>&nbsp;&nbsp;&nbsp;
+          <img class="w-5 md:w-7 lg:w-10" onClick={() => changeLanguage('cat')} src="catalan.png"></img>&nbsp;&nbsp;&nbsp;
 
         </div>
       </div>

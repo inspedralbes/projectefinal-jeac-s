@@ -64,11 +64,11 @@ function AsideNav() {
 
     return (
         <div class="h-screen w-full bg-white relative flex overflow-hidden">
-            <aside class="h-full w-16 flex flex-col space-y-10 items-center justify-center relative bg-gray-800 text-white">
+            <aside class="h-full w-10 md:w-13 lg:w-16 flex flex-col space-y-10 items-center justify-center relative bg-gray-800 text-white">
                 <NavLink to="/profile">
                     <div class="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
                         {isLoggedIn ?
-                            <img class="h-10 w-12 rounded-full" src={avatar()} alt=""></img>
+                            <img class="h-8 w-9 md:h-10 md:w-12 lg:h-10 lg:w-12 rounded-full" src={avatar()} alt=""></img>
                             : <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
                         }
 

@@ -12,6 +12,9 @@ import { Socket } from "socket.io-client";
 //var imports = "import Phaser from 'phaser'";
 //eval (imports)
 var Phaser = null;
+var cont = 0;
+var recibir = "Enviando de la plataforma al juego";
+var prova = 0;
 
 import('phaser')
   .then((module) => {
@@ -25,25 +28,7 @@ import('phaser')
 
 
 function Game({ socket }) {
-  function load() {
-    var jsFile = 'initGame.js';
-
-    const scriptUrl = routes.wsNode + '/hola.txt';
-
-    fetch('http://localhost:7878/GamesFiles/BallGame/initGame.js', {
-      method: 'GET',
-      mode: 'same-origin',
-    })
-      .then(response => response.text())
-      .then(scriptText => {
-        console.log(scriptText);
-        //eval(scriptText);
-        const scriptFn = new Function(scriptText);
-        scriptFn();
-        console.log('Script ejecutado exitosamente.');
-      })
-      .catch(error => console.error('Error al recuperar y ejecutar el script:', error));
-  }
+  var obj = null;
 
   function clickGame() {
     fetch('http://localhost:7878/GamesFiles/ClickGame/initGame.js', {
@@ -53,10 +38,12 @@ function Game({ socket }) {
       .then(response => response.text())
       .then(scriptText => {
         console.log(scriptText);
-        const scriptFn = new Function(scriptText);
-        scriptFn();
-        console.log(scriptFn);
-        console.log('Script ejecutado exitosamente.');
+        const scriptFn = new Function(scriptText + '; return executeGame()'); // se agrega el "return doThis()" para obtener el objeto
+        obj = scriptFn();
+        obj.init();
+        obj.enviar(cont);
+        obj.recibir(recibir);
+        console.log(obj);
       })
       .catch(error => console.error('Error al recuperar y ejecutar el script:', error));
   }
@@ -73,7 +60,6 @@ function Game({ socket }) {
       <div id="game">
         <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
       </div>
-      <button onClick={load}>BallGame</button>
       <button onClick={clickGame}>ClickGame</button>
     </div>
   )

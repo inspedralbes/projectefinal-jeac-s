@@ -1,4 +1,3 @@
-
 function init() {
     // Inicializar el juego
     var config = {
@@ -35,34 +34,41 @@ function create() {
 
     // Agregar evento de clic a la imagen
     imagen.on('pointerdown', function () {
-        contador++;
-        textoContador.setText('Contador: ' + contador);
+        if (contador == 10) {
+            endGame(contador);
+        } else {
+            contador++;
+            textoContador.setText('Contador: ' + contador);
+            enviar(contador);
+        }
     });
     return imagen;
 }
 
-function enviar() {
-    return 1;
+function enviar(cont) {
+    console.log(cont);
+    return cont;
 }
 
-function recibir() {
-    return 2;
+function recibir(item) {
+    console.log(item);
+    return item
 }
 
-function endGame() {
-    return 3;
+function endGame(cont) {
+    console.log(cont);
+    return cont;
 }
 
-function doThis(){
-    var obj  = {};
+function executeGame() {
+    var obj = {};
 
-    obj.init = init();
-    obj.enviar = enviar();
-    obj.recibir = recibir();
-    obj.endGame = endGame();
+    obj.init = init;
+    obj.enviar = enviar;
+    obj.endGame = endGame;
+    obj.recibir = recibir;
 
-    console.log(obj);
-    return obj; 
+    return obj;
 }
 
-doThis();
+executeGame();

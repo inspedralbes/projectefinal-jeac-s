@@ -15,7 +15,7 @@ function Home() {
 
                 </p>
 
-                <NavLink to="/games">
+                <NavLink to="/gamesList">
                     <a href="#" class="w-1/2 h-20 inline-flex items-center justify-center px-5 py-3 text-base 
                     font-medium text-white bg-gradient-to-r from-violet-400 to-fuchsia-800 rounded-full hover:bg-violet-400 
                     focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">

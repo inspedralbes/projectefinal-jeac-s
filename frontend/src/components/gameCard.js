@@ -9,7 +9,7 @@ import { useState } from 'react'
 
 // import '../'
 
-function GameCard({game}) {
+function GameCard({game, startPlaying}) {
     let [img, setImg] = useState([])
     let [src, setSrc] = useState('')
 
@@ -24,7 +24,7 @@ function GameCard({game}) {
             <Card.Img id='gameCard__bannerImg' variant="top" src={game.img} />
             <Card.Body>
                 <Card.Title>
-                    <NavLink to='/game'><Button className='btn btn-danger' onClick={onClick}> {game.name} </Button></NavLink>
+                    <Button className='btn btn-danger'>Play {game.name} </Button>
                 </Card.Title>
                 <Card.Text>
                 {game.description}

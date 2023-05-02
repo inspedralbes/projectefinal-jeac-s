@@ -36,9 +36,9 @@ function Game({socket}) {
   
     const scriptUrl = routes.wsNode + '/hola.txt';
   
-    fetch('http://localhost:7878/GamesFiles/BallGame/initGame.js', {
+    fetch(`${routes.wsNode}/GamesFiles/BallGame/initGame.js`, {
       method: 'GET',
-      mode: 'same-origin',
+      mode: 'no-cors',
     })
       .then(response => response.text())
       .then(scriptText => {
@@ -82,9 +82,12 @@ function Game({socket}) {
   
     const scriptUrl = routes.wsNode + '/hola.txt';
   
-    fetch('http://localhost:7878/GamesFiles/CopiaMario/initGame.js', {
+    fetch(`${routes.wsNode}/public/GamesFiles/CopiaMario/initGame.js`, {
       method: 'GET',
-      mode: 'same-origin',
+      cors: {
+        origin: "*",
+        credentials: true,
+      },
     })
       .then(response => response.text())
       .then(scriptText => {

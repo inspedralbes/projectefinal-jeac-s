@@ -3,6 +3,7 @@ import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstra
 import { useSelector, useDispatch } from 'react-redux';
 import saveAs from 'file-saver';
 import { useTranslation } from 'react-i18next';
+import routes from "../index.js";
 
 let pathimagen = '';
 
@@ -189,8 +190,8 @@ const UploadForm = ({ socket }) => {
 
             //console.log("frefer", blobZip);
 
-            let img = "http://localhost:7878" + pathImg;
-            let script = "http://localhost:7878" + pathInit;
+            let img = `${routes.wsNode}` + pathImg;
+            let script = `${routes.wsNode}` + pathInit;
             console.log("Name", nameGame);
             console.log("path img", pathImg);
             console.log("path script", script);
@@ -202,7 +203,7 @@ const UploadForm = ({ socket }) => {
             formData.append('description', description);
             formData.append('path', script);
 
-            const response = await fetch('http://localhost:8000/api/upload', {
+            const response = await fetch(`${routes.fetchLaravel}/api/upload`, {
                 method: 'POST',
                 headers: {
                     'Accept': '*/*'

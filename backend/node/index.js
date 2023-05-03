@@ -47,6 +47,8 @@ app.use(express.static('public'));
 const PORT = 7878;
 const host = "0.0.0.0";
 
+let i = 0;
+
 
 // const socketIO = require("socket.io")(server, {
 //   cors: {
@@ -74,9 +76,11 @@ app.use((req, res, next) => {
 socketIO.on('connection', (socket) => {
   console.log('Socket connected');
 
-  socket.on('datagame', (data) => {
+  i++;
 
-    io.emit('datagame', data);
+  socket.on('datagame', (score) => {
+    socket.emit('datagame', score);
+    console.log("Juador: " + i + " con score " + score)
   });
 
   socket.on('file-upload', (file) => {

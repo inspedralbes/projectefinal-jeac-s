@@ -97,7 +97,7 @@ socketIO.on('connection', (socket) => {
   //   console.log("Este es el mensaje: ", msg);
   // });
 
-  socket.onAny('uploadClick', (file) => {
+  socket.on('uploadClick', (file) => {
     console.log('File received', file);
 
     if (file.name != '') {

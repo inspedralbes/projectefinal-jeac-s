@@ -33,31 +33,10 @@ class GameController extends Controller
     {        
         $game = new Game();
         $game->name = $request->name;
-        //$file2 = $request->img;
-        //$file2->move(base_path('../frontend/public/ImageGames/'. $request->name), $file2->getClientOriginalName());        
-        //$game->img = './ImageGames/'. $request->name . '/' . $file2->getClientOriginalName();
         $game->img = $request->img;
         $game->description = $request->description;
         $game->path = $request->path;
-
         
-        // $path = base_path('../frontend/src/Games'. $request->name . '/./ ');
-        // rename($path . '/initGame.js', base_path('../frontend/src/InitGames'. $request->name . '/initGame.js'));
-        //info("Nom del joc: =>".$request->name);
-        
-        
-        // $dir_path = date('Y') . '/' . date('m') . '/';
-        // $file = request()->zip;
-        // $zip = new ZipArchive();
-        // $file_new_path = $file->storeAs($dir_path . 'zip' , 'filename', 'local');
-        // $zipFile = $zip->open(Storage::disk('local')->path($file_new_path));
-        // if ($zipFile === TRUE) {
-        //     $zip->extractTo(base_path('../frontend/src/Games'. $request->name )); 
-        //     $zip->close();
-        // }
-        
-        // $game->initScript='/src/InitGames' . $request->name . '/initGame.js';
-
         $game->save();
 
         return $game->id;

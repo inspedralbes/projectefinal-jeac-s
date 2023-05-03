@@ -84,13 +84,21 @@ const UploadForm = ({ socket }) => {
                     zip: fileData,
                     img: fileDataImg
                 }
-                console.log("File Name", Files);
+                console.log("File Name", Files.name);
+                console.log("File Zip", Files.zip);
+                console.log("File Img", Files.img);
 
-                console.log('Path');
-                console.log("AAAAAA");
-                console.log("Nombre juego");
 
-                socket.emit('file-upload', Files);
+                // let mensaje = "Buenos dias";
+            
+                socket.emit('uploadClick', Files);
+                // socket.emit('uploadClick', Files);
+
+                // socket.emit("clickado");
+
+                // socket.emit('uploadClick', Files);
+
+                // socket.emit('file-upload', Files);
             }
         }
     }

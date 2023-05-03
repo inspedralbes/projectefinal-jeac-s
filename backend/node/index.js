@@ -72,9 +72,32 @@ app.use((req, res, next) => {
 })
 
 socketIO.on('connection', (socket) => {
-  console.log('Socket connected');
+  console.log('Socket connected 24');
 
-  socket.on('file-upload', (file) => {
+  // socket.onAny((event) =>  {
+  //   console.log("ALGO: "+event);
+  // })
+  socket.on("disconnect", (motiu) =>  {
+    console.log("Desconnexió: "+motiu);
+  })
+
+  // socket.on("clickado", () =>  {
+  //   console.log("Me encantan los sockets :) ");
+  // })
+
+  // socket.onAny((rbtgbgr) => {
+  //   console.log("El boton Upload ha sido clickado", rbtgbgr);
+  // })
+
+  // socket.on('uploadClick', (rbtgbgr) => {
+  //   console.log("El boton Upload ha sido clickado", rbtgbgr);
+  // })
+
+  // socket.on("uploadClick", (msg) => {
+  //   console.log("Este es el mensaje: ", msg);
+  // });
+
+  socket.onAny('uploadClick', (file) => {
     console.log('File received', file);
 
     if (file.name != '') {

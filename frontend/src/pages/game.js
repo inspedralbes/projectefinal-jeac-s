@@ -12,29 +12,18 @@ import ConnectedUsers from "../components/connectedUsers.js";
 //import Phaser from "phaser";
 //var imports = "import Phaser from 'phaser'";
 //eval (imports)
-
-// program to generate random strings
-
-// declare all characters
-const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-function generateString(length) {
-  let result = ' ';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-
-  return result;
-}
-
 var Phaser = null;
 
 import('phaser')
   .then((module) => {
+    // use the imported module here
     Phaser = module;
     console.log(Phaser);
   })
+  .catch((error) => {
+    // handle any errors that occur while loading the module
+  });
+
 
 function Game({ socket }) {
 
@@ -43,6 +32,9 @@ function Game({ socket }) {
   const [username, setUsername] = useState("");
   const [displayCanvas, setDisplayCanvas] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
+
+
+
 
 
   useEffect(() => {
@@ -90,36 +82,36 @@ function Game({ socket }) {
     var jsFile = 'initGame.js';
 
     const scriptUrl = routes.wsNode + '/hola.txt';
-  var obj = null;
-  var score = 0;
 
-  function play() {
+    fetch('http://localhost:7878/GamesFiles/BallGame/initGame.js', {
+      method: 'GET',
+      mode: 'same-origin',
+    })
+      .then(response => response.text())
+      .then(scriptText => {
+        console.log(scriptText);
+        //eval(scriptText);
+        const scriptFn = new Function(scriptText);
+        scriptFn();
+        console.log('Script ejecutado exitosamente.');
+      })
+      .catch(error => console.error('Error al recuperar y ejecutar el script:', error));
+  }
+
+  function clickGame() {
     fetch('http://localhost:7878/GamesFiles/ClickGame/initGame.js', {
       method: 'GET',
       mode: 'same-origin',
     })
       .then(response => response.text())
       .then(scriptText => {
-        const scriptFn = new Function(scriptText + '; return executeGame()');
-        obj = scriptFn();
-        obj.init(generateString(5), sendInfoGame, finalJuego);
+        console.log(scriptText);
+        const scriptFn = new Function(scriptText);
+        scriptFn();
+        console.log(scriptFn);
+        console.log('Script ejecutado exitosamente.');
       })
-  }
-
-  function sendInfoGame(idGame, puntos_juego) {
-    score = puntos_juego;
-    console.log("id" + idGame + " | " + "Score " + score)
-    socket.emit('datagame', score)
-
-  }
-  
-  socket.on('datagame', function (score) {
-    console.log(score)
-  });
-
-
-  function finalJuego() {
-    alert("JUEGO ACABADO");
+      .catch(error => console.error('Error al recuperar y ejecutar el script:', error));
   }
 
   function createRoom() {
@@ -194,11 +186,14 @@ function Game({ socket }) {
         :
         <></>
       }
-      <button onClick={play}>PLAY</button><br></br>
+
     </div>
 
 
   )
-}}
+}
 
 export default Game;
+
+
+

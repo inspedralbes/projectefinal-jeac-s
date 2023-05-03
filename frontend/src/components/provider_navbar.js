@@ -14,30 +14,30 @@ function Navbar() {
   };
 
   return (
-    <nav class="bg-gray-800">
-      <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div class="relative flex h-16 items-center justify-between">
-          <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+    <nav className="bg-gray-800">
+      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div className="relative flex h-16 items-center justify-between">
+          <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
 
           </div>
-          <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-            <div class="flex flex-shrink-0 items-center">
+          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+            <div className="flex flex-shrink-0 items-center">
               <NavLink to="/">
-                <img class="block h-8 w-auto lg:hidden" src="LogoLargo.png" alt="Your Company"></img>
-                <img class="hidden h-8 w-auto lg:block" src="LogoLargo.png" alt="Your Company"></img>
+                <img className="block h-8 w-auto lg:hidden" src="LogoLargo.png" alt="Your Company"></img>
+                <img className="hidden h-8 w-auto lg:block" src="LogoLargo.png" alt="Your Company"></img>
               </NavLink>
             </div>
-            <div class="hidden sm:ml-6 sm:block">
-              <div class="flex space-x-4">
+            <div className="hidden sm:ml-6 sm:block">
+              <div className="flex space-x-4">
 
                 <NavLink to="/game">
-                  <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">BallGame</a>
+                  <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">BallGame</a>
                 </NavLink>
 
                 {isLoggedIn ?
                   (
                     <NavLink to="/store">
-                      <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                      <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
                         {t('navGameStore')}
                       </a>
                     </NavLink>
@@ -48,7 +48,7 @@ function Navbar() {
                 {isLoggedIn ?
                   (
                     <NavLink to="/upload">
-                      <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                      <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
                       {t('navUpload')}
                         </a>
                     </NavLink>
@@ -62,13 +62,13 @@ function Navbar() {
             null
             : <div>
               <NavLink to="/signin">
-                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
                   {t('signIn')}
                 </a>
               </NavLink>
 
               <NavLink to="/login">
-                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
                   {t('logIn')}
                 </a>
               </NavLink>
@@ -76,9 +76,9 @@ function Navbar() {
 
           }
           &nbsp;&nbsp;&nbsp;&nbsp;
-          <img class="w-10" onClick={() => changeLanguage('es')} src="castellano.png"></img>&nbsp;&nbsp;&nbsp;
-          <img class="w-10" onClick={() => changeLanguage('en')} src="ingles.png"></img>&nbsp;&nbsp;&nbsp;
-          <img class="w-10" onClick={() => changeLanguage('cat')} src="catalan.png"></img>&nbsp;&nbsp;&nbsp;
+          <img className="w-10" onClick={() => changeLanguage('es')} src="castellano.png"></img>&nbsp;&nbsp;&nbsp;
+          <img className="w-10" onClick={() => changeLanguage('en')} src="ingles.png"></img>&nbsp;&nbsp;&nbsp;
+          <img className="w-10" onClick={() => changeLanguage('cat')} src="catalan.png"></img>&nbsp;&nbsp;&nbsp;
 
         </div>
       </div>

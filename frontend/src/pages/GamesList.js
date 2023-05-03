@@ -53,12 +53,6 @@ function GamesList({ socket }) {
     }
 
     else {
-        <div>
-            <button onClick={setStartToPlay(false)}>Return</button>
-            <button>Create lobby</button>
-            <button>Join lobby</button>
-        </div>
-
     }
 }
 

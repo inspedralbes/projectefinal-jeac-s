@@ -101,8 +101,8 @@ const Tienda = () => {
                         <h2>{t('itemsItem')}: {item.name}</h2>
                         <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
                         <p>{t('itemsDesc')}: {item.description}</p>
-                        <p class="inline">{t('itemsPrice')}: {item.price}</p>
-                        <img class="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>
+                        <p className="inline">{t('itemsPrice')}: {item.price}</p>
+                        <img className="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>
                         <button id={item.id} onClick={() => buyItem(userInfo.id, item.id)}>
                           {t('storeBuyItem')}
                         </button>

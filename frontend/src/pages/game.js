@@ -31,6 +31,11 @@ function Game() {
     console.log(test);
   }
 
+  /*socket.emit('datagame', data)
+
+  socket.on('datagame', function (data) {
+    console.log(data)
+});*/
 
   return (
     <div className="game"><br></br>

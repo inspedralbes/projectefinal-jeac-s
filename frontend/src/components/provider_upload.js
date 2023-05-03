@@ -9,6 +9,7 @@ let gameNamee = '';
 let descriptionGame = '';
 let pathScript = '';
 
+
 const UploadForm = ({ socket }) => {
     const [nameGame, setName] = useState('')
     const [img, setImg] = useState('')

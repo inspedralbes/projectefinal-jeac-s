@@ -222,7 +222,10 @@ socketIO.on('connection', (socket) => {
         let lobbyData = {
           lobbyIdentifier: newLobbyIdentifier,
           ownerId: socket.data.id,
-          members: [],
+          members: [{
+            idUser: socket.data.id,
+            username: "owner",
+          }],
         };
 
         lobbies.push(lobbyData);
@@ -232,6 +235,8 @@ socketIO.on('connection', (socket) => {
 
         socket.join(newLobbyIdentifier);
         socket.data.current_lobby = newLobbyIdentifier;
+
+        sendUserList(socket.data.current_lobby); 
     }
   });
 
@@ -244,6 +249,13 @@ socketIO.on('connection', (socket) => {
       joinLobby(socket, data.lobbyIdentifier, data.username);
     // }
   });
+
+  socket.on("can_start_game", () => {
+    console.log("start gmae", socket.data.current_lobby);
+    socketIO.to(socket.data.current_lobby).emit("start_game");
+
+  });
+
 
 });
 
@@ -285,6 +297,26 @@ function joinLobby(socket, lobbyIdentifier, username) {
     socket.join(lobbyIdentifier);
     socket.data.current_lobby = lobbyIdentifier;
 
-    //sendUserList(lobbyIdentifier);
+    sendUserList(lobbyIdentifier);
   }
 }
+
+function sendUserList(room) {
+  var list = [];
+
+  lobbies.forEach((lobby) => {
+    if (lobby.lobbyIdentifier == room) {
+      lobby.members.forEach((member) => {
+        list.push({
+          name: member.username,
+        });
+      });
+    }
+  });
+
+  socketIO.to(room).emit("lobby_user_list", {
+    list: list,
+    message: "user list",
+  });
+}
+

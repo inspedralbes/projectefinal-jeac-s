@@ -7,6 +7,7 @@ import routes from "../index.js";
 import { useState } from 'react'
 import { $CombinedState } from 'redux';
 import { Socket } from "socket.io-client";
+import ConnectedUsers from "../components/connectedUsers.js";
 
 //import Phaser from "phaser";
 //var imports = "import Phaser from 'phaser'";
@@ -26,9 +27,13 @@ import('phaser')
 
 function Game({ socket }) {
 
-  const [lobbyId, setLobbyId] = useState("null");
+  const [lobbyId, setLobbyId] = useState("");
   const [lobbyIdInput, setLobbyIdInput] = useState("");
   const [username, setUsername] = useState("");
+  const [displayCanvas, setDisplayCanvas] = useState(false);
+  const [displayForm, setDisplayForm] = useState(false);
+
+
 
 
 
@@ -38,8 +43,12 @@ function Game({ socket }) {
     });
 
     socket.on("lobby_info", (data) => {
-  console.log(data);      
+      console.log(data);
 
+    });
+
+    socket.on("start_game", () => {
+      alert("Empieza el juego");
     });
 
   }, []);
@@ -55,6 +64,10 @@ function Game({ socket }) {
     else {
       console.log("You need to fill both input fields.");
     }
+  }
+
+  function toggleForm() {
+    setDisplayForm(true);
   }
 
   function handleChangeLobbyId(e) {
@@ -105,50 +118,78 @@ function Game({ socket }) {
     socket.emit("new_lobby");
   }
 
+  function StartGame() {
+    socket.emit("can_start_game");
+  }
+
   return (
-    <div className="game"><br></br>
-      <h1>{lobbyId}</h1>
-      <label className="JoinLobby__nickname--grid">
-              <div className="form__inputGroup">
-                <input
-                  id="nickname"
-                  value={username}
-                  className="form__input"
-                  onChange={handleChangeUsername}
-                  placeholder=" "
-                  type="text"
-                  required
-                ></input>
-                <span className="form__inputBar"></span>
-                <label className="form__inputlabel">
-                  Introduce your nickname
-                </label>
-              </div>
-            </label>
 
-      <label>
-        <div>
-          <input
-            value={lobbyIdInput}
-            onChange={handleChangeLobbyId}
-            placeholder="Introduce id"
-            type="text"
-            required
-          ></input>
-          <label>Introduce lobby ID</label>
-        </div>
-      </label>
-      <button onClick={JoinLobby}>Join lobby</button>
+    <div>
+        <h1>{lobbyId}</h1>
+      <div>
+        <button onClick={createRoom}>Create lobby</button>
+        <button onClick={toggleForm}>JoinLobby</button>
 
-
-      <div id="game">
-        <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
+        <ConnectedUsers socket={socket}/>
+        <button onClick={StartGame}>Play</button>
       </div>
-      <button onClick={load}>BallGame</button>
-      <button onClick={clickGame}>ClickGame</button>
-      <button onClick={createRoom}>createRoom</button>
+
+      {displayForm ? 
+        <div id="join_lobby_form">
+          <br></br>
+          <label className="JoinLobby__nickname--grid">
+            <div className="form__inputGroup">
+              <input
+                id="nickname"
+                value={username}
+                className="form__input"
+                onChange={handleChangeUsername}
+                placeholder=" "
+                type="text"
+                required
+              ></input>
+              <span className="form__inputBar"></span>
+              <label className="form__inputlabel">
+                Introduce your nickname
+              </label>
+            </div>
+          </label>
+
+          <label>
+            <div>
+              <input
+                value={lobbyIdInput}
+                onChange={handleChangeLobbyId}
+                placeholder="Introduce id"
+                type="text"
+                required
+              ></input>
+              <label>Introduce lobby ID</label>
+            </div>
+          </label>
+          <button onClick={JoinLobby}>Join lobby</button>
+        </div>
+        :
+        <></>
+    }
+
+      {displayCanvas ?
+        <div>
+
+          <div id="game">
+            <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
+          </div>
+          <button onClick={load}>BallGame</button>
+          <button onClick={clickGame}>ClickGame</button>
+          <button onClick={createRoom}>createRoom</button>
+        </div>
+        :
+        <></>
+      }
 
     </div>
+
+
   )
 }
 

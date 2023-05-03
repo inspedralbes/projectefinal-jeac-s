@@ -22,7 +22,7 @@ import('phaser')
     console.log(Phaser);
   })
 
-function Game() {
+function Game({ socket }) {
   var obj = null;
   var score = 0;
 
@@ -42,11 +42,22 @@ function Game() {
   function sendInfoGame(idGame, puntos_juego) {
     score = puntos_juego;
     console.log("id" + idGame + " | " + "Score " + score)
+    socket.emit('datagame', score)
+
   }
+  
+  socket.on('datagame', function (score) {
+    console.log(score)
+  });
+
 
   function finalJuego() {
     alert("JUEGO ACABADO");
   }
+
+
+
+
 
   return (
     <div className="game"><br></br>

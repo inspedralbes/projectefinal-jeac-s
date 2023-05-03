@@ -61,11 +61,11 @@ function AsideNav() {
 
     return (
         <div class="h-screen w-full bg-white relative flex overflow-hidden">
-            <aside class="h-full w-16 flex flex-col space-y-10 items-center justify-center relative bg-gray-800 text-white">
+            <aside class="h-full w-10 md:w-13 lg:w-16 flex flex-col space-y-10 items-center justify-center relative bg-gray-800 text-white">
                 <NavLink to="/profile">
                     <div class="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
                         {isLoggedIn ?
-                            <img class="h-10 w-12 rounded-full" src={avatar()} alt=""></img>
+                            <img class="h-8 w-9 md:h-10 md:w-12 lg:h-10 lg:w-12 rounded-full" src={avatar()} alt=""></img>
                             : <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
                         }
 
@@ -86,11 +86,14 @@ function AsideNav() {
                     </div>
                 </NavLink>
 
-                <NavLink to="/">
-                    <div onClick={() => logout()} class="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                    </div>
-                </NavLink>
+                {isLoggedIn ?
+                    <NavLink to="/">
+                        <div onClick={() => logout()} class="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        </div>
+                    </NavLink> :
+                    null
+                }
             </aside>
 
 
@@ -105,7 +108,7 @@ function AsideNav() {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/signin" element={<Signin />} />
                     <Route path="/login" element={<LoginForm />} />
-                    <Route path="/game" element={<Game socket={socket}/>} />
+                    <Route path="/game" element={<Game socket={socket} />} />
                     <Route path="/ranking" element={<GetRanking />} />
                     <Route path="/store" element={<GetGameStore />} />
                 </Routes>

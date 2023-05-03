@@ -91,37 +91,56 @@ const Tienda = () => {
   });
 
   return (
-    <div>
-      {isLoggedIn ?
-        <div>
-          {isLoading ?
-            <div>
-              {itemsToBuy.length > 0 ?
-                <div>
-                  {
-                    itemsToBuy.map((item, id) => (
-                      <div key={id}>
-                        <h2>Item: {item.name}</h2>
-                        <img src={item.image_url} style={{ width: '150px', height: '150px' }} />
-                        <p>Description: {item.description}</p>
-                        <p class="inline">Price: {item.price}</p>
-                        <img class="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>
-                        <button id={item.id} onClick={() => buyItem(userInfo.id, item.id)}>Buy</button>
-                      </div>
-                    ))
-                  }
-                </div> :
-                <p>No items left</p>
-              }
-            </div> :
-            <p>Loading...</p>
-          }
-        </div> :
-        <p>
-          {t('mensajeErrorNotLoggedInStore')}
-
-        </p>
-      }
+    <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
+      <div class="container h-full w-2/4 p-10">
+        <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
+          <div class="p-4">
+            <div class="md:m-6 md:p-12">
+              <div class="text-white ">
+                {isLoggedIn ?
+                  <div>
+                    {isLoading ?
+                      <div>
+                        {itemsToBuy.length > 0 ?
+                          <div >
+                            <h2 class="text-center text-xl">{t('itemsTitle')}</h2>
+                            <br></br>
+                            {
+                              itemsToBuy.map((item, id) => (
+                                <div class="flex" key={id}>
+                                  <div class = "flex-initial w-1/3 text-center">
+                                    <h2>{t('itemsItem')}: {item.name}</h2>
+                                    <img src={item.image_url} class = "mx-auto" />
+                                    <p>{t('itemsDesc')}: {item.description}</p>
+                                    <p class="inline">{t('itemsPrice')}: {item.price}</p>
+                                    <img class="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>
+                                    <button id={item.id} onClick={() => buyItem(userInfo.id, item.id)}>
+                                      {t('storeBuyItem')}
+                                    </button>
+                                  </div>
+                                </div>
+                              ))
+                            }
+                          </div> :
+                          <p>
+                            {t('storeNoItemsLeft')}
+                          </p>
+                        }
+                      </div> :
+                      <p>
+                        {t('loading')}
+                      </p>
+                    }
+                  </div> :
+                  <p>
+                    {t('mensajeErrorNotLoggedInStore')}
+                  </p>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

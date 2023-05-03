@@ -8,15 +8,15 @@ function Home() {
     return (
         <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed" >
             <div class="text-center">
-                <img src="LogoBuenoSNB.png" class="inline-flex items-center rounded-full scale-125"></img>
+                <img src="LogoBuenoSNB.png" class="inline-flex items-center rounded-full"></img>
 
-                <p class="mb-6 mt-6 text-lg font-normal text-white lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
+                <p class="mb-6 mt-6 text-xs md:text-lg lg:text-lg font-normal text-white lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
                 {t('textoLanding')}
 
                 </p>
 
                 <NavLink to="/games">
-                    <a href="#" class="w-1/2 h-20 inline-flex items-center justify-center px-5 py-3 text-base 
+                    <a href="#" class="w-1/2 h-20 text-sm md:text-lg lg:text-lg inline-flex items-center justify-center px-5 py-3 text-base 
                     font-medium text-white bg-gradient-to-r from-violet-400 to-fuchsia-800 rounded-full hover:bg-violet-400 
                     focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
                         {t('playLanding')}

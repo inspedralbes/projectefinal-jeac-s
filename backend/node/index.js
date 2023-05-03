@@ -74,30 +74,12 @@ app.use((req, res, next) => {
 socketIO.on('connection', (socket) => {
   console.log('Socket connected 24');
 
-  // socket.onAny((event) =>  {
-  //   console.log("ALGO: "+event);
-  // })
-  socket.on("disconnect", (motiu) =>  {
-    console.log("Desconnexió: "+motiu);
-  })
+  socket.on('datagame', (data) => {
 
-  // socket.on("clickado", () =>  {
-  //   console.log("Me encantan los sockets :) ");
-  // })
+    io.emit('datagame', data);
+  });
 
-  // socket.onAny((rbtgbgr) => {
-  //   console.log("El boton Upload ha sido clickado", rbtgbgr);
-  // })
-
-  // socket.on('uploadClick', (rbtgbgr) => {
-  //   console.log("El boton Upload ha sido clickado", rbtgbgr);
-  // })
-
-  // socket.on("uploadClick", (msg) => {
-  //   console.log("Este es el mensaje: ", msg);
-  // });
-
-  socket.on('uploadClick', (file) => {
+  socket.on('file-upload', (file) => {
     console.log('File received', file);
 
     if (file.name != '') {
@@ -111,48 +93,48 @@ socketIO.on('connection', (socket) => {
         );
 
         const zipName = `${Date.now()}-${file.zip.name}`;
-  
+
         var dt = new Date();
         let time = dt.getDate() + "_" + (dt.getMonth() + 1) + "_" + dt.getFullYear()
-  
-        console.log("time", time);
-  
+
+        console.log("time", time)
+
         const filepath = `public/GamesFiles/${zipName}`;
-  
+
         fs.writeFile(filepath, buffer, (error) => {
           if (error) {
             console.error(error);
             return;
           }
-  
+
           console.log(`File ${zipName} saved`);
-  
-  
+
+
           console.log('File saved to disk');
-  
+
           fs.createReadStream(filepath)
             .pipe(unzipper.Extract({ path: `public/GamesFiles/${file.name}` }))
             .on('close', () => {
               console.log('Extraction complete!');
-  
+
               const initGamePath = path.join('public', 'GamesFiles', file.name, 'initGame.js');
               const imagesFolderPath = path.join('public', 'GamesFiles', file.name, 'images');
               const scriptsFolderPath = path.join('public', 'GamesFiles', file.name, 'scripts');
-  
+
               fs.readFile(filepath, 'utf-8', (error, data) => {
                 if (error) {
                   console.error(error);
                   return;
                 }
-  
+
                 const containsInitGame = data.includes('initGame.js');
                 const containsImagesFolder = fs.existsSync(imagesFolderPath);
                 const containsScriptFolder = fs.existsSync(scriptsFolderPath);
-  
+
                 console.log(`File ${zipName} contains initGame.js: ${containsInitGame}`);
                 console.log(`File ${zipName} contains images folder: ${containsImagesFolder}`);
                 console.log(`File ${zipName} contains scripts folder: ${containsScriptFolder}`);
-  
+
                 if (containsInitGame & containsImagesFolder & containsScriptFolder) {
                   console.log("Zip correct");
 
@@ -160,8 +142,8 @@ socketIO.on('connection', (socket) => {
                     file.img.data.replace(/^data:([A-Za-z-+/]+);base64,/, ''),
                     'base64'
                   );
-                  
-                  const folderPath = 'public/GamesImages/' + file.name;  
+
+                  const folderPath = 'public/GamesImages/' + file.name;
                   const imgPath = `public/GamesImages/${file.name}/${file.img.name}`;
 
                   fs.mkdir(folderPath, { recursive: true }, (err) => {
@@ -182,14 +164,14 @@ socketIO.on('connection', (socket) => {
                 else {
                   console.log("Error validacion");
                   socket.emit("upload_error", "Error en la subida. El zip no contiene el script initGame o las carpetas images y scripts");
-  
+
                   fs.rm(`./public/GamesFiles/${file.name}`, { recursive: true }, (err) => {
                     if (err) throw console.log("AAAA", err);;
                     console.log('path/file.txt was deleted');
-  
+
                   });
                 }
-  
+
                 fs.unlink(`./public/GamesFiles/${zipName}`, (err) => {
                   if (err) throw console.log("AAAA", err);;
                   console.log('path/file.txt was deleted');
@@ -213,50 +195,12 @@ socketIO.on('connection', (socket) => {
     else {
       console.log("Nombre vacio");
     }
+  });
 
-    //const filePath = req.file.path;
-
-    // const filePath = `extractedFiles/aaaa`;
-    // console.log("filePath", filePath);
-    // console.log("Ffile", file.path);
-    // fse.move(file.path, filePath, (err) => {
-    //   if (err) {
-    //     console.error('Error uploading file', err);
-    //     return;
-    //   }
-
-    //   fs.createReadStream(filePath)
-    //     .pipe(unzipper.Parse())
-    //     .on('entry', function (entry) {
-    //       const fileName = entry.path;
-
-    //       // check if the entry is the initGame.js file
-    //       if (fileName === 'initGame.js') {
-    //         console.log('initGame.js file exists!');
-    //         // do something with the file
-    //       }
-    //       else {
-    //           console.log('initGame.js file dont exists!');
-
-    //       }
-
-    //       // auto detect if it is a directory or a file
-    //       const type = entry.type; // 'Directory' or 'File'
-
-    //       // if it is a file, extract it to disk
-    //       if (type === 'File') {
-    //         const outputFilePath = `extractedFiles/${fileName}`;
-
-    //         entry.pipe(fs.createWriteStream(outputFilePath));
-    //       } else {
-    //         entry.autodrain();
-    //       }
-    //     })
-    //     .on('finish', () => {
-    //       console.log('Extraction complete!');
-    //     });
+  socket.on('disconnect', () => {
 
   });
+
 });
 
 server.listen(PORT, host, () => {

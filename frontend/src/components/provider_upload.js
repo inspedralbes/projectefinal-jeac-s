@@ -89,7 +89,7 @@ const UploadForm = ({ socket }) => {
 
                 // let mensaje = "Buenos dias";
             
-                socket.emit('uploadClick', Files);
+                socket.emit('file-upload', Files);
                 // socket.emit('uploadClick', Files);
 
                 // socket.emit("clickado");

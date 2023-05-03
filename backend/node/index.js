@@ -1,61 +1,19 @@
-// const express = require('express');
-// const unzipper = require('unzipper');
-// const path = require('path');
-
-// var fs = require('fs');
-// const cors = require("cors");
-
-
-// const multer = require('multer');
-// const bodyParser = require('body-parser');
-//const http = require("http");
-
 import express from "express";
 import unzipper from "unzipper";
-
 import path from "path";
-
 import cors from "cors";
-
 import fs from "fs";
-
 import multer from "multer";
-
 import bodyParser from "body-parser";
-
 import http from "http";
-
 import { Server } from "socket.io";
 import e from "express";
 
-
 const app = express();
-
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
-
-
 const upload = multer({ dest: 'public/GamesFiles/' }); // Establece el directorio de destino para los archivos cargados
-
-
-
 const server = http.createServer(app);
-
-app.use(express.static('public'));
-
-
 const PORT = 7878;
 const host = "0.0.0.0";
-
-
-// const socketIO = require("socket.io")(server, {
-//   cors: {
-//     origin: true,
-//     credentials: true,
-//   },
-//   path: "/node/",
-// });
-
 const socketIO = new Server(server, {
   cors: {
     origin: true,
@@ -64,6 +22,7 @@ const socketIO = new Server(server, {
   path: "/node/",
 });
 
+app.use(express.static('public'));
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Headers', '*')
@@ -197,8 +156,8 @@ socketIO.on('connection', (socket) => {
     }
   });
 
-  socket.on('disconnect', () => {
-
+  socket.on('disconnect', (socket) => {
+    console.log(`Desconectado del servidor ${socket.id}`);
   });
 
 });

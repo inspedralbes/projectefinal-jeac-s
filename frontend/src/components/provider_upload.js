@@ -49,11 +49,6 @@ const UploadForm = ({ socket }) => {
         let file = document.getElementById("uploadZip").files[0];
         var fileImagen = document.getElementById("uploadImg").files[0];
 
-        // const formData = new FormData();
-        // formData.append('file', file);
-
-        // console.log("formData", formData);
-        // console.log("file", file);
         gameNamee = document.getElementById('nameGamee').value;
         descriptionGame = document.getElementById('descriptionGamee').value;
 
@@ -85,18 +80,8 @@ const UploadForm = ({ socket }) => {
                 console.log("File Name", Files.name);
                 console.log("File Zip", Files.zip);
                 console.log("File Img", Files.img);
-
-
-                // let mensaje = "Buenos dias";
             
                 socket.emit('file-upload', Files);
-                // socket.emit('uploadClick', Files);
-
-                // socket.emit("clickado");
-
-                // socket.emit('uploadClick', Files);
-
-                // socket.emit('file-upload', Files);
             }
         }
     }
@@ -118,88 +103,8 @@ const UploadForm = ({ socket }) => {
         return blob;
     }
 
-    // function saveBlobs(blob, type) {
-    //     //let blobZip;
-    //     let blobImg;
-    //     //var fileImagen = document.getElementById("uploadImg").files[0];
-
-    //     blobImg = blob;
-    //     //console.log("blobZip", blobZip);
-
-    //     var imagen = new FileReader();
-
-    //     imagen.onload = async function () {
-    //         blobImg = dataURItoBlob(imagen.result);
-    //         //hacerFetch(blobZip, blobImg);
-
-    //     };
-
-    //     imagen.readAsDataURL(fileImagen);
-
-
-
-    //     if (type == "zip") {
-    //         blobZip = blob;
-    //         console.log("blobZip", blobZip);
-    //         console.log("blob", blob);
-    //     }
-    //     else {
-    //         blobImg = blob;
-    //         console.log("blobImg", blobImg);
-    //         console.log("blob", blob);
-    //     }
-
-    //     if (blobImg != null && blobZip != null) {
-    //         hacerFetch(blobZip, blobImg);
-    //         console.log("VV");
-
-    //     }
-    //     else {
-    //         console.log("F");
-    //     }
-
-    // }
-
-    const onClick = async () => {
-
-        //var file = document.getElementById("uploadZip").files[0];
-        var fileImagen = document.getElementById("uploadImg").files[0];
-        var reader = new FileReader();
-        // var imagen = new FileReader();
-
-        reader.onload = function () {
-            let blobresult = dataURItoBlob(reader.result)
-            //saveBlobs(blobresult, 'img');
-            hacerFetch(blobresult);
-
-        };
-        // imagen.onload = async function () {
-        //     let blobresult = dataURItoBlob(imagen.result)
-        //     await saveBlobs(blobresult, 'img');
-
-        // };
-        reader.readAsDataURL(fileImagen);
-        // imagen.readAsDataURL(fileImagen);
-
-    }
     async function hacerFetch() {
         try {
-            //console.log("Zip", blobZip);
-            //console.log("Img", blobImg);
-
-            // let fecha = new Date();
-            // let diaActual = fecha.getDate();
-            // let mesActual = fecha.getMonth();
-            // let añoActual = fecha.getFullYear()
-            // let minutos = fecha.getMinutes();
-            // let segundos = fecha.getSeconds();
-            // let milisegundos = fecha.getMilliseconds();
-
-            // let nombreArchivo = name + "_" + diaActual + "/" + mesActual + "/" + añoActual + "/" + minutos + "/" + segundos + "/" + milisegundos;
-            // console.log(nombreArchivo);
-
-            //console.log("frefer", blobZip);
-
             let img = `${routes.wsNode}` + pathImg;
             let script = `${routes.wsNode}` + pathInit;
             console.log("Name", nameGame);

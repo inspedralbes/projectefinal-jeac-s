@@ -1,7 +1,3 @@
-// import {game} from '../Games/marioGameModule.js';
-// import {game2} from '../Games/marioGame.js';
-// import {Ballgame} from '../Games/BallGame/index.js';
-
 import React, { Component } from "react";
 import GameCard from '../components/gameCard.js';
 import routes from "../index.js";

@@ -1,3 +1,5 @@
+import routes from '../index.js'
+
 var Phaser = null;
 let data = [];
 
@@ -11,7 +13,7 @@ function Game() {
   var obj = null;
 
   function play() {
-    fetch('http://localhost:7878/GamesFiles/ClickGame/initGame.js', {
+    fetch(`${routes.wsNode}/GamesFiles/ClickGame/initGame.js`, {
       method: 'GET',
       mode: 'no-cors',
     })

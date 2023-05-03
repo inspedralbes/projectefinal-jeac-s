@@ -1,5 +1,20 @@
+
+// program to generate random strings
+
+// declare all characters
+const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+function generateString(length) {
+  let result = ' ';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+
+  return result;
+}
+
 var Phaser = null;
-let data = [];
 
 import('phaser')
   .then((module) => {
@@ -9,6 +24,7 @@ import('phaser')
 
 function Game() {
   var obj = null;
+  var score = 0;
 
   function play() {
     fetch('http://localhost:7878/GamesFiles/ClickGame/initGame.js', {
@@ -17,20 +33,20 @@ function Game() {
     })
       .then(response => response.text())
       .then(scriptText => {
-        console.log(scriptText);
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
-        obj.init();
-        console.log(obj);
+        obj.init(generateString(5), sendInfoGame, finalJuego);
       })
   }
 
-  function test() {
-    var test = obj.enviar();
-    obj.recibir(test);
-    console.log(test);
+  function sendInfoGame(idGame, puntos_juego) {
+    score = puntos_juego;
+    console.log("id" + idGame + " | " + "Score " + score)
   }
 
+  function finalJuego() {
+    alert("JUEGO ACABADO");
+  }
 
   return (
     <div className="game"><br></br>
@@ -38,8 +54,6 @@ function Game() {
         <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
       </div>
       <button onClick={play}>PLAY</button><br></br>
-      <button onClick={test}>ENVIAR</button>
-
     </div>
   )
 }

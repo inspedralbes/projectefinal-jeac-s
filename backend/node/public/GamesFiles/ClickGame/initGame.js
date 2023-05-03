@@ -2,7 +2,17 @@
 var contador = 0;
 var textoContador;
 
-function init() {
+var idGame = null;
+var sendInfoGame = null;
+var finalJuego = null;
+
+function init(_idGame, _sendInfoGame, _finalJuego) {
+
+    //traspasamos la funciones recibidas a variables globales
+    idGame = _idGame;
+    sendInfoGame = _sendInfoGame;
+    finalJuego = _finalJuego;
+
     // Inicializar el juego
     var config = {
         type: Phaser.canvas,
@@ -35,40 +45,24 @@ function create() {
 
     // Agregar evento de clic a la imagen
     imagen.on('pointerdown', function () {
-        if (contador == 10) {
-            endGame(contador);
+        contador++;
+        if (contador > 10) {
+            finalJuego();
+            textoContador.setText('GAME OVER');
+
         } else {
-            contador++;
             textoContador.setText('Contador: ' + contador);
-            enviar();
+            // enviamos la puntuacion actualizada a la plataforma
+            sendInfoGame(idGame, contador);
         }
     });
     return imagen;
-}
-
-function enviar() {
-    return contador;
-}
-
-function recibir(test) {
-    console.log(test);
-    return test;
-}
-
-function endGame(cont) {
-    console.log(cont);
-    return cont;
 }
 
 function executeGame() {
     var obj = {};
 
     obj.init = init;
-    obj.enviar = enviar;
-    obj.recibir = recibir;
-    obj.endGame = endGame;
-    console.log(obj);
-
     return obj;
 }
 

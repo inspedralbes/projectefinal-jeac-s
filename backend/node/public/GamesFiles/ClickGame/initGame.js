@@ -1,5 +1,18 @@
+// Variables globales
+var contador = 0;
+var textoContador;
 
-function init() {
+var idGame = null;
+var sendInfoGame = null;
+var finalJuego = null;
+
+function init(_idGame, _sendInfoGame, _finalJuego) {
+
+    //traspasamos la funciones recibidas a variables globales
+    idGame = _idGame;
+    sendInfoGame = _sendInfoGame;
+    finalJuego = _finalJuego;
+
     // Inicializar el juego
     var config = {
         type: Phaser.canvas,
@@ -15,9 +28,6 @@ function init() {
     var game = new Phaser.Game(config);
     return game;
 }
-// Variables globales
-var contador = 0;
-var textoContador;
 
 // Cargar imagen
 function preload() {
@@ -36,33 +46,24 @@ function create() {
     // Agregar evento de clic a la imagen
     imagen.on('pointerdown', function () {
         contador++;
-        textoContador.setText('Contador: ' + contador);
+        if (contador > 10) {
+            finalJuego();
+            textoContador.setText('GAME OVER');
+
+        } else {
+            textoContador.setText('Contador: ' + contador);
+            // enviamos la puntuacion actualizada a la plataforma
+            sendInfoGame(idGame, contador);
+        }
     });
     return imagen;
 }
 
-function enviar() {
-    return 1;
+function executeGame() {
+    var obj = {};
+
+    obj.init = init;
+    return obj;
 }
 
-function recibir() {
-    return 2;
-}
-
-function endGame() {
-    return 3;
-}
-
-function doThis(){
-    var obj  = {};
-
-    obj.init = init();
-    obj.enviar = enviar();
-    obj.recibir = recibir();
-    obj.endGame = endGame();
-
-    console.log(obj);
-    return obj; 
-}
-
-doThis();
+executeGame();

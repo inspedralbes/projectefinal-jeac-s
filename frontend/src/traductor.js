@@ -54,6 +54,7 @@ i18n.use(initReactI18next).init({
                 navUpload: 'Subir juego',
                 storeBuyItem: 'Comprar',
                 storeNoItemsLeft: 'No quedan objetos en la tienda',
+                itemsTitle: 'Tienda de cosmeticos'
 
 
             }
@@ -107,6 +108,7 @@ i18n.use(initReactI18next).init({
                 navUpload: 'Upload game',
                 storeBuyItem: 'Buy',
                 storeNoItemsLeft: 'No items left on the store',
+                itemsTitle: 'Cosmetics Store'
 
             }
         },
@@ -159,6 +161,7 @@ i18n.use(initReactI18next).init({
                 navUpload: 'Pujar joc',
                 storeBuyItem: 'Comprar',
                 storeNoItemsLeft: 'No queden objectes a la botiga',
+                itemsTitle: 'Botiga de cosmètics'
 
             }
         }

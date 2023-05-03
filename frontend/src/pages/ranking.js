@@ -57,17 +57,17 @@ function GetRanking() {
                           </th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody class="text-center">
                         {users.map((user, index) => (
                           <tr className="bg-violet-500 border-b border-violet-400" key={user.id}>
                             <td className=" w-1/3 px-6 py-4 font-medium text-violet-50 whitespace-nowrap dark:text-violet-100" >
                               {index < 3 ? (
                                 index === 0 ? (
-                                  <img src="oro.png" alt="oro" className="w-20" />
+                                  <img src="oro.png" alt="oro" class="mx-auto w-1/2" />
                                 ) : index === 1 ? (
-                                  <img src="plata.png" alt="plata" className="w-20" />
+                                  <img src="plata.png" alt="plata" class="mx-auto w-1/2" />
                                 ) : (
-                                  <img src="bronce.png" alt="gold" className="w-20" />
+                                  <img src="bronce.png" alt="gold" class="mx-auto w-1/2" />
                                 )
                               ) : (
                                 index + 1

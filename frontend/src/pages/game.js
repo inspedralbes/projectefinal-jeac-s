@@ -1,3 +1,14 @@
+//import {Ballgame} from '../Games/BallGame/BallGame/index.js';
+// import {destroy} from '../../public/Games/BallGame/BallGame/index.js';
+// import {destroy} from '../../public/Games/BallGame/BallGame/index.js';
+import { useEffect } from "react";
+import routes from "../index.js";
+
+import { useState } from 'react'
+import { $CombinedState } from 'redux';
+import { Socket } from "socket.io-client";
+// import ConnectedUsers from "../components/connectedUsers.js"
+
 
 // program to generate random strings
 
@@ -23,8 +34,59 @@ import('phaser')
   })
  
 function Game({ socket }) {
+
+  const [lobbyId, setLobbyId] = useState("");
+  const [lobbyIdInput, setLobbyIdInput] = useState("");
+  const [username, setUsername] = useState("");
+  const [displayCanvas, setDisplayCanvas] = useState(false);
+  const [displayForm, setDisplayForm] = useState(false);
+
+
   var obj = null;
   var score = 0;
+
+  useEffect(() => {
+    socket.on("lobby_info", (data) => {
+      setLobbyId(data.lobbyIdentifier);
+    });
+
+    socket.on("lobby_info", (data) => {
+      console.log(data);
+
+    });
+
+    socket.on("start_game", () => {
+      alert("Empieza el juego");
+    });
+
+  }, []);
+
+  function JoinLobby() {
+    console.log("Join");
+    if (lobbyIdInput != null & username != null) {
+      socket.emit("join_room", {
+        lobbyIdentifier: lobbyIdInput,
+        username: username,
+      });
+    }
+    else {
+      console.log("You need to fill both input fields.");
+    }
+  }
+
+  function toggleForm() {
+    setDisplayForm(true);
+  }
+
+  function handleChangeLobbyId(e) {
+    setLobbyIdInput(e.target.value);
+  }
+
+  function handleChangeUsername(e) {
+    setUsername(e.target.value);
+  }
+
+
 
   function play() {
     fetch('http://localhost:7878/GamesFiles/ClickGame/initGame.js', {
@@ -37,6 +99,14 @@ function Game({ socket }) {
         obj = scriptFn();
         obj.init(generateString(5), sendInfoGame, finalJuego);
       })
+  }
+
+  function createRoom() {
+    socket.emit("new_lobby");
+  }
+
+  function StartGame() {
+    socket.emit("can_start_game");
   }
 
   function sendInfoGame(idGame, puntos_juego) {
@@ -60,12 +130,68 @@ function Game({ socket }) {
 
 
   return (
-    <div className="game"><br></br>
+
+    <div>
+    <h1>{lobbyId}</h1>
+  <div>
+    <button onClick={createRoom}>Create lobby</button>
+    <button onClick={toggleForm}>JoinLobby</button>
+
+    {/* <ConnectedUsers socket={socket}/> */}
+    <button onClick={StartGame}>Play</button>
+  </div>
+
+  {displayForm ? 
+    <div id="join_lobby_form">
+      <br></br>
+      <label className="JoinLobby__nickname--grid">
+        <div className="form__inputGroup">
+          <input
+            id="nickname"
+            value={username}
+            className="form__input"
+            onChange={handleChangeUsername}
+            placeholder=" "
+            type="text"
+            required
+          ></input>
+          <span className="form__inputBar"></span>
+          <label className="form__inputlabel">
+            Introduce your nickname
+          </label>
+        </div>
+      </label>
+
+      <label>
+        <div>
+          <input
+            value={lobbyIdInput}
+            onChange={handleChangeLobbyId}
+            placeholder="Introduce id"
+            type="text"
+            required
+          ></input>
+          <label>Introduce lobby ID</label>
+        </div>
+      </label>
+      <button onClick={JoinLobby}>Join lobby</button>
+    </div>
+    :
+    <></>
+}
+
+  {displayCanvas ?
+    <div>
+
       <div id="game">
         <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
       </div>
-      <button onClick={play}>PLAY</button><br></br>
+      <button onClick={play}>PLAY GAME</button>
     </div>
+    :
+    <></>
+  }
+</div>
   )
 }
 

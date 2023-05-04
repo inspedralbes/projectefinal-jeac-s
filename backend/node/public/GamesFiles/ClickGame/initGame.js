@@ -1,20 +1,16 @@
 // Variables globales
 var contador = 0;
-let contadorEnemigo = 0;
 var textoContador;
-let textoContadorEnemigo;
-
-var idGame = null;
+var recibirInfoGame = null;
 var sendInfoGame = null;
 var finalJuego = null;
 
-function init(_idGame, _sendInfoGame, _finalJuego) {
+function init(_recibirInfoGame, _sendInfoGame, _finalJuego) {
 
     //traspasamos la funciones recibidas a variables globales
-    idGame = _idGame;
+    recibirInfoGame = _recibirInfoGame;
     sendInfoGame = _sendInfoGame;
     finalJuego = _finalJuego;
-    console.log("");
 
     // Inicializar el juego
     var config = {
@@ -44,9 +40,7 @@ function create() {
     imagen.setInteractive();
 
     // Agregar texto
-    textoContador = this.add.text(10, 10, 'Contador: ' + contador, { font: '32px Arial', fill: '#FFFF' });
-    textoContadorEnemigo = this.add.text(10, 10, 'Contador: ' + contadorEnemigo, { font: '32px Arial', fill: '#0000' });
-
+    textoContador = this.add.text(10, 10, recibirInfoGame() + ": " + contador, { font: '32px Arial', fill: '#FFFF' });
 
     // Agregar evento de clic a la imagen
     imagen.on('pointerdown', function () {
@@ -54,16 +48,17 @@ function create() {
         if (contador > 10) {
             finalJuego();
             textoContador.setText('GAME OVER');
-            textoContadorEnemigo.setText('GAME OVER');
-
-
         } else {
-            textoContador.setText('Contador: ' + contador);
+            textoContador.setText(recibirInfoGame() + ": " + contador);
             // enviamos la puntuacion actualizada a la plataforma
-            sendInfoGame(idGame, contador);
+            sendInfoGame(contador);
         }
     });
     return imagen;
+}
+
+function recibirInfo(puntos){
+    console.log("soy el juego" + puntos)
 }
 
 function executeGame() {

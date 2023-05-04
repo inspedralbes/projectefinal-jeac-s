@@ -32,7 +32,7 @@ import('phaser')
     Phaser = module;
     console.log(Phaser);
   })
- 
+
 function Game({ socket }) {
 
   const [lobbyId, setLobbyId] = useState("");
@@ -61,9 +61,9 @@ function Game({ socket }) {
     });
 
     socket.on('send_datagame_to_game', (score) => {
-      console.log("AAAAAAAAAAAAAAAA");
-      console.log("Score", score);
-      console.log("score enemigo", score.scoreEnemy);
+      console.log(score);
+      console.log("User: ", score.member, "Score", score.scoreEnemy);
+      recibirInfoGame(score.member);
     });
   }, []);
 
@@ -101,7 +101,8 @@ function Game({ socket }) {
       .then(scriptText => {
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
-        obj.init(generateString(5), sendInfoGame, finalJuego);
+        obj.init(recibirInfoGame, sendInfoGame, finalJuego);
+        console.log(obj);
       })
   }
 
@@ -113,81 +114,83 @@ function Game({ socket }) {
     socket.emit("can_start_game");
   }
 
-  function sendInfoGame(idGame, puntos_juego) {
+  function sendInfoGame(puntos_juego) {
     score = puntos_juego;
-    console.log("id" + idGame + " | " + "Score " + score)
     socket.emit('datagame', score)
-
+    obj.recibirInfo(score);
   }
-  
+
+  function recibirInfoGame(username) {    
+    return username;
+  }
+
   function finalJuego() {
     alert("JUEGO ACABADO");
   }
 
-
   return (
 
     <div>
-    <h1>{lobbyId}</h1>
-  <div>
-    <button onClick={createRoom}>Create lobby</button>
-    <button onClick={toggleForm}>JoinLobby</button>
+      <h1>{lobbyId}</h1>
+      <div>
+        <button onClick={createRoom}>Create lobby</button>
+        <button onClick={toggleForm}>JoinLobby</button>
 
-    <ConnectedUsers socket={socket}/>
-    <button onClick={StartGame}>Play</button>
-  </div>
-
-  {displayForm ? 
-    <div id="join_lobby_form">
-      <br></br>
-      <label className="JoinLobby__nickname--grid">
-        <div className="form__inputGroup">
-          <input
-            id="nickname"
-            value={username}
-            className="form__input"
-            onChange={handleChangeUsername}
-            placeholder=" "
-            type="text"
-            required
-          ></input>
-          <span className="form__inputBar"></span>
-          <label className="form__inputlabel">
-            Introduce your nickname
-          </label>
-        </div>
-      </label>
-
-      <label>
-        <div>
-          <input
-            value={lobbyIdInput}
-            onChange={handleChangeLobbyId}
-            placeholder="Introduce id"
-            type="text"
-            required
-          ></input>
-          <label>Introduce lobby ID</label>
-        </div>
-      </label>
-      <button onClick={JoinLobby}>Join lobby</button>
-    </div>
-    :
-    <></>
-}
-
-  {displayCanvas ?
-    <div>
-
-      <div id="game">
-        <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
+        <ConnectedUsers socket={socket} />
+        <button onClick={StartGame}>Play</button>
       </div>
-      <button onClick={play}>PLAY GAME</button>
+
+      {displayForm ?
+        <div id="join_lobby_form">
+          <br></br>
+          <label className="JoinLobby__nickname--grid">
+            <div className="form__inputGroup">
+              <input
+                id="nickname"
+                value={username}
+                className="form__input"
+                onChange={handleChangeUsername}
+                placeholder=" "
+                type="text"
+                required
+              ></input>
+              <span className="form__inputBar"></span>
+              <label className="form__inputlabel">
+                Introduce your nickname
+              </label>
+            </div>
+          </label>
+
+          <label>
+            <div>
+              <input
+                value={lobbyIdInput}
+                onChange={handleChangeLobbyId}
+                placeholder="Introduce id"
+                type="text"
+                required
+              ></input>
+              <label>Introduce lobby ID</label>
+            </div>
+          </label>
+          <button onClick={JoinLobby}>Join lobby</button>
+        </div>
+        :
+        <></>
+      }
+
+      {displayCanvas ?
+        <div>
+
+          <div id="game">
+            <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
+          </div>
+          <button onClick={play}>PLAY GAME</button>
+        </div>
+        :
+        <></>
+      }
     </div>
-    :
-    <></>
-  }
-</div>
   )
 }
 

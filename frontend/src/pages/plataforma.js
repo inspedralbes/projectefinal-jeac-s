@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { Socket } from "socket.io-client";
 import ConnectedUsers from "../components/ConnectedUsers.js"
 
-
 // program to generate random strings
 
 // declare all characters
@@ -15,7 +14,6 @@ import ConnectedUsers from "../components/ConnectedUsers.js"
 //   for (let i = 0; i < length; i++) {
 //     result += characters.charAt(Math.floor(Math.random() * charactersLength));
 //   }
-
 //   return result;
 // }
 
@@ -34,6 +32,7 @@ function Game({ socket }) {
   const [username, setUsername] = useState("");
   const [displayCanvas, setDisplayCanvas] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
+  const [usersScores, setUsersScores] = useState([]);
 
   var obj = null;
 
@@ -44,7 +43,6 @@ function Game({ socket }) {
 
     socket.on("lobby_info", (data) => {
       console.log(data);
-
     });
 
     socket.on("start_game", () => {
@@ -53,8 +51,20 @@ function Game({ socket }) {
     });
 
     socket.on('send_datagame_to_game', (score) => {
-      console.log(score);
-      console.log("User: ", score.member, "Score", score.scoreEnemy);
+      setUsersScores(prevScores => {
+        const index = prevScores.findIndex(s => s.member === score.member);
+        if (index !== -1) {
+          // Usuario ya existe en la lista, actualizar su puntaje
+          const updatedScore = { member: score.member, scoreEnemy: score.scoreEnemy };
+          const newScores = prevScores.map((s, i) => i === index ? updatedScore : s);
+          return newScores;
+        } else {
+          // Usuario no existe en la lista, agregar nuevo puntaje
+          const newScore = { member: score.member, scoreEnemy: score.scoreEnemy };
+          const newScores = [...prevScores, newScore];
+          return newScores;
+        }
+      });
     });
   }, []);
 
@@ -113,14 +123,14 @@ function Game({ socket }) {
     alert("JUEGO ACABADO");
   }
 
-  return (
+  console.log(usersScores);
 
+  return (
     <div>
       <h1>{lobbyId}</h1>
       <div>
         <button onClick={createRoom}>Create lobby</button>
         <button onClick={toggleForm}>JoinLobby</button>
-
         <ConnectedUsers socket={socket} />
         <button onClick={play}>Play</button>
       </div>
@@ -166,7 +176,11 @@ function Game({ socket }) {
 
       {displayCanvas ?
         <div>
-
+          <div>
+            {usersScores.map((userScore, index) => (
+              <p key={index}>{userScore.member}: {userScore.scoreEnemy}</p>
+            ))}
+          </div>
           <div id="game">
             <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
           </div>

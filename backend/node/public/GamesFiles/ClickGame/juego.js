@@ -3,7 +3,6 @@ var contador = 0;
 var textoContador;
 var sendInfoGame = null;
 var finalJuego = null;
-var username;
 
 function init(_sendInfoGame, _finalJuego) {
 

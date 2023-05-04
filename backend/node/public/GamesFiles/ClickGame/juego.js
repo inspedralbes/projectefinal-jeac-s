@@ -1,14 +1,13 @@
 // Variables globales
 var contador = 0;
 var textoContador;
-var recibirInfoGame = null;
 var sendInfoGame = null;
 var finalJuego = null;
+var username;
 
-function init(_recibirInfoGame, _sendInfoGame, _finalJuego) {
+function init(_sendInfoGame, _finalJuego) {
 
     //traspasamos la funciones recibidas a variables globales
-    recibirInfoGame = _recibirInfoGame;
     sendInfoGame = _sendInfoGame;
     finalJuego = _finalJuego;
 
@@ -40,7 +39,7 @@ function create() {
     imagen.setInteractive();
 
     // Agregar texto
-    textoContador = this.add.text(10, 10, recibirInfoGame() + ": " + contador, { font: '32px Arial', fill: '#FFFF' });
+    textoContador = this.add.text(10, 10, contador, { font: '32px Arial', fill: '#FFFF' });
 
     // Agregar evento de clic a la imagen
     imagen.on('pointerdown', function () {
@@ -49,7 +48,7 @@ function create() {
             finalJuego();
             textoContador.setText('GAME OVER');
         } else {
-            textoContador.setText(recibirInfoGame() + ": " + contador);
+            textoContador.setText(contador);
             // enviamos la puntuacion actualizada a la plataforma
             sendInfoGame(contador);
         }
@@ -57,14 +56,16 @@ function create() {
     return imagen;
 }
 
-function recibirInfo(puntos){
-    console.log("soy el juego" + puntos)
+function recibirInfo(puntos) {
+    console.log("Soy el Juego - " + puntos)
 }
 
 function executeGame() {
     var obj = {};
 
     obj.init = init;
+    obj.recibir = recibirInfo;
+    console.log(obj);
     return obj;
 }
 

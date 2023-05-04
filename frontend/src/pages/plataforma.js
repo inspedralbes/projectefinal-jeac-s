@@ -1,11 +1,5 @@
-//import {Ballgame} from '../Games/BallGame/BallGame/index.js';
-// import {destroy} from '../../public/Games/BallGame/BallGame/index.js';
-// import {destroy} from '../../public/Games/BallGame/BallGame/index.js';
 import { useEffect } from "react";
-import routes from "../index.js";
-
 import { useState } from 'react'
-import { $CombinedState } from 'redux';
 import { Socket } from "socket.io-client";
 import ConnectedUsers from "../components/ConnectedUsers.js"
 
@@ -13,17 +7,17 @@ import ConnectedUsers from "../components/ConnectedUsers.js"
 // program to generate random strings
 
 // declare all characters
-const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+// const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-function generateString(length) {
-  let result = ' ';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
+// function generateString(length) {
+//   let result = ' ';
+//   const charactersLength = characters.length;
+//   for (let i = 0; i < length; i++) {
+//     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+//   }
 
-  return result;
-}
+//   return result;
+// }
 
 var Phaser = null;
 
@@ -41,9 +35,7 @@ function Game({ socket }) {
   const [displayCanvas, setDisplayCanvas] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
 
-
   var obj = null;
-  var score = 0;
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
@@ -63,7 +55,6 @@ function Game({ socket }) {
     socket.on('send_datagame_to_game', (score) => {
       console.log(score);
       console.log("User: ", score.member, "Score", score.scoreEnemy);
-      recibirInfoGame(score.member);
     });
   }, []);
 
@@ -93,16 +84,18 @@ function Game({ socket }) {
   }
 
   function play() {
-    fetch('http://localhost:7878/GamesFiles/ClickGame/initGame.js', {
+    fetch('http://localhost:7878/GamesFiles/ClickGame/juego.js', {
       method: 'GET',
       mode: 'same-origin',
     })
-      .then(response => response.text())
+      .then(response =>
+        response.text()
+      )
       .then(scriptText => {
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
-        obj.init(recibirInfoGame, sendInfoGame, finalJuego);
-        console.log(obj);
+        obj.init(sendInfoGame, finalJuego);
+        socket.emit("can_start_game");
       })
   }
 
@@ -110,18 +103,10 @@ function Game({ socket }) {
     socket.emit("new_lobby");
   }
 
-  function StartGame() {
-    socket.emit("can_start_game");
-  }
-
   function sendInfoGame(puntos_juego) {
-    score = puntos_juego;
-    socket.emit('datagame', score)
-    obj.recibirInfo(score);
-  }
-
-  function recibirInfoGame(username) {    
-    return username;
+    let score = puntos_juego;
+    socket.emit('datagame', score);
+    obj.recibir(score);
   }
 
   function finalJuego() {
@@ -137,7 +122,7 @@ function Game({ socket }) {
         <button onClick={toggleForm}>JoinLobby</button>
 
         <ConnectedUsers socket={socket} />
-        <button onClick={StartGame}>Play</button>
+        <button onClick={play}>Play</button>
       </div>
 
       {displayForm ?
@@ -185,7 +170,6 @@ function Game({ socket }) {
           <div id="game">
             <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
           </div>
-          <button onClick={play}>PLAY GAME</button>
         </div>
         :
         <></>

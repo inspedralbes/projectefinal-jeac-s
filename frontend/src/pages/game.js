@@ -60,6 +60,11 @@ function Game({ socket }) {
       setDisplayForm(false);
     });
 
+    socket.on('send_datagame_to_game', (score) => {
+      console.log("AAAAAAAAAAAAAAAA");
+      console.log("Score", score);
+      console.log("score enemigo", score.scoreEnemy);
+    });
   }, []);
 
   function JoinLobby() {
@@ -86,8 +91,6 @@ function Game({ socket }) {
   function handleChangeUsername(e) {
     setUsername(e.target.value);
   }
-
-
 
   function play() {
     fetch('http://localhost:7878/GamesFiles/ClickGame/initGame.js', {
@@ -117,11 +120,6 @@ function Game({ socket }) {
 
   }
   
-  socket.on('datagame', function (score) {
-    console.log(score)
-  });
-
-
   function finalJuego() {
     alert("JUEGO ACABADO");
   }

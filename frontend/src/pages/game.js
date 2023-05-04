@@ -21,7 +21,7 @@ import('phaser')
     Phaser = module;
     console.log(Phaser);
   })
-
+ 
 function Game({ socket }) {
   var obj = null;
   var score = 0;

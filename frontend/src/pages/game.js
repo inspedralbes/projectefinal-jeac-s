@@ -7,7 +7,7 @@ import routes from "../index.js";
 import { useState } from 'react'
 import { $CombinedState } from 'redux';
 import { Socket } from "socket.io-client";
-// import ConnectedUsers from "../components/connectedUsers.js"
+import ConnectedUsers from "../components/ConnectedUsers.js"
 
 
 // program to generate random strings
@@ -56,7 +56,8 @@ function Game({ socket }) {
     });
 
     socket.on("start_game", () => {
-      alert("Empieza el juego");
+      setDisplayCanvas(true);
+      setDisplayForm(false);
     });
 
   }, []);
@@ -126,9 +127,6 @@ function Game({ socket }) {
   }
 
 
-
-
-
   return (
 
     <div>
@@ -137,7 +135,7 @@ function Game({ socket }) {
     <button onClick={createRoom}>Create lobby</button>
     <button onClick={toggleForm}>JoinLobby</button>
 
-    {/* <ConnectedUsers socket={socket}/> */}
+    <ConnectedUsers socket={socket}/>
     <button onClick={StartGame}>Play</button>
   </div>
 

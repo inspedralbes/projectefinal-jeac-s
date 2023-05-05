@@ -1,8 +1,15 @@
 // Variables globales
 var contador = 0;
 var textoContador;
+var sendInfoGame = null;
+var finalJuego = null;
 
-function init() {
+function init(_sendInfoGame, _finalJuego) {
+
+    //traspasamos la funciones recibidas a variables globales
+    sendInfoGame = _sendInfoGame;
+    finalJuego = _finalJuego;
+
     // Inicializar el juego
     var config = {
         type: Phaser.canvas,
@@ -31,44 +38,33 @@ function create() {
     imagen.setInteractive();
 
     // Agregar texto
-    textoContador = this.add.text(10, 10, 'Contador: ' + contador, { font: '32px Arial', fill: '#FFFF' });
+    textoContador = this.add.text(10, 10, contador, { font: '32px Arial', fill: '#FFFF' });
 
     // Agregar evento de clic a la imagen
     imagen.on('pointerdown', function () {
-        if (contador == 10) {
-            endGame(contador);
+        contador++;
+        if (contador > 10) {
+            finalJuego();
+            textoContador.setText('GAME OVER');
         } else {
-            contador++;
-            textoContador.setText('Contador: ' + contador);
-            enviar();
+            textoContador.setText(contador);
+            // enviamos la puntuacion actualizada a la plataforma
+            sendInfoGame(contador);
         }
     });
     return imagen;
 }
 
-function enviar() {
-    return contador;
-}
-
-function recibir(test) {
-    console.log(test);
-    return test;
-}
-
-function endGame(cont) {
-    console.log(cont);
-    return cont;
+function recibirInfo(puntos) {
+    console.log("Soy el Juego - " + puntos)
 }
 
 function executeGame() {
     var obj = {};
 
     obj.init = init;
-    obj.enviar = enviar;
-    obj.recibir = recibir;
-    obj.endGame = endGame;
+    obj.recibir = recibirInfo;
     console.log(obj);
-
     return obj;
 }
 

@@ -10,7 +10,7 @@ import Profile from '../pages/userInfo.js';
 import Upload from '../pages/upload.js';
 import Signin from '../pages/signin'
 import LoginForm from '../pages/login.js'
-import Game from '../pages/game.js'
+import Game from '../pages/plataforma.js'
 import GetRanking from '../pages/ranking.js'
 import GetGameStore from '../pages/storeItems.js'
 import socketIO from "socket.io-client";

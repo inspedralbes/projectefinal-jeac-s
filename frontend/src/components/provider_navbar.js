@@ -27,11 +27,11 @@ function Navbar() {
                 <img class="hidden h-8 w-auto " src="LogoLargo.png" alt="Your Company"></img>
               </NavLink>
             </div>
-            <div class="hidden sm:ml-6 sm:block">
+            <div class="sm:ml-6 block">
               <div class="flex space-x-4">
 
                 <NavLink to="/game">
-                  <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">BallGame</a>
+                  <a href="#" class="hidden lg:block text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">BallGame</a>
                 </NavLink>
 
                 {isLoggedIn ?

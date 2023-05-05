@@ -28,9 +28,9 @@ function GetRanking() {
 
   return (
     <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center">
-      <div class="container h-full w-2/4 p-10">
-        <div class=" block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
-          <div class="p-4">
+      <div class="container h-full w-full md:w-full lg:w-2/4 lg:p-5 ">
+        <div class="block rounded-lg bg-gray-800 border-violet-300 shadow-lg dark:bg-neutral-800">
+          <div class="border-violet-300 border p-4">
             <div class="md:m-6 md:p-12">
               <div class="text-center">
                 <h1 class="text-white text-2xl font-bold">
@@ -43,7 +43,7 @@ function GetRanking() {
                   </p>
                 ) : (
                   <div>
-                    <table class="text-xl border-separate w-full text-sm text-left text-violet-100 dark:text-violet-100">
+                    <table class="text-xl border-separate w-fill text-sm text-left text-violet-100 dark:text-violet-100">
                       <thead class="text-center text-x text-white uppercase bg-violet-600 dark:text-white">
                         <tr>
                           <th>

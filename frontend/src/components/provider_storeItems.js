@@ -88,26 +88,26 @@ const Tienda = () => {
   });
 
   return (
-    <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
-      <div class="container h-full w-2/4 p-10">
+    <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
+      <div class="text-center container h-full w-3/4 p-10">
         <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
           <div class="p-4">
             <div class="md:m-6 md:p-12">
-              <div class="text-white ">
+              <div class="justify-center text-white text-center flex flex-wrap">
                 {isLoggedIn ?
                   <div>
                     {isLoading ?
                       <div>
                         {itemsToBuy.length > 0 ?
                           <div >
-                            <h2 class="text-center text-xl">{t('itemsTitle')}</h2>
+                            <h2 class=" text-xl">{t('itemsTitle')}</h2>
                             <br></br>
                             {
                               itemsToBuy.map((item, id) => (
                                 <div class="flex" key={id}>
-                                  <div class = "flex-initial w-1/3 text-center">
+                                  <div class="flex-initial w-1/3 text-center">
                                     <h2>{t('itemsItem')}: {item.name}</h2>
-                                    <img src={item.image_url} class = "mx-auto" />
+                                    <img src={item.image_url} class="mx-auto" />
                                     <p>{t('itemsDesc')}: {item.description}</p>
                                     <p class="inline">{t('itemsPrice')}: {item.price}</p>
                                     <img class="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>

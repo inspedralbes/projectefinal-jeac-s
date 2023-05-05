@@ -87,7 +87,7 @@ function Game({ socket }) {
   function play() {
     fetch(`${routes.wsNode}/GamesFiles/ClickGame/initGame.js`, {
       method: 'GET',
-      mode: 'no-cors',
+      mode: 'same-origin',
     })
       .then(response => response.text())
       .then(scriptText => {
@@ -115,30 +115,6 @@ function Game({ socket }) {
   function finalJuego() {
     alert("JUEGO ACABADO");
   }
-
-    const scriptUrl = routes.wsNode + '/hola.txt';
-
-    fetch(`${routes.wsNode}/public/GamesFiles/CopiaMario/initGame.js`, {
-      method: 'GET',
-      cors: {
-        origin: "*",
-        credentials: true,
-      },
-    })
-      .then(response => response.text())
-      .then(scriptText => {
-        console.log(scriptText);
-        //eval(scriptText);
-        const scriptFn = new Function(scriptText);
-        scriptFn();
-        console.log('Script ejecutado exitosamente.');
-      })
-      .catch(error => console.error('Error al recuperar y ejecutar el script:', error));
-    function test() {
-      var test = obj.enviar();
-      obj.recibir(test);
-      console.log(test);
-    }
 
   return (
 

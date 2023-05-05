@@ -3,7 +3,7 @@ var contador = 0;
 var textoContador;
 var sendInfoGame = null;
 var finalJuego = null;
-var tiempoObjeto = 2000; // 2 segundos
+var tiempoObjeto = 800;
 
 function init(_sendInfoGame, _finalJuego) {
 
@@ -43,6 +43,8 @@ function create() {
                 Phaser.Math.Between(50, 550),
                 "object"
             );
+            object.setScale(0.4); // se ajusta el tamaño del objeto
+
             object.setInteractive();
             object.on("pointerdown", function () {
                 object.destroy();
@@ -52,7 +54,7 @@ function create() {
                     textoContador.setText('GAME OVER');
                 } else {
                     textoContador.setText(contador);
-                    // enviamos la puntuacion actualizada a la plataforma
+                    sendInfoGame(contador);
                 }
             });
             // si se llega al final del tiempo sin destruir el objeto, se resta 10 al contador
@@ -60,8 +62,6 @@ function create() {
                 delay: tiempoObjeto - 100,
                 callback: function () {
                     if (object.active) {
-                        contador -= 10;
-                        textoContador.setText(contador);
                         object.destroy();
                     }
                 },
@@ -70,10 +70,7 @@ function create() {
         },
         callbackScope: this
     });
-    sendInfoGame(contador);
-
 }
-
 
 function recibirInfo(puntos) {
     var texto = '';
@@ -83,7 +80,6 @@ function recibirInfo(puntos) {
     textoContador.setText(texto);
     console.log(puntos);
 }
-
 
 function executeGame() {
     var obj = [];

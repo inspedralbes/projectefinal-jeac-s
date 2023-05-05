@@ -102,7 +102,7 @@ function Game({ socket }) {
   }
 
   function play() {
-    fetch('http://localhost:7878/GamesFiles/ClickGame/juego.js', {
+    fetch('http://localhost:7878/GamesFiles/TestGame/juego.js', {
       method: 'GET',
       mode: 'same-origin',
     })

@@ -234,9 +234,9 @@ const UserInfo = () => {
   }
 
   return (
-    <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
+    <div class="overflow-auto flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
       {isLoggedIn ?
-        <div class=" container h-full w-3/4 p-10">
+        <div class="g-6 flex h-full flex-wrap items-center justify-center">
           <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
             <div class="p-4">
               <div class="md:m-6 md:p-12">

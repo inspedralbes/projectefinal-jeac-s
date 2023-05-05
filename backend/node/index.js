@@ -101,10 +101,10 @@ socketIO.on('connection', (socket) => {
           console.log("socket.data.id", socket.data.id);
           if (member.idUser != socket.data.id) {
             socketIO.to(socket.data.current_lobby).emit("send_datagame_to_game", {
-              idUser: member.idUser,
+              member: member.username,
               scoreEnemy: score,
             });
-            console.log("Va perfe", member.idUser, "score: ", score);
+            console.log("User: ", member.username, "Score: ", score);
           }
         });
       }

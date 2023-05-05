@@ -18,6 +18,7 @@ import ConnectedUsers from "../components/ConnectedUsers.js"
 // }
 
 var Phaser = null;
+var obj = null;
 
 import('phaser')
   .then((module) => {
@@ -34,7 +35,6 @@ function Game({ socket }) {
   const [displayForm, setDisplayForm] = useState(false);
   const [usersScores, setUsersScores] = useState([]);
 
-  var obj = null;
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
@@ -55,18 +55,26 @@ function Game({ socket }) {
         const index = prevScores.findIndex(s => s.member === score.member);
         if (index !== -1) {
           // Usuario ya existe en la lista, actualizar su puntaje
-          const updatedScore = { member: score.member, scoreEnemy: score.scoreEnemy };
+          const updatedScore = { member: score.member, score: score.puntuacion };
           const newScores = prevScores.map((s, i) => i === index ? updatedScore : s);
           return newScores;
         } else {
           // Usuario no existe en la lista, agregar nuevo puntaje
-          const newScore = { member: score.member, scoreEnemy: score.scoreEnemy };
+          const newScore = { member: score.member, score: score.puntuacion };
           const newScores = [...prevScores, newScore];
           return newScores;
         }
       });
     });
   }, []);
+
+  useEffect(() => {
+    if (obj == null) {
+      console.log("null");
+    } else {
+      obj.recibir(usersScores);
+    }
+  }, [usersScores]);
 
   function JoinLobby() {
     console.log("Join");
@@ -116,7 +124,6 @@ function Game({ socket }) {
   function sendInfoGame(puntos_juego) {
     let score = puntos_juego;
     socket.emit('datagame', score);
-    obj.recibir(score);
   }
 
   function finalJuego() {
@@ -132,7 +139,7 @@ function Game({ socket }) {
         <button onClick={createRoom}>Create lobby</button>
         <button onClick={toggleForm}>JoinLobby</button>
         <ConnectedUsers socket={socket} />
-        <button onClick={play}>Play</button>
+        <button onClick={play}>Start</button>
       </div>
 
       {displayForm ?
@@ -177,9 +184,6 @@ function Game({ socket }) {
       {displayCanvas ?
         <div>
           <div>
-            {usersScores.map((userScore, index) => (
-              <p key={index}>{userScore.member}: {userScore.scoreEnemy}</p>
-            ))}
           </div>
           <div id="game">
             <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>

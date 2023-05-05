@@ -99,10 +99,10 @@ socketIO.on('connection', (socket) => {
           console.log("member", member);
           console.log("memberID", member.idUser);
           console.log("socket.data.id", socket.data.id);
-          if (member.idUser != socket.data.id) {
+          if (member.idUser == socket.data.id) {
             socketIO.to(socket.data.current_lobby).emit("send_datagame_to_game", {
               member: member.username,
-              scoreEnemy: score,
+              puntuacion: score,
             });
             console.log("User: ", member.username, "Score: ", score);
           }

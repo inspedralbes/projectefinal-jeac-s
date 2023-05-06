@@ -103,8 +103,9 @@ socketIO.on('connection', (socket) => {
             socketIO.to(socket.data.current_lobby).emit("send_datagame_to_game", {
               member: member.username,
               puntuacion: score,
+              owner: member.isOwner,
             });
-            console.log("User: ", member.username, "Score: ", score);
+            console.log("User: ", member.username, "Score: ", score), "Owner: ", member.isOwner;
           }
         });
       }
@@ -254,6 +255,7 @@ socketIO.on('connection', (socket) => {
         members: [{
           idUser: socket.data.id,
           username: "owner",
+          isOwner: true,
         }],
       };
 
@@ -331,6 +333,7 @@ function joinLobby(socket, lobbyIdentifier, username) {
         lobby.members.push({
           idUser: socket.data.id,
           username: username,
+          isOwner: false,
         });
         console.log("user added", lobbies);
 

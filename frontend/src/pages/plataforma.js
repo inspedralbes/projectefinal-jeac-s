@@ -55,12 +55,12 @@ function Game({ socket }) {
         const index = prevScores.findIndex(s => s.member === score.member);
         if (index !== -1) {
           // Usuario ya existe en la lista, actualizar su puntaje
-          const updatedScore = { member: score.member, score: score.puntuacion };
+          const updatedScore = { member: score.member, score: score.puntuacion, gameOwner: score.owner };
           const newScores = prevScores.map((s, i) => i === index ? updatedScore : s);
           return newScores;
         } else {
           // Usuario no existe en la lista, agregar nuevo puntaje
-          const newScore = { member: score.member, score: score.puntuacion };
+          const newScore = { member: score.member, score: score.puntuacion, gameOwner: score.owner };
           const newScores = [...prevScores, newScore];
           return newScores;
         }

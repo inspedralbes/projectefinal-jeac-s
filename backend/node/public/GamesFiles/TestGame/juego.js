@@ -2,7 +2,7 @@ var contador = 0;
 var textoContador;
 var sendInfoGame = null;
 var finalJuego = null;
-var tiempoObjeto = 3000;
+var tiempoObjeto = 1000;
 var ownerDelLobby;
 var sendObjetToPlatform;
 var objects;
@@ -32,6 +32,8 @@ function preload() {
 }
 
 function create() {
+    sendInfoGame(contador);
+
     objects = this.add.group();
     textoContador = this.add.text(10, 10, contador, { font: '32px Arial', fill: '#FFFF' });
 
@@ -102,11 +104,8 @@ function recibirInfoLobby(lobby) {
 
 function recibirObjetoDePlataforma(objeto) {
     if (!ownerDelLobby) {
-        var self = this; // Almacenar el contexto actual
-
         var object = objects.create(objeto.objectGame.x, objeto.objectGame.y, objeto.objectGame.textureKey);
         object.setScale(objeto.objectGame.scale.x);
-
         object.setInteractive();
         object.on("pointerdown", function () {
             object.destroy();
@@ -119,10 +118,13 @@ function recibirObjetoDePlataforma(objeto) {
                 sendInfoGame(contador);
             }
         });
-        console.log(objeto.resultGame);
+        setTimeout(() => {
+            if (object.active) {
+                object.destroy();
+            }
+        }, tiempoObjeto - 100);
     }
 }
-
 
 function executeGame() {
     var obj = [];

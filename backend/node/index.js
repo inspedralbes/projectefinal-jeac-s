@@ -116,6 +116,22 @@ socketIO.on('connection', (socket) => {
 
   });
 
+  socket.on('objectGame', (object) => {
+
+    lobbies.forEach((lobby) => {
+      if (lobby.lobbyIdentifier == socket.data.current_lobby) {
+        lobby.members.forEach((member) => {
+          if (member.idUser == socket.data.id) {
+            socketIO.to(socket.data.current_lobby).emit("objectGame_to_platform", {
+              objectGame: object,
+            });
+            console.log("Objeto: ", object);
+          }
+        });
+      }
+    });
+  });
+
   socket.on('file-upload', (file) => {
     console.log('File received', file);
 

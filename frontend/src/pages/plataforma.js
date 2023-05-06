@@ -3,22 +3,9 @@ import { useState } from 'react'
 import { Socket } from "socket.io-client";
 import ConnectedUsers from "../components/ConnectedUsers.js"
 
-// program to generate random strings
-
-// declare all characters
-// const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-// function generateString(length) {
-//   let result = ' ';
-//   const charactersLength = characters.length;
-//   for (let i = 0; i < length; i++) {
-//     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-//   }
-//   return result;
-// }
-
 var Phaser = null;
 var obj = null;
+var ownerLobby;
 
 import('phaser')
   .then((module) => {
@@ -35,14 +22,13 @@ function Game({ socket }) {
   const [displayForm, setDisplayForm] = useState(false);
   const [usersScores, setUsersScores] = useState([]);
 
-
   useEffect(() => {
     socket.on("lobby_info", (data) => {
       setLobbyId(data.lobbyIdentifier);
     });
 
     socket.on("lobby_info", (data) => {
-      console.log(data);
+      ownerLobby = data;
     });
 
     socket.on("start_game", () => {
@@ -66,18 +52,21 @@ function Game({ socket }) {
         }
       });
     });
+
+    socket.on('objectGame_to_platform', (objectGame) => {
+      if (obj != null) {
+        obj.recibirObjetoDePlataforma(objectGame);
+      }
+    })
   }, []);
 
   useEffect(() => {
-    if (obj == null) {
-      console.log("null");
-    } else {
+    if (obj != null) {
       obj.recibir(usersScores);
     }
   }, [usersScores]);
 
   function JoinLobby() {
-    console.log("Join");
     if (lobbyIdInput != null & username != null) {
       socket.emit("join_room", {
         lobbyIdentifier: lobbyIdInput,
@@ -112,7 +101,8 @@ function Game({ socket }) {
       .then(scriptText => {
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
-        obj.init(sendInfoGame, finalJuego);
+        obj.init(sendObjetToPlatform, sendInfoGame, finalJuego);
+        obj.recibirInfoLobby(ownerLobby);
       })
   }
 
@@ -127,6 +117,11 @@ function Game({ socket }) {
   function sendInfoGame(puntos_juego) {
     let score = puntos_juego;
     socket.emit('datagame', score);
+  }
+
+  function sendObjetToPlatform(objeto) {
+    let object = objeto;
+    socket.emit('objectGame', object);
   }
 
   function finalJuego() {

@@ -113,8 +113,11 @@ function Game({ socket }) {
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
         obj.init(sendInfoGame, finalJuego);
-        socket.emit("can_start_game");
       })
+  }
+
+  function startGame() {
+    socket.emit("can_start_game");
   }
 
   function createRoom() {
@@ -139,7 +142,7 @@ function Game({ socket }) {
         <button onClick={createRoom}>Create lobby</button>
         <button onClick={toggleForm}>JoinLobby</button>
         <ConnectedUsers socket={socket} />
-        <button onClick={play}>Start</button>
+        <button onClick={startGame}>Set Lobby</button>
       </div>
 
       {displayForm ?
@@ -188,6 +191,7 @@ function Game({ socket }) {
           <div id="game">
             <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
           </div>
+          <button onClick={play}>PLAY</button>
         </div>
         :
         <></>

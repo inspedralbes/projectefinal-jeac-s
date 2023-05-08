@@ -25,7 +25,7 @@ import('phaser')
     console.log(Phaser);
   })
 
-function Game({ socket }) {
+function Game({ socket, sharedValue}) {
 
   const [lobbyId, setLobbyId] = useState("");
   const [lobbyIdInput, setLobbyIdInput] = useState("");
@@ -34,6 +34,7 @@ function Game({ socket }) {
   const [displayForm, setDisplayForm] = useState(false);
   const [usersScores, setUsersScores] = useState([]);
 
+  console.log(sharedValue)
   var obj = null;
 
   useEffect(() => {
@@ -94,7 +95,7 @@ function Game({ socket }) {
   }
 
   function play() {
-    fetch('http://localhost:7878/GamesFiles/ClickGame/juego.js', {
+    fetch('http://localhost:7878/GamesFiles/'+ sharedValue + '/juego.js', {
       method: 'GET',
       mode: 'same-origin',
     })

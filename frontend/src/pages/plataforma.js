@@ -22,6 +22,9 @@ function Game({ socket, sharedValue}) {
   const [displayForm, setDisplayForm] = useState(false);
   const [usersScores, setUsersScores] = useState([]);
 
+  console.log(sharedValue)
+  var obj = null;
+
   useEffect(() => {
     socket.on("lobby_info", (data) => {
       setLobbyId(data.lobbyIdentifier);
@@ -91,11 +94,7 @@ function Game({ socket, sharedValue}) {
   }
 
   function play() {
-<<<<<<< HEAD
     fetch('http://localhost:7878/GamesFiles/'+ sharedValue + '/juego.js', {
-=======
-    fetch('http://localhost:7878/GamesFiles/TestGame/juego.js', {
->>>>>>> e24b0895aa32d7ad9457143f901e9a9bb43bfc08
       method: 'GET',
       mode: 'same-origin',
     })

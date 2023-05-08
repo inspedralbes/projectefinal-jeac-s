@@ -34,6 +34,9 @@ function Game({ socket }) {
   const [displayCanvas, setDisplayCanvas] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
   const [usersScores, setUsersScores] = useState([]);
+  const [isMultiplayer, setIsMultiplayer] = useState("");
+  const [firstime, setFirstime] = useState(true);
+
 
 
   useEffect(() => {
@@ -76,6 +79,39 @@ function Game({ socket }) {
     }
   }, [usersScores]);
 
+  useEffect(() => {
+    socket.on('lobby_user_list', (usersList) => {
+      console.log("usersList", usersList);
+    });
+  }, [])
+
+  useEffect(() => {
+    if (firstime) {
+      fetch('http://localhost:7878/GamesFiles/Starfinder/juego.js', {
+        method: 'GET',
+        mode: 'same-origin',
+      })
+        .then(response =>
+          response.text()
+        )
+        .then(scriptText => {
+          const scriptFn = new Function(scriptText + '; return executeGame()');
+          obj = scriptFn();
+          console.log(obj);
+          setIsMultiplayer(obj.config_game.multiplayer);
+          
+          if (!obj.config_game.multiplayer) {
+            setDisplayCanvas(true);
+            obj.init(sendInfoGame, finalJuego);
+            socket.emit("can_start_game");
+          
+          }
+        })
+        setFirstime(false);
+    }
+
+  }, [firstime, isMultiplayer]);
+
   function JoinLobby() {
     console.log("Join");
     if (lobbyIdInput != null & username != null) {
@@ -102,23 +138,12 @@ function Game({ socket }) {
   }
 
   function play() {
-    fetch('http://localhost:7878/GamesFiles/Starfinder/juego.js', {
-      method: 'GET',
-      mode: 'same-origin',
-    })
-      .then(response =>
-        response.text()
-      )
-      .then(scriptText => {
-        const scriptFn = new Function(scriptText + '; return executeGame()');
-        obj = scriptFn();
-        obj.init(sendInfoGame, finalJuego);
-        socket.emit("can_start_game");
-      })
+    obj.init(sendInfoGame, finalJuego);
+    socket.emit("can_start_game");
   }
 
   function createRoom() {
-    socket.emit("new_lobby");
+    socket.emit("new_lobby", obj.config_game);
   }
 
   function sendInfoGame(puntos_juego) {
@@ -142,7 +167,7 @@ function Game({ socket }) {
         <button onClick={play}>Start</button>
       </div>
 
-      {displayForm ?
+      {displayForm & isMultiplayer?
         <div id="join_lobby_form">
           <br></br>
           <label className="JoinLobby__nickname--grid">

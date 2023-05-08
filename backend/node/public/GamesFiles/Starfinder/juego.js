@@ -1,3 +1,7 @@
+let configGame = {
+  multiplayer: true,
+  max_players: 4,
+}
 
 function init(_sendInfoGame, _finalJuego) {
 
@@ -5,7 +9,7 @@ function init(_sendInfoGame, _finalJuego) {
     sendInfoGame = _sendInfoGame;
     finalJuego = _finalJuego;
 
-
+  
     var config = {
         type: Phaser.canvas,
         width: 800,
@@ -124,12 +128,16 @@ function recibirInfo(puntos) {
     textoContador.setText(texto);
     console.log(puntos);
   }
-  
+
+  function getUsers(list) {
+    
+  }
 
 function executeGame() {
     var obj = [];
 
     obj.init = init;
+    obj.config_game = configGame;
     obj.recibir = recibirInfo;
     return obj;
 }

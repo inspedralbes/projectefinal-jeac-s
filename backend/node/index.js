@@ -27,6 +27,7 @@ import http from "http";
 
 import { Server } from "socket.io";
 import e from "express";
+import { log } from "console";
 
 
 const app = express();
@@ -49,6 +50,7 @@ const host = "0.0.0.0";
 
 let i = 0;
 let lobbies = [];
+let lobby_config = [];
 
 const random_hex_color_code = () => {
   let n = Math.floor(Math.random() * 999999);
@@ -233,9 +235,11 @@ socketIO.on('connection', (socket) => {
     }
   });
 
-  socket.on("new_lobby", () => {
+  socket.on("new_lobby", (config) => {
     let existeix = false;
     let newLobbyIdentifier;
+    console.log(config);
+    lobby_config = config;
 
     do {
       newLobbyIdentifier = random_hex_color_code();
@@ -251,6 +255,7 @@ socketIO.on('connection', (socket) => {
       let lobbyData = {
         lobbyIdentifier: newLobbyIdentifier,
         ownerId: socket.data.id,
+        maxMembers: config.max_players,
         members: [{
           idUser: socket.data.id,
           username: "owner",
@@ -281,6 +286,7 @@ socketIO.on('connection', (socket) => {
 
   socket.on("can_start_game", () => {
     console.log("start gmae", socket.data.current_lobby);
+    sendUserList(socket.data.current_lobby);
     socketIO.to(socket.data.current_lobby).emit("start_game");
 
   });
@@ -299,6 +305,7 @@ function sendUserList(room) {
     if (lobby.lobbyIdentifier == room) {
       lobby.members.forEach((member) => {
         list.push({
+          id: member.idUser,
           name: member.username,
         });
       });
@@ -321,7 +328,12 @@ function joinLobby(socket, lobbyIdentifier, username) {
       lobby.members.forEach((member) => {
         console.log(lobby.ownerId, " / ", socket.data.id);
         console.log(member.username, " / ", username);
-        if (member.username == username || lobby.ownerId == socket.data.id) {
+        console.log(lobby.members.length, " / ", lobby.maxMembers);
+        if (lobby.members.length == lobby.maxMembers) {
+          disponible = false;
+          console.log("Can't add user");
+        }
+        else if (member.username == username || lobby.ownerId == socket.data.id) {
           disponible = false;
           console.log("Can't add user");
         }

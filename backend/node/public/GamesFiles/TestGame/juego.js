@@ -7,6 +7,11 @@ var ownerDelLobby;
 var objects;
 var object;
 var user;
+var infoGame = {
+    "object": object,
+    "user": user,
+    "score": contador
+};
 
 function init(_sendInfoGame, _finalJuego) {
     sendInfoGame = _sendInfoGame;
@@ -92,7 +97,6 @@ function recibirInfoFromPlatform(data) {
                     finalJuego();
                     textoContador.setText('GAME OVER');
                 } else {
-                    textoContador.setText(contador);
                     infoGame.score = contador;
                     infoGame.user = user;
                     sendInfoGame(infoGame);
@@ -105,7 +109,8 @@ function recibirInfoFromPlatform(data) {
             }, tiempoObjeto - 100);
         }
     }
-    textoContador.setText(data.infoGame.user + ": " + data.infoGame.score);
+    console.log("Recibido de la plataforma - " + "User: " + data.infoGame.user + " Score: " + data.infoGame.score + "\n");
+    textoContador.setText(data.infoGame.user + ": " + data.infoGame.score)
 }
 
 function recibirInfoLobby(lobby) {

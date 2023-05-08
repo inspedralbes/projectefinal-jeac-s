@@ -101,8 +101,7 @@ socketIO.on('connection', (socket) => {
           console.log("socket.data.id", socket.data.id);
           if (member.idUser == socket.data.id) {
             socketIO.to(socket.data.current_lobby).emit("send_datagame_to_platform", {
-              user: member.username,
-              data: infoGame
+              infoGame
             });
             console.log(infoGame);
           }

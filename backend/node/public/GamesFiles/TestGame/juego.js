@@ -4,12 +4,11 @@ var sendInfoGame = null;
 var finalJuego = null;
 var tiempoObjeto = 1000;
 var ownerDelLobby;
-var sendObjetToPlatform;
 var objects;
 var object;
+var user;
 
-function init(_sendObjetToPlatform, _sendInfoGame, _finalJuego) {
-    sendObjetToPlatform = _sendObjetToPlatform;
+function init(_sendInfoGame, _finalJuego) {
     sendInfoGame = _sendInfoGame;
     finalJuego = _finalJuego;
 
@@ -33,29 +32,58 @@ function preload() {
 }
 
 function create() {
-
-
-
     objects = this.add.group();
     textoContador = this.add.text(10, 10, contador, { font: '32px Arial', fill: '#FFFF' });
 
-    this.time.addEvent({
-        delay: tiempoObjeto,
-        loop: true,
-        callback: function () {
-            object = objects.create(
-                Phaser.Math.Between(50, 750),
-                Phaser.Math.Between(50, 550),
-                "object"
-            );
-            var infoGame = {
-                "score": contador,
-                "object": object,
-            };
+    if (ownerDelLobby) {
+        this.time.addEvent({
+            delay: tiempoObjeto,
+            loop: true,
+            callback: function () {
+                object = objects.create(
+                    Phaser.Math.Between(50, 750),
+                    Phaser.Math.Between(50, 550),
+                    "object"
+                );
+                var infoGame = {
+                    "object": object,
+                    "user": user,
+                    "score": contador
+                };
 
-            object.setScale(0.4);
+                object.setScale(0.4);
+                object.setInteractive();
+                sendInfoGame(infoGame);
+
+                object.on("pointerdown", function () {
+                    object.destroy();
+                    contador += 10;
+                    if (contador > 250) {
+                        finalJuego();
+                        textoContador.setText('GAME OVER');
+                    }
+                });
+                this.time.addEvent({
+                    delay: tiempoObjeto - 100,
+                    callback: function () {
+                        if (object.active) {
+                            object.destroy();
+                        }
+                    },
+                    callbackScope: this
+                });
+            },
+            callbackScope: this
+        });
+    }
+}
+
+function recibirInfoFromPlatform(data) {
+    if (!ownerDelLobby) {
+        if (data.infoGame && data.infoGame.object) {
+            var object = objects.create(data.infoGame.object.x, data.infoGame.object.y, data.infoGame.object.textureKey);
+            object.setScale(data.infoGame.object.scale.x);
             object.setInteractive();
-            sendInfoGame(infoGame);
 
             object.on("pointerdown", function () {
                 object.destroy();
@@ -65,64 +93,31 @@ function create() {
                     textoContador.setText('GAME OVER');
                 } else {
                     textoContador.setText(contador);
+                    infoGame.score = contador;
+                    infoGame.user = user;
+                    sendInfoGame(infoGame);
                 }
             });
-            this.time.addEvent({
-                delay: tiempoObjeto - 100,
-                callback: function () {
-                    if (object.active) {
-                        object.destroy();
-                    }
-                },
-                // Use the same scope for the create and destroy events
-                callbackScope: this
-            });
-        },
-        // Use the same scope for the create and destroy events
-        callbackScope: this
-    });
-}
-
-function recibirInfoFromPlatform(data) {
-    console.log(data); 
+            setTimeout(() => {
+                if (object.active) {
+                    object.destroy();
+                }
+            }, tiempoObjeto - 100);
+        }
+    }
+    textoContador.setText(data.infoGame.user + ": " + data.infoGame.score);
 }
 
 function recibirInfoLobby(lobby) {
-    // lobby.members.forEach((member) => {
-    //     console.log(member);
-    //     if (member.isOwner) {
-    //         ownerDelLobby = member.isOwner;
-    //     } else {
-    //         ownerDelLobby = false;
-    //     }
-    // });
-
-    console.log(lobby);
+    lobby.members.forEach((member) => {
+        user = member.username;
+        if (member.isOwner) {
+            ownerDelLobby = member.isOwner;
+        } else {
+            ownerDelLobby = false;
+        }
+    });
 }
-
-// function recibirObjetoDePlataforma(objeto) {
-//     if (!ownerDelLobby) {
-//         var object = objects.create(objeto.objectGame.x, objeto.objectGame.y, objeto.objectGame.textureKey);
-//         object.setScale(objeto.objectGame.scale.x);
-//         object.setInteractive();
-//         object.on("pointerdown", function () {
-//             object.destroy();
-//             contador += 10;
-//             if (contador > 250) {
-//                 finalJuego();
-//                 textoContador.setText('GAME OVER');
-//             } else {
-//                 textoContador.setText(contador);
-//                 sendInfoGame(contador);
-//             }
-//         });
-//         setTimeout(() => {
-//             if (object.active) {
-//                 object.destroy();
-//             }
-//         }, tiempoObjeto - 100);
-//     }
-// }
 
 function executeGame() {
     var obj = [];
@@ -134,4 +129,3 @@ function executeGame() {
 }
 
 executeGame();
-

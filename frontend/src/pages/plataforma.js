@@ -95,15 +95,17 @@ function Game({ socket, sharedValue}) {
   }
 
   function play() {
-    // console.log("SharedValue sisisi", sha);
-    fetch(sharedValue + '/juego.js', {
+    console.log("Shared value ===", sharedValue);
+    fetch(sharedValue, {
       method: 'GET',
-      mode: 'same-origin',
+      mode: 'same-origin'
     })
       .then(response =>
+        //  console.log("Response == ", response.text())
         response.text()
       )
       .then(scriptText => {
+        console.log("ScriptText ===", scriptText);
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
         obj.init(sendObjetToPlatform, sendInfoGame, finalJuego);

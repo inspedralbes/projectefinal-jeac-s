@@ -10,7 +10,7 @@ import Profile from '../pages/userInfo.js';
 import Upload from '../pages/upload.js';
 import Signin from '../pages/signin'
 import LoginForm from '../pages/login.js'
-import Game from '../pages/game.js'
+import Game from '../pages/plataforma.js'
 import GetRanking from '../pages/ranking.js'
 import GetGameStore from '../pages/storeItems.js'
 import socketIO from "socket.io-client";
@@ -24,7 +24,13 @@ function AsideNav() {
     const storeItems = useSelector((state) => state.storeItems);
     const boughtItems = useSelector((state) => state.boughtItems);
     const userInfo = useSelector((state) => state.data);
-   
+    const [sharedValue, setSharedValue] = useState('');
+
+    // const routes = {
+    //     fetchLaravel: "http://localhost:8000",
+    //     wsNode: "http://localhost:7878",
+    // };
+
     var socket = socketIO(routes.wsNode, {
         withCredentials: true,
         cors: {
@@ -34,6 +40,11 @@ function AsideNav() {
         path: "/node/",
         transports: ["websocket"],
     });
+
+    const handleSharedValueChange = (newValue) => {
+        setSharedValue(newValue);
+    
+    };
 
     function logout() {
         dispatch(actions.logout());
@@ -103,12 +114,12 @@ function AsideNav() {
                 <Navbar></Navbar>
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/games" element={<Games />} />
+                    <Route path="/games" element={<Games sharedValue={sharedValue} onSharedValueChange={handleSharedValueChange}/> } />
                     <Route path="/upload" element={<Upload socket={socket} />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/signin" element={<Signin />} />
                     <Route path="/login" element={<LoginForm />} />
-                    <Route path="/game" element={<Game socket={socket} />} />
+                    <Route path="/game" element={<Game socket={socket} sharedValue={sharedValue}/> } />
                     <Route path="/ranking" element={<GetRanking />} />
                     <Route path="/store" element={<GetGameStore />} />
                 </Routes>

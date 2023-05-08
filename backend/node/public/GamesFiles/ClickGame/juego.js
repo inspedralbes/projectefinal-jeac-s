@@ -56,15 +56,20 @@ function create() {
 }
 
 function recibirInfo(puntos) {
-    console.log("Soy el Juego - " + puntos)
-}
+    var texto = '';
+    puntos.forEach(function(p) {
+      texto += p.member + ': ' + p.score + '\n';
+    });
+    textoContador.setText(texto);
+    console.log(puntos);
+  }
+  
 
 function executeGame() {
-    var obj = {};
+    var obj = [];
 
     obj.init = init;
     obj.recibir = recibirInfo;
-    console.log(obj);
     return obj;
 }
 

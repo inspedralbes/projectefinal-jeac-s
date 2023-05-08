@@ -68,12 +68,13 @@ socketIO.on('connection', (socket) => {
           console.log("member", member);
           console.log("memberID", member.idUser);
           console.log("socket.data.id", socket.data.id);
-          if (member.idUser != socket.data.id) {
+          if (member.idUser == socket.data.id) {
             socketIO.to(socket.data.current_lobby).emit("send_datagame_to_game", {
               member: member.username,
-              scoreEnemy: score,
+              puntuacion: score,
+              owner: member.isOwner,
             });
-            console.log("User: ", member.username, "Score: ", score);
+            console.log("User: ", member.username, "Score: ", score), "Owner: ", member.isOwner;
           }
         });
       }
@@ -82,6 +83,22 @@ socketIO.on('connection', (socket) => {
       }
     });
 
+  });
+
+  socket.on('objectGame', (object) => {
+
+    lobbies.forEach((lobby) => {
+      if (lobby.lobbyIdentifier == socket.data.current_lobby) {
+        lobby.members.forEach((member) => {
+          if (member.idUser == socket.data.id) {
+            socketIO.to(socket.data.current_lobby).emit("objectGame_to_platform", {
+              objectGame: object,
+            });
+            console.log("Objeto: ", object);
+          }
+        });
+      }
+    });
   });
 
   socket.on('file-upload', (file) => {
@@ -223,6 +240,7 @@ socketIO.on('connection', (socket) => {
         members: [{
           idUser: socket.data.id,
           username: "owner",
+          isOwner: true,
         }],
       };
 
@@ -300,6 +318,7 @@ function joinLobby(socket, lobbyIdentifier, username) {
         lobby.members.push({
           idUser: socket.data.id,
           username: username,
+          isOwner: false,
         });
         console.log("user added", lobbies);
 

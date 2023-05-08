@@ -22,12 +22,6 @@ function Game({ socket, sharedValue}) {
   const [displayForm, setDisplayForm] = useState(false);
   const [usersScores, setUsersScores] = useState([]);
 
-<<<<<<< HEAD
-  console.log(sharedValue)
-  var obj = null;
-
-=======
->>>>>>> e24b0895aa32d7ad9457143f901e9a9bb43bfc08
   useEffect(() => {
     socket.on("lobby_info", (data) => {
       setLobbyId(data.lobbyIdentifier);

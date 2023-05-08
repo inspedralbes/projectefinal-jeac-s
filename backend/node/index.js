@@ -91,7 +91,7 @@ socketIO.on('connection', (socket) => {
     console.log("socket disconected");
   });
 
-  socket.on('datagame', (score) => {
+  socket.on('datagame', (infoGame) => {
 
     lobbies.forEach((lobby) => {
       if (lobby.lobbyIdentifier == socket.data.current_lobby) {
@@ -100,12 +100,11 @@ socketIO.on('connection', (socket) => {
           console.log("memberID", member.idUser);
           console.log("socket.data.id", socket.data.id);
           if (member.idUser == socket.data.id) {
-            socketIO.to(socket.data.current_lobby).emit("send_datagame_to_game", {
-              member: member.username,
-              puntuacion: score,
-              owner: member.isOwner,
+            socketIO.to(socket.data.current_lobby).emit("send_datagame_to_platform", {
+              user: member.username,
+              data: infoGame
             });
-            console.log("User: ", member.username, "Score: ", score), "Owner: ", member.isOwner;
+            console.log(infoGame);
           }
         });
       }

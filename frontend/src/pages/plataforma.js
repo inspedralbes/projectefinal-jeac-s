@@ -20,7 +20,6 @@ function Game({ socket }) {
   const [username, setUsername] = useState("");
   const [displayCanvas, setDisplayCanvas] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
-  const [usersScores, setUsersScores] = useState([]);
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
@@ -36,21 +35,8 @@ function Game({ socket }) {
       setDisplayForm(false);
     });
 
-    socket.on('send_datagame_to_game', (score) => {
-      setUsersScores(prevScores => {
-        const index = prevScores.findIndex(s => s.member === score.member);
-        if (index !== -1) {
-          // Usuario ya existe en la lista, actualizar su puntaje
-          const updatedScore = { member: score.member, score: score.puntuacion, gameOwner: score.owner };
-          const newScores = prevScores.map((s, i) => i === index ? updatedScore : s);
-          return newScores;
-        } else {
-          // Usuario no existe en la lista, agregar nuevo puntaje
-          const newScore = { member: score.member, score: score.puntuacion, gameOwner: score.owner };
-          const newScores = [...prevScores, newScore];
-          return newScores;
-        }
-      });
+    socket.on('send_datagame_to_platform', (data) => {
+      obj.recibirInfoFromPlatform(data);
     });
 
     socket.on('objectGame_to_platform', (objectGame) => {
@@ -60,11 +46,6 @@ function Game({ socket }) {
     })
   }, []);
 
-  useEffect(() => {
-    if (obj != null) {
-      obj.recibir(usersScores);
-    }
-  }, [usersScores]);
 
   function JoinLobby() {
     if (lobbyIdInput != null & username != null) {
@@ -114,9 +95,8 @@ function Game({ socket }) {
     socket.emit("new_lobby");
   }
 
-  function sendInfoGame(puntos_juego) {
-    let score = puntos_juego;
-    socket.emit('datagame', score);
+  function sendInfoGame(infoGame) {
+    socket.emit("datagame", infoGame);
   }
 
   function sendObjetToPlatform(objeto) {
@@ -127,8 +107,6 @@ function Game({ socket }) {
   function finalJuego() {
     alert("JUEGO ACABADO");
   }
-
-  console.log(usersScores);
 
   return (
     <div>

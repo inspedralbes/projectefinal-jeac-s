@@ -10,7 +10,7 @@ import './App.css';
 
 const routes = {
   fetchLaravel: "http://www.jeacsgames.cat/../laravel/public",
-  wsNode: "http://www.jeacsgames.cat:7878",
+  wsNode: "http://jeacsg.alumnes.inspedralbes.cat:7878",
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

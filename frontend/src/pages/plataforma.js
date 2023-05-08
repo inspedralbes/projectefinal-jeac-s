@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useState } from 'react'
 import { Socket } from "socket.io-client";
 import ConnectedUsers from "../components/ConnectedUsers.js"
+import routes from "../index.js";
 
 // program to generate random strings
 
@@ -94,9 +95,9 @@ function Game({ socket }) {
   }
 
   function play() {
-    fetch('http://localhost:7878/GamesFiles/ClickGame/juego.js', {
+    fetch(`${routes.wsNode}/GamesFiles/ClickGame/juego.js`, {
       method: 'GET',
-      mode: 'same-origin',
+      mode: 'no-cors',
     })
       .then(response =>
         response.text()

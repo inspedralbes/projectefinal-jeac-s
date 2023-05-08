@@ -13,13 +13,16 @@ import('phaser')
     console.log(Phaser);
   })
 
-function Game({ socket }) {
+function Game({ socket, sharedValue}) {
 
   const [lobbyId, setLobbyId] = useState("");
   const [lobbyIdInput, setLobbyIdInput] = useState("");
   const [username, setUsername] = useState("");
   const [displayCanvas, setDisplayCanvas] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
+
+  console.log(sharedValue)
+  var obj = null;
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
@@ -72,7 +75,7 @@ function Game({ socket }) {
   }
 
   function play() {
-    fetch('http://localhost:7878/GamesFiles/TestGame/juego.js', {
+    fetch(sharedValue, {
       method: 'GET',
       mode: 'same-origin',
     })

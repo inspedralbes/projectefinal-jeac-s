@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
 import routes from "../index.js";
+import { useNavigate  } from 'react-router';
 
 
-function Games({ sharedValue, onSharedValueChange}) {
+function Games({ sharedValue, onSharedValueChange }) {
 
     const [fetchData, setFetchData] = useState([]);
     const [isLoading, setLoading] = useState(false);
-    
-    function handleInputChange(name){
+    const navigate = useNavigate();
+
+    const handleInputChange = (name) => {
+        
         console.log("HELLO: " + name);
         onSharedValueChange(name);
-        
-      };
-    
+        navigate('/game');
+
+    };
+
+
     useEffect(() => {
         async function fetchGames() {
 
@@ -55,8 +59,8 @@ function Games({ sharedValue, onSharedValueChange}) {
                                                     <p class="text-black">{game.name}</p>
                                                     <p class="text-black">{game.description}</p>
                                                     <br></br>
-                                                        <button class="bg-violet-500 hover:bg-fuchsia-400 font-bold py-2 px-4 border-b-4 border-fuchsia-700 hover:violet-fuchsia-500 rounded text-white"
-                                                        onClick={handleInputChange(game.description)}>Play</button>
+                                                    <button class="bg-violet-500 hover:bg-fuchsia-400 font-bold py-2 px-4 border-b-4 border-fuchsia-700 hover:violet-fuchsia-500 rounded text-white"
+                                                        onClick={() => handleInputChange(game.path)}>Play</button>
                                                 </div>
                                             </div>
 

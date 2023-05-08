@@ -94,7 +94,7 @@ function Game({ socket, sharedValue}) {
   }
 
   function play() {
-    fetch('http://localhost:7878/GamesFiles/'+ sharedValue + '/juego.js', {
+    fetch(sharedValue + '/juego.js', {
       method: 'GET',
       mode: 'same-origin',
     })

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { Socket } from "socket.io-client";
 import ConnectedUsers from "../components/ConnectedUsers.js"
 
 var Phaser = null;
 var obj = null;
 var ownerLobby;
+var ownerName;
 
 import('phaser')
   .then((module) => {
@@ -12,11 +14,16 @@ import('phaser')
   })
 
 function Game({ socket }) {
+  const isLoggedIn = useSelector(state => state.isLoggedIn);
   const [lobbyId, setLobbyId] = useState("");
   const [lobbyIdInput, setLobbyIdInput] = useState("");
   const [username, setUsername] = useState("");
   const [displayCanvas, setDisplayCanvas] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
+  const [createRoomOwner, setcreateRoomOwner] = useState(false);
+  const userInfo = useSelector((state) => state.data);
+  const [ownerName, setOwnerName] = useState(null);
+  const [ownerNameSubmitted, setOwnerNameSubmitted] = useState(false);
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
@@ -34,7 +41,10 @@ function Game({ socket }) {
         obj.recibirInfoFromPlatform(data);
       }
     });
-  }, []);
+    if (isLoggedIn) {
+      setUsername(userInfo.name);
+    }
+  }, [userInfo, isLoggedIn]);
 
   function JoinLobby() {
     if (lobbyIdInput != null & username != null) {
@@ -47,6 +57,7 @@ function Game({ socket }) {
 
   function toggleForm() {
     setDisplayForm(true);
+    setcreateRoomOwner(false);
   }
 
   function handleChangeLobbyId(e) {
@@ -58,11 +69,28 @@ function Game({ socket }) {
   }
 
   function startGame() {
-    socket.emit("can_start_game");
+    if (ownerName != null) {
+      socket.emit("can_start_game");
+    } else {
+      console.log("El nombre del owner no puede estar vacio");
+    }
   }
 
+  const handleOwnerNameChange = (event) => {
+    setOwnerName(event.target.value);
+  };
+
+  const handleSaveClick = () => {
+    if (ownerName != null) {
+      socket.emit("new_lobby", ownerName);
+    } else {
+      console.log("El nombre del owner no puede estar vacio");
+    }
+    setOwnerNameSubmitted(true);
+  };
+
   function createRoom() {
-    socket.emit("new_lobby");
+    setcreateRoomOwner(true)
   }
 
   function play() {
@@ -96,29 +124,33 @@ function Game({ socket }) {
         <button onClick={createRoom}>Create lobby</button>
         <button onClick={toggleForm}>JoinLobby</button>
         <ConnectedUsers socket={socket} />
-        <button onClick={startGame}>Set Lobby</button>
       </div>
 
-      {displayForm ?
-        <div id="join_lobby_form">
-          <br></br>
-          <label className="JoinLobby__nickname--grid">
-            <div className="form__inputGroup">
-              <input
-                id="nickname"
-                value={username}
-                className="form__input"
-                onChange={handleChangeUsername}
-                placeholder=" "
-                type="text"
-                required
-              ></input>
-              <span className="form__inputBar"></span>
-              <label className="form__inputlabel">
-                Introduce your nickname
+      {displayForm && !createRoomOwner ?
+        <div>
+          {!isLoggedIn ?
+            <div id="join_lobby_form">
+              <br></br>
+              <label className="JoinLobby__nickname--grid">
+                <div className="form__inputGroup">
+                  <input
+                    id="nickname"
+                    value={username}
+                    className="form__input"
+                    onChange={handleChangeUsername}
+                    placeholder=" "
+                    type="text"
+                    required
+                  />
+                  <span className="form__inputBar"></span>
+                  <label className="form__inputlabel">
+                    Introduce your nickname
+                  </label>
+                </div>
               </label>
-            </div>
-          </label>
+            </div> :
+            <p>{userInfo.name}</p>
+          }
 
           <label>
             <div>
@@ -135,6 +167,29 @@ function Game({ socket }) {
           <button onClick={JoinLobby}>Join lobby</button>
         </div>
         :
+        <></>
+      }
+
+      {createRoomOwner ?
+        <div>
+          {ownerNameSubmitted ?
+            <div>
+              <button onClick={startGame}>Set Lobby</button>
+            </div> :
+            <div>
+              <input
+                id="nickOwner"
+                value={ownerName}
+                onChange={handleOwnerNameChange}
+                className="form__input"
+                placeholder="Username"
+                type="text"
+                required
+              />
+              <button onClick={handleSaveClick}>Guardar</button><br></br><br></br>
+            </div>
+          }
+        </div> :
         <></>
       }
 

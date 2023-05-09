@@ -49,7 +49,6 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on('datagame', (infoGame) => {
-
     lobbies.forEach((lobby) => {
       if (lobby.lobbyIdentifier == socket.data.current_lobby) {
         lobby.members.forEach((member) => {
@@ -58,8 +57,7 @@ socketIO.on('connection', (socket) => {
           console.log("socket.data.id", socket.data.id);
           if (member.idUser == socket.data.id) {
             socketIO.to(socket.data.current_lobby).emit("send_datagame_to_platform", {
-              user: member.username,
-              data: infoGame
+              infoGame
             });
             console.log(infoGame);
           }
@@ -228,13 +226,19 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on("join_room", (data) => {
+    // if (data.username.length > 8) {
+    //   socketIO.to(socket.id).emit("USR_NAME_TOO_LONG");
+    // } else {
+    //socket.data.username = data.username;
     console.log("data", data);
     joinLobby(socket, data.lobbyIdentifier, data.username);
+    // }
   });
 
   socket.on("can_start_game", () => {
     console.log("start gmae", socket.data.current_lobby);
     socketIO.to(socket.data.current_lobby).emit("start_game");
+
   });
 });
 
@@ -294,7 +298,6 @@ function joinLobby(socket, lobbyIdentifier, username) {
   if (disponible) {
     socket.join(lobbyIdentifier);
     socket.data.current_lobby = lobbyIdentifier;
-
     sendUserList(lobbyIdentifier);
   }
 }

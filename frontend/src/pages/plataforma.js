@@ -98,7 +98,11 @@ function Game({ socket, sharedValue}) {
     console.log("Shared value ===", sharedValue);
     fetch(sharedValue, {
       method: 'GET',
-      mode: 'same-origin'
+      // mode: 'cors',
+      // headers: {
+      //   'Access-Control-Allow-Origin': '*',
+      //   'Access-Control-Allow-Headers': 'API-Key'
+      // },
     })
       .then(response =>
         //  console.log("Response == ", response.text())

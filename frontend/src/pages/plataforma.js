@@ -26,6 +26,7 @@ function Game({ socket }) {
   const [ownerName, setOwnerName] = useState(null);
   const [userJoinedLobbyName, setUserJoinedLobbyName] = useState(false);
   const [ownerNameSubmitted, setOwnerNameSubmitted] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
@@ -36,6 +37,7 @@ function Game({ socket }) {
     socket.on("start_game", () => {
       setDisplayCanvas(true);
       setDisplayForm(false);
+      play();
     });
 
     socket.on('send_datagame_to_platform', (data) => {
@@ -75,6 +77,7 @@ function Game({ socket }) {
   function startGame() {
     if (ownerName != null) {
       socket.emit("can_start_game");
+      setGameStarted(true);
     } else {
       console.log("El nombre del owner no puede estar vacio");
     }
@@ -188,7 +191,11 @@ function Game({ socket }) {
         <div>
           {ownerNameSubmitted ?
             <div>
-              <button onClick={startGame}>Set Lobby</button>
+              {!gameStarted ?
+                <button onClick={startGame}>Play</button>
+                :
+                <></>
+              }
             </div> :
             <div>
               <input
@@ -212,9 +219,8 @@ function Game({ socket }) {
           <div>
           </div>
           <div id="game">
-            <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
+            <canvas id="canvas" className="canvasGame"></canvas>
           </div>
-          <button onClick={play}>PLAY</button>
         </div>
         :
         <></>

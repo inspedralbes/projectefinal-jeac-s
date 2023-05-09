@@ -7,13 +7,12 @@ import http from "http";
 import { Server } from "socket.io";
 
 const app = express();
-const upload = multer({ dest: 'public/GamesFiles/' }); // Establece el directorio de destino para los archivos cargados
+const upload = multer({ dest: 'public/GamesFiles/' });
 const server = http.createServer(app);
 const PORT = 7878;
 const host = "0.0.0.0";
 let i = 0;
 let lobbies = [];
-let lobby_config = [];
 
 app.use(express.static('public'));
 
@@ -50,6 +49,7 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on('datagame', (infoGame) => {
+
     lobbies.forEach((lobby) => {
       if (lobby.lobbyIdentifier == socket.data.current_lobby) {
         lobby.members.forEach((member) => {
@@ -189,11 +189,9 @@ socketIO.on('connection', (socket) => {
     }
   });
 
-  socket.on("new_lobby", (config) => {
+  socket.on("new_lobby", () => {
     let existeix = false;
     let newLobbyIdentifier;
-    console.log(config);
-    lobby_config = config;
 
     do {
       newLobbyIdentifier = random_hex_color_code();
@@ -209,7 +207,6 @@ socketIO.on('connection', (socket) => {
       let lobbyData = {
         lobbyIdentifier: newLobbyIdentifier,
         ownerId: socket.data.id,
-        maxMembers: config.max_players,
         members: [{
           idUser: socket.data.id,
           username: "owner",
@@ -241,7 +238,6 @@ socketIO.on('connection', (socket) => {
 
   socket.on("can_start_game", () => {
     console.log("start gmae", socket.data.current_lobby);
-    sendUserList(socket.data.current_lobby);
     socketIO.to(socket.data.current_lobby).emit("start_game");
 
   });
@@ -258,7 +254,6 @@ function sendUserList(room) {
     if (lobby.lobbyIdentifier == room) {
       lobby.members.forEach((member) => {
         list.push({
-          id: member.idUser,
           name: member.username,
         });
       });
@@ -280,12 +275,7 @@ function joinLobby(socket, lobbyIdentifier, username) {
       lobby.members.forEach((member) => {
         console.log(lobby.ownerId, " / ", socket.data.id);
         console.log(member.username, " / ", username);
-        console.log(lobby.members.length, " / ", lobby.maxMembers);
-        if (lobby.members.length == lobby.maxMembers) {
-          disponible = false;
-          console.log("Can't add user");
-        }
-        else if (member.username == username || lobby.ownerId == socket.data.id) {
+        if (member.username == username || lobby.ownerId == socket.data.id) {
           disponible = false;
           console.log("Can't add user");
         }
@@ -298,7 +288,6 @@ function joinLobby(socket, lobbyIdentifier, username) {
           isOwner: false,
         });
         console.log("user added", lobbies);
-
         socketIO.to(socket.id).emit("lobby_info", lobby);
       } else {
         socketIO.to(socket.id).emit("USER_ALR_CHOSEN_ERROR");

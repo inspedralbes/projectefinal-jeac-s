@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useState } from 'react'
 import { Socket } from "socket.io-client";
 import ConnectedUsers from "../components/ConnectedUsers.js"
 
@@ -9,23 +10,26 @@ var ownerLobby;
 import('phaser')
   .then((module) => {
     Phaser = module;
+    console.log(Phaser);
   })
 
-function Game({ socket }) {
+function Game({ socket, sharedValue}) {
+
   const [lobbyId, setLobbyId] = useState("");
   const [lobbyIdInput, setLobbyIdInput] = useState("");
   const [username, setUsername] = useState("");
   const [displayCanvas, setDisplayCanvas] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
-  const [isMultiplayer, setIsMultiplayer] = useState("");
-  const [firstime, setFirstime] = useState(true);
-  const [users, setUsers] = useState([]);
 
-
+  console.log(sharedValue)
+  var obj = null;
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
       setLobbyId(data.lobbyIdentifier);
+    });
+
+    socket.on("lobby_info", (data) => {
       ownerLobby = data;
     });
 
@@ -33,47 +37,18 @@ function Game({ socket }) {
       setDisplayCanvas(true);
       setDisplayForm(false);
     });
+
     socket.on('send_datagame_to_platform', (data) => {
-      if (obj != null) {
-        obj.recibirInfoFromPlatform(data);
-      }
+      obj.recibirInfoFromPlatform(data);
     });
-    
+
+    socket.on('objectGame_to_platform', (objectGame) => {
+      if (obj != null) {
+        obj.recibirObjetoDePlataforma(objectGame);
+      }
+    })
   }, []);
 
-  useEffect(() => {
-    socket.on('lobby_user_list', (usersList) => {
-      console.log("usersList", usersList);
-      setUsers(usersList);
-    });
-  }, [])
-
-  useEffect(() => {
-    if (firstime) {
-      fetch('http://localhost:7878/GamesFiles/Starfinder/juego.js', {
-        method: 'GET',
-        mode: 'same-origin',
-      })
-        .then(response =>
-          response.text()
-        )
-        .then(scriptText => {
-          const scriptFn = new Function(scriptText + '; return executeGame()');
-          obj = scriptFn();
-          console.log(obj);
-          setIsMultiplayer(obj.config_game.multiplayer);
-          
-          if (!obj.config_game.multiplayer) {
-            setDisplayCanvas(true);
-            obj.init(sendInfoGame, finalJuego);
-            socket.emit("can_start_game");
-          
-          }
-        })
-        setFirstime(false);
-    }
-
-  }, [firstime, isMultiplayer]);
 
   function JoinLobby() {
     if (lobbyIdInput != null & username != null) {
@@ -81,6 +56,9 @@ function Game({ socket }) {
         lobbyIdentifier: lobbyIdInput,
         username: username,
       });
+    }
+    else {
+      console.log("You need to fill both input fields.");
     }
   }
 
@@ -96,18 +74,37 @@ function Game({ socket }) {
     setUsername(e.target.value);
   }
 
+  function play() {
+    fetch(sharedValue, {
+      method: 'GET',
+      mode: 'same-origin',
+    })
+      .then(response =>
+        response.text()
+      )
+      .then(scriptText => {
+        const scriptFn = new Function(scriptText + '; return executeGame()');
+        obj = scriptFn();
+        obj.init(sendObjetToPlatform, sendInfoGame, finalJuego);
+        obj.recibirInfoLobby(ownerLobby);
+      })
+  }
+
   function startGame() {
-    obj.init(sendInfoGame, finalJuego);
-    socket.emit("can_start_game"); 
-    obj.players(users); 
-    }
+    socket.emit("can_start_game");
+  }
 
   function createRoom() {
-    socket.emit("new_lobby", obj.config_game);
+    socket.emit("new_lobby");
   }
 
   function sendInfoGame(infoGame) {
     socket.emit("datagame", infoGame);
+  }
+
+  function sendObjetToPlatform(objeto) {
+    let object = objeto;
+    socket.emit('objectGame', object);
   }
 
   function finalJuego() {
@@ -124,7 +121,7 @@ function Game({ socket }) {
         <button onClick={startGame}>Set Lobby</button>
       </div>
 
-      {displayForm & isMultiplayer?
+      {displayForm ?
         <div id="join_lobby_form">
           <br></br>
           <label className="JoinLobby__nickname--grid">

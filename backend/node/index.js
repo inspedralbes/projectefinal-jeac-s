@@ -1,54 +1,26 @@
-
 import express from "express";
 import unzipper from "unzipper";
-
 import path from "path";
-
-import cors from "cors";
-
 import fs from "fs";
-
 import multer from "multer";
-
-import bodyParser from "body-parser";
-
 import http from "http";
-
 import { Server } from "socket.io";
 
-
 const app = express();
-
-
 const upload = multer({ dest: 'public/GamesFiles/' }); // Establece el directorio de destino para los archivos cargados
-
-
-
 const server = http.createServer(app);
-
-app.use(express.static('public'));
-
-
 const PORT = 7878;
 const host = "0.0.0.0";
-
 let i = 0;
 let lobbies = [];
 let lobby_config = [];
+
+app.use(express.static('public'));
 
 const random_hex_color_code = () => {
   let n = Math.floor(Math.random() * 999999);
   return n.toString().padStart(6, "0");
 };
-
-
-// const socketIO = require("socket.io")(server, {
-//   cors: {
-//     origin: true,
-//     credentials: true,
-//   },
-//   path: "/node/",
-// });
 
 const socketIO = new Server(server, {
   cors: {
@@ -78,7 +50,6 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on('datagame', (infoGame) => {
-
     lobbies.forEach((lobby) => {
       if (lobby.lobbyIdentifier == socket.data.current_lobby) {
         lobby.members.forEach((member) => {
@@ -243,7 +214,6 @@ socketIO.on('connection', (socket) => {
           idUser: socket.data.id,
           username: "owner",
           isOwner: true,
-
         }],
       };
 
@@ -277,11 +247,9 @@ socketIO.on('connection', (socket) => {
   });
 });
 
-
 server.listen(PORT, host, () => {
   console.log("Listening on *:" + PORT);
 });
-
 
 function sendUserList(room) {
   var list = [];
@@ -302,7 +270,6 @@ function sendUserList(room) {
     message: "user list",
   });
 }
-
 
 function joinLobby(socket, lobbyIdentifier, username) {
   var disponible = false;
@@ -328,9 +295,9 @@ function joinLobby(socket, lobbyIdentifier, username) {
         lobby.members.push({
           idUser: socket.data.id,
           username: username,
+          isOwner: false,
         });
         console.log("user added", lobbies);
-
 
         socketIO.to(socket.id).emit("lobby_info", lobby);
       } else {
@@ -342,7 +309,6 @@ function joinLobby(socket, lobbyIdentifier, username) {
   if (disponible) {
     socket.join(lobbyIdentifier);
     socket.data.current_lobby = lobbyIdentifier;
-
     sendUserList(lobbyIdentifier);
   }
 }

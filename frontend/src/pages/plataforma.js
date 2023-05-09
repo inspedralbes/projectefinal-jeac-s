@@ -6,7 +6,6 @@ import ConnectedUsers from "../components/ConnectedUsers.js"
 var Phaser = null;
 var obj = null;
 var ownerLobby;
-var ownerName;
 
 import('phaser')
   .then((module) => {
@@ -15,14 +14,17 @@ import('phaser')
 
 function Game({ socket }) {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
+  const userInfo = useSelector((state) => state.data);
+
   const [lobbyId, setLobbyId] = useState("");
   const [lobbyIdInput, setLobbyIdInput] = useState("");
   const [username, setUsername] = useState("");
   const [displayCanvas, setDisplayCanvas] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
   const [createRoomOwner, setcreateRoomOwner] = useState(false);
-  const userInfo = useSelector((state) => state.data);
+  const [optionSelected, setOptionSelected] = useState(false);
   const [ownerName, setOwnerName] = useState(null);
+  const [userJoinedLobbyName, setUserJoinedLobbyName] = useState(false);
   const [ownerNameSubmitted, setOwnerNameSubmitted] = useState(false);
 
   useEffect(() => {
@@ -47,6 +49,7 @@ function Game({ socket }) {
   }, [userInfo, isLoggedIn]);
 
   function JoinLobby() {
+    setUserJoinedLobbyName(true);
     if (lobbyIdInput != null & username != null) {
       socket.emit("join_room", {
         lobbyIdentifier: lobbyIdInput,
@@ -58,6 +61,7 @@ function Game({ socket }) {
   function toggleForm() {
     setDisplayForm(true);
     setcreateRoomOwner(false);
+    setOptionSelected(true);
   }
 
   function handleChangeLobbyId(e) {
@@ -83,14 +87,16 @@ function Game({ socket }) {
   const handleSaveClick = () => {
     if (ownerName != null) {
       socket.emit("new_lobby", ownerName);
+      setOwnerNameSubmitted(true);
     } else {
       console.log("El nombre del owner no puede estar vacioo");
+      setOwnerNameSubmitted(false);
     }
-    setOwnerNameSubmitted(true);
   };
 
   function createRoom() {
-    setcreateRoomOwner(true)
+    setcreateRoomOwner(true);
+    setOptionSelected(true)
   }
 
   function play() {
@@ -119,14 +125,22 @@ function Game({ socket }) {
 
   return (
     <div>
-      <h1>{lobbyId}</h1>
+      {createRoomOwner ?
+        <h1>{lobbyId}</h1> :
+        <></>
+      }
       <div>
-        <button onClick={createRoom}>Create lobby</button>
-        <button onClick={toggleForm}>JoinLobby</button>
+        {!optionSelected ?
+          <div>
+            <button onClick={createRoom}>Create lobby</button>
+            <button onClick={toggleForm}>JoinLobby</button>
+          </div> :
+          <></>
+        }
         <ConnectedUsers socket={socket} />
       </div>
 
-      {displayForm && !createRoomOwner ?
+      {displayForm && !createRoomOwner && !userJoinedLobbyName ?
         <div>
           {!isLoggedIn ?
             <div id="join_lobby_form">

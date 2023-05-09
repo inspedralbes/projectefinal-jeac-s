@@ -4,11 +4,16 @@ var sendInfoGame = null;
 var finalJuego = null;
 var tiempoObjeto = 1000;
 var ownerDelLobby;
-var sendObjetToPlatform;
 var objects;
+var object;
+var user;
+var infoGame = {
+    "object": object,
+    "user": user,
+    "score": contador
+};
 
-function init(_sendObjetToPlatform, _sendInfoGame, _finalJuego) {
-    sendObjetToPlatform = _sendObjetToPlatform;
+function init(_sendInfoGame, _finalJuego) {
     sendInfoGame = _sendInfoGame;
     finalJuego = _finalJuego;
 
@@ -32,8 +37,6 @@ function preload() {
 }
 
 function create() {
-    sendInfoGame(contador);
-
     objects = this.add.group();
     textoContador = this.add.text(10, 10, contador, { font: '32px Arial', fill: '#FFFF' });
 
@@ -42,15 +45,20 @@ function create() {
             delay: tiempoObjeto,
             loop: true,
             callback: function () {
-                var object = objects.create(
+                object = objects.create(
                     Phaser.Math.Between(50, 750),
                     Phaser.Math.Between(50, 550),
                     "object"
                 );
-                object.setScale(0.4);
+                var infoGame = {
+                    "object": object,
+                    "user": user,
+                    "score": contador
+                };
 
+                object.setScale(0.4);
                 object.setInteractive();
-                sendObjetToPlatform(object);
+                sendInfoGame(infoGame);
 
                 object.on("pointerdown", function () {
                     object.destroy();
@@ -58,9 +66,6 @@ function create() {
                     if (contador > 250) {
                         finalJuego();
                         textoContador.setText('GAME OVER');
-                    } else {
-                        textoContador.setText(contador);
-                        sendInfoGame(contador);
                     }
                 });
                 this.time.addEvent({
@@ -70,71 +75,62 @@ function create() {
                             object.destroy();
                         }
                     },
-                    // Use the same scope for the create and destroy events
                     callbackScope: this
                 });
             },
-            // Use the same scope for the create and destroy events
             callbackScope: this
         });
     }
 }
 
-function recibirInfo(puntos) {
-    var texto = '';
-    puntos.forEach(function (p) {
-        texto += p.member + ': ' + p.score + '\n';
-    });
-    textoContador.setText(texto);
-    console.log(puntos);
+function recibirInfoFromPlatform(data) {
+    if (!ownerDelLobby) {
+        if (data.infoGame && data.infoGame.object) {
+            var object = objects.create(data.infoGame.object.x, data.infoGame.object.y, data.infoGame.object.textureKey);
+            object.setScale(data.infoGame.object.scale.x);
+            object.setInteractive();
+
+            object.on("pointerdown", function () {
+                object.destroy();
+                contador += 10;
+                if (contador > 250) {
+                    finalJuego();
+                    textoContador.setText('GAME OVER');
+                } else {
+                    infoGame.score = contador;
+                    infoGame.user = user;
+                    sendInfoGame(infoGame);
+                }
+            });
+            setTimeout(() => {
+                if (object.active) {
+                    object.destroy();
+                }
+            }, tiempoObjeto - 100);
+        }
+    }
+    console.log("Recibido de la plataforma - " + "User: " + data.infoGame.user + " Score: " + data.infoGame.score + "\n");
+    textoContador.setText(data.infoGame.user + ": " + data.infoGame.score)
 }
 
 function recibirInfoLobby(lobby) {
     lobby.members.forEach((member) => {
-        console.log(member);
+        user = member.username;
         if (member.isOwner) {
             ownerDelLobby = member.isOwner;
         } else {
             ownerDelLobby = false;
         }
     });
-
-    console.log(ownerDelLobby);
-}
-
-function recibirObjetoDePlataforma(objeto) {
-    if (!ownerDelLobby) {
-        var object = objects.create(objeto.objectGame.x, objeto.objectGame.y, objeto.objectGame.textureKey);
-        object.setScale(objeto.objectGame.scale.x);
-        object.setInteractive();
-        object.on("pointerdown", function () {
-            object.destroy();
-            contador += 10;
-            if (contador > 250) {
-                finalJuego();
-                textoContador.setText('GAME OVER');
-            } else {
-                textoContador.setText(contador);
-                sendInfoGame(contador);
-            }
-        });
-        setTimeout(() => {
-            if (object.active) {
-                object.destroy();
-            }
-        }, tiempoObjeto - 100);
-    }
 }
 
 function executeGame() {
     var obj = [];
 
     obj.init = init;
-    obj.recibir = recibirInfo;
+    obj.recibirInfoFromPlatform = recibirInfoFromPlatform;
     obj.recibirInfoLobby = recibirInfoLobby;
-    obj.recibirObjetoDePlataforma = recibirObjetoDePlataforma;
     return obj;
 }
 
 executeGame();
-

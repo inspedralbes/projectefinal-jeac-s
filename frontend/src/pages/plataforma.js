@@ -36,6 +36,7 @@ function Game({ socket }) {
   const [usersScores, setUsersScores] = useState([]);
   const [isMultiplayer, setIsMultiplayer] = useState("");
   const [firstime, setFirstime] = useState(true);
+  const [users, setUsers] = useState([]);
 
 
 
@@ -82,6 +83,7 @@ function Game({ socket }) {
   useEffect(() => {
     socket.on('lobby_user_list', (usersList) => {
       console.log("usersList", usersList);
+      setUsers(usersList);
     });
   }, [])
 
@@ -139,8 +141,9 @@ function Game({ socket }) {
 
   function play() {
     obj.init(sendInfoGame, finalJuego);
-    socket.emit("can_start_game");
-  }
+    socket.emit("can_start_game"); 
+    obj.players(users); 
+    }
 
   function createRoom() {
     socket.emit("new_lobby", obj.config_game);

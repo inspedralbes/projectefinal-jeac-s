@@ -124,13 +124,14 @@ function recibirInfo(puntos) {
     var texto = '';
     puntos.forEach(function(p) {
       texto += p.member + ': ' + p.score + '\n';
+      console.log("PPPPPPPPPPPPPPPPPPPPPPPP", p);
     });
     textoContador.setText(texto);
     console.log(puntos);
   }
 
   function getUsers(list) {
-    
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAA", list);
   }
 
 function executeGame() {
@@ -139,6 +140,7 @@ function executeGame() {
     obj.init = init;
     obj.config_game = configGame;
     obj.recibir = recibirInfo;
+    obj.players = getUsers;
     return obj;
 }
 

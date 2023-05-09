@@ -1,68 +1,25 @@
-// const express = require('express');
-// const unzipper = require('unzipper');
-// const path = require('path');
-
-// var fs = require('fs');
-// const cors = require("cors");
-
-
-// const multer = require('multer');
-// const bodyParser = require('body-parser');
-//const http = require("http");
-
 import express from "express";
 import unzipper from "unzipper";
-
 import path from "path";
-
-import cors from "cors";
-
 import fs from "fs";
-
 import multer from "multer";
-
-import bodyParser from "body-parser";
-
 import http from "http";
-
 import { Server } from "socket.io";
-import e from "express";
-
 
 const app = express();
-
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
-
-
 const upload = multer({ dest: 'public/GamesFiles/' }); // Establece el directorio de destino para los archivos cargados
-
-
-
 const server = http.createServer(app);
-
-app.use(express.static('public'));
-
-
 const PORT = 7878;
 const host = "0.0.0.0";
-
 let i = 0;
 let lobbies = [];
+
+app.use(express.static('public'));
 
 const random_hex_color_code = () => {
   let n = Math.floor(Math.random() * 999999);
   return n.toString().padStart(6, "0");
 };
-
-
-// const socketIO = require("socket.io")(server, {
-//   cors: {
-//     origin: true,
-//     credentials: true,
-//   },
-//   path: "/node/",
-// });
 
 const socketIO = new Server(server, {
   cors: {
@@ -113,22 +70,6 @@ socketIO.on('connection', (socket) => {
       }
     });
 
-  });
-
-  socket.on('objectGame', (object) => {
-
-    lobbies.forEach((lobby) => {
-      if (lobby.lobbyIdentifier == socket.data.current_lobby) {
-        lobby.members.forEach((member) => {
-          if (member.idUser == socket.data.id) {
-            socketIO.to(socket.data.current_lobby).emit("objectGame_to_platform", {
-              objectGame: object,
-            });
-            console.log("Objeto: ", object);
-          }
-        });
-      }
-    });
   });
 
   socket.on('file-upload', (file) => {
@@ -287,27 +228,19 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on("join_room", (data) => {
-    // if (data.username.length > 8) {
-    //   socketIO.to(socket.id).emit("USR_NAME_TOO_LONG");
-    // } else {
-    //socket.data.username = data.username;
     console.log("data", data);
     joinLobby(socket, data.lobbyIdentifier, data.username);
-    // }
   });
 
   socket.on("can_start_game", () => {
     console.log("start gmae", socket.data.current_lobby);
     socketIO.to(socket.data.current_lobby).emit("start_game");
-
   });
 });
-
 
 server.listen(PORT, host, () => {
   console.log("Listening on *:" + PORT);
 });
-
 
 function sendUserList(room) {
   var list = [];
@@ -327,7 +260,6 @@ function sendUserList(room) {
     message: "user list",
   });
 }
-
 
 function joinLobby(socket, lobbyIdentifier, username) {
   var disponible = false;
@@ -351,7 +283,6 @@ function joinLobby(socket, lobbyIdentifier, username) {
           isOwner: false,
         });
         console.log("user added", lobbies);
-
 
         socketIO.to(socket.id).emit("lobby_info", lobby);
       } else {

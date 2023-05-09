@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useState } from 'react'
 import { Socket } from "socket.io-client";
 import ConnectedUsers from "../components/ConnectedUsers.js"
 
@@ -9,18 +10,26 @@ var ownerLobby;
 import('phaser')
   .then((module) => {
     Phaser = module;
+    console.log(Phaser);
   })
 
-function Game({ socket }) {
+function Game({ socket, sharedValue}) {
+
   const [lobbyId, setLobbyId] = useState("");
   const [lobbyIdInput, setLobbyIdInput] = useState("");
   const [username, setUsername] = useState("");
   const [displayCanvas, setDisplayCanvas] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
 
+  console.log(sharedValue)
+  var obj = null;
+
   useEffect(() => {
     socket.on("lobby_info", (data) => {
       setLobbyId(data.lobbyIdentifier);
+    });
+
+    socket.on("lobby_info", (data) => {
       ownerLobby = data;
     });
 
@@ -30,11 +39,16 @@ function Game({ socket }) {
     });
 
     socket.on('send_datagame_to_platform', (data) => {
-      if (obj != null) {
-        obj.recibirInfoFromPlatform(data);
-      }
+      obj.recibirInfoFromPlatform(data);
     });
+
+    socket.on('objectGame_to_platform', (objectGame) => {
+      if (obj != null) {
+        obj.recibirObjetoDePlataforma(objectGame);
+      }
+    })
   }, []);
+
 
   function JoinLobby() {
     if (lobbyIdInput != null & username != null) {
@@ -42,6 +56,9 @@ function Game({ socket }) {
         lobbyIdentifier: lobbyIdInput,
         username: username,
       });
+    }
+    else {
+      console.log("You need to fill both input fields.");
     }
   }
 
@@ -57,16 +74,8 @@ function Game({ socket }) {
     setUsername(e.target.value);
   }
 
-  function startGame() {
-    socket.emit("can_start_game");
-  }
-
-  function createRoom() {
-    socket.emit("new_lobby");
-  }
-
   function play() {
-    fetch('http://localhost:7878/GamesFiles/TestGame/juego.js', {
+    fetch(sharedValue, {
       method: 'GET',
       mode: 'same-origin',
     })
@@ -76,13 +85,26 @@ function Game({ socket }) {
       .then(scriptText => {
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
-        obj.init(sendInfoGame, finalJuego);
+        obj.init(sendObjetToPlatform, sendInfoGame, finalJuego);
         obj.recibirInfoLobby(ownerLobby);
       })
   }
 
+  function startGame() {
+    socket.emit("can_start_game");
+  }
+
+  function createRoom() {
+    socket.emit("new_lobby");
+  }
+
   function sendInfoGame(infoGame) {
     socket.emit("datagame", infoGame);
+  }
+
+  function sendObjetToPlatform(objeto) {
+    let object = objeto;
+    socket.emit('objectGame', object);
   }
 
   function finalJuego() {

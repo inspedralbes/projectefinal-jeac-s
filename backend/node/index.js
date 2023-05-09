@@ -31,56 +31,13 @@ const socketIO = new Server(server, {
   path: "/node/",
 });
 
-// const corsOptions = {
-//   origin: '*',
-//   methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
-//   allowedHeaders: ['Content-Type', 'Authorization']
-// };
-
-app.use(cors());
-
-// const servi = http.createServer((req, res) => {
-//   if (req.url === '/GamesFiles/ClickGame/juego.js') {
-//     // Agregar los encabezados CORS a la respuesta
-//     res.set('Access-Control-Allow-Origin', '*');
-//     res.set('Access-Control-Allow-Methods', 'GET');
-//     res.set('Access-Control-Allow-Headers', 'Content-Type');
-
-//     // Leer el archivo juego.js y enviarlo como respuesta
-//     fs.readFile('/GamesFiles/ClickGame/juego.js', (err, data) => {
-//       if (err) {
-//         res.writeHead(500, { 'Content-Type': 'text/plain' });
-//         res.end('Error interno del servidor');
-//       } else {
-//         res.writeHead(200, { 'Content-Type': 'application/javascript' });
-//         res.end(data);
-//       }
-//     });
-//   } else {
-//     res.writeHead(404, { 'Content-Type': 'text/plain' });
-//     res.end('Recurso no encontrado');
-//   }
-// });
-
-app.use(express.static('public/GamesFiles/ClickGame/juego.js'));
+app.use(express.static('public'));
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Headers', '*')
   res.header("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
   next()
 })
-
-
-// // Ruta para el archivo juego.js
-// app.get('/GamesFiles/ClickGame/juego.js', (req, res) => {
-//   // Agregar los encabezados CORS a la respuesta
-//   res.set('Access-Control-Allow-Origin', '*');
-//   res.set('Access-Control-Allow-Methods', '*');
-//   res.set('Access-Control-Allow-Headers', '*');
-
-//   // Enviar el archivo juego.js
-//   res.sendFile('/GamesFiles/ClickGame/juego.js');
-// });
 
 socketIO.on('connection', (socket) => {
   console.log('Socket connected 24');

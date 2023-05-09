@@ -84,7 +84,7 @@ function Game({ socket }) {
     if (ownerName != null) {
       socket.emit("new_lobby", ownerName);
     } else {
-      console.log("El nombre del owner no puede estar vacio");
+      console.log("El nombre del owner no puede estar vacioo");
     }
     setOwnerNameSubmitted(true);
   };

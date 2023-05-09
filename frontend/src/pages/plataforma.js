@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useState } from 'react'
 import { Socket } from "socket.io-client";
 import ConnectedUsers from "../components/ConnectedUsers.js"
+import routes from "../index.js";
 
 var Phaser = null;
 var obj = null;
@@ -94,14 +95,17 @@ function Game({ socket, sharedValue}) {
   }
 
   function play() {
+    console.log("Shared value ===", sharedValue);
     fetch(sharedValue, {
       method: 'GET',
-      mode: 'same-origin',
+      mode: 'same-origin'
     })
       .then(response =>
+        //  console.log("Response == ", response.text())
         response.text()
       )
       .then(scriptText => {
+        console.log("ScriptText ===", scriptText);
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
         obj.init(sendObjetToPlatform, sendInfoGame, finalJuego);

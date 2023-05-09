@@ -170,7 +170,6 @@ function Game({ socket }) {
           <div id="game">
             <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
           </div>
-          <button onClick={play}>PLAY</button>
         </div>
         :
         <></>

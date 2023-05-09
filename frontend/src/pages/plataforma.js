@@ -67,7 +67,7 @@ function Game({ socket }) {
   }
 
   function play() {
-    fetch('http://localhost:7878/GamesFiles/TestGame/juego.js', {
+    fetch(`${routes.wsNode}/GamesFiles/TestGame/juego.js`, {
       method: 'GET',
       // mode: 'cors',
       // headers: {

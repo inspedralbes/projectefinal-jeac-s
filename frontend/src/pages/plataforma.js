@@ -3,19 +3,6 @@ import { useState } from 'react'
 import { Socket } from "socket.io-client";
 import ConnectedUsers from "../components/ConnectedUsers.js"
 
-// program to generate random strings
-
-// declare all characters
-// const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-// function generateString(length) {
-//   let result = ' ';
-//   const charactersLength = characters.length;
-//   for (let i = 0; i < length; i++) {
-//     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-//   }
-//   return result;
-// }
 
 var Phaser = null;
 var obj = null;
@@ -33,7 +20,6 @@ function Game({ socket }) {
   const [username, setUsername] = useState("");
   const [displayCanvas, setDisplayCanvas] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
-  const [usersScores, setUsersScores] = useState([]);
   const [isMultiplayer, setIsMultiplayer] = useState("");
   const [firstime, setFirstime] = useState(true);
   const [users, setUsers] = useState([]);
@@ -53,32 +39,13 @@ function Game({ socket }) {
       setDisplayCanvas(true);
       setDisplayForm(false);
     });
-
-    socket.on('send_datagame_to_game', (score) => {
-      setUsersScores(prevScores => {
-        const index = prevScores.findIndex(s => s.member === score.member);
-        if (index !== -1) {
-          // Usuario ya existe en la lista, actualizar su puntaje
-          const updatedScore = { member: score.member, score: score.puntuacion };
-          const newScores = prevScores.map((s, i) => i === index ? updatedScore : s);
-          return newScores;
-        } else {
-          // Usuario no existe en la lista, agregar nuevo puntaje
-          const newScore = { member: score.member, score: score.puntuacion };
-          const newScores = [...prevScores, newScore];
-          return newScores;
-        }
-      });
+    socket.on('send_datagame_to_platform', (data) => {
+      if (obj != null) {
+        obj.recibirInfoFromPlatform(data);
+      }
     });
+    
   }, []);
-
-  useEffect(() => {
-    if (obj == null) {
-      console.log("null");
-    } else {
-      obj.recibir(usersScores);
-    }
-  }, [usersScores]);
 
   useEffect(() => {
     socket.on('lobby_user_list', (usersList) => {
@@ -139,7 +106,7 @@ function Game({ socket }) {
     setUsername(e.target.value);
   }
 
-  function play() {
+  function startGame() {
     obj.init(sendInfoGame, finalJuego);
     socket.emit("can_start_game"); 
     obj.players(users); 
@@ -149,16 +116,13 @@ function Game({ socket }) {
     socket.emit("new_lobby", obj.config_game);
   }
 
-  function sendInfoGame(puntos_juego) {
-    let score = puntos_juego;
-    socket.emit('datagame', score);
+  function sendInfoGame(infoGame) {
+    socket.emit("datagame", infoGame);
   }
 
   function finalJuego() {
     alert("JUEGO ACABADO");
   }
-
-  console.log(usersScores);
 
   return (
     <div>
@@ -167,7 +131,7 @@ function Game({ socket }) {
         <button onClick={createRoom}>Create lobby</button>
         <button onClick={toggleForm}>JoinLobby</button>
         <ConnectedUsers socket={socket} />
-        <button onClick={play}>Start</button>
+        <button onClick={startGame}>Start</button>
       </div>
 
       {displayForm & isMultiplayer?

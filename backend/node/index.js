@@ -1,14 +1,3 @@
-// const express = require('express');
-// const unzipper = require('unzipper');
-// const path = require('path');
-
-// var fs = require('fs');
-// const cors = require("cors");
-
-
-// const multer = require('multer');
-// const bodyParser = require('body-parser');
-//const http = require("http");
 
 import express from "express";
 import unzipper from "unzipper";
@@ -26,14 +15,9 @@ import bodyParser from "body-parser";
 import http from "http";
 
 import { Server } from "socket.io";
-import e from "express";
-import { log } from "console";
 
 
 const app = express();
-
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
 
 
 const upload = multer({ dest: 'public/GamesFiles/' }); // Establece el directorio de destino para los archivos cargados
@@ -93,7 +77,7 @@ socketIO.on('connection', (socket) => {
     console.log("socket disconected");
   });
 
-  socket.on('datagame', (score) => {
+  socket.on('datagame', (infoGame) => {
 
     lobbies.forEach((lobby) => {
       if (lobby.lobbyIdentifier == socket.data.current_lobby) {
@@ -102,11 +86,10 @@ socketIO.on('connection', (socket) => {
           console.log("memberID", member.idUser);
           console.log("socket.data.id", socket.data.id);
           if (member.idUser == socket.data.id) {
-            socketIO.to(socket.data.current_lobby).emit("send_datagame_to_game", {
-              member: member.username,
-              puntuacion: score,
+            socketIO.to(socket.data.current_lobby).emit("send_datagame_to_platform", {
+              infoGame
             });
-            console.log("User: ", member.username, "Score: ", score);
+            console.log(infoGame);
           }
         });
       }
@@ -259,6 +242,8 @@ socketIO.on('connection', (socket) => {
         members: [{
           idUser: socket.data.id,
           username: "owner",
+          isOwner: true,
+
         }],
       };
 

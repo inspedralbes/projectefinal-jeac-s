@@ -2,6 +2,9 @@ var bird;
 var pipes;
 var gameOverText;
 var score = 0;
+let playAgainButton;
+var sendInfoGame;
+var finalJuego;
 
 function init(_sendInfoGame, _finalJuego) {
 
@@ -9,9 +12,10 @@ function init(_sendInfoGame, _finalJuego) {
     finalJuego = _finalJuego;
 
     var config = {
-        type: Phaser.AUTO,
+        type: Phaser.canvas,
         width: 800,
         height: 600,
+        canvas: document.getElementById("canvas"),
         physics: {
             default: 'arcade',
             arcade: {
@@ -35,20 +39,30 @@ function init(_sendInfoGame, _finalJuego) {
 function preload() {
     // Preload assets
     this.load.image('bird', '../GamesFiles/FlapGame/assets/bird.png');
+    this.load.image('bird2', '../GamesFiles/FlapGame/assets/bird2.png');
     this.load.image('pipe', '../GamesFiles/FlapGame/assets/pipe.png');
+    this.load.image('background', '../GamesFiles/FlapGame/assets/background.png');
 }
 
 function create() {
+    
+    this.add.image(0, 0, 'background').setOrigin(0, 0);
+
     // Create the bird
     bird = this.physics.add.sprite(100, 300, 'bird');
+    bird.setScale(0.2);
     bird.setCollideWorldBounds(true);
-    bird.setGravityY(-800);
+    bird.setGravityY(500);
+
+    // Add the background image
+
 
     // Create pipes group
     pipes = this.physics.add.group();
 
+
     // Create score text
-    scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
+    scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: 'white' });
 
     // Create collisions
     this.physics.add.collider(bird, pipes, gameOver, null, this);
@@ -56,8 +70,10 @@ function create() {
     // Handle input
     this.input.on('pointerdown', flap, this);
 
+
+
     // Generate pipes
-    this.time.addEvent({
+    pipeGenerationEvent = this.time.addEvent({
         delay: 1500,
         callback: generatePipes,
         callbackScope: this,
@@ -71,8 +87,9 @@ function update() {
         gameOver();
     }
 
-    // Rotate the bird based on its velocity
-    bird.angle = Math.min(90, bird.body.velocity.y * 3);
+    if (bird.x > this.sys.game.config.width) {
+        gameOver();
+    }
 
     // Update score
     pipes.getChildren().forEach(function (pipe) {
@@ -91,19 +108,21 @@ function flap() {
 
 function generatePipes() {
     // Calculate a random pipe gap position
-    var gapPosition = Phaser.Math.Between(100, 400);
+    var gapPosition = Phaser.Math.Between(300, 600);
 
     // Create the upper pipe
-    var upperPipe = pipes.create(800, gapPosition - 300, 'pipe');
+    var upperPipe = pipes.create(800, gapPosition - 500, 'pipe');
+    upperPipe.setScale(0.5)
+    upperPipe.flipY = true;
     upperPipe.body.allowGravity = false;
 
     // Create the lower pipe
     var lowerPipe = pipes.create(800, gapPosition + 100, 'pipe');
-    lowerPipe.flipY = true;
+    lowerPipe.setScale(0.5)
     lowerPipe.body.allowGravity = false;
 
     // Set pipe velocity
-    pipes.setVelocityX(-200);
+    pipes.setVelocityX(-300);
 
     // Remove pipes when they're out of bounds
     pipes.getChildren().forEach(function (pipe) {
@@ -114,8 +133,37 @@ function generatePipes() {
     });
 }
 
+function playAgain() {
+    playAgainButton.visible = false;
+}
+
 function gameOver() {
     // Stop the game and display game over text
+    playAgainButton = this.add.text(250, 350, 'Play Again', { fontSize: '64px', fill: 'white' })
+        .setInteractive()
+        .on('pointerup', playAgain);
+    playAgainButton.visible = true;
+    pipeGenerationEvent.remove();
     this.physics.pause();
-    gameOverText = this.add.text(250, 250, 'Game Over', { fontSize: '64px', fill: '#000' });
-} s
+    gameOverText = this.add.text(250, 250, 'Game Over', { fontSize: '64px', fill: 'white' });
+
+}
+
+function recibirInfoFromPlatform(data) {
+
+}
+
+function recibirInfoLobby(lobby) {
+
+}
+
+function executeGame() {
+    var obj = [];
+
+    obj.init = init;
+    obj.recibirInfoFromPlatform = recibirInfoFromPlatform;
+    obj.recibirInfoLobby = recibirInfoLobby;
+    return obj;
+}
+
+executeGame();

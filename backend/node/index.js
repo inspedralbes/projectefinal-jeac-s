@@ -1,68 +1,25 @@
-// const express = require('express');
-// const unzipper = require('unzipper');
-// const path = require('path');
-
-// var fs = require('fs');
-// const cors = require("cors");
-
-
-// const multer = require('multer');
-// const bodyParser = require('body-parser');
-//const http = require("http");
-
 import express from "express";
 import unzipper from "unzipper";
-
 import path from "path";
-
-import cors from "cors";
-
 import fs from "fs";
-
 import multer from "multer";
-
-import bodyParser from "body-parser";
-
 import http from "http";
-
 import { Server } from "socket.io";
-import e from "express";
-
 
 const app = express();
-
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
-
-
-const upload = multer({ dest: 'public/GamesFiles/' }); // Establece el directorio de destino para los archivos cargados
-
-
-
+const upload = multer({ dest: 'public/GamesFiles/' });
 const server = http.createServer(app);
-
-app.use(express.static('public'));
-
-
 const PORT = 7878;
 const host = "0.0.0.0";
-
 let i = 0;
 let lobbies = [];
+
+app.use(express.static('public'));
 
 const random_hex_color_code = () => {
   let n = Math.floor(Math.random() * 999999);
   return n.toString().padStart(6, "0");
 };
-
-
-// const socketIO = require("socket.io")(server, {
-//   cors: {
-//     origin: true,
-//     credentials: true,
-//   },
-//   path: "/node/",
-// });
 
 const socketIO = new Server(server, {
   cors: {
@@ -91,7 +48,7 @@ socketIO.on('connection', (socket) => {
     console.log("socket disconected");
   });
 
-  socket.on('datagame', (score) => {
+  socket.on('datagame', (infoGame) => {
 
     lobbies.forEach((lobby) => {
       if (lobby.lobbyIdentifier == socket.data.current_lobby) {
@@ -100,12 +57,10 @@ socketIO.on('connection', (socket) => {
           console.log("memberID", member.idUser);
           console.log("socket.data.id", socket.data.id);
           if (member.idUser == socket.data.id) {
-            socketIO.to(socket.data.current_lobby).emit("send_datagame_to_game", {
-              member: member.username,
-              puntuacion: score,
-              owner: member.isOwner,
+            socketIO.to(socket.data.current_lobby).emit("send_datagame_to_platform", {
+              infoGame
             });
-            console.log("User: ", member.username, "Score: ", score), "Owner: ", member.isOwner;
+            console.log(infoGame);
           }
         });
       }
@@ -114,22 +69,6 @@ socketIO.on('connection', (socket) => {
       }
     });
 
-  });
-
-  socket.on('objectGame', (object) => {
-
-    lobbies.forEach((lobby) => {
-      if (lobby.lobbyIdentifier == socket.data.current_lobby) {
-        lobby.members.forEach((member) => {
-          if (member.idUser == socket.data.id) {
-            socketIO.to(socket.data.current_lobby).emit("objectGame_to_platform", {
-              objectGame: object,
-            });
-            console.log("Objeto: ", object);
-          }
-        });
-      }
-    });
   });
 
   socket.on('file-upload', (file) => {
@@ -250,10 +189,9 @@ socketIO.on('connection', (socket) => {
     }
   });
 
-  socket.on("new_lobby", () => {
+  socket.on("new_lobby", (test) => {
     let existeix = false;
     let newLobbyIdentifier;
-
     do {
       newLobbyIdentifier = random_hex_color_code();
 
@@ -270,7 +208,7 @@ socketIO.on('connection', (socket) => {
         ownerId: socket.data.id,
         members: [{
           idUser: socket.data.id,
-          username: "owner",
+          username: test,
           isOwner: true,
         }],
       };
@@ -304,11 +242,9 @@ socketIO.on('connection', (socket) => {
   });
 });
 
-
 server.listen(PORT, host, () => {
   console.log("Listening on *:" + PORT);
 });
-
 
 function sendUserList(room) {
   var list = [];
@@ -328,7 +264,6 @@ function sendUserList(room) {
     message: "user list",
   });
 }
-
 
 function joinLobby(socket, lobbyIdentifier, username) {
   var disponible = false;
@@ -352,8 +287,6 @@ function joinLobby(socket, lobbyIdentifier, username) {
           isOwner: false,
         });
         console.log("user added", lobbies);
-
-
         socketIO.to(socket.id).emit("lobby_info", lobby);
       } else {
         socketIO.to(socket.id).emit("USER_ALR_CHOSEN_ERROR");
@@ -364,7 +297,6 @@ function joinLobby(socket, lobbyIdentifier, username) {
   if (disponible) {
     socket.join(lobbyIdentifier);
     socket.data.current_lobby = lobbyIdentifier;
-
     sendUserList(lobbyIdentifier);
   }
 }

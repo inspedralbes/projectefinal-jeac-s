@@ -14,8 +14,6 @@ const host = "0.0.0.0";
 let i = 0;
 let lobbies = [];
 
-app.use(express.static('public'));
-
 const random_hex_color_code = () => {
   let n = Math.floor(Math.random() * 999999);
   return n.toString().padStart(6, "0");
@@ -29,7 +27,13 @@ const socketIO = new Server(server, {
   path: "/node/",
 });
 
-app.use(express.static('public'));
+// app.all('/', function(req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*')
+//   res.header('Access-Control-Allow-Headers', '*')
+//   res.header("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
+//   next();
+//  });
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Headers', '*')
@@ -37,7 +41,17 @@ app.use((req, res, next) => {
   next()
 })
 
+app.use(express.static('public'));
+
 socketIO.on('connection', (socket) => {
+  socket.headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "*",
+    "Access-Control-Allow-Methods": "GET,POST,DELETE,PUT,OPTIONS",
+  };
+  console.log("ESTOS SON LOS HEADERS", socket.headers);
+
+
   console.log('Socket connected 24');
 
   i++;

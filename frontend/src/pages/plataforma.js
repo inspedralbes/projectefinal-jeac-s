@@ -69,18 +69,20 @@ function Game({ socket }) {
   function play() {
     fetch(`${routes.wsNode}/GamesFiles/TestGame/juego.js`, {
       method: 'GET',
-      // mode: 'cors',
-      // headers: {
-      //   'Access-Control-Allow-Origin': '*',
-      //   'Access-Control-Allow-Headers': 'API-Key'
-      // },
+      mode: 'cors',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Request-Method":"POST, GET, PUT, OPTIONS"
+      //'Access-Control-Allow-Headers': 'API-Key'
+      },
     })
       .then(response =>
         //  console.log("Response == ", response.text())
         response.text()
       )
       .then(scriptText => {
-        console.log("ScriptText ===", scriptText);
+        console.log("ScriptText ===", scriptText.length);
+        console.log("ScriptText FI");
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
         obj.init(sendInfoGame, finalJuego);

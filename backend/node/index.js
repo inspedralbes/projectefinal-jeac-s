@@ -5,6 +5,7 @@ import fs from "fs";
 import multer from "multer";
 import http from "http";
 import { Server } from "socket.io";
+import { log } from "console";
 
 const app = express();
 const upload = multer({ dest: 'public/GamesFiles/' }); // Establece el directorio de destino para los archivos cargados
@@ -53,14 +54,14 @@ socketIO.on('connection', (socket) => {
     lobbies.forEach((lobby) => {
       if (lobby.lobbyIdentifier == socket.data.current_lobby) {
         lobby.members.forEach((member) => {
-          console.log("member", member);
-          console.log("memberID", member.idUser);
-          console.log("socket.data.id", socket.data.id);
+          // console.log("member", member);
+          // console.log("memberID", member.idUser);
+          // console.log("socket.data.id", socket.data.id);
           if (member.idUser == socket.data.id) {
             socketIO.to(socket.data.current_lobby).emit("send_datagame_to_platform", {
               infoGame
             });
-            console.log(infoGame);
+            //console.log(infoGame);
           }
         });
       }
@@ -239,14 +240,58 @@ socketIO.on('connection', (socket) => {
     joinLobby(socket, data.lobbyIdentifier, data.username);
     // }
   });
+  
+  socket.on("get_players_in_lobby", () => {
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    lobbies.forEach((lobby) => {
+      if (lobby.lobbyIdentifier == socket.data.current_lobby) {
+        console.log("lobbyAAAAAAAAA", lobby);
+
+        let lobbyData = {
+          lobbyIdentifier: socket.data.current_lobby,
+          ownerId: lobby.ownerId,
+          yourId: socket.data.id,
+          //maxMembers: config.max_players,
+          members: lobby.members
+        };
+
+        console.log("LOBIDATA", lobbyData);
+
+
+        socketIO.to(socket.id).emit("lobby_info", lobbyData);    
+      }
+    });
+  });
 
   socket.on("can_start_game", () => {
     console.log("start gmae", socket.data.current_lobby);
     sendUserList(socket.data.current_lobby);
+
+    // lobbies.forEach((lobby) => {
+    //   if (lobby.lobbyIdentifier == socket.data.current_lobby) {
+    //     console.log("lobbyAAAAAAAAA", lobby);
+        
+        
+    //     let lobbyData = {
+    //       lobbyIdentifier: socket.data.current_lobby,
+    //       ownerId: socket.data.id,
+    //       yourId: socket.data.id,
+    //       //maxMembers: config.max_players,
+    //       members: lobby.members
+    //     };
+        
+    //     console.log("lobbyBBBBBBB", lobbyData);
+
+    //     socketIO.to(socket.id).emit("lobby_info", lobbyData);
+    //   }
+    // });
+
     socketIO.to(socket.data.current_lobby).emit("start_game");
 
   });
+  
 });
+
 
 server.listen(PORT, host, () => {
   console.log("Listening on *:" + PORT);

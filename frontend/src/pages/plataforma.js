@@ -64,8 +64,10 @@ function Game({ socket }) {
   function createRoom() {
     socket.emit("new_lobby");
   }
-
+  
   function play() {
+    socket.emit("get_players_in_lobby");
+
     fetch('http://localhost:7878/GamesFiles/Starfinder/juego.js', {
       method: 'GET',
       mode: 'same-origin',

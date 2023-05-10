@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useState } from 'react'
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { Socket } from "socket.io-client";
 import ConnectedUsers from "../components/ConnectedUsers.js"
 import routes from "../index.js";
@@ -11,79 +11,71 @@ var ownerLobby;
 import('phaser')
   .then((module) => {
     Phaser = module;
-    console.log(Phaser);
   })
 
-function Game({ socket, sharedValue}) {
+function Game({ socket , sharedValue, sharedId}) {
+  const isLoggedIn = useSelector(state => state.isLoggedIn);
+  const userInfo = useSelector((state) => state.data);
 
   const [lobbyId, setLobbyId] = useState("");
   const [lobbyIdInput, setLobbyIdInput] = useState("");
   const [username, setUsername] = useState("");
   const [displayCanvas, setDisplayCanvas] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
-  const [usersScores, setUsersScores] = useState([]);
+  const [createRoomOwner, setcreateRoomOwner] = useState(false);
+  const [optionSelected, setOptionSelected] = useState(false);
+  const [ownerName, setOwnerName] = useState(null);
+  const [userJoinedLobbyName, setUserJoinedLobbyName] = useState(false);
+  const [ownerNameSubmitted, setOwnerNameSubmitted] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [gameModeSelected, setGameModeSelected] = useState(false);
+  const [singlePlayer, setSinglePlayer] = useState(false);
 
   console.log(sharedValue)
-  var obj = null;
+  console.log(sharedId)
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
       setLobbyId(data.lobbyIdentifier);
-    });
-
-    socket.on("lobby_info", (data) => {
       ownerLobby = data;
+      console.log(ownerLobby);
     });
 
     socket.on("start_game", () => {
       setDisplayCanvas(true);
       setDisplayForm(false);
+      play();
     });
 
-    socket.on('send_datagame_to_game', (score) => {
-      setUsersScores(prevScores => {
-        const index = prevScores.findIndex(s => s.member === score.member);
-        if (index !== -1) {
-          // Usuario ya existe en la lista, actualizar su puntaje
-          const updatedScore = { member: score.member, score: score.puntuacion, gameOwner: score.owner };
-          const newScores = prevScores.map((s, i) => i === index ? updatedScore : s);
-          return newScores;
-        } else {
-          // Usuario no existe en la lista, agregar nuevo puntaje
-          const newScore = { member: score.member, score: score.puntuacion, gameOwner: score.owner };
-          const newScores = [...prevScores, newScore];
-          return newScores;
-        }
-      });
-    });
-
-    socket.on('objectGame_to_platform', (objectGame) => {
+    socket.on('send_datagame_to_platform', (data) => {
       if (obj != null) {
-        obj.recibirObjetoDePlataforma(objectGame);
+        obj.recibirInfoFromPlatform(data);
       }
-    })
-  }, []);
-
-  useEffect(() => {
-    if (obj != null) {
-      obj.recibir(usersScores);
+    });
+    if (isLoggedIn) {
+      setUsername(userInfo.name);
+      setOwnerName(userInfo.name)
     }
-  }, [usersScores]);
+  }, [userInfo, isLoggedIn]);
 
+
+  function gameMode() {
+    setGameModeSelected(true);
+  }
   function JoinLobby() {
+    setUserJoinedLobbyName(true);
     if (lobbyIdInput != null & username != null) {
       socket.emit("join_room", {
         lobbyIdentifier: lobbyIdInput,
         username: username,
       });
     }
-    else {
-      console.log("You need to fill both input fields.");
-    }
   }
 
   function toggleForm() {
     setDisplayForm(true);
+    setcreateRoomOwner(false);
+    setOptionSelected(true);
   }
 
   function handleChangeLobbyId(e) {
@@ -94,8 +86,36 @@ function Game({ socket, sharedValue}) {
     setUsername(e.target.value);
   }
 
+  function startGame() {
+    if (ownerName != null) {
+      socket.emit("can_start_game");
+      setGameStarted(true);
+    } else {
+      console.log("El nombre del owner no puede estar vacio");
+    }
+  }
+
+  const handleOwnerNameChange = (event) => {
+    setOwnerName(event.target.value);
+  };
+
+  const handleSaveClick = () => {
+    if (ownerName != null) {
+      socket.emit("new_lobby", ownerName);
+      setOwnerNameSubmitted(true);
+    } else {
+      console.log("El nombre del owner no puede estar vacio");
+    }
+  };
+
+  function createRoom() {
+    setcreateRoomOwner(true);
+    setOptionSelected(true)
+  }
+
   function play() {
-    console.log("Shared value ===", sharedValue);
+    socket.emit("get_players_in_lobby");
+
     fetch(sharedValue, {
       method: 'GET',
       mode: 'same-origin'
@@ -108,95 +128,156 @@ function Game({ socket, sharedValue}) {
         console.log("ScriptText ===", scriptText);
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
-        obj.init(sendObjetToPlatform, sendInfoGame, finalJuego);
+        obj.init(sendInfoGame, finalJuego);
         obj.recibirInfoLobby(ownerLobby);
       })
   }
 
-  function startGame() {
-    socket.emit("can_start_game");
-  }
-
-  function createRoom() {
-    socket.emit("new_lobby");
-  }
-
-  function sendInfoGame(puntos_juego) {
-    let score = puntos_juego;
-    socket.emit('datagame', score);
-  }
-
-  function sendObjetToPlatform(objeto) {
-    let object = objeto;
-    socket.emit('objectGame', object);
+  function sendInfoGame(infoGame) {
+    socket.emit("datagame", infoGame);
   }
 
   function finalJuego() {
     alert("JUEGO ACABADO");
   }
 
-  console.log(usersScores);
-
   return (
     <div>
-      <h1>{lobbyId}</h1>
-      <div>
-        <button onClick={createRoom}>Create lobby</button>
-        <button onClick={toggleForm}>JoinLobby</button>
-        <ConnectedUsers socket={socket} />
-        <button onClick={startGame}>Set Lobby</button>
-      </div>
-
-      {displayForm ?
-        <div id="join_lobby_form">
-          <br></br>
-          <label className="JoinLobby__nickname--grid">
-            <div className="form__inputGroup">
-              <input
-                id="nickname"
-                value={username}
-                className="form__input"
-                onChange={handleChangeUsername}
-                placeholder=" "
-                type="text"
-                required
-              ></input>
-              <span className="form__inputBar"></span>
-              <label className="form__inputlabel">
-                Introduce your nickname
-              </label>
-            </div>
-          </label>
-
-          <label>
-            <div>
-              <input
-                value={lobbyIdInput}
-                onChange={handleChangeLobbyId}
-                placeholder="Introduce id"
-                type="text"
-                required
-              ></input>
-              <label>Introduce lobby ID</label>
-            </div>
-          </label>
-          <button onClick={JoinLobby}>Join lobby</button>
-        </div>
-        :
-        <></>
-      }
-
-      {displayCanvas ?
+      {!gameModeSelected ?
         <div>
-          <div>
-          </div>
-          <div id="game">
-            <canvas id="canvas" className="canvasGame border-4 border-red-500"></canvas>
-          </div>
-          <button onClick={play}>PLAY</button>
+          <button onClick={() => { gameMode(); setSinglePlayer(true); }}>Single Player</button>
+          <button onClick={() => { gameMode(); setSinglePlayer(false); }}>Multiplayer</button>
         </div>
         :
-        <></>
+        <div>
+          {!singlePlayer ?
+            <div>
+              {createRoomOwner && !gameStarted ?
+                <h1>{lobbyId}</h1> :
+                <></>
+              }
+              <div>
+                {!optionSelected ?
+                  <div>
+                    <button onClick={createRoom}>Create lobby</button>
+                    <button onClick={toggleForm}>JoinLobby</button>
+                  </div> :
+                  <></>
+                }
+                <ConnectedUsers socket={socket} />
+              </div>
+
+              {displayForm && !createRoomOwner && !userJoinedLobbyName ?
+                <div>
+                  {!isLoggedIn ?
+                    <div id="join_lobby_form">
+                      <br></br>
+                      <label className="JoinLobby__nickname--grid">
+                        <div className="form__inputGroup">
+                          <input
+                            id="nickname"
+                            value={username}
+                            className="form__input"
+                            onChange={handleChangeUsername}
+                            placeholder=" "
+                            type="text"
+                            required
+                          />
+                          <span className="form__inputBar"></span>
+                          <label className="form__inputlabel">
+                            Introduce your nickname
+                          </label>
+                        </div>
+                      </label>
+                    </div> :
+                    <p>{userInfo.name}</p>
+                  }
+
+                  <label>
+                    <div>
+                      <input
+                        value={lobbyIdInput}
+                        onChange={handleChangeLobbyId}
+                        placeholder="Introduce id"
+                        type="text"
+                        required
+                      ></input>
+                      <label>Introduce lobby ID</label>
+                    </div>
+                  </label>
+                  <button onClick={JoinLobby}>Join lobby</button>
+                </div>
+                :
+                <></>
+              }
+            </div> :
+            <div>
+              {!isLoggedIn ?
+                <input
+                  id="nickOwner"
+                  value={ownerName}
+                  onChange={handleOwnerNameChange}
+                  className="form__input"
+                  placeholder="Username"
+                  type="text"
+                  required
+                /> :
+                <p>{ownerName}</p>
+              }
+              {!gameStarted ?
+                <div>
+                  <button onClick={handleSaveClick}>Aceptar</button><br></br><br></br>
+                  <button onClick={startGame}>Play</button>
+                </div>
+                :
+                <></>
+              }
+            </div>
+          }
+          {createRoomOwner ?
+            <div>
+              {ownerNameSubmitted ?
+                <div>
+                  {!gameStarted ?
+                    <div>
+                      <button onClick={startGame}>Play</button>
+                    </div>
+                    :
+                    <></>
+                  }
+                </div> :
+                <div>
+                  {!isLoggedIn ?
+                    <input
+                      id="nickOwner"
+                      value={ownerName}
+                      onChange={handleOwnerNameChange}
+                      className="form__input"
+                      placeholder="Username"
+                      type="text"
+                      required
+                    /> :
+                    <p>{ownerName}</p>
+                  }
+                  <button onClick={handleSaveClick}>Aceptar</button><br></br><br></br>
+                </div>
+              }
+            </div> :
+            <></>
+          }
+
+          {displayCanvas ?
+            <div>
+              <div>
+              </div>
+              <div id="game">
+                <canvas id="canvas" className="canvasGame"></canvas>
+              </div>
+            </div>
+            :
+            <></>
+          }
+        </div>
       }
     </div>
   )

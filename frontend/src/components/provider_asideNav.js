@@ -25,6 +25,7 @@ function AsideNav() {
     const boughtItems = useSelector((state) => state.boughtItems);
     const userInfo = useSelector((state) => state.data);
     const [sharedValue, setSharedValue] = useState('');
+    const [sharedId, setSharedId] = useState('');
 
     // const routes = {
     //     fetchLaravel: "http://localhost:8000",
@@ -45,6 +46,10 @@ function AsideNav() {
         setSharedValue(newValue);
     
     };
+
+    const handleSharedIdChange = (newValue) =>{
+        setSharedId(newValue)
+    }
 
     function logout() {
         dispatch(actions.logout());
@@ -114,12 +119,12 @@ function AsideNav() {
                 <Navbar></Navbar>
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/games" element={<Games sharedValue={sharedValue} onSharedValueChange={handleSharedValueChange}/> } />
+                    <Route path="/games" element={<Games sharedValue={sharedValue} onSharedValueChange={handleSharedValueChange} sharedId={sharedId} onSharedIdChange={handleSharedIdChange}/> } />
                     <Route path="/upload" element={<Upload socket={socket} />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/signin" element={<Signin />} />
                     <Route path="/login" element={<LoginForm />} />
-                    <Route path="/game" element={<Game socket={socket} sharedValue={sharedValue}/> } />
+                    <Route path="/game" element={<Game socket={socket} sharedValue={sharedValue} sharedId={sharedId}/> } />
                     <Route path="/ranking" element={<GetRanking />} />
                     <Route path="/store" element={<GetGameStore />} />
                 </Routes>

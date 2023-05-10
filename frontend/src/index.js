@@ -9,7 +9,7 @@ import {HashRouter} from "react-router-dom";
 import './App.css';
 
 const routes = {
-  fetchLaravel: "http://www.jeacsgames.cat/../laravel/public",
+  fetchLaravel: "http://jeacsgames.cat/../laravel/public",
   wsNode: "http://jeacsg.alumnes.inspedralbes.cat:7878",
 };
 

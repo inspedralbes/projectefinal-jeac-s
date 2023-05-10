@@ -12,7 +12,7 @@ import('phaser')
     Phaser = module;
   })
 
-function Game({ socket }) {
+function Game({ socket , sharedValue, sharedId}) {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
   const userInfo = useSelector((state) => state.data);
 
@@ -29,6 +29,9 @@ function Game({ socket }) {
   const [gameStarted, setGameStarted] = useState(false);
   const [gameModeSelected, setGameModeSelected] = useState(false);
   const [singlePlayer, setSinglePlayer] = useState(false);
+
+  console.log(sharedValue)
+  console.log(sharedId)
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {

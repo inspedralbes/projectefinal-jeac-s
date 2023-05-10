@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useState } from 'react'
-import { Socket } from "socket.io-client";
 import ConnectedUsers from "../components/ConnectedUsers.js"
 
 var Phaser = null;
@@ -13,7 +12,7 @@ import('phaser')
     console.log(Phaser);
   })
 
-function Game({ socket, sharedValue}) {
+function Game({ socket, sharedValue }) {
 
   const [lobbyId, setLobbyId] = useState("");
   const [lobbyIdInput, setLobbyIdInput] = useState("");
@@ -24,6 +23,7 @@ function Game({ socket, sharedValue}) {
 
   console.log(sharedValue)
   var obj = null;
+  var multiplayer = 0
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
@@ -133,15 +133,31 @@ function Game({ socket, sharedValue}) {
 
   console.log(usersScores);
 
+  function gameMode(numero) {
+    if (numero == 1) {
+      console.log(document.getElementById("gamemode").innerHTML)
+      document.getElementById("gamemode").innerHTML ="<div> PLAY </div>"
+      console.log(document.getElementById("gamemode").innerHTML)
+    } else if (numero == 2) {
+      console.log(document.getElementById("gamemode").innerHTML)
+      document.getElementById("gamemode").innerHTML ='<div><h1>'+{lobbyId}+'</h1><div><button onClick='+{createRoom}+'>Create lobby</button><button onClick='+{toggleForm}+'>JoinLobby</button><ConnectedUsers socket={socket} /><button onClick='+{startGame}+'>Set Lobby</button></div></div>'
+      console.log(document.getElementById("gamemode").innerHTML)
+    }
+  }
+
+
   return (
     <div>
-      <h1>{lobbyId}</h1>
       <div>
-        <button onClick={createRoom}>Create lobby</button>
-        <button onClick={toggleForm}>JoinLobby</button>
-        <ConnectedUsers socket={socket} />
-        <button onClick={startGame}>Set Lobby</button>
+        Chose your gamemode:
+        <button onClick={() => gameMode(1)}>
+          Solo Player{console.log(multiplayer)}
+        </button>
+        <button onClick={() => gameMode(2)}>
+          Multiplayer{console.log(multiplayer)}
+        </button>
       </div>
+      <div id="gamemode"></div>
 
       {displayForm ?
         <div id="join_lobby_form">

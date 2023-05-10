@@ -204,10 +204,9 @@ socketIO.on('connection', (socket) => {
     }
   });
 
-  socket.on("new_lobby", () => {
+  socket.on("new_lobby", (test) => {
     let existeix = false;
     let newLobbyIdentifier;
-
     do {
       newLobbyIdentifier = random_hex_color_code();
 
@@ -224,7 +223,7 @@ socketIO.on('connection', (socket) => {
         ownerId: socket.data.id,
         members: [{
           idUser: socket.data.id,
-          username: "owner",
+          username: test,
           isOwner: true,
         }],
       };

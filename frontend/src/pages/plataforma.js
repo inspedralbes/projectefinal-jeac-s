@@ -111,7 +111,7 @@ function Game({ socket }) {
 
   function play() {
     socket.emit("get_players_in_lobby");
-    
+
     fetch('http://localhost:7878/GamesFiles/TestGame/juego.js', {
       method: 'GET',
       mode: 'same-origin',
@@ -146,7 +146,7 @@ function Game({ socket }) {
         <div>
           {!singlePlayer ?
             <div>
-              {createRoomOwner ?
+              {createRoomOwner && !gameStarted ?
                 <h1>{lobbyId}</h1> :
                 <></>
               }
@@ -218,8 +218,14 @@ function Game({ socket }) {
                 /> :
                 <p>{ownerName}</p>
               }
-              <button onClick={handleSaveClick}>Aceptar</button><br></br><br></br>
-              <button onClick={startGame}>Play</button>
+              {!gameStarted ?
+                <div>
+                  <button onClick={handleSaveClick}>Aceptar</button><br></br><br></br>
+                  <button onClick={startGame}>Play</button>
+                </div>
+                :
+                <></>
+              }
             </div>
           }
           {createRoomOwner ?

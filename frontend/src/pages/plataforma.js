@@ -16,16 +16,19 @@ function Game({ socket, sharedValue, sharedId }) {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
   const userInfo = useSelector((state) => state.data);
 
-  const [lobbyId, setLobbyId] = useState("");
-  const [lobbyIdInput, setLobbyIdInput] = useState("");
+  const [lobbyId, setLobbyId] = useState(null);
+  const [lobbyIdInput, setLobbyIdInput] = useState(null);
   const [displayCanvas, setDisplayCanvas] = useState(false);
-  const [username, setUsername] = useState("");
   const [gameModeSelected, setGameModeSelected] = useState(false);
   const [singlePlayer, setSinglePlayer] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [singlePlayerUserName, setSinglePlayerUserName] = useState(null);
+  const [multiPlayerUserName, setMultiPlayerUserName] = useState(null);
   const [createRoomOwner, setcreateRoomOwner] = useState(null);
+  const [notRoomOwner, setNotRoomOwner] = useState(null);
   const [optionSelected, setOptionSelected] = useState(false);
+  const [lobbyStarted, setLobbyStarted] = useState(false);
+  const [lobbyJoined, setLobbyJoined] = useState(false);
 
   // console.log(sharedValue)
   // console.log(sharedId)
@@ -34,12 +37,12 @@ function Game({ socket, sharedValue, sharedId }) {
     socket.on("lobby_info", (data) => {
       setLobbyId(data.lobbyIdentifier);
       ownerLobby = data;
-      console.log(ownerLobby);
     });
 
     socket.on("start_game", () => {
       setDisplayCanvas(true);
       play();
+      console.log(ownerLobby);
     });
 
     socket.on('send_datagame_to_platform', (data) => {
@@ -49,6 +52,7 @@ function Game({ socket, sharedValue, sharedId }) {
     });
     if (isLoggedIn) {
       setSinglePlayerUserName(userInfo.name);
+      setMultiPlayerUserName(userInfo.name);
     }
   }, [userInfo, isLoggedIn]);
 
@@ -56,6 +60,7 @@ function Game({ socket, sharedValue, sharedId }) {
   function saveUsername() {
     if (singlePlayerUserName != null) {
       socket.emit("new_lobby", singlePlayerUserName);
+      setLobbyStarted(true);
     } else {
       console.log("El nombre no puede estar vacio");
     }
@@ -68,32 +73,42 @@ function Game({ socket, sharedValue, sharedId }) {
   function handleSaveUsernameOnClick() {
     if (singlePlayerUserName != null) {
       socket.emit("new_lobby", singlePlayerUserName);
+      setLobbyStarted(true);
     } else {
       console.log("El nombre no puede estar vacio");
     }
   };
-  //Hasta aqui single player
 
   //Funciones lobby multi player.
-
   function joinRoom() {
     setcreateRoomOwner(false);
+    setNotRoomOwner(true);
     setOptionSelected(true);
   }
 
   function createRoom() {
     setcreateRoomOwner(true);
+    setNotRoomOwner(false);
     setOptionSelected(true);
   }
 
-  // function JoinLobby() {
-  //   if (lobbyIdInput != null & username != null) {
-  //     socket.emit("join_room", {
-  //       lobbyIdentifier: lobbyIdInput,
-  //       username: username,
-  //     });
-  //   }
-  // }
+  function handleSetLobbyIdNoOwner(e) {
+    setLobbyIdInput(e.target.value);
+  }
+
+  function handleSetMultiPlayerUsername(e) {
+    setMultiPlayerUserName(e.target.value);
+  }
+
+  function joinLobby() {
+    if (lobbyIdInput != null && multiPlayerUserName != null) {
+      setLobbyJoined(true);
+      socket.emit("join_room", {
+        lobbyIdentifier: lobbyIdInput,
+        username: multiPlayerUserName,
+      });
+    }
+  }
 
   function startGame() {
     socket.emit("can_start_game");
@@ -135,17 +150,15 @@ function Game({ socket, sharedValue, sharedId }) {
         </div>
         :
         <div>
-          {singlePlayer ?
+          {singlePlayer && !gameStarted ?
             <div>
               {isLoggedIn ?
                 <div>
-                  <p>SINGLE - Logged in</p>
                   {singlePlayerUserName && <p>{singlePlayerUserName}</p>}
                   <button onClick={() => { saveUsername(); startGame(); }}>PLAY</button>
                 </div>
                 :
                 <div>
-                  <p>SINGLE - No Logged in</p>
                   <label>
                     <div>
                       <input
@@ -167,7 +180,7 @@ function Game({ socket, sharedValue, sharedId }) {
             </div>
             :
             <div>
-              {!optionSelected ?
+              {!optionSelected && !gameStarted ?
                 <div>
                   <button onClick={createRoom}>Create lobby</button>
                   <button onClick={joinRoom}>Join lobby</button>
@@ -176,10 +189,117 @@ function Game({ socket, sharedValue, sharedId }) {
               }
               {createRoomOwner ?
                 <div>
+                  <h1>{lobbyId}</h1>
+                  <ConnectedUsers socket={socket} />
                   {isLoggedIn ?
-                    <p>OWNER - Logged in</p>
+                    <div>
+                      {!lobbyStarted ?
+                        <div>
+                          {singlePlayerUserName && <p>{singlePlayerUserName}</p>}
+                          <button onClick={() => { saveUsername() }}>Set Lobby</button>
+                        </div>
+                        :
+                        <div>
+                          {!gameStarted ?
+                            <div>
+                              <button onClick={() => { startGame(); }}>PLAY</button>
+                            </div>
+                            :
+                            <></>
+                          }
+                        </div>
+                      }
+                    </div>
                     :
-                    <p>OWNER - No Logged in</p>
+                    <div>
+                      {!lobbyStarted ?
+                        <div>
+                          <label>
+                            <div>
+                              <input
+                                id="singlePNotLoggedIn"
+                                className="form__input"
+                                onChange={handleSetSinglePlayerUsername}
+                                placeholder="Username"
+                                type="text"
+                                required
+                              />
+                              <label>
+                                Introduce your nickname
+                              </label><br></br>
+                              <button onClick={() => { handleSaveUsernameOnClick() }}>Set Lobby</button>
+                            </div>
+                          </label>
+                        </div>
+                        :
+                        <div>
+                          {!gameStarted ?
+                            <div>
+                              <button onClick={() => { startGame(); }}>PLAY</button>
+                            </div>
+                            :
+                            <></>
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+                :
+                <></>
+              }
+              {notRoomOwner ?
+                <div>
+                  {!lobbyJoined ?
+                    <div>
+                      {isLoggedIn ?
+                        <div>
+                          {multiPlayerUserName && <p>{multiPlayerUserName}</p>}
+                          <input
+                            value={lobbyIdInput}
+                            onChange={handleSetLobbyIdNoOwner}
+                            placeholder="Lobby ID"
+                            type="text"
+                            required
+                          ></input>
+                          <label>Introduce lobby ID</label><br></br>
+                          <button onClick={() => { joinLobby() }}>Join Lobby</button>
+                        </div>
+                        :
+                        <div>
+                          <label>
+                            <div>
+                              <label>
+                                <div>
+                                  <input
+                                    id="multiPNotLoggedIn"
+                                    value={multiPlayerUserName}
+                                    className="form__input"
+                                    onChange={handleSetMultiPlayerUsername}
+                                    placeholder="Username"
+                                    type="text"
+                                    required
+                                  />
+                                  <label>
+                                    Introduce your nickname
+                                  </label><br></br>
+                                </div>
+                              </label>
+                              <input
+                                value={lobbyIdInput}
+                                onChange={handleSetLobbyIdNoOwner}
+                                placeholder="Lobby ID"
+                                type="text"
+                                required
+                              ></input>
+                              <label>Introduce lobby ID</label><br></br>
+                              <button onClick={() => { joinLobby() }}>Join Lobby</button>
+                            </div>
+                          </label>
+                        </div>
+                      }
+                    </div> :
+                    <ConnectedUsers socket={socket} />
                   }
                 </div>
                 :
@@ -187,7 +307,7 @@ function Game({ socket, sharedValue, sharedId }) {
               }
             </div>
           }
-        </div>
+        </div >
       }
       {displayCanvas ?
         <div>
@@ -200,7 +320,7 @@ function Game({ socket, sharedValue, sharedId }) {
         :
         <></>
       }
-    </div>
+    </div >
   )
 }
 

@@ -11,6 +11,11 @@ let yourId = 0;
 let team = 'blue';
 let ownerDelLobby;
 let self = null;
+var scores = {
+  blue: 0,
+  red: 0
+};
+
 function init(_sendInfoGame, _finalJuego) {
 
   //traspasamos la funciones recibidas a variables globales
@@ -43,8 +48,11 @@ function init(_sendInfoGame, _finalJuego) {
 
 
 function preload() {
-  this.load.image('ship', '../GamesFiles/Starfinder/images/spaceShips_001.png');
-  this.load.image('otherPlayer', '../GamesFiles/Starfinder/images/enemyBlack5.png');
+  this.load.image('blue_ship_1', '../GamesFiles/Starfinder/images/spaceShips_blue.png');
+  this.load.image('red_ship_1', '../GamesFiles/Starfinder/images/spaceShips_red.png');
+  this.load.image('blue_ship_2', '../GamesFiles/Starfinder/images/enemy_blue.png');
+  this.load.image('red_ship_2', '../GamesFiles/Starfinder/images/enemy_red.png');
+
   this.load.image('star', '../GamesFiles/Starfinder/images/star_gold.png');
 
 }
@@ -54,14 +62,14 @@ function create() {
 
   otherPlayers = this.physics.add.group();
 
-  
+
   //this.otherPlayers = this.physics.add.group();
 
   addPlayers(this);
   this.cursors = this.input.keyboard.createCursorKeys();
 
-  this.blueScoreText = this.add.text(16, 16, 'Points', { fontSize: '32px', fill: '#0000FF' });
-  this.redScoreText = this.add.text(584, 16, 'Points', { fontSize: '32px', fill: '#FF0000' });
+  this.blueScoreText = this.add.text(16, 16, 'Blue: ' + scores.blue, { fontSize: '32px', fill: '#0000FF' });
+  this.redScoreText = this.add.text(584, 16, 'Red: ' + scores.red, { fontSize: '32px', fill: '#FF0000' });
 
   //     if (self.star) self.star.destroy();
   //     self.star = self.physics.add.image(star.x, star.y, 'star');
@@ -69,7 +77,7 @@ function create() {
   //     }, null, self);
 
 
-  if(ownerDelLobby) {
+  if (ownerDelLobby) {
     newStar(self);
   }
   else {
@@ -101,7 +109,7 @@ function update() {
     var r = this.ship.rotation;
     if (this.ship.oldPosition && (x !== this.ship.oldPosition.x || y !== this.ship.oldPosition.y || r !== this.ship.oldPosition.rotation)) {
       //this.socket.emit('playerMovement', { x: this.ship.x, y: this.ship.y, rotation: this.ship.rotation });
-      sendInfoGame({action: "shipMovement", id: yourId, posX: this.ship.x, posY: this.ship.y, rotation: this.ship.rotation})
+      sendInfoGame({ action: "shipMovement", id: yourId, posX: this.ship.x, posY: this.ship.y, rotation: this.ship.rotation })
     }
     // save old position data
     this.ship.oldPosition = {
@@ -143,8 +151,8 @@ function recibirInfoFromPlatform(data) {
   }
 
   else if (data.infoGame.action == 'starLocation' && !ownerDelLobby) {
-    
-    console.log("Location star", data);
+
+    //console.log("Location star", data);
     if (self.star) {
       self.star.destroy();
     }
@@ -152,15 +160,35 @@ function recibirInfoFromPlatform(data) {
     self.physics.add.overlap(self.ship, self.star, function () {
       //this.socket.emit('starCollected');
       self.star.destroy();
-      sendInfoGame({action: "starCollectedByUser"});
+      sendInfoGame({ action: "starCollectedByUser" });
+      playersArray.forEach((player) => {
+        console.log("PlayerPlayerPlayer", player);
+        if (player.id == yourId) {
+          console.log("PlayerTeam", player);
+          sendInfoGame({ action: "update_score", team: player.team })
+        }
+      });
+      //sendInfoGame({ action: "update_score", team: self.ship })
+
     }, null, self);
   }
 
-  else if (data.infoGame.action == 'starCollectedByUser' && ownerDelLobby){
+  else if (data.infoGame.action == 'starCollectedByUser' && ownerDelLobby) {
     if (self.star) {
       self.star.destroy();
     }
     newStar(self);
+  }
+  else if (data.infoGame.action == 'update_score') {
+    //console.log("AAAAAAAA", data);
+    if (data.infoGame.team === 'red') {
+      scores.red += 10;
+    } else {
+      scores.blue += 10;
+    }
+
+    self.blueScoreText.setText('Blue: ' + scores.blue);
+    self.redScoreText.setText('Red: ' + scores.red);
   }
 }
 
@@ -169,14 +197,22 @@ function newStar(self) {
     x: Math.floor(Math.random() * 700) + 50,
     y: Math.floor(Math.random() * 500) + 50
   };
-  
+
   if (self.star) self.star.destroy();
   self.star = self.physics.add.image(star.x, star.y, 'star');
-  sendInfoGame({action: "starLocation", star_object: self.star, posX: star.x, posY: star.y})
+  sendInfoGame({ action: "starLocation", star_object: self.star, posX: star.x, posY: star.y })
 
   self.physics.add.overlap(self.ship, self.star, function () {
-    //this.socket.emit('starCollected');
+
     self.star.destroy();
+    playersArray.forEach((player) => {
+      console.log("PlayerPlayerPlayer", player);
+      if (player.id == yourId) {
+        console.log("PlayerTeam", player);
+        sendInfoGame({ action: "update_score", team: player.team })
+      }
+    });
+
     newStar(self);
   }, null, self);
 }
@@ -217,7 +253,6 @@ function recibirInfoLobby(lobby) {
     else {
       team = 'blue';
     }
-
   });
 
   //console.log("playersArray", playersArray);
@@ -227,7 +262,6 @@ function recibirInfoLobby(lobby) {
 function addPlayers(self) {
 
   if (jugadores == null) {
-    console.log("pla");
     jugadores = self.add.group();
   }
 
@@ -238,33 +272,43 @@ function addPlayers(self) {
     //let jugadorImagen = self.add.image(player.newX, player.newY, 'jugadorImagen');
 
     if (player.self == true) {
-      self.ship = self.physics.add.image(player.newX, player.newY, 'ship').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
-      console.log("PlayerAAAAAAAA", player);
-
+      //console.log("PlayerAAAAAAAA", player);
+      
       if (player.team === 'blue') {
-
-        self.ship.setTint(0x0000ff);
+        self.ship = self.physics.add.image(player.newX, player.newY, 'blue_ship_1').setOrigin(0.5, 0.5).setDisplaySize(53, 40); 
       }
       else {
-        self.ship.setTint(0xff0000);
-
+        self.ship = self.physics.add.image(player.newX, player.newY, 'red_ship_1').setOrigin(0.5, 0.5).setDisplaySize(53, 40); 
       }
       self.ship.setDrag(100);
       self.ship.setAngularDrag(100);
       self.ship.setMaxVelocity(200);
     }
     else {
-     let other = self.physics.add.image(player.newX, player.newY, 'ship').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
-     console.log("Player", player);
-     if (player.team === 'blue') {
-        other.setTint(0x0000ff);
+      //console.log("Player", player);
+      let other;
+      if (player.team === 'blue') {
+        let aux = false;
+        if (!aux) {
+          other = self.physics.add.image(player.newX, player.newY, 'blue_ship_2').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
+          aux = true;
+        }
+        else {
+          other = self.physics.add.image(player.newX, player.newY, 'blue_ship_1').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
+        }
       }
       else {
-        other.setTint(0xff0000);
-
+        let aux = false;
+        if (!aux) {
+          other = self.physics.add.image(player.newX, player.newY, 'red_ship_1').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
+          aux = true;
+        }
+        else {
+          other = self.physics.add.image(player.newX, player.newY, 'red_ship_2').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
+        }
       }
-     other.playerId = player.id;
-     otherPlayers.add(other);
+      other.playerId = player.id;
+      otherPlayers.add(other);
 
     }
     //jugadores.add(jugadorImagen);
@@ -274,12 +318,12 @@ function addPlayers(self) {
 }
 
 function playerMoved(data) {
-    otherPlayers.getChildren().forEach(function (otherPlayer) {
-      if (data.infoGame.id === otherPlayer.playerId) {
-        otherPlayer.setRotation(data.infoGame.rotation);
-        otherPlayer.setPosition(data.infoGame.posX, data.infoGame.posY);
-      }
-    });
+  otherPlayers.getChildren().forEach(function (otherPlayer) {
+    if (data.infoGame.id === otherPlayer.playerId) {
+      otherPlayer.setRotation(data.infoGame.rotation);
+      otherPlayer.setPosition(data.infoGame.posX, data.infoGame.posY);
+    }
+  });
 }
 
 

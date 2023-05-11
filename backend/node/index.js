@@ -65,11 +65,7 @@ socketIO.on('connection', (socket) => {
           }
         });
       }
-      else {
-        console.log("No va")
-      }
     });
-
   });
 
   socket.on('file-upload', (file) => {

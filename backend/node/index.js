@@ -236,9 +236,8 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on("can_start_game", () => {
-    console.log("start gmae", socket.data.current_lobby);
+    console.log("Start game", socket.data.current_lobby);
     socketIO.to(socket.data.current_lobby).emit("start_game");
-
   });
 });
 

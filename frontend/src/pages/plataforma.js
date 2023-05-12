@@ -14,9 +14,10 @@ import('phaser')
     Phaser = module;
   })
 
-function Game({ socket, sharedValue, sharedId }) {
+function Game({ socket, sharedValue }) {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
   const userInfo = useSelector((state) => state.data);
+  const gameInfo = useSelector((state) => state.gameInfo);
 
   const [lobbyId, setLobbyId] = useState(null);
   const [lobbyIdInput, setLobbyIdInput] = useState(null);
@@ -34,7 +35,6 @@ function Game({ socket, sharedValue, sharedId }) {
   const token = localStorage.getItem('access_token');
 
   // console.log(sharedValue)
-  console.log(sharedId)
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
@@ -142,7 +142,7 @@ function Game({ socket, sharedValue, sharedId }) {
 
   async function finalJuego(points) {
     var totalScore = points;
-    var gameId = sharedId;
+    var gameId = gameInfo;
     var score = totalScore;
 
     if (isLoggedIn) {

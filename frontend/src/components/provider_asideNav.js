@@ -47,6 +47,7 @@ function AsideNav() {
     };
 
     const handleSharedIdChange = (newValue) =>{
+        dispatch(actions.saveGameInfo(newValue));
         setSharedId(newValue)
     }
 

@@ -115,7 +115,7 @@ function Game({ socket , sharedValue, sharedId}) {
   function play() {
     socket.emit("get_players_in_lobby");
 
-    fetch(sharedValue, {
+    fetch("http://localhost:7878/GamesFiles/Laberinto/juego.js", {
       method: 'GET',
       mode: 'same-origin',
     })

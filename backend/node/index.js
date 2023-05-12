@@ -45,8 +45,10 @@ socketIO.on('connection', (socket) => {
   socket.data.username = "";
   socket.data.token = null;
   socket.data.current_lobby = null;
+  
   socket.on('disconnect', () => {
-    console.log("socket disconected");
+    console.log("socket disconected", socket.data.id);
+    leaveLobby(socket);
   });
 
   socket.on('datagame', (infoGame) => {
@@ -326,4 +328,34 @@ function joinLobby(socket, lobbyIdentifier, username) {
     socket.data.current_lobby = lobbyIdentifier;
     sendUserList(lobbyIdentifier);
   }
+}
+
+function leaveLobby(socket) {
+  lobbies.forEach((lobby) => {
+    if (lobby.lobbyIdentifier == socket.data.current_lobby) {
+      lobby.members.forEach((member, index) => {
+        if (member.idUser == socket.data.id) {
+          lobby.members.splice(index, 1);
+        }
+      });
+    }
+  });
+
+  socket.leave(socket.data.current_lobby);
+  socket.data.current_lobby = null;
+  socketIO.to(socket.id).emit("YOU_LEFT_LOBBY");
+}
+
+function deleteLobby(socket) {
+  lobbies.forEach((lobby, ind_lobby) => {
+    if (lobby.lobbyIdentifier == socket.data.current_lobby) {
+      lobbies.splice(ind_lobby, 1);
+      socketIO.to(lobby.lobbyIdentifier).emit("lobby_deleted", {
+        message: "Lobby has been deleted by the owner",
+      });
+    }
+  });
+
+  socket.leave(socket.data.current_lobby);
+  socket.data.current_lobby = null;
 }

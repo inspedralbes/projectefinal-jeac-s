@@ -124,13 +124,6 @@ function update() {
     };
   }
 
-  if (scores.blue >= 100) {
-    //alert("Azul gana");
-  }
-
-  if (scores.red >= 100) {
-    //alert("Rojo gana");
-  }
 }
 
 function recibirInfoFromPlatform(data) {
@@ -176,9 +169,10 @@ function recibirInfoFromPlatform(data) {
     } else {
       scores.blue += 10;
     }
-
     self.blueScoreText.setText('Blue: ' + scores.blue);
     self.redScoreText.setText('Red: ' + scores.red);
+
+    
   }
 }
 

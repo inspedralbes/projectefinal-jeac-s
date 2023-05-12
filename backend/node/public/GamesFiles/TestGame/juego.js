@@ -63,7 +63,7 @@ function create() {
                 object.on("pointerdown", function () {
                     object.destroy();
                     contador += 10;
-                    if (contador > 250) {
+                    if (contador > 20) {
                         finalJuego();
                         textoContador.setText('GAME OVER');
                     }

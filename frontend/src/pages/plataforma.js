@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { Socket } from "socket.io-client";
 import ConnectedUsers from "../components/ConnectedUsers.js"
+import routes from '../index';
+import { store, actions } from '../components/store.js'; // import the Redux store
 
 var Phaser = null;
 var obj = null;
 var ownerLobby;
+var scoreUser;
 
 import('phaser')
   .then((module) => {
@@ -29,9 +32,10 @@ function Game({ socket, sharedValue, sharedId }) {
   const [optionSelected, setOptionSelected] = useState(false);
   const [lobbyStarted, setLobbyStarted] = useState(false);
   const [lobbyJoined, setLobbyJoined] = useState(false);
+  const token = localStorage.getItem('access_token');
 
   // console.log(sharedValue)
-  // console.log(sharedId)
+  console.log(sharedId)
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
@@ -48,6 +52,7 @@ function Game({ socket, sharedValue, sharedId }) {
     socket.on('send_datagame_to_platform', (data) => {
       if (obj != null) {
         obj.recibirInfoFromPlatform(data);
+        scoreUser = data.infoGame.score;
       }
     });
     if (isLoggedIn) {
@@ -137,8 +142,39 @@ function Game({ socket, sharedValue, sharedId }) {
     socket.emit("datagame", infoGame);
   }
 
-  function finalJuego() {
-    alert("JUEGO ACABADO");
+  async function finalJuego() {
+    var totalScore = scoreUser;
+    var gameId = sharedId;
+    var score = totalScore;
+
+    if (isLoggedIn) {
+      try {
+        const response = await fetch(routes.fetchLaravel + '/api/saveScore', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({ totalScore }),
+        });
+        const data = await response.json();
+        store.dispatch(actions.saveData(data));
+        const userId = data.id;
+
+        await fetch(routes.fetchLaravel + '/api/createPlayedGame', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({ userId, gameId, score }),
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      alert("No estás logueado");
+    }
   }
 
   return (

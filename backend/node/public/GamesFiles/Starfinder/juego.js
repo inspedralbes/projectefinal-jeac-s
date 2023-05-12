@@ -3,7 +3,7 @@
 //   max_players: 4,
 // }
 
-
+let teams = [];
 let playersArray = [];
 let otherPlayers = [];
 let jugadores;
@@ -15,6 +15,9 @@ var scores = {
   blue: 0,
   red: 0
 };
+let canvasWidth = 800;
+let canvasHeight = 600;
+
 
 function init(_sendInfoGame, _finalJuego) {
 
@@ -54,6 +57,8 @@ function preload() {
   this.load.image('red_ship_2', '../GamesFiles/Starfinder/images/enemy_red.png');
 
   this.load.image('star', '../GamesFiles/Starfinder/images/star_gold.png');
+  this.load.image('background', '../GamesFiles/Starfinder/images/spaceBackground.png');
+
 
 }
 
@@ -118,30 +123,15 @@ function update() {
       rotation: this.ship.rotation
     };
   }
+
+  if (scores.blue >= 100) {
+    //alert("Azul gana");
+  }
+
+  if (scores.red >= 100) {
+    //alert("Rojo gana");
+  }
 }
-
-// function addPlayer(self, playerInfo) {
-//   self.ship = self.physics.add.image(playerInfo.x, playerInfo.y, 'ship').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
-//   if (playerInfo.team === 'blue') {
-//     self.ship.setTint(0x0000ff);
-//   } else {
-//     self.ship.setTint(0xff0000);
-//   }
-//   self.ship.setDrag(100);
-//   self.ship.setAngularDrag(100);
-//   self.ship.setMaxVelocity(200);
-// }
-
-//   function addOtherPlayers(self, playerInfo) {
-//     const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'otherPlayer').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
-//     if (playerInfo.team === 'blue') {
-//       otherPlayer.setTint(0x0000ff);
-//     } else {
-//       otherPlayer.setTint(0xff0000);
-//     }
-//     otherPlayer.playerId = playerInfo.playerId;
-//     self.otherPlayers.add(otherPlayer);
-//   }
 
 function recibirInfoFromPlatform(data) {
   //console.log("data", data);
@@ -220,7 +210,38 @@ function newStar(self) {
 function recibirInfoLobby(lobby) {
   //console.log("lobby", lobby);
   //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", lobby);
+  let distanceFromCorner = 50;
+  console.log("Config", game.width);
+  teams = [
+    {
+      color: "blue",
+      sprite: "blue_ship_1",
+      x: 100 + distanceFromCorner,
+      y: 100 + distanceFromCorner,
+    },
+    {
+      color: "red",
+      sprite: "red_ship_1",
+      x: canvasWidth - 100 - distanceFromCorner,
+      y: 100 + distanceFromCorner 
+    
+    },
+    {
+      color: "blue",
+      sprite: "blue_ship_2",
+      x: canvasWidth - 100 - distanceFromCorner,
+      y: canvasHeight - 100 - distanceFromCorner
+    },
+    {
+      color: "red",
+      sprite: "red_ship_2",
+      x: 100 + distanceFromCorner,
+      y: canvasHeight -100 - distanceFromCorner
+    },
+  ]
 
+
+  let aux = 0;
   lobby.members.forEach((member) => {
     user = member.username;
     //console.log("MEENEBEEH", member);
@@ -231,14 +252,16 @@ function recibirInfoLobby(lobby) {
     }
     let newX = Math.floor(Math.random() * 700) + 50;
     let newY = Math.floor(Math.random() * 700) + 50;
+    console.log("newX", newX, "newY", newY);
 
     let player = {
       id: member.idUser,
       nombre: member.username,
-      posX: newX,
-      posY: newY,
+      posX: teams[aux].x,
+      posY: teams[aux].y,
       self: false,
-      team: team
+      team: teams[aux].color,
+      sprite: teams[aux].sprite
     }
 
     if (lobby.yourId == member.idUser) {
@@ -247,66 +270,37 @@ function recibirInfoLobby(lobby) {
     }
 
     playersArray.push(player);
-    if (team == 'blue') {
-      team = 'red';
-    }
-    else {
-      team = 'blue';
-    }
+    
+    aux++;
   });
-
-  //console.log("playersArray", playersArray);
-
 }
 
 function addPlayers(self) {
+
 
   if (jugadores == null) {
     jugadores = self.add.group();
   }
 
   playersArray.forEach((player) => {
-    self.load.image('jugadorImagen', '../GamesFiles/Starfinder/images/spaceShips_001.png');
-    //console.log("Player", player);
+    console.log("Player", player);
     //Crea una imagen para el jugador y agrégalo al grupo de jugadores
-    //let jugadorImagen = self.add.image(player.newX, player.newY, 'jugadorImagen');
+    // let jugadorImagen = self.physics.add.image(100, 150, 'red_ship_1').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
+    // let jugadorImagen2 = self.physics.add.image(500, 150, 'blue_ship_2').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
+
 
     if (player.self == true) {
       //console.log("PlayerAAAAAAAA", player);
-      
-      if (player.team === 'blue') {
-        self.ship = self.physics.add.image(player.newX, player.newY, 'blue_ship_1').setOrigin(0.5, 0.5).setDisplaySize(53, 40); 
-      }
-      else {
-        self.ship = self.physics.add.image(player.newX, player.newY, 'red_ship_1').setOrigin(0.5, 0.5).setDisplaySize(53, 40); 
-      }
+
+      self.ship = self.physics.add.image(player.posX, player.posY, player.sprite).setOrigin(0.5, 0.5).setDisplaySize(53, 40);
       self.ship.setDrag(100);
       self.ship.setAngularDrag(100);
       self.ship.setMaxVelocity(200);
     }
     else {
-      //console.log("Player", player);
-      let other;
-      if (player.team === 'blue') {
-        let aux = false;
-        if (!aux) {
-          other = self.physics.add.image(player.newX, player.newY, 'blue_ship_2').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
-          aux = true;
-        }
-        else {
-          other = self.physics.add.image(player.newX, player.newY, 'blue_ship_1').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
-        }
-      }
-      else {
-        let aux = false;
-        if (!aux) {
-          other = self.physics.add.image(player.newX, player.newY, 'red_ship_1').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
-          aux = true;
-        }
-        else {
-          other = self.physics.add.image(player.newX, player.newY, 'red_ship_2').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
-        }
-      }
+      //sconsole.log("Player", player);
+      let other = self.physics.add.image(player.posX, player.posY, player.sprite).setOrigin(0.5, 0.5).setDisplaySize(53, 40);
+
       other.playerId = player.id;
       otherPlayers.add(other);
 

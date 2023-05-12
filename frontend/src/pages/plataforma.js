@@ -121,7 +121,7 @@ function Game({ socket, sharedValue }) {
   function play() {
     socket.emit("get_players_in_lobby");
 
-    fetch('http://localhost:7878/GamesFiles/FlapBird/juego.js', {
+    fetch('http://localhost:7878/GamesFiles/FlapGame/juego.js', {
       method: 'GET',
       mode: 'same-origin',
     })

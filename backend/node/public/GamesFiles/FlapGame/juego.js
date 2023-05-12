@@ -7,6 +7,7 @@ var pipe2;
 var score = 0;
 let playAgainButton;
 var sendInfoGame;
+var members = 0;
 var finalJuego;
 var ownerDelLobby;
 var myID;
@@ -214,8 +215,10 @@ function recibirInfoFromPlatform(data) {
 }
 
 function recibirInfoLobby(lobby) {
+    console.log(lobby)
     myID = lobby.yourId
     lobby.members.forEach((member) => {
+        members++;
         user = member.username;
         if (member.isOwner) {
             ownerDelLobby = member.isOwner;

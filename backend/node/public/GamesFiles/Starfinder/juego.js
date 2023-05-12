@@ -172,7 +172,34 @@ function recibirInfoFromPlatform(data) {
     self.blueScoreText.setText('Blue: ' + scores.blue);
     self.redScoreText.setText('Red: ' + scores.red);
 
-    
+    if (scores.blue == 20) {
+      playersArray.forEach(player => {
+        if (player.id == yourId) {
+          if (player.team == 'blue') {
+            finalJuego(25);
+          }
+          else {
+            finalJuego(10);
+          }
+        }
+      });
+    }
+
+    if (scores.red == 20) {
+      playersArray.forEach(player => {
+        if (player.id == yourId) {
+          if (player.team == 'red') {
+
+            finalJuego(25);
+          }
+          else {
+
+            finalJuego(10);
+          }
+        }
+      });
+    }
+
   }
 }
 
@@ -217,8 +244,8 @@ function recibirInfoLobby(lobby) {
       color: "red",
       sprite: "red_ship_1",
       x: canvasWidth - 100 - distanceFromCorner,
-      y: 100 + distanceFromCorner 
-    
+      y: 100 + distanceFromCorner
+
     },
     {
       color: "blue",
@@ -230,7 +257,7 @@ function recibirInfoLobby(lobby) {
       color: "red",
       sprite: "red_ship_2",
       x: 100 + distanceFromCorner,
-      y: canvasHeight -100 - distanceFromCorner
+      y: canvasHeight - 100 - distanceFromCorner
     },
   ]
 
@@ -264,7 +291,7 @@ function recibirInfoLobby(lobby) {
     }
 
     playersArray.push(player);
-    
+
     aux++;
   });
 }

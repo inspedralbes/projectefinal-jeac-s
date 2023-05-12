@@ -168,8 +168,6 @@ function Game({ socket, sharedValue }) {
       } catch (error) {
         console.error(error);
       }
-    } else {
-      alert("No estás logueado");
     }
   }
 

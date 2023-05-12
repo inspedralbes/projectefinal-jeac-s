@@ -3,16 +3,17 @@ import routes from "../index.js";
 import { useNavigate  } from 'react-router';
 
 
-function Games({ sharedValue, onSharedValueChange }) {
+function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
 
     const [fetchData, setFetchData] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleInputChange = (name) => {
+    const handleInputChange = (name, id) => {
         
-        console.log("HELLO: " + name);
+        console.log("HELLO: " + id);
         onSharedValueChange(name);
+        onSharedIdChange(id)
         navigate('/game');
 
     };
@@ -60,7 +61,7 @@ function Games({ sharedValue, onSharedValueChange }) {
                                                     <p class="text-black">{game.description}</p>
                                                     <br></br>
                                                     <button class="bg-violet-500 hover:bg-fuchsia-400 font-bold py-2 px-4 border-b-4 border-fuchsia-700 hover:violet-fuchsia-500 rounded text-white"
-                                                        onClick={() => handleInputChange(game.path)}>Play</button>
+                                                        onClick={() => handleInputChange(game.path, game.id)}>Play</button>
                                                 </div>
                                             </div>
 

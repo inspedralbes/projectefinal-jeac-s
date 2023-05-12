@@ -7,12 +7,14 @@ const LOGOUT = 'LOGOUT';
 const SAVEDATA = 'SAVE_DATA';
 const GET_STORE_ITEMS = 'GET_STORE_ITEMS';
 const UPDATE_BOUGHT_ITEMS = 'UPDATE_BOUGHT_ITEMS';
+const GET_GAMEINFO = 'GET_GAMEINFO';
 
 const initialState = {
   isLoggedIn: false,
   data: {},
   storeIems: {},
-  boughtItems: {}
+  boughtItems: {},
+  gameInfo: {},
 };
 
 const persistConfig = {
@@ -32,6 +34,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, storeItems: action.payload };
     case 'UPDATE_BOUGHT_ITEMS':
       return { ...state, boughtItems: action.payload }; 
+      case 'GET_GAMEINFO':
+        return { ...state, gameInfo: action.payload }; 
     default:
       return state;
   }
@@ -46,7 +50,8 @@ const actions = {
   logout: () => ({ type: LOGOUT }),
   saveData: (data) => ({ type: SAVEDATA, payload: data }),
   saveStoreItems: (storeItems) => ({ type: GET_STORE_ITEMS, payload: storeItems }),
-  saveBoughtItems: (boughtItems) => ({ type: UPDATE_BOUGHT_ITEMS, payload: boughtItems })
+  saveBoughtItems: (boughtItems) => ({ type: UPDATE_BOUGHT_ITEMS, payload: boughtItems }),
+  saveGameInfo: (gameInfo) => ({ type: GET_GAMEINFO, payload: gameInfo })
 };
 
 export { store, persistor, actions };

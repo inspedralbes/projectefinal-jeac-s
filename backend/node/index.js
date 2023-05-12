@@ -5,6 +5,7 @@ import fs from "fs";
 import multer from "multer";
 import http from "http";
 import { Server } from "socket.io";
+import { log } from "console";
 
 const app = express();
 const upload = multer({ dest: 'public/GamesFiles/' });
@@ -53,22 +54,18 @@ socketIO.on('connection', (socket) => {
     lobbies.forEach((lobby) => {
       if (lobby.lobbyIdentifier == socket.data.current_lobby) {
         lobby.members.forEach((member) => {
-          console.log("member", member);
-          console.log("memberID", member.idUser);
-          console.log("socket.data.id", socket.data.id);
+          // console.log("member", member);
+          // console.log("memberID", member.idUser);
+          // console.log("socket.data.id", socket.data.id);
           if (member.idUser == socket.data.id) {
             socketIO.to(socket.data.current_lobby).emit("send_datagame_to_platform", {
               infoGame
             });
-            console.log(infoGame);
+            //console.log(infoGame);
           }
         });
       }
-      else {
-        console.log("No va")
-      }
     });
-
   });
 
   socket.on('file-upload', (file) => {
@@ -206,6 +203,8 @@ socketIO.on('connection', (socket) => {
       let lobbyData = {
         lobbyIdentifier: newLobbyIdentifier,
         ownerId: socket.data.id,
+        yourId: socket.data.id,
+        //maxMembers: config.max_players,
         members: [{
           idUser: socket.data.id,
           username: test,
@@ -234,13 +233,36 @@ socketIO.on('connection', (socket) => {
     joinLobby(socket, data.lobbyIdentifier, data.username);
     // }
   });
+  
+  socket.on("get_players_in_lobby", () => {
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    lobbies.forEach((lobby) => {
+      if (lobby.lobbyIdentifier == socket.data.current_lobby) {
+        console.log("lobbyAAAAAAAAA", lobby);
+
+        let lobbyData = {
+          lobbyIdentifier: socket.data.current_lobby,
+          ownerId: lobby.ownerId,
+          yourId: socket.data.id,
+          //maxMembers: config.max_players,
+          members: lobby.members
+        };
+
+        console.log("LOBIDATA", lobbyData);
+
+
+        socketIO.to(socket.id).emit("lobby_info", lobbyData);    
+      }
+    });
+  });
 
   socket.on("can_start_game", () => {
-    console.log("start gmae", socket.data.current_lobby);
+    console.log("Start game", socket.data.current_lobby);
     socketIO.to(socket.data.current_lobby).emit("start_game");
-
   });
+  
 });
+
 
 server.listen(PORT, host, () => {
   console.log("Listening on *:" + PORT);
@@ -274,6 +296,11 @@ function joinLobby(socket, lobbyIdentifier, username) {
       lobby.members.forEach((member) => {
         console.log(lobby.ownerId, " / ", socket.data.id);
         console.log(member.username, " / ", username);
+        // console.log(lobby.members.length, " / ", lobby.maxMembers);
+        // if (lobby.members.length == lobby.maxMembers) {
+        //   disponible = false;
+        //   console.log("Can't add user");
+        // }
         if (member.username == username || lobby.ownerId == socket.data.id) {
           disponible = false;
           console.log("Can't add user");
@@ -286,7 +313,7 @@ function joinLobby(socket, lobbyIdentifier, username) {
           username: username,
           isOwner: false,
         });
-        console.log("user added", lobbies);
+        lobby.yourId = socket.data.id;
         socketIO.to(socket.id).emit("lobby_info", lobby);
       } else {
         socketIO.to(socket.id).emit("USER_ALR_CHOSEN_ERROR");

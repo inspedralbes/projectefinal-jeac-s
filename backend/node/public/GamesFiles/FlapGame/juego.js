@@ -1,10 +1,19 @@
 var bird;
 var pipes;
 var gameOverText;
+var scoreEndText;
+var pipe1;
+var pipe2;
 var score = 0;
 let playAgainButton;
 var sendInfoGame;
 var finalJuego;
+var ownerDelLobby;
+var GameInfo = {
+    "upperPipe": "",
+    "lowerPipe": "",
+    "positionY": "",
+};
 
 function init(_sendInfoGame, _finalJuego) {
 
@@ -45,14 +54,24 @@ function preload() {
 }
 
 function create() {
-    
+
     this.add.image(0, 0, 'background').setOrigin(0, 0);
+
+   
+        bird2 = this.physics.add.sprite(100, 300, 'bird2');
+        bird2.setScale(0.2);
+        bird2.setCollideWorldBounds(true);
+        bird2.setGravityY(500);
+  
+
 
     // Create the bird
     bird = this.physics.add.sprite(100, 300, 'bird');
     bird.setScale(0.2);
     bird.setCollideWorldBounds(true);
     bird.setGravityY(500);
+
+
 
     // Add the background image
 
@@ -62,10 +81,13 @@ function create() {
 
 
     // Create score text
-    scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: 'white' });
+    scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: 'black' });
 
     // Create collisions
     this.physics.add.collider(bird, pipes, gameOver, null, this);
+   
+        this.physics.add.collider(bird2, pipes, gameOver, null, this);
+  
 
     // Handle input
     this.input.on('pointerdown', flap, this);
@@ -82,14 +104,6 @@ function create() {
 }
 
 function update() {
-    // Check if the bird is out of bounds
-    if (bird.y > this.sys.game.config.height) {
-        gameOver();
-    }
-
-    if (bird.x > this.sys.game.config.width) {
-        gameOver();
-    }
 
     // Update score
     pipes.getChildren().forEach(function (pipe) {
@@ -103,34 +117,49 @@ function update() {
 
 function flap() {
     // Apply vertical velocity to the bird
+
     bird.setVelocityY(-350);
+    GameInfo = {
+        "isBirdMoving": true,
+    };
+    sendInfoGame(GameInfo)
 }
 
 function generatePipes() {
     // Calculate a random pipe gap position
-    var gapPosition = Phaser.Math.Between(300, 600);
+    if (ownerDelLobby) {
+        var gapPosition = Phaser.Math.Between(100, 200);
 
-    // Create the upper pipe
-    var upperPipe = pipes.create(800, gapPosition - 500, 'pipe');
-    upperPipe.setScale(0.5)
-    upperPipe.flipY = true;
-    upperPipe.body.allowGravity = false;
+        // Create the upper pipe
+        var upperPipe = pipes.create(800, gapPosition - 500, 'pipe');
+        upperPipe.setScale(0.5)
+        upperPipe.flipY = true;
+        upperPipe.body.allowGravity = false;
 
-    // Create the lower pipe
-    var lowerPipe = pipes.create(800, gapPosition + 100, 'pipe');
-    lowerPipe.setScale(0.5)
-    lowerPipe.body.allowGravity = false;
+        // Create the lower pipe
+        var lowerPipe = pipes.create(800, gapPosition + 100, 'pipe');
+        lowerPipe.setScale(0.5)
+        lowerPipe.body.allowGravity = false;
 
-    // Set pipe velocity
-    pipes.setVelocityX(-300);
+        // Set pipe velocity
+        pipes.setVelocityX(-300);
 
-    // Remove pipes when they're out of bounds
-    pipes.getChildren().forEach(function (pipe) {
-        if (pipe.getBounds().right < 0) {
-            pipe.destroy();
-        }
-        pipe.scored = false;
-    });
+        // Remove pipes when they're out of bounds
+        pipes.getChildren().forEach(function (pipe) {
+            if (pipe.getBounds().right < 0) {
+                pipe.destroy();
+            }
+            pipe.scored = false;
+        });
+
+        GameInfo = {
+            "isPipe": true,
+            "upperPipe": upperPipe,
+            "lowerPipe": lowerPipe,
+        };
+
+        sendInfoGame(GameInfo)
+    }
 }
 
 function playAgain() {
@@ -139,22 +168,61 @@ function playAgain() {
 
 function gameOver() {
     // Stop the game and display game over text
-    playAgainButton = this.add.text(250, 350, 'Play Again', { fontSize: '64px', fill: 'white' })
+    scoreEndText = this.add.text(150, 450, 'Your Score is ' + score, { fontSize: '64px', fill: 'black' });
+    /*playAgainButton = this.add.text(250, 350, 'Play Again', { fontSize: '64px', fill: 'white' })
         .setInteractive()
         .on('pointerup', playAgain);
-    playAgainButton.visible = true;
+    playAgainButton.visible = true;*/
     pipeGenerationEvent.remove();
     this.physics.pause();
-    gameOverText = this.add.text(250, 250, 'Game Over', { fontSize: '64px', fill: 'white' });
+    gameOverText = this.add.text(250, 250, 'Game Over', { fontSize: '64px', fill: 'black' });
+    finalJuego(score)
 
 }
 
 function recibirInfoFromPlatform(data) {
+    console.log(data);
+    if (!ownerDelLobby) {
+        if (data.infoGame.isPipe) {
+            var upperPipe = pipes.create(800, data.infoGame.upperPipe.y, 'pipe');
+            upperPipe.setScale(0.5)
+            upperPipe.flipY = true;
+            upperPipe.body.allowGravity = false;
+
+            // Create the lower pipe
+            var lowerPipe = pipes.create(800, data.infoGame.lowerPipe.y, 'pipe');
+            lowerPipe.setScale(0.5)
+            lowerPipe.body.allowGravity = false;
+
+            pipes.setVelocityX(-300);
+
+            // Remove pipes when they're out of bounds
+            pipes.getChildren().forEach(function (pipe) {
+                if (pipe.getBounds().right < 0) {
+                    pipe.destroy();
+                }
+                pipe.scored = false;
+            });
+        }
+    }
+    if (data.infoGame.isBirdMoving) {
+        bird2.setVelocityY(-350);
+      
+    }
+
 
 }
 
 function recibirInfoLobby(lobby) {
-
+    console.log(lobby)
+    lobby.members.forEach((member) => {
+        user = member.username;
+        if (member.isOwner) {
+            ownerDelLobby = member.isOwner;
+        } else {
+            ownerDelLobby = false;
+        }
+    });
 }
 
 function executeGame() {

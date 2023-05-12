@@ -63,7 +63,7 @@ function create() {
                 object.on("pointerdown", function () {
                     object.destroy();
                     contador += 10;
-                    if (contador == 20) {
+                    if (contador == 50) {
                         finalJuego(contador);
                         textoContador.setText('GAME OVER');
                     }
@@ -93,7 +93,7 @@ function recibirInfoFromPlatform(data) {
             object.on("pointerdown", function () {
                 object.destroy();
                 contador += 10;
-                if (contador == 20) {
+                if (contador == 50) {
                     finalJuego(contador);
                     textoContador.setText('GAME OVER');
                 } else {
@@ -116,15 +116,16 @@ function recibirInfoFromPlatform(data) {
 function recibirInfoLobby(lobby) {
     console.log(lobby);
     lobby.members.forEach((member) => {
-        user = member.username;
+        if (member.idUser == lobby.yourId) {
+            user = member.username;
+        }
         if (lobby.ownerId == lobby.yourId) {
             ownerDelLobby = true;
-            console.log(ownerDelLobby);
-
         } else {
             ownerDelLobby = false;
         }
     });
+    console.log(user);
 }
 
 function executeGame() {

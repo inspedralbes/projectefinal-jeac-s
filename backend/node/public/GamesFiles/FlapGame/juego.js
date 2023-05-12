@@ -214,15 +214,19 @@ function recibirInfoFromPlatform(data) {
 }
 
 function recibirInfoLobby(lobby) {
-    myID = lobby.yourId
+    console.log(lobby);
     lobby.members.forEach((member) => {
-        user = member.username;
-        if (member.isOwner) {
-            ownerDelLobby = member.isOwner;
+        if (member.idUser == lobby.yourId) {
+            user = member.username;
+            myID = lobby.yourId
+        }
+        if (lobby.ownerId == lobby.yourId) {
+            ownerDelLobby = true;
         } else {
             ownerDelLobby = false;
         }
     });
+    console.log(user);
 }
 
 function executeGame() {

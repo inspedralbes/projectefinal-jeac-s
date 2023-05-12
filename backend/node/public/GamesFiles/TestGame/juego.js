@@ -114,10 +114,13 @@ function recibirInfoFromPlatform(data) {
 }
 
 function recibirInfoLobby(lobby) {
+    console.log(lobby);
     lobby.members.forEach((member) => {
         user = member.username;
-        if (member.isOwner) {
-            ownerDelLobby = member.isOwner;
+        if (lobby.ownerId == lobby.yourId) {
+            ownerDelLobby = true;
+            console.log(ownerDelLobby);
+
         } else {
             ownerDelLobby = false;
         }

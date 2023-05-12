@@ -121,7 +121,7 @@ function Game({ socket, sharedValue, sharedId }) {
   function play() {
     socket.emit("get_players_in_lobby");
 
-    fetch('http://localhost:7878/GamesFiles/Starfinder/juego.js', {
+    fetch('http://localhost:7878/GamesFiles/TestGame/juego.js', {
       method: 'GET',
       mode: 'same-origin',
     })

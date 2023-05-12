@@ -63,8 +63,8 @@ function create() {
                 object.on("pointerdown", function () {
                     object.destroy();
                     contador += 10;
-                    if (contador > 20) {
-                        finalJuego();
+                    if (contador == 20) {
+                        finalJuego(contador);
                         textoContador.setText('GAME OVER');
                     }
                 });
@@ -93,8 +93,8 @@ function recibirInfoFromPlatform(data) {
             object.on("pointerdown", function () {
                 object.destroy();
                 contador += 10;
-                if (contador > 250) {
-                    finalJuego();
+                if (contador == 20) {
+                    finalJuego(contador);
                     textoContador.setText('GAME OVER');
                 } else {
                     infoGame.score = contador;

@@ -9,6 +9,7 @@ let playAgainButton;
 var sendInfoGame;
 var finalJuego;
 var ownerDelLobby;
+var myID;
 var GameInfo = {
     "upperPipe": "",
     "lowerPipe": "",
@@ -57,12 +58,12 @@ function create() {
 
     this.add.image(0, 0, 'background').setOrigin(0, 0);
 
-   
-        bird2 = this.physics.add.sprite(100, 300, 'bird2');
-        bird2.setScale(0.2);
-        bird2.setCollideWorldBounds(true);
-        bird2.setGravityY(500);
-  
+
+    bird2 = this.physics.add.sprite(100, 300, 'bird2');
+    bird2.setScale(0.2);
+    bird2.setCollideWorldBounds(true);
+    bird2.setGravityY(500);
+
 
 
     // Create the bird
@@ -85,9 +86,9 @@ function create() {
 
     // Create collisions
     this.physics.add.collider(bird, pipes, gameOver, null, this);
-   
-        this.physics.add.collider(bird2, pipes, gameOver, null, this);
-  
+
+    this.physics.add.collider(bird2, pipes, gameOver, null, this);
+
 
     // Handle input
     this.input.on('pointerdown', flap, this);
@@ -121,6 +122,7 @@ function flap() {
     bird.setVelocityY(-350);
     GameInfo = {
         "isBirdMoving": true,
+        "IDjugador": myID,
     };
     sendInfoGame(GameInfo)
 }
@@ -128,7 +130,7 @@ function flap() {
 function generatePipes() {
     // Calculate a random pipe gap position
     if (ownerDelLobby) {
-        var gapPosition = Phaser.Math.Between(100, 200);
+        var gapPosition = Phaser.Math.Between(300, 600);
 
         // Create the upper pipe
         var upperPipe = pipes.create(800, gapPosition - 500, 'pipe');
@@ -181,7 +183,6 @@ function gameOver() {
 }
 
 function recibirInfoFromPlatform(data) {
-    console.log(data);
     if (!ownerDelLobby) {
         if (data.infoGame.isPipe) {
             var upperPipe = pipes.create(800, data.infoGame.upperPipe.y, 'pipe');
@@ -206,15 +207,14 @@ function recibirInfoFromPlatform(data) {
         }
     }
     if (data.infoGame.isBirdMoving) {
-        bird2.setVelocityY(-350);
-      
+        if (data.infoGame.IDjugador != myID) {
+            bird2.setVelocityY(-350);
+        }
     }
-
-
 }
 
 function recibirInfoLobby(lobby) {
-    console.log(lobby)
+    myID = lobby.yourId
     lobby.members.forEach((member) => {
         user = member.username;
         if (member.isOwner) {

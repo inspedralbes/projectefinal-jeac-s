@@ -9,8 +9,8 @@ import {HashRouter} from "react-router-dom";
 import './App.css';
 
 const routes = {
-  fetchLaravel: "http://jeacsg.alumnes.inspedralbes.cat/../laravel/public",
-  wsNode: "http://jeacsg.alumnes.inspedralbes.cat:7878",
+  fetchLaravel: "https://jeacsg.alumnes.inspedralbes.cat:8000",
+  wsNode: "https://jeacsg.alumnes.inspedralbes.cat:7878",
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

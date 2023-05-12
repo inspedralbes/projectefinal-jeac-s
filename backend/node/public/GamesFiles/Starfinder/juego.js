@@ -172,7 +172,7 @@ function recibirInfoFromPlatform(data) {
     self.blueScoreText.setText('Blue: ' + scores.blue);
     self.redScoreText.setText('Red: ' + scores.red);
 
-    if (scores.blue == 20) {
+    if (scores.blue == 100) {
       playersArray.forEach(player => {
         if (player.id == yourId) {
           if (player.team == 'blue') {
@@ -185,7 +185,7 @@ function recibirInfoFromPlatform(data) {
       });
     }
 
-    if (scores.red == 20) {
+    if (scores.red == 100) {
       playersArray.forEach(player => {
         if (player.id == yourId) {
           if (player.team == 'red') {

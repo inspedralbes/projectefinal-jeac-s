@@ -8,7 +8,6 @@ import { store, actions } from '../components/store.js'; // import the Redux sto
 var Phaser = null;
 var obj = null;
 var ownerLobby;
-var scoreUser;
 
 import('phaser')
   .then((module) => {
@@ -52,7 +51,6 @@ function Game({ socket, sharedValue, sharedId }) {
     socket.on('send_datagame_to_platform', (data) => {
       if (obj != null) {
         obj.recibirInfoFromPlatform(data);
-        scoreUser = data.infoGame.score;
       }
     });
     if (isLoggedIn) {
@@ -142,8 +140,8 @@ function Game({ socket, sharedValue, sharedId }) {
     socket.emit("datagame", infoGame);
   }
 
-  async function finalJuego() {
-    var totalScore = scoreUser;
+  async function finalJuego(points) {
+    var totalScore = points;
     var gameId = sharedId;
     var score = totalScore;
 

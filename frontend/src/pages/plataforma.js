@@ -201,185 +201,196 @@ function Game({ socket }) {
   }
 
   return (
-    <div>
-      {!gameModeSelected ?
-        <div>
-          <button onClick={() => { setGameModeSelected(true); setSinglePlayer(true); }}>Single Player</button>
-          <button onClick={() => { setGameModeSelected(true); setSinglePlayer(false); }}>Multiplayer</button>
-        </div>
-        :
-        <div>
-          {singlePlayer && !gameStarted ?
-            <div>
-              {isLoggedIn ?
-                <div>
-                  {singlePlayerUserName && <p>{singlePlayerUserName}</p>}
-                  <button onClick={() => { saveUsername(); startGame(); }}>PLAY</button>
-                </div>
-                :
-                <div>
-                  <label>
+    <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
+      <div class="g-6 flex h-full flex-wrap items-center justify-center">
+        <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
+          <div class="p-4">
+            <div class="md:m-6 md:p-12">
+              <div class="text-center">
+                {!gameModeSelected ?
+                  <div>
+                    <h3 class="text-white">Choose the gamemode</h3>
+                    <br></br>
                     <div>
-                      <input
-                        id="singlePNotLoggedIn"
-                        className="form__input"
-                        onChange={handleSetSinglePlayerUsername}
-                        placeholder="Username"
-                        type="text"
-                        required
-                      />
-                      <label>
-                        Introduce your nickname
-                      </label><br></br>
-                      <button onClick={() => { handleSaveUsernameOnClick(); startGame(); }}>PLAY</button>
+                      <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(true); }}>Single Player</button>
+                      <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(false); }}>Multiplayer</button>
                     </div>
-                  </label>
-                </div>
-              }
-            </div>
-            :
-            <div>
-              {!optionSelected && !gameStarted ?
-                <div>
-                  <button onClick={createRoom}>Create lobby</button>
-                  <button onClick={joinRoom}>Join lobby</button>
-                </div> :
-                <></>
-              }
-              {createRoomOwner ?
-                <div>
-                  <h1>{lobbyId}</h1>
-                  <ConnectedUsers socket={socket} />
-                  {isLoggedIn ?
-                    <div>
-                      {!lobbyStarted ?
-                        <div>
-                          {singlePlayerUserName && <p>{singlePlayerUserName}</p>}
-                          <button onClick={() => { saveUsername() }}>Set Lobby</button>
-                        </div>
-                        :
-                        <div>
-                          {!gameStarted ?
+                  </div>
+                  :
+                  <div>
+                    {singlePlayer && !gameStarted ?
+                      <div>
+                        {isLoggedIn ?
+                          <div>
+                            <h3 class="text-white">Players:</h3>
                             <div>
-                              <button onClick={() => { startGame(); }}>PLAY</button>
+                              {singlePlayerUserName && <p class="text-white">{singlePlayerUserName}</p>}
+                              <br></br>
+                              <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { saveUsername(); startGame(); }}>PLAY</button>
                             </div>
-                            :
-                            <></>
-                          }
-                        </div>
-                      }
+                          </div>
+                          :
+                          <div>
+                            <label>
+                              <div>
+                                <input
+                                  class="text-white peer block min-h-[auto] w-full border-2 border-fuchsia-600 rounded bg-transparent px-3 py-[0.32rem] 
+                                          leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 
+                                          data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 
+                                          [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                  id="singlePNotLoggedIn" type="text"
+                                  required placeholder="Username" onChange={handleSetSinglePlayerUsername} />
+
+                                <label className="text-white">
+                                  Introduce your nickname
+                                </label><br></br>
+                                <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { handleSaveUsernameOnClick(); startGame(); }}>PLAY</button>
+                              </div>
+                            </label>
+                          </div>
+                        }
+                      </div>
+                      :
+                      <div>
+                        {!optionSelected && !gameStarted ?
+                          <div>
+                            <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={createRoom}>Create lobby</button>
+                            <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={joinRoom}>Join lobby</button>
+                          </div> :
+                          <></>
+                        }
+                        {createRoomOwner ?
+                          <div>
+                            <h1 className="text-white">{lobbyId}</h1>
+                            <ConnectedUsers socket={socket} />
+                            {isLoggedIn ?
+                              <div>
+                                {!lobbyStarted ?
+                                  <div>
+                                    {singlePlayerUserName && <p class="text-white">{singlePlayerUserName}</p>}
+                                    <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { saveUsername() }}>Set Lobby</button>
+                                  </div>
+                                  :
+                                  <div>
+                                    {!gameStarted ?
+                                      <div>
+                                        <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>PLAY</button>
+                                      </div>
+                                      :
+                                      <></>
+                                    }
+                                  </div>
+                                }
+                              </div>
+                              :
+                              <div>
+                                {!lobbyStarted ?
+                                  <div>
+                                    <label>
+                                      <div>
+                                        <input
+                                          class="text-white peer block min-h-[auto] w-full border-2 border-fuchsia-600 rounded bg-transparent px-3 py-[0.32rem] 
+                                          leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 
+                                          data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 
+                                          [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                          id="singlePNotLoggedIn" type="text"
+                                          required placeholder="Username" onChange={handleSetSinglePlayerUsername} />
+                                        <label className="text-white">
+                                          Introduce your nickname
+                                        </label><br></br>
+                                        <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { handleSaveUsernameOnClick() }}>Set Lobby</button>
+                                      </div>
+                                    </label>
+                                  </div>
+                                  :
+                                  <div>
+                                    {!gameStarted ?
+                                      <div>
+                                        <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>PLAY</button>
+                                      </div>
+                                      :
+                                      <></>
+                                    }
+                                  </div>
+                                }
+                              </div>
+                            }
+                          </div>
+                          :
+                          <></>
+                        }
+                        {notRoomOwner ?
+                          <div>
+                            {!lobbyJoined ?
+                              <div>
+                                {isLoggedIn ?
+                                  <div>
+                                    {multiPlayerUserName && <p>{multiPlayerUserName}</p>}
+                                    <input
+                                      class="text-white peer block min-h-[auto] w-full border-2 border-fuchsia-600 rounded bg-transparent px-3 py-[0.32rem] 
+                                          leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 
+                                          data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 
+                                          [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                      id="singlePNotLoggedIn" type="text"
+                                      required placeholder="Lobby ID" value={lobbyIdInput} onChange={handleSetLobbyIdNoOwner} />
+                                    <label className="text-white">Introduce lobby ID</label><br></br>
+                                    <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { joinLobby() }}>Join Lobby</button>
+                                  </div>
+                                  :
+                                  <div>
+                                    <label>
+                                      <div>
+                                        <label>
+                                          <div>
+                                            <input
+                                              class="text-white peer block min-h-[auto] w-full border-2 border-fuchsia-600 rounded bg-transparent px-3 py-[0.32rem] 
+                                          leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 
+                                          data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 
+                                          [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                              id="multiPNotLoggedIn" type="text"
+                                              required placeholder="Username" value={multiPlayerUserName} onChange={handleSetMultiPlayerUsername} />
+                                            <label className="text-white">
+                                              Introduce your nickname
+                                            </label><br></br>
+                                          </div>
+                                        </label>
+                                        <input
+                                          class="text-white peer block min-h-[auto] w-full border-2 border-fuchsia-600 rounded bg-transparent px-3 py-[0.32rem] 
+                                          leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 
+                                          data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 
+                                          [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                          id="singlePNotLoggedIn" type="text"
+                                          required placeholder="Lobby ID" value={lobbyIdInput}      onChange={handleSetLobbyIdNoOwner} /> 
+                                        <label className="text-white">Introduce lobby ID</label><br></br>
+                                        <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { joinLobby() }}>Join Lobby</button>
+                                      </div>
+                                    </label>
+                                  </div>
+                                }
+                              </div> :
+                              <ConnectedUsers socket={socket} />
+                            }
+                          </div>
+                          :
+                          <></>
+                        }
+                      </div>
+                    }
+                  </div >
+                }
+                {displayCanvas ?
+                  <div>
+                    <div>
                     </div>
-                    :
-                    <div>
-                      {!lobbyStarted ?
-                        <div>
-                          <label>
-                            <div>
-                              <input
-                                id="singlePNotLoggedIn"
-                                className="form__input"
-                                onChange={handleSetSinglePlayerUsername}
-                                placeholder="Username"
-                                type="text"
-                                required
-                              />
-                              <label>
-                                Introduce your nickname
-                              </label><br></br>
-                              <button onClick={() => { handleSaveUsernameOnClick() }}>Set Lobby</button>
-                            </div>
-                          </label>
-                        </div>
-                        :
-                        <div>
-                          {!gameStarted ?
-                            <div>
-                              <button onClick={() => { startGame(); }}>PLAY</button>
-                            </div>
-                            :
-                            <></>
-                          }
-                        </div>
-                      }
+                    <div id="game">
+                      <canvas id="canvas" className="canvasGame"></canvas>
                     </div>
-                  }
-                </div>
-                :
-                <></>
-              }
-              {notRoomOwner ?
-                <div>
-                  {!lobbyJoined ?
-                    <div>
-                      {isLoggedIn ?
-                        <div>
-                          {multiPlayerUserName && <p>{multiPlayerUserName}</p>}
-                          <input
-                            value={lobbyIdInput}
-                            onChange={handleSetLobbyIdNoOwner}
-                            placeholder="Lobby ID"
-                            type="text"
-                            required
-                          ></input>
-                          <label>Introduce lobby ID</label><br></br>
-                          <button onClick={() => { joinLobby() }}>Join Lobby</button>
-                        </div>
-                        :
-                        <div>
-                          <label>
-                            <div>
-                              <label>
-                                <div>
-                                  <input
-                                    id="multiPNotLoggedIn"
-                                    value={multiPlayerUserName}
-                                    className="form__input"
-                                    onChange={handleSetMultiPlayerUsername}
-                                    placeholder="Username"
-                                    type="text"
-                                    required
-                                  />
-                                  <label>
-                                    Introduce your nickname
-                                  </label><br></br>
-                                </div>
-                              </label>
-                              <input
-                                value={lobbyIdInput}
-                                onChange={handleSetLobbyIdNoOwner}
-                                placeholder="Lobby ID"
-                                type="text"
-                                required
-                              ></input>
-                              <label>Introduce lobby ID</label><br></br>
-                              <button onClick={() => { joinLobby() }}>Join Lobby</button>
-                            </div>
-                          </label>
-                        </div>
-                      }
-                    </div> :
-                    <ConnectedUsers socket={socket} />
-                  }
-                </div>
-                :
-                <></>
-              }
-            </div>
-          }
-        </div >
-      }
-      {displayCanvas ?
-        <div>
-          <div>
-          </div>
-          <div id="game">
-            <canvas id="canvas" className="canvasGame"></canvas>
-          </div>
-        </div>
-        :
-        <></>
-      }
-    </div >
+                  </div>
+                  :
+                  <></>
+                }
+              </div >
+            </div></div></div></div></div>
   )
 }
 

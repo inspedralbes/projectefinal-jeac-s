@@ -35,6 +35,11 @@ function Game({ socket }) {
   const [lobbyJoined, setLobbyJoined] = useState(false);
   const token = localStorage.getItem('access_token');
 
+  useEffect(() => {
+    return () => {
+      destroyGame();
+    };
+  }, []);
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
@@ -46,6 +51,7 @@ function Game({ socket }) {
       setDisplayCanvas(true);
       play();
       console.log(ownerLobby);
+      console.log("aaaaaaaa");
     });
 
     socket.on('send_datagame_to_platform', (data) => {
@@ -57,6 +63,11 @@ function Game({ socket }) {
       setSinglePlayerUserName(userInfo.name);
       setMultiPlayerUserName(userInfo.name);
     }
+    return () => {
+      socket.off("start_game");
+      socket.off("lobby_info");
+      socket.off("send_datagame_to_platform");
+    };
   }, [userInfo, isLoggedIn]);
 
   //Funciones lobby single player.
@@ -180,6 +191,13 @@ function Game({ socket }) {
         console.error(error);
       }
     }
+  }
+
+  function destroyGame() {
+    obj.init().destroy(true, false);
+    setDisplayCanvas(false);
+    setGameModeSelected(false);
+    setGameStarted(false);
   }
 
   return (

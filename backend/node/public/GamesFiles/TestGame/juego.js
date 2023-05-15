@@ -58,10 +58,12 @@ function create() {
 
                 object.setScale(0.4);
                 object.setInteractive();
-                sendInfoGame(infoGame);
+                if (sendInfoGame != null) {
+                    sendInfoGame(infoGame);
+                }
 
                 object.on("pointerdown", function () {
-                    object.destroy();
+                    object.destroy(true, false);
                     contador += 10;
                     if (contador == 50) {
                         finalJuego(contador);

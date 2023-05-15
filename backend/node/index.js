@@ -39,6 +39,7 @@ app.use((req, res, next) => {
 
 socketIO.on('connection', (socket) => {
   console.log('Socket connected');
+  console.log("Lobbbbbbbbies", lobbies);
 
   i++;
   socket.data.id = i;
@@ -223,6 +224,7 @@ socketIO.on('connection', (socket) => {
       socket.data.current_lobby = newLobbyIdentifier;
 
       sendUserList(socket.data.current_lobby);
+      console.log("New Lobby");
     }
   });
 
@@ -317,6 +319,7 @@ function joinLobby(socket, lobbyIdentifier, username) {
         });
         lobby.yourId = socket.data.id;
         socketIO.to(socket.id).emit("lobby_info", lobby);
+        console.log("User added");
       } else {
         socketIO.to(socket.id).emit("USER_ALR_CHOSEN_ERROR");
       }
@@ -331,13 +334,20 @@ function joinLobby(socket, lobbyIdentifier, username) {
 }
 
 function leaveLobby(socket) {
-  lobbies.forEach((lobby) => {
+  lobbies.forEach((lobby, ind_lobby) => {
     if (lobby.lobbyIdentifier == socket.data.current_lobby) {
       lobby.members.forEach((member, index) => {
         if (member.idUser == socket.data.id) {
-          lobby.members.splice(index, 1);
+            console.log("User left: ", member);
+            socketIO.to(socket.data.current_lobby).emit("user_left_lobby", member);
+            lobby.members.splice(index, 1);
         }
-      });
+
+        if (lobby.members.length == 0) {
+          console.log("Lobby with 0 users");
+          lobbies.splice(ind_lobby, 1);
+        }
+      }); 
     }
   });
 

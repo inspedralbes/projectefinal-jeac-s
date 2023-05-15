@@ -18,8 +18,12 @@ var scores = {
 let canvasWidth = 800;
 let canvasHeight = 600;
 
+let game = null;
+
 
 function init(_sendInfoGame, _finalJuego) {
+
+  game == null;
 
   //traspasamos la funciones recibidas a variables globales
   sendInfoGame = _sendInfoGame;
@@ -27,7 +31,7 @@ function init(_sendInfoGame, _finalJuego) {
 
 
   var config = {
-    type: Phaser.canvas,
+    type: Phaser.CANVAS,
     width: 800,
     height: 600,
     canvas: document.getElementById('canvas'),
@@ -45,8 +49,15 @@ function init(_sendInfoGame, _finalJuego) {
     }
   };
 
-  var game = new Phaser.Game(config);
-  return game;
+  if (typeof game === 'undefined' || game === null) {
+
+    game = new Phaser.Game(config);
+    return game;
+  }
+  else {
+    console.log('Ya existe una instancia del juego activa.');
+  }
+
 }
 
 
@@ -172,29 +183,35 @@ function recibirInfoFromPlatform(data) {
     self.blueScoreText.setText('Blue: ' + scores.blue);
     self.redScoreText.setText('Red: ' + scores.red);
 
-    if (scores.blue == 100) {
+    if (scores.blue == 20) {
       playersArray.forEach(player => {
         if (player.id == yourId) {
           if (player.team == 'blue') {
-            finalJuego(25);
+            //finalJuego(25);
+            game.destroy(true, false);
           }
           else {
-            finalJuego(10);
+            //finalJuego(10);
+            game.destroy(true, false);
+
           }
         }
       });
     }
 
-    if (scores.red == 100) {
+    if (scores.red == 20) {
       playersArray.forEach(player => {
         if (player.id == yourId) {
           if (player.team == 'red') {
 
-            finalJuego(25);
+            //finalJuego(25);
+            game.destroy(true, false);
+
           }
           else {
 
-            finalJuego(10);
+            //finalJuego(10);
+            game.destroy(true, false);
           }
         }
       });
@@ -341,6 +358,12 @@ function playerMoved(data) {
   });
 }
 
+function userLeft(user) {
+  console.log("data", user);
+  console.log("GAME", game);
+  //game.destroy(true, false);
+}
+
 
 function executeGame() {
   var obj = [];
@@ -349,6 +372,7 @@ function executeGame() {
   //obj.config_game = configGame;
   obj.recibirInfoFromPlatform = recibirInfoFromPlatform;
   obj.recibirInfoLobby = recibirInfoLobby;
+  obj.userLeft = userLeft;
   return obj;
 }
 

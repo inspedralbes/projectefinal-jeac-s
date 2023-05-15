@@ -33,6 +33,8 @@ function Game({ socket }) {
   const [optionSelected, setOptionSelected] = useState(false);
   const [lobbyStarted, setLobbyStarted] = useState(false);
   const [lobbyJoined, setLobbyJoined] = useState(false);
+  const [firstTime, setFirstTime] = useState(false);
+
   const token = localStorage.getItem('access_token');
 
 
@@ -42,11 +44,15 @@ function Game({ socket }) {
       ownerLobby = data;
     });
 
-    socket.on("start_game", () => {
-      setDisplayCanvas(true);
-      play();
-      console.log(ownerLobby);
-    });
+    if (!firstTime) {
+      socket.on("start_game", () => {
+        console.log("STSTSTSTSTTSTSTSTSTSTSTSTSTSTSTSTSTSTSTSTSTSTS");
+        setDisplayCanvas(true);
+        play();
+        console.log(ownerLobby);
+        setFirstTime(true);
+      });
+    }
 
     socket.on('send_datagame_to_platform', (data) => {
       if (obj != null) {
@@ -58,6 +64,23 @@ function Game({ socket }) {
       setMultiPlayerUserName(userInfo.name);
     }
   }, [userInfo, isLoggedIn]);
+
+  useEffect(() => {
+    socket.on("user_left_lobby", (data) => {
+      // obj.userLeft(data);
+      // destroyGame();
+    })
+  }, [firstTime]);
+
+  useEffect(() => {
+   window.addEventListener('beforeunload', function(event) {
+    //obj.init().destroy(true, false);
+   })
+
+   window.addEventListener('routeChange', function(event) {
+    //obj.init().destroy(true, false);
+   })
+  }, []);
 
   //Funciones lobby single player.
   function saveUsername() {
@@ -121,6 +144,8 @@ function Game({ socket }) {
   function play() {
     socket.emit("get_players_in_lobby");
 
+    console.log("START FETCH");
+
     fetch('http://localhost:7878/GamesFiles/'+pathGame+'/juego.js', {
       method: 'GET',
       mode: 'same-origin',
@@ -129,15 +154,25 @@ function Game({ socket }) {
         response.text()
       )
       .then(scriptText => {
+        console.log("EXECUTE SCRIPT");
         const scriptFn = new Function(scriptText + '; return executeGame()');
-        obj = scriptFn();
+        obj = scriptFn(); 
         obj.init(sendInfoGame, finalJuego);
+        //console.log("Object init", obj.init);
+        //console.log("Object init2", obj.init());
+
         obj.recibirInfoLobby(ownerLobby);
       })
   }
 
+
+
+  // function destroyGame() {
+  //   obj.init().destroy(true, false)
+  // }
+
   function sendInfoGame(infoGame) {
-    console.log(infoGame);
+    //console.log(infoGame);
     socket.emit("datagame", infoGame);
   }
 

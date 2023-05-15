@@ -43,11 +43,13 @@ function AsideNav() {
     });
 
     const handleSharedValueChange = (newValue) => {
+        dispatch(actions.savePathGame(newValue));
         setSharedValue(newValue);
     
     };
 
     const handleSharedIdChange = (newValue) =>{
+        dispatch(actions.saveGameInfo(newValue));
         setSharedId(newValue)
     }
 

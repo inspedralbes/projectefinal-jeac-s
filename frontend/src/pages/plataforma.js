@@ -65,6 +65,7 @@ function Game({ socket }) {
       socket.emit("new_lobby", singlePlayerUserName);
       setLobbyStarted(true);
     } else {
+      setDisplayCanvas(false)
       console.log("El nombre no puede estar vacio");
     }
   };
@@ -79,6 +80,7 @@ function Game({ socket }) {
       setLobbyStarted(true);
     } else {
       console.log("El nombre no puede estar vacio");
+      setDisplayCanvas(false)
     }
   };
 
@@ -114,14 +116,20 @@ function Game({ socket }) {
   }
 
   function startGame() {
-    socket.emit("can_start_game");
-    setGameStarted(true);
+    if (singlePlayerUserName != null || multiPlayerUserName != null) {
+      socket.emit("can_start_game");
+      setGameStarted(true);
+    } else {
+      setGameStarted(false);
+      setDisplayCanvas(false)
+      console.log("El nombre no puede estar vacio");
+    }
   }
 
   function play() {
     socket.emit("get_players_in_lobby");
 
-    fetch('http://localhost:7878/GamesFiles/'+pathGame+'/juego.js', {
+    fetch('http://localhost:7878/GamesFiles/' + pathGame + '/juego.js', {
       method: 'GET',
       mode: 'same-origin',
     })

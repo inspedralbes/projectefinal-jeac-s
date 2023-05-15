@@ -42,6 +42,7 @@ function AsideNav() {
     });
 
     const handleSharedValueChange = (newValue) => {
+        dispatch(actions.savePathGame(newValue));
         setSharedValue(newValue);
     
     };

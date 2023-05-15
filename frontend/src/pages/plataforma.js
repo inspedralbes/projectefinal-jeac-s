@@ -14,10 +14,11 @@ import('phaser')
     Phaser = module;
   })
 
-function Game({ socket, sharedValue }) {
+function Game({ socket }) {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
   const userInfo = useSelector((state) => state.data);
   const gameInfo = useSelector((state) => state.gameInfo);
+  const pathGame = useSelector((state) => state.pathGame);
 
   const [lobbyId, setLobbyId] = useState(null);
   const [lobbyIdInput, setLobbyIdInput] = useState(null);
@@ -34,7 +35,6 @@ function Game({ socket, sharedValue }) {
   const [lobbyJoined, setLobbyJoined] = useState(false);
   const token = localStorage.getItem('access_token');
 
-  // console.log(sharedValue)
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
@@ -121,7 +121,7 @@ function Game({ socket, sharedValue }) {
   function play() {
     socket.emit("get_players_in_lobby");
 
-    fetch('http://localhost:7878/GamesFiles/Starfinder/juego.js', {
+    fetch('http://localhost:7878/GamesFiles/'+pathGame+'/juego.js', {
       method: 'GET',
       mode: 'same-origin',
     })
@@ -137,6 +137,7 @@ function Game({ socket, sharedValue }) {
   }
 
   function sendInfoGame(infoGame) {
+    console.log(infoGame);
     socket.emit("datagame", infoGame);
   }
 

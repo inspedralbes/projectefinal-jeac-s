@@ -5,6 +5,7 @@ var scoreEndText;
 var pipe1;
 var pipe2;
 var score = 0;
+var players = 0;
 let playAgainButton;
 var sendInfoGame;
 var members = 0;
@@ -59,11 +60,13 @@ function create() {
 
     this.add.image(0, 0, 'background').setOrigin(0, 0);
 
+    if (players > 1) {
+        bird2 = this.physics.add.sprite(100, 300, 'bird2');
+        bird2.setScale(0.2);
+        bird2.setCollideWorldBounds(true);
+        bird2.setGravityY(500);
+    }
 
-    bird2 = this.physics.add.sprite(100, 300, 'bird2');
-    bird2.setScale(0.2);
-    bird2.setCollideWorldBounds(true);
-    bird2.setGravityY(500);
 
 
 
@@ -88,7 +91,10 @@ function create() {
     // Create collisions
     this.physics.add.collider(bird, pipes, gameOver, null, this);
 
-    this.physics.add.collider(bird2, pipes, gameOver, null, this);
+    if (players > 1) {
+
+        this.physics.add.collider(bird2, pipes, gameOver, null, this);
+    }
 
 
     // Handle input
@@ -179,6 +185,9 @@ function gameOver() {
     pipeGenerationEvent.remove();
     this.physics.pause();
     gameOverText = this.add.text(250, 250, 'Game Over', { fontSize: '64px', fill: 'black' });
+    if(players > 1){
+        score = score*2
+    }
     finalJuego(score)
 
 }
@@ -215,17 +224,20 @@ function recibirInfoFromPlatform(data) {
 }
 
 function recibirInfoLobby(lobby) {
-    console.log(lobby)
-    myID = lobby.yourId
+    console.log(lobby);
     lobby.members.forEach((member) => {
-        members++;
-        user = member.username;
-        if (member.isOwner) {
-            ownerDelLobby = member.isOwner;
+        players++;
+        if (member.idUser == lobby.yourId) {
+            user = member.username;
+            myID = lobby.yourId
+        }
+        if (lobby.ownerId == lobby.yourId) {
+            ownerDelLobby = true;
         } else {
             ownerDelLobby = false;
         }
     });
+    console.log(user);
 }
 
 function executeGame() {

@@ -8,6 +8,7 @@ const SAVEDATA = 'SAVE_DATA';
 const GET_STORE_ITEMS = 'GET_STORE_ITEMS';
 const UPDATE_BOUGHT_ITEMS = 'UPDATE_BOUGHT_ITEMS';
 const GET_GAMEINFO = 'GET_GAMEINFO';
+const GET_PATHGAME = 'GET_PATHGAME';
 
 const initialState = {
   isLoggedIn: false,
@@ -15,6 +16,7 @@ const initialState = {
   storeIems: {},
   boughtItems: {},
   gameInfo: {},
+  pathGame: {}
 };
 
 const persistConfig = {
@@ -33,9 +35,11 @@ const reducer = (state = initialState, action) => {
     case 'GET_STORE_ITEMS':
       return { ...state, storeItems: action.payload };
     case 'UPDATE_BOUGHT_ITEMS':
-      return { ...state, boughtItems: action.payload }; 
-      case 'GET_GAMEINFO':
-        return { ...state, gameInfo: action.payload }; 
+      return { ...state, boughtItems: action.payload };
+    case 'GET_GAMEINFO':
+      return { ...state, gameInfo: action.payload };
+    case 'GET_PATHGAME':
+      return { ...state, pathGame: action.payload };
     default:
       return state;
   }
@@ -51,7 +55,8 @@ const actions = {
   saveData: (data) => ({ type: SAVEDATA, payload: data }),
   saveStoreItems: (storeItems) => ({ type: GET_STORE_ITEMS, payload: storeItems }),
   saveBoughtItems: (boughtItems) => ({ type: UPDATE_BOUGHT_ITEMS, payload: boughtItems }),
-  saveGameInfo: (gameInfo) => ({ type: GET_GAMEINFO, payload: gameInfo })
+  saveGameInfo: (gameInfo) => ({ type: GET_GAMEINFO, payload: gameInfo }),
+  savePathGame: (pathGame) => ({ type: GET_PATHGAME, payload: pathGame })
 };
 
 export { store, persistor, actions };

@@ -140,7 +140,7 @@ function Game({ socket }) {
   function play() {
     socket.emit("get_players_in_lobby");
 
-    fetch('http://localhost:7878/GamesFiles/' + pathGame + '/juego.js', {
+    fetch(`${routes.wsNode}/GamesFiles/${pathGame}/juego.js`, {
       method: 'GET',
       mode: 'cors',
       headers: {

@@ -194,10 +194,12 @@ function Game({ socket }) {
   }
 
   function destroyGame() {
-    obj.init().destroy(true, false);
-    setDisplayCanvas(false);
-    setGameModeSelected(false);
-    setGameStarted(false);
+    if (obj != null) {
+      obj.init().destroy(true, false);
+      setDisplayCanvas(false);
+      setGameModeSelected(false);
+      setGameStarted(false);
+    }
   }
 
   return (
@@ -360,7 +362,7 @@ function Game({ socket }) {
                                           data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 
                                           [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                           id="singlePNotLoggedIn" type="text"
-                                          required placeholder="Lobby ID" value={lobbyIdInput}      onChange={handleSetLobbyIdNoOwner} /> 
+                                          required placeholder="Lobby ID" value={lobbyIdInput} onChange={handleSetLobbyIdNoOwner} />
                                         <label className="text-white">Introduce lobby ID</label><br></br>
                                         <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { joinLobby() }}>Join Lobby</button>
                                       </div>

@@ -37,7 +37,9 @@ function Game({ socket }) {
 
   useEffect(() => {
     return () => {
-      destroyGame();
+      if (obj != null) {
+        obj.destroyGame();
+      }
     };
   }, []);
 
@@ -190,15 +192,6 @@ function Game({ socket }) {
       } catch (error) {
         console.error(error);
       }
-    }
-  }
-
-  function destroyGame() {
-    if (obj != null) {
-      obj.init().destroy(true, false);
-      setDisplayCanvas(false);
-      setGameModeSelected(false);
-      setGameStarted(false);
     }
   }
 

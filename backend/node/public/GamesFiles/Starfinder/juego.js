@@ -17,6 +17,7 @@ var scores = {
 };
 let canvasWidth = 800;
 let canvasHeight = 600;
+var game;
 
 
 function init(_sendInfoGame, _finalJuego) {
@@ -45,7 +46,7 @@ function init(_sendInfoGame, _finalJuego) {
     }
   };
 
-  var game = new Phaser.Game(config);
+  game = new Phaser.Game(config);
   return game;
 }
 
@@ -341,6 +342,9 @@ function playerMoved(data) {
   });
 }
 
+function destroyGame() {
+  game.destroy(true, false);
+}
 
 function executeGame() {
   var obj = [];
@@ -349,6 +353,7 @@ function executeGame() {
   //obj.config_game = configGame;
   obj.recibirInfoFromPlatform = recibirInfoFromPlatform;
   obj.recibirInfoLobby = recibirInfoLobby;
+  obj.destroyGame = destroyGame;
   return obj;
 }
 

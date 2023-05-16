@@ -166,8 +166,9 @@ function generatePipes() {
             "upperPipe": upperPipe,
             "lowerPipe": lowerPipe,
         };
-
-        sendInfoGame(GameInfo)
+        if (sendInfoGame != null) {
+            sendInfoGame(GameInfo);
+        }
     }
 }
 
@@ -185,11 +186,12 @@ function gameOver() {
     pipeGenerationEvent.remove();
     this.physics.pause();
     gameOverText = this.add.text(250, 250, 'Game Over', { fontSize: '64px', fill: 'black' });
-    if(players > 1){
-        score = score*2
+    if (players > 1) {
+        score = score * 2
     }
-    finalJuego(score)
-
+    if (finalJuego != null) {
+        finalJuego(score)
+    }
 }
 
 function recibirInfoFromPlatform(data) {
@@ -238,6 +240,10 @@ function recibirInfoLobby(lobby) {
         }
     });
     console.log(user);
+}
+
+function destroyGame() {
+    game.destroy(true, false);
 }
 
 function executeGame() {

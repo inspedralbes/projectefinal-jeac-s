@@ -35,6 +35,10 @@ function Game({ socket }) {
   const [lobbyJoined, setLobbyJoined] = useState(false);
   const token = localStorage.getItem('access_token');
 
+  const [hasMultiplayer, setHasMultiplayer] = useState(null);
+  const [hasSingleplayer, setHasSingleplayer] = useState(null);
+
+
   useEffect(() => {
     return () => {
       if (obj != null) {
@@ -51,11 +55,12 @@ function Game({ socket }) {
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
+      console.log("LOBBY INFO", data);
       setLobbyId(data.lobbyIdentifier);
       ownerLobby = data;
     });
 
-  
+
     socket.on("start_game", () => {
       setDisplayCanvas(true);
       console.log(ownerLobby);
@@ -83,7 +88,10 @@ function Game({ socket }) {
   //Funciones lobby single player.
   function saveUsername() {
     if (singlePlayerUserName != null) {
-      socket.emit("new_lobby", singlePlayerUserName);
+      socket.emit("new_lobby", {
+        username: singlePlayerUserName,
+        max_players: obj.config_game.max_players
+      });
       setLobbyStarted(true);
     } else {
       setDisplayCanvas(false)
@@ -97,7 +105,10 @@ function Game({ socket }) {
 
   function handleSaveUsernameOnClick() {
     if (singlePlayerUserName != null) {
-      socket.emit("new_lobby", singlePlayerUserName);
+      socket.emit("new_lobby", {
+        username: singlePlayerUserName,
+        max_players: obj.config_game.max_players
+      });
       setLobbyStarted(true);
     } else {
       console.log("El nombre no puede estar vacio");
@@ -161,6 +172,10 @@ function Game({ socket }) {
         //obj.init(sendInfoGame, finalJuego);
         //obj.recibirInfoLobby(ownerLobby);
         console.log("HOLA YAUME, que tal?", obj.config_game);
+
+        setHasMultiplayer(obj.config_game.multiplayer);
+        setHasSingleplayer(obj.config_game.singleplayer);
+
       })
   }
 
@@ -168,10 +183,11 @@ function Game({ socket }) {
     //setGameStarted(true);
     console.log("HOLA", obj);
     console.log("CANVAS", document.getElementById('canvas'));
-    
+    socket.emit("get_players_in_lobby");
+
     if (document.getElementById('canvas')) {
       console.log("ESta canvas");
-      socket.emit("get_players_in_lobby");
+      
       obj.init(sendInfoGame, finalJuego);
       obj.recibirInfoLobby(ownerLobby);
 
@@ -238,8 +254,16 @@ function Game({ socket }) {
                     <h3 class="text-white">Choose the gamemode</h3>
                     <br></br>
                     <div>
-                      <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(true); }}>Single Player</button>
-                      <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(false); }}>Multiplayer</button>
+                      {hasSingleplayer ?
+                        <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(true); }}>Single Player</button>
+                        :
+                        <></>
+                      }
+                      {hasMultiplayer ?
+                        <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(false); }}>Multiplayer</button>
+                        :
+                        <></>
+                      }
                     </div>
                   </div>
                   :

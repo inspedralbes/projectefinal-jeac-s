@@ -1,7 +1,7 @@
 const configGame = {
   multiplayer: true,
   singleplayer: true,
-  max_players: 4,
+  max_players: 2,
 }
 
 let teams = [];

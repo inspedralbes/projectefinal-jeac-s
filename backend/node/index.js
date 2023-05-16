@@ -264,6 +264,10 @@ socketIO.on('connection', (socket) => {
     console.log("Start game", socket.data.current_lobby);
     socketIO.to(socket.data.current_lobby).emit("start_game");
   });
+
+  socket.on("leave_lobby", () => {
+    leaveLobby(socket);
+  });
   
 });
 

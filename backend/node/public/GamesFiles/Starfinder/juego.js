@@ -17,13 +17,9 @@ var scores = {
 };
 let canvasWidth = 800;
 let canvasHeight = 600;
-
-let game = null;
-
+let game;
 
 function init(_sendInfoGame, _finalJuego) {
-
-  game == null;
 
   //traspasamos la funciones recibidas a variables globales
   sendInfoGame = _sendInfoGame;
@@ -31,7 +27,7 @@ function init(_sendInfoGame, _finalJuego) {
 
 
   var config = {
-    type: Phaser.CANVAS,
+    type: Phaser.canvas,
     width: 800,
     height: 600,
     canvas: document.getElementById('canvas'),
@@ -49,15 +45,8 @@ function init(_sendInfoGame, _finalJuego) {
     }
   };
 
-  if (typeof game === 'undefined' || game === null) {
-
-    game = new Phaser.Game(config);
-    return game;
-  }
-  else {
-    console.log('Ya existe una instancia del juego activa.');
-  }
-
+  game = new Phaser.Game(config);
+  return game;
 }
 
 
@@ -102,6 +91,7 @@ function create() {
 }
 
 function update() {
+  console.log("UPDATE");
   if (this.ship) {
     if (this.cursors.left.isDown) {
       this.ship.setAngularVelocity(-150);
@@ -191,9 +181,7 @@ function recibirInfoFromPlatform(data) {
             game.destroy(true, false);
           }
           else {
-            //finalJuego(10);
-            game.destroy(true, false);
-
+            finalJuego(10);
           }
         }
       });
@@ -204,14 +192,11 @@ function recibirInfoFromPlatform(data) {
         if (player.id == yourId) {
           if (player.team == 'red') {
 
-            //finalJuego(25);
-            game.destroy(true, false);
-
+            finalJuego(25);
           }
           else {
 
-            //finalJuego(10);
-            game.destroy(true, false);
+            finalJuego(10);
           }
         }
       });
@@ -357,7 +342,6 @@ function playerMoved(data) {
     }
   });
 }
-
 function userLeft(user) {
   console.log("data", user);
   console.log("GAME", game);
@@ -373,6 +357,7 @@ function executeGame() {
   obj.recibirInfoFromPlatform = recibirInfoFromPlatform;
   obj.recibirInfoLobby = recibirInfoLobby;
   obj.userLeft = userLeft;
+
   return obj;
 }
 

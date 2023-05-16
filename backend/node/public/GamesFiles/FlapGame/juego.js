@@ -252,6 +252,7 @@ function executeGame() {
     obj.init = init;
     obj.recibirInfoFromPlatform = recibirInfoFromPlatform;
     obj.recibirInfoLobby = recibirInfoLobby;
+    obj.destroyGame = destroyGame;
     return obj;
 }
 

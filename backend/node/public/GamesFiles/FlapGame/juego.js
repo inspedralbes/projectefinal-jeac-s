@@ -5,8 +5,10 @@ var scoreEndText;
 var pipe1;
 var pipe2;
 var score = 0;
+var players = 0;
 let playAgainButton;
 var sendInfoGame;
+var members = 0;
 var finalJuego;
 var ownerDelLobby;
 var myID;
@@ -58,11 +60,13 @@ function create() {
 
     this.add.image(0, 0, 'background').setOrigin(0, 0);
 
+    if (players > 1) {
+        bird2 = this.physics.add.sprite(100, 300, 'bird2');
+        bird2.setScale(0.2);
+        bird2.setCollideWorldBounds(true);
+        bird2.setGravityY(500);
+    }
 
-    bird2 = this.physics.add.sprite(100, 300, 'bird2');
-    bird2.setScale(0.2);
-    bird2.setCollideWorldBounds(true);
-    bird2.setGravityY(500);
 
 
 
@@ -87,7 +91,10 @@ function create() {
     // Create collisions
     this.physics.add.collider(bird, pipes, gameOver, null, this);
 
-    this.physics.add.collider(bird2, pipes, gameOver, null, this);
+    if (players > 1) {
+
+        this.physics.add.collider(bird2, pipes, gameOver, null, this);
+    }
 
 
     // Handle input
@@ -159,8 +166,9 @@ function generatePipes() {
             "upperPipe": upperPipe,
             "lowerPipe": lowerPipe,
         };
-
-        sendInfoGame(GameInfo)
+        if (sendInfoGame != null) {
+            sendInfoGame(GameInfo);
+        }
     }
 }
 
@@ -178,8 +186,12 @@ function gameOver() {
     pipeGenerationEvent.remove();
     this.physics.pause();
     gameOverText = this.add.text(250, 250, 'Game Over', { fontSize: '64px', fill: 'black' });
-    finalJuego(score)
-
+    if (players > 1) {
+        score = score * 2
+    }
+    if (finalJuego != null) {
+        finalJuego(score)
+    }
 }
 
 function recibirInfoFromPlatform(data) {
@@ -216,6 +228,7 @@ function recibirInfoFromPlatform(data) {
 function recibirInfoLobby(lobby) {
     console.log(lobby);
     lobby.members.forEach((member) => {
+        players++;
         if (member.idUser == lobby.yourId) {
             user = member.username;
             myID = lobby.yourId
@@ -229,12 +242,17 @@ function recibirInfoLobby(lobby) {
     console.log(user);
 }
 
+function destroyGame() {
+    game.destroy(true, false);
+}
+
 function executeGame() {
     var obj = [];
 
     obj.init = init;
     obj.recibirInfoFromPlatform = recibirInfoFromPlatform;
     obj.recibirInfoLobby = recibirInfoLobby;
+    obj.destroyGame = destroyGame;
     return obj;
 }
 

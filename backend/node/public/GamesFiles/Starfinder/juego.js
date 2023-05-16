@@ -17,7 +17,8 @@ var scores = {
 };
 let canvasWidth = 800;
 let canvasHeight = 600;
-let game;
+var game;
+
 
 function init(_sendInfoGame, _finalJuego) {
 
@@ -348,6 +349,9 @@ function userLeft(user) {
   //game.destroy(true, false);
 }
 
+function destroyGame() {
+  game.destroy(true, false);
+}
 
 function executeGame() {
   var obj = [];
@@ -357,7 +361,7 @@ function executeGame() {
   obj.recibirInfoFromPlatform = recibirInfoFromPlatform;
   obj.recibirInfoLobby = recibirInfoLobby;
   obj.userLeft = userLeft;
-
+  obj.destroyGame = destroyGame;
   return obj;
 }
 

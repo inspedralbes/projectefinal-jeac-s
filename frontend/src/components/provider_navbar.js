@@ -29,23 +29,17 @@ function Navbar() {
             </div>
             <div class="sm:ml-6 block">
               <div class="flex space-x-4">
-                {isLoggedIn ?
-                  (
-                    <NavLink to="/store">
-                      <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
-                        {t('navGameStore')}
-                      </a>
-                    </NavLink>
-                  )
-                  : null
-                }
-
+                <NavLink to="/games">
+                  <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                    Juegos
+                  </a>
+                </NavLink>
                 {isLoggedIn ?
                   (
                     <NavLink to="/upload">
                       <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
-                      {t('navUpload')}
-                        </a>
+                        {t('navUpload')}
+                      </a>
                     </NavLink>
                   )
                   : null

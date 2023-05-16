@@ -37,7 +37,9 @@ function Game({ socket }) {
 
   useEffect(() => {
     return () => {
-      destroyGame();
+      if (obj != null) {
+        obj.destroyGame();
+      }
     };
   }, []);
 

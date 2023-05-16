@@ -3,6 +3,7 @@ var contador = 0;
 var textoContador;
 var sendInfoGame = null;
 var finalJuego = null;
+var game;
 
 function init(_sendInfoGame, _finalJuego) {
 
@@ -22,7 +23,7 @@ function init(_sendInfoGame, _finalJuego) {
         }
     };
 
-    var game = new Phaser.Game(config);
+    game = new Phaser.Game(config);
     return game;
 }
 

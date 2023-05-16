@@ -12,6 +12,7 @@ var object;
 var user;
 var tiempoRestante = 10;
 var usuarios = [];
+var game;
 
 function init(_sendInfoGame, _finalJuego) {
     sendInfoGame = _sendInfoGame;
@@ -28,7 +29,7 @@ function init(_sendInfoGame, _finalJuego) {
         },
     };
 
-    var game = new Phaser.Game(config);
+    game = new Phaser.Game(config);
     return game;
 }
 
@@ -52,6 +53,7 @@ function create() {
             delay: 1000,
             loop: true,
             callback: function () {
+                console.log("aaa");
                 tiempoRestante--;
 
                 if (tiempoRestante <= 0) {
@@ -183,12 +185,17 @@ function recibirInfoLobby(lobby) {
     });
 }
 
+function destroyGame() {
+    game.destroy(true, false);
+}
+
 function executeGame() {
     var obj = [];
 
     obj.init = init;
     obj.recibirInfoFromPlatform = recibirInfoFromPlatform;
     obj.recibirInfoLobby = recibirInfoLobby;
+    obj.destroyGame = destroyGame;
     return obj;
 }
 

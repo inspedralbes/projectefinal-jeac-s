@@ -299,10 +299,10 @@ const UserInfo = () => {
                         <tbody>
                           <tr>
                             <td><img class="rounded-full w-full border-4 border-fuchsia-600" src={avatar()} alt=""></img></td>
-                            <td><h4>{userInfo.name}</h4></td>
-                            <td><h4>{userInfo.email}</h4></td>
-                            <td><h4>{userInfo.totalScore}</h4></td>
-                            <td><h4>{userInfo.jeacstars}<img class="w-10 h-10 inline" src="JeacstarNF.png"></img></h4></td>
+                            <td><h4 class = "text-2xl">{userInfo.name}</h4></td>
+                            <td><h4 class = "text-2xl">{userInfo.email}</h4></td>
+                            <td><h4 class = "text-2xl">{userInfo.totalScore}</h4></td>
+                            <td><h4 class = "text-2xl">{userInfo.jeacstars}<img class="w-10 h-10 inline" src="JeacstarNF.png"></img></h4></td>
                           </tr>
                         </tbody>
                       </table>

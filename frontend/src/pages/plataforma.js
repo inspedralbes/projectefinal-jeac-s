@@ -44,16 +44,24 @@ function Game({ socket }) {
   }, []);
 
   useEffect(() => {
+    //if (obj == null) {
+    getScript();
+    //}
+  }, []);
+
+  useEffect(() => {
     socket.on("lobby_info", (data) => {
       setLobbyId(data.lobbyIdentifier);
       ownerLobby = data;
     });
 
+  
     socket.on("start_game", () => {
       setDisplayCanvas(true);
-      play();
       console.log(ownerLobby);
       console.log("aaaaaaaa");
+      const myTimeout = setTimeout(play, 500);
+
     });
 
     socket.on('send_datagame_to_platform', (data) => {
@@ -70,7 +78,7 @@ function Game({ socket }) {
       socket.off("lobby_info");
       socket.off("send_datagame_to_platform");
     };
-  }, [userInfo, isLoggedIn]);
+  }, [userInfo, isLoggedIn, displayCanvas]);
 
   //Funciones lobby single player.
   function saveUsername() {
@@ -139,9 +147,7 @@ function Game({ socket }) {
     }
   }
 
-  function play() {
-    socket.emit("get_players_in_lobby");
-
+  function getScript() {
     fetch('http://localhost:7878/GamesFiles/' + pathGame + '/juego.js', {
       method: 'GET',
       mode: 'same-origin',
@@ -152,13 +158,29 @@ function Game({ socket }) {
       .then(scriptText => {
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
-        obj.init(sendInfoGame, finalJuego);
-        obj.recibirInfoLobby(ownerLobby);
+        //obj.init(sendInfoGame, finalJuego);
+        //obj.recibirInfoLobby(ownerLobby);
+        console.log("HOLA YAUME, que tal?", obj.config_game);
       })
   }
 
+  function play() {
+    //setGameStarted(true);
+    console.log("HOLA", obj);
+    console.log("CANVAS", document.getElementById('canvas'));
+    
+    if (document.getElementById('canvas')) {
+      console.log("ESta canvas");
+      socket.emit("get_players_in_lobby");
+      obj.init(sendInfoGame, finalJuego);
+      obj.recibirInfoLobby(ownerLobby);
+
+    }
+
+  }
+
   function sendInfoGame(infoGame) {
-    console.log(infoGame);
+    //console.log(infoGame);
     socket.emit("datagame", infoGame);
   }
 
@@ -276,7 +298,8 @@ function Game({ socket }) {
                               setNotRoomOwner(null);
                               setOptionSelected(false);
                               //setLobbyId(""); 
-                              socket.emit("leave_lobby"); }}>Return</button>
+                              socket.emit("leave_lobby");
+                            }}>Return</button>
 
                             <ConnectedUsers socket={socket} />
                             {isLoggedIn ?

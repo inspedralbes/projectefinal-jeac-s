@@ -1,7 +1,8 @@
-// let configGame = {
-//   multiplayer: true,
-//   max_players: 4,
-// }
+const configGame = {
+  multiplayer: true,
+  singleplayer: true,
+  max_players: 4,
+}
 
 let teams = [];
 let playersArray = [];
@@ -28,7 +29,7 @@ function init(_sendInfoGame, _finalJuego) {
 
 
   var config = {
-    type: Phaser.canvas,
+    type: Phaser.CANVAS,
     width: 800,
     height: 600,
     canvas: document.getElementById('canvas'),
@@ -92,7 +93,6 @@ function create() {
 }
 
 function update() {
-  console.log("UPDATE");
   if (this.ship) {
     if (this.cursors.left.isDown) {
       this.ship.setAngularVelocity(-150);
@@ -235,7 +235,6 @@ function recibirInfoLobby(lobby) {
   //console.log("lobby", lobby);
   //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", lobby);
   let distanceFromCorner = 50;
-  console.log("Config", game.width);
   teams = [
     {
       color: "blue",
@@ -276,7 +275,7 @@ function recibirInfoLobby(lobby) {
     }
     let newX = Math.floor(Math.random() * 700) + 50;
     let newY = Math.floor(Math.random() * 700) + 50;
-    console.log("newX", newX, "newY", newY);
+    //console.log("newX", newX, "newY", newY);
 
     let player = {
       id: member.idUser,
@@ -345,7 +344,6 @@ function playerMoved(data) {
 }
 function userLeft(user) {
   console.log("data", user);
-  console.log("GAME", game);
   //game.destroy(true, false);
 }
 
@@ -357,7 +355,7 @@ function executeGame() {
   var obj = [];
 
   obj.init = init;
-  //obj.config_game = configGame;
+  obj.config_game = configGame;
   obj.recibirInfoFromPlatform = recibirInfoFromPlatform;
   obj.recibirInfoLobby = recibirInfoLobby;
   obj.userLeft = userLeft;

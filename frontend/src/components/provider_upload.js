@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { Card, Row, Col, Form, Button, Container, NavLink } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import saveAs from 'file-saver';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +27,7 @@ const UploadForm = ({ socket }) => {
         socket.on('upload_error', function (msg) {
             console.log('Node msg', msg);
         });
-        
+
         socket.on('extraction_complete', function (path) {
             pathScript = path.initGame;
             console.log('Path', path);
@@ -214,126 +213,85 @@ const UploadForm = ({ socket }) => {
         }
     }
     return (
-        <div>
+        <div class="overflow-auto flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
             {isLoggedIn ?
-                <Container>
-                    <Row className="d-flex justify-content-center align-items-center">
-                        <Col md={4} lg={6} xs={12}>
-                            <br></br>
-                            <Card className="px-4 rounded bg-dark text-light">
-                                <Card.Body>
-                                    <div className="mb-3 mt-md-4">
-                                        <h2 className="fw-bold mb-2 text-center text-uppercase">
-                                            Instructions
-                                        </h2>
-                                        <div className="mb-3">
-                                            Instructions to follow in order to upload your zip and image from your game so it can be played in the website
-                                        </div>
-                                        <div className="mb-3">
-                                            1. Es necesario introducir un nombre para el juego que se va a cargar a la web.
 
-                                        </div>
+                <form onSubmit={UploadGame}>
+                    <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
+                        <label
+                            for="exampleFormControlInput11"
+                            class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
 
-                                        <div className="mb-3">
-                                            2. Se debe subir una imagen en formato <b>.png</b> para la miniatura del juego.
-                                        </div>
+                            Game Name</label>
+                        <br></br>
+                        <input
+                            class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                            id="nameGamee" type='text' placeholder="Name" value={nameGame} onChange={(e) => { setName(e.target.value) }}>
+                        </input>
+                    </div>
 
-                                        <div className="mb-3">
-                                            3. Es <b>obligatorio</b> subir el juego hecho con <b>PHASER</b> en formatio <b>.zip</b>. <br></br>
-                                            El juego tiene que contener un script denominado <b>initGames.js</b> el qual contenga la configuracion del PHASER.<br></br>
-                                            <br></br><img src='initGame.PNG' width='450' height='450'></img>
-                                        </div>
+                    <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
+                        <label
+                            for="exampleFormControlInput11"
+                            class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
 
-                                        <div className="mb-3">
-                                            4. Se deberia añadir una descripcion adecuada a las caracteristicas del juego.
-                                        </div>
+                            Image Game</label>
+                        <br></br>
+                        <input
+                            class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                            id='uploadImg' type='file' accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)}>
+                        </input>
+                    </div>
 
-                                        <div className="mb-3">
-                                            5. Se podrá añadir categorias a los juegos.
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col md={8} lg={6} xs={12}>
-                            <br></br>
-                            <Card className="px-4 rounded bg-dark">
-                                <Card.Body>
-                                    <div className="mb-3 mt-md-4">
-                                        <h2 className="fw-bold mb-2 text-center text-uppercase text-light ">
-                                            Upload a Game
-                                        </h2>
-                                        <div className="mb-3">
-                                            <Form>
-                                                <Form.Group>
-                                                    <Form.Label className='text-light'>Name Game</Form.Label>
-                                                    <Form.Control id="nameGamee" type='text' placeholder="Name" value={nameGame} onChange={(e) => {setName(e.target.value)
-                                                console.log("Input cambia", nameGame, "VAlue: ", e.target.value);    
-                                                }
-                                                } />
-                                                </Form.Group>
-                                                <br></br>
+                    <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
+                        <label
+                            for="exampleFormControlInput11"
+                            class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
 
-                                                <Form.Group>
-                                                    <Form.Label className='text-light'>Image Game</Form.Label>
-                                                    <Form.Control id='uploadImg' type='file' accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)} />
-                                                </Form.Group><br></br>
+                            Zip Game</label>
+                        <br></br>
+                        <input
+                            class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                            id='uploadImg' type='file' accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)}>
+                        </input>
+                    </div>
 
-                                                <Form.Group>
-                                                    <Form.Label className='text-light'>Zip Game</Form.Label>
-                                                    <Form.Control id='uploadZip' type='file' accept='.zip' value={zip} onChange={(e) => setZip(e.target.value)} />
-                                                </Form.Group><br></br>
+                    <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
+                        <label
+                            for="exampleFormControlInput11"
+                            class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
 
-                                                <Form.Group>
-                                                    <Form.Label className='text-light'>Description</Form.Label>
-                                                    <Form.Control id="descriptionGamee" placeholder="Add a description" rows='5' cols='50' value={description} onChange={(e) => setDescription(e.target.value)} />
-                                                </Form.Group><br></br>
+                            Zip Game</label>
+                        <br></br>
+                        <input
+                            class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                            id='uploadZip' type='file' accept='.zip' value={zip} onChange={(e) => setZip(e.target.value)}>
+                        </input>
+                    </div>
 
-                                                <Form.Group>
-                                                    <Form.Label className='text-light'>Categories</Form.Label>
-                                                    {['checkbox'].map((type) => (
-                                                        <div key={`inline-${type}`} className="mb-3 text-light">
-                                                            <Form.Check
-                                                                inline
-                                                                label="Arcade"
-                                                                name="group1"
-                                                                type={type}
-                                                                id={`inline-${type}-1`}
-                                                            />
-                                                            <Form.Check
-                                                                inline
-                                                                label="Action"
-                                                                name="group1"
-                                                                type={type}
-                                                                id={`inline-${type}-2`}
-                                                            />
-                                                            <Form.Check
-                                                                inline
-                                                                label="Figthing"
-                                                                name="group1"
-                                                                type={type}
-                                                                id={`inline-${type}-3`}
-                                                            />
-                                                        </div>
-                                                    ))}
-                                                </Form.Group><br></br>
+                    <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
+                        <label
+                            for="exampleFormControlInput11"
+                            class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
 
-                                                <Button variant="primary" onClick={UploadGame}>
-                                                    Submit
-                                                </Button>
-                                            </Form>
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-                </Container>
+                            Description</label>
+                        <br></br>
+                        <input
+                            class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                            id="descriptionGamee" placeholder="Add a description" rows='5' cols='50' value={description} onChange={(e) => setDescription(e.target.value)} >
+                        </input>
+                    </div>
+
+                    <button class="text-white inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10" variant="primary">
+                        Submit
+                    </button>
+                </form>
+
                 : <h2>
                     {t('mensajeErrorNotLoggedInUpload')}
                 </h2>
             }
-        </div>
+        </div >
     );
 
 }

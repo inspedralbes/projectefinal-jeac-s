@@ -18,8 +18,8 @@ var scores = {
 };
 let canvasWidth = 800;
 let canvasHeight = 600;
-var game;
 
+var game;
 
 function init(_sendInfoGame, _finalJuego) {
 

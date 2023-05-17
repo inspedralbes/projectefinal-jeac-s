@@ -109,9 +109,9 @@ socketIO.on('connection', (socket) => {
             .on('close', () => {
               console.log('Extraction complete!');
 
-              const initGamePath = path.join('public', 'GamesFiles', file.name, 'initGame.js');
-              const imagesFolderPath = path.join('public', 'GamesFiles', file.name, 'images');
-              const scriptsFolderPath = path.join('public', 'GamesFiles', file.name, 'scripts');
+              const initGamePath = path.join('public', 'GamesFiles', file.name, 'juego.js');
+              //const imagesFolderPath = path.join('public', 'GamesFiles', file.name, 'images');
+              //const scriptsFolderPath = path.join('public', 'GamesFiles', file.name, 'scripts');
 
               fs.readFile(filepath, 'utf-8', (error, data) => {
                 if (error) {
@@ -120,14 +120,14 @@ socketIO.on('connection', (socket) => {
                 }
 
                 const containsInitGame = data.includes('initGame.js');
-                const containsImagesFolder = fs.existsSync(imagesFolderPath);
-                const containsScriptFolder = fs.existsSync(scriptsFolderPath);
+                //const containsImagesFolder = fs.existsSync(imagesFolderPath);
+                //const containsScriptFolder = fs.existsSync(scriptsFolderPath);
 
                 console.log(`File ${zipName} contains initGame.js: ${containsInitGame}`);
-                console.log(`File ${zipName} contains images folder: ${containsImagesFolder}`);
-                console.log(`File ${zipName} contains scripts folder: ${containsScriptFolder}`);
+                // console.log(`File ${zipName} contains images folder: ${containsImagesFolder}`);
+                // console.log(`File ${zipName} contains scripts folder: ${containsScriptFolder}`);
 
-                if (containsInitGame & containsImagesFolder & containsScriptFolder) {
+                if (containsInitGame /*& containsImagesFolder & containsScriptFolder*/) {
                   console.log("Zip correct");
 
                   const imgbuffer = Buffer.from(
@@ -175,7 +175,6 @@ socketIO.on('connection', (socket) => {
                 }
 
                 socket.emit("extraction_complete", routes);
-
               });
             });
         });
@@ -313,10 +312,7 @@ function joinLobby(socket, lobbyIdentifier, username, gameID) {
           disponible = false;
           console.log("Can't add user");
         }
-        // if (member.username == username || lobby.ownerId == socket.data.id) {
-        //   disponible = false;
-        //   console.log("Can't add user");
-        // }
+        
       });
 
       if (disponible) {

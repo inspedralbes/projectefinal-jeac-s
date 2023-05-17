@@ -49,9 +49,7 @@ function Game({ socket }) {
   }, []);
 
   useEffect(() => {
-    //if (obj == null) {
     getScript();
-    //}
   }, []);
 
   useEffect(() => {
@@ -59,8 +57,6 @@ function Game({ socket }) {
       console.log("LOBBY INFO", data);
       setLobbyId(data.lobbyIdentifier);
       ownerLobby = data;
-      //obj.recibirInfoLobby(data);
-
     });
 
 
@@ -68,6 +64,7 @@ function Game({ socket }) {
       setDisplayCanvas(true);
       console.log("ownerLobby", ownerLobby);
       console.log("aaaaaaaa");
+      socket.emit("get_players_in_lobby");
       const myTimeout = setTimeout(play, 500);
 
     });
@@ -175,8 +172,6 @@ function Game({ socket }) {
       .then(scriptText => {
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
-        //obj.init(sendInfoGame, finalJuego);
-        //obj.recibirInfoLobby(ownerLobby);
         console.log("HOLA YAUME, que tal?", obj.config_game);
 
         setHasMultiplayer(obj.config_game.multiplayer);
@@ -189,13 +184,11 @@ function Game({ socket }) {
     //setGameStarted(true);
     console.log("HOLA", obj);
     console.log("CANVAS", document.getElementById('canvas'));
-    socket.emit("get_players_in_lobby");
 
     if (document.getElementById('canvas')) {
       console.log("ESta canvas");
-      
-      //obj.recibirInfoLobby(ownerLobby);
       obj.init(sendInfoGame, finalJuego);
+      obj.recibirInfoLobby(ownerLobby);
 
     }
 

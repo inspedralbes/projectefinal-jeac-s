@@ -11,7 +11,7 @@ import './App.css';
 const routes = {
   fetchLaravel: "http://jeacsgames.jeacsg.alumnes.inspedralbes.cat/laravel/public",
   // wsNode: "http://front.jeacsg.alumnes.inspedralbes.cat:7878",
-  wsNode: "http://jeacsgames.jeacsg.alumnes.inspedralbes.cat:7878/public",
+  wsNode: "http://jeacsgames.jeacsg.alumnes.inspedralbes.cat/node/public",
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

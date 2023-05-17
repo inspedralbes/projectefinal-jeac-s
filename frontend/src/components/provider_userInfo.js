@@ -104,7 +104,7 @@ const UserInfo = () => {
     async function fetchUploadedGames() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(routes.fetchLaravel + '/api/getUserUploadGames', {
+          const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/getUserUploadGames', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

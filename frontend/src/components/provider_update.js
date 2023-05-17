@@ -8,7 +8,7 @@ let gameNamee = '';
 let descriptionGame = '';
 let pathScript = '';
 
-const UploadForm = ({ socket }) => {
+const UpdateForm = ({ socket }) => {
     const [nameGame, setName] = useState('')
     const [img, setImg] = useState('')
     const [zip, setZip] = useState('')
@@ -326,4 +326,4 @@ const UploadForm = ({ socket }) => {
     );
 
 }
-export default UploadForm;
+export default UpdateForm;

@@ -1,3 +1,9 @@
+const configGame = {
+    multiplayer: true,
+    singleplayer: true,
+    max_players: 2,
+  }
+
 var bird;
 var pipes;
 var gameOverText;
@@ -243,6 +249,11 @@ function recibirInfoLobby(lobby) {
     console.log(user);
 }
 
+function userLeft(user) {
+    console.log("User left (juego.js)", user);
+    //game.destroy(true, false);
+  }
+
 function destroyGame() {
     game.destroy(true, false);
 }
@@ -251,8 +262,10 @@ function executeGame() {
     var obj = [];
 
     obj.init = init;
+    obj.config_game = configGame;
     obj.recibirInfoFromPlatform = recibirInfoFromPlatform;
     obj.recibirInfoLobby = recibirInfoLobby;
+    obj.userLeft = userLeft;
     obj.destroyGame = destroyGame;
     return obj;
 }

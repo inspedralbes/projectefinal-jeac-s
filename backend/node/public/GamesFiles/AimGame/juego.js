@@ -1,3 +1,11 @@
+const configGame = {
+    multiplayer: true,
+    singleplayer: true,
+    max_players: 2,
+  }
+
+
+
 var contador = 0;
 var textoContador;
 var textoTiempo;
@@ -185,6 +193,11 @@ function recibirInfoLobby(lobby) {
     });
 }
 
+function userLeft(user) {
+    console.log("User left (juego.js)", user);
+    //game.destroy(true, false);
+  }
+
 function destroyGame() {
     game.destroy(true, false);
 }
@@ -193,8 +206,10 @@ function executeGame() {
     var obj = [];
 
     obj.init = init;
+    obj.config_game = configGame;
     obj.recibirInfoFromPlatform = recibirInfoFromPlatform;
     obj.recibirInfoLobby = recibirInfoLobby;
+    obj.userLeft = userLeft;
     obj.destroyGame = destroyGame;
     return obj;
 }

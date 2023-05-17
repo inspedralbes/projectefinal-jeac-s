@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { store, actions } from './store'; // import the Redux store
 import React, { useState, useEffect } from 'react';
-import routes from '../index.js';
 import { NavLink } from 'react-router-dom';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +29,7 @@ const UserInfo = () => {
     useEffect(() => {
         async function fetchUsers() {
             try {
-                const response = await fetch(routes.fetchLaravel + `/api/showProfileOthers?userId=${otherUserInfo.id}`, {
+                const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/showProfileOthers?userId=${otherUserInfo.id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -48,7 +47,7 @@ const UserInfo = () => {
 
         async function fetchBoughtItems() {
             try {
-                const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+                const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getBoughtItems`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -68,7 +67,7 @@ const UserInfo = () => {
 
         async function fetchPlayedGame() {
             try {
-                const response = await fetch(routes.fetchLaravel + `/api/showPlayedGame?userId=${otherUserInfo.id}`, {
+                const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/showPlayedGame?userId=${otherUserInfo.id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

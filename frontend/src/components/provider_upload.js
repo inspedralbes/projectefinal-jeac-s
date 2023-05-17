@@ -186,8 +186,8 @@ const UploadForm = ({ socket }) => {
 
             //console.log("frefer", blobZip);
 
-            let img = process.env.WS_NODE + pathimagen;
-            let script = process.env.WS_NODE + pathScript;
+            let img = pathimagen;
+            let script = pathScript;
             const formData = new FormData();
             formData.append('name', gameNamee);
             formData.append('img', img);

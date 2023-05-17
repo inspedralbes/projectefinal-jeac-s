@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { Socket } from "socket.io-client";
 import ConnectedUsers from "../components/ConnectedUsers.js"
-import routes from '../index';
 import { store, actions } from '../components/store.js'; // import the Redux store
 
 var Phaser = null;
@@ -159,7 +157,7 @@ function Game({ socket }) {
   }
 
   function getScript() {
-    fetch(process.env.WS_NODE+'/GamesFiles/' + pathGame + '/juego.js', {
+    fetch(process.env.REACT_APP_NODE_URL+'/GamesFiles/' + pathGame + '/juego.js', {
       method: 'GET',
       mode: 'same-origin',
     })
@@ -207,7 +205,7 @@ function Game({ socket }) {
 
     if (isLoggedIn) {
       try {
-        const response = await fetch(routes.fetchLaravel + '/api/saveScore', {
+        const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/saveScore', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -219,7 +217,7 @@ function Game({ socket }) {
         store.dispatch(actions.saveData(data));
         const userId = data.id;
 
-        await fetch(routes.fetchLaravel + '/api/createPlayedGame', {
+        await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/createPlayedGame', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

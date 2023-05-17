@@ -35,6 +35,10 @@ function Game({ socket }) {
   const [lobbyJoined, setLobbyJoined] = useState(false);
   const token = localStorage.getItem('access_token');
 
+  const [hasMultiplayer, setHasMultiplayer] = useState(null);
+  const [hasSingleplayer, setHasSingleplayer] = useState(null);
+
+
   useEffect(() => {
     return () => {
       if (obj != null) {
@@ -44,16 +48,25 @@ function Game({ socket }) {
   }, []);
 
   useEffect(() => {
+    //if (obj == null) {
+    getScript();
+    //}
+  }, []);
+
+  useEffect(() => {
     socket.on("lobby_info", (data) => {
+      console.log("LOBBY INFO", data);
       setLobbyId(data.lobbyIdentifier);
       ownerLobby = data;
     });
 
+
     socket.on("start_game", () => {
       setDisplayCanvas(true);
-      play();
       console.log(ownerLobby);
       console.log("aaaaaaaa");
+      const myTimeout = setTimeout(play, 500);
+
     });
 
     socket.on('send_datagame_to_platform', (data) => {
@@ -70,12 +83,15 @@ function Game({ socket }) {
       socket.off("lobby_info");
       socket.off("send_datagame_to_platform");
     };
-  }, [userInfo, isLoggedIn]);
+  }, [userInfo, isLoggedIn, displayCanvas]);
 
   //Funciones lobby single player.
   function saveUsername() {
     if (singlePlayerUserName != null) {
-      socket.emit("new_lobby", singlePlayerUserName);
+      socket.emit("new_lobby", {
+        username: singlePlayerUserName,
+        max_players: obj.config_game.max_players
+      });
       setLobbyStarted(true);
     } else {
       setDisplayCanvas(false)
@@ -89,7 +105,10 @@ function Game({ socket }) {
 
   function handleSaveUsernameOnClick() {
     if (singlePlayerUserName != null) {
-      socket.emit("new_lobby", singlePlayerUserName);
+      socket.emit("new_lobby", {
+        username: singlePlayerUserName,
+        max_players: obj.config_game.max_players
+      });
       setLobbyStarted(true);
     } else {
       console.log("El nombre no puede estar vacio");
@@ -139,9 +158,7 @@ function Game({ socket }) {
     }
   }
 
-  function play() {
-    socket.emit("get_players_in_lobby");
-
+  function getScript() {
     fetch('http://localhost:7878/GamesFiles/' + pathGame + '/juego.js', {
       method: 'GET',
       mode: 'same-origin',
@@ -152,13 +169,34 @@ function Game({ socket }) {
       .then(scriptText => {
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
-        obj.init(sendInfoGame, finalJuego);
-        obj.recibirInfoLobby(ownerLobby);
+        //obj.init(sendInfoGame, finalJuego);
+        //obj.recibirInfoLobby(ownerLobby);
+        console.log("HOLA YAUME, que tal?", obj.config_game);
+
+        setHasMultiplayer(obj.config_game.multiplayer);
+        setHasSingleplayer(obj.config_game.singleplayer);
+
       })
   }
 
+  function play() {
+    //setGameStarted(true);
+    console.log("HOLA", obj);
+    console.log("CANVAS", document.getElementById('canvas'));
+    socket.emit("get_players_in_lobby");
+
+    if (document.getElementById('canvas')) {
+      console.log("ESta canvas");
+      
+      obj.init(sendInfoGame, finalJuego);
+      obj.recibirInfoLobby(ownerLobby);
+
+    }
+
+  }
+
   function sendInfoGame(infoGame) {
-    console.log(infoGame);
+    //console.log(infoGame);
     socket.emit("datagame", infoGame);
   }
 
@@ -195,6 +233,15 @@ function Game({ socket }) {
     }
   }
 
+  function destroyGame() {
+    if (obj != null) {
+      obj.init().destroy(true, false);
+      setDisplayCanvas(false);
+      setGameModeSelected(false);
+      setGameStarted(false);
+    }
+  }
+
   return (
     <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
       <div class="g-6 flex h-full flex-wrap items-center justify-center">
@@ -207,8 +254,16 @@ function Game({ socket }) {
                     <h3 class="text-white">Choose the gamemode</h3>
                     <br></br>
                     <div>
-                      <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(true); }}>Single Player</button>
-                      <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(false); }}>Multiplayer</button>
+                      {hasSingleplayer ?
+                        <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(true); }}>Single Player</button>
+                        :
+                        <></>
+                      }
+                      {hasMultiplayer ?
+                        <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(false); }}>Multiplayer</button>
+                        :
+                        <></>
+                      }
                     </div>
                   </div>
                   :
@@ -221,6 +276,7 @@ function Game({ socket }) {
                             <div>
                               {singlePlayerUserName && <p class="text-white">{singlePlayerUserName}</p>}
                               <br></br>
+                              <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(false); setSinglePlayer(false); }}>Return</button>
                               <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { saveUsername(); startGame(); }}>PLAY</button>
                             </div>
                           </div>
@@ -249,6 +305,9 @@ function Game({ socket }) {
                       <div>
                         {!optionSelected && !gameStarted ?
                           <div>
+
+                            <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(false); }}>Return</button>
+
                             <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={createRoom}>Create lobby</button>
                             <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={joinRoom}>Join lobby</button>
                           </div> :
@@ -257,6 +316,15 @@ function Game({ socket }) {
                         {createRoomOwner ?
                           <div>
                             <h1 className="text-white">{lobbyId}</h1>
+
+                            <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => {
+                              setcreateRoomOwner(false);
+                              setNotRoomOwner(null);
+                              setOptionSelected(false);
+                              //setLobbyId(""); 
+                              socket.emit("leave_lobby");
+                            }}>Return</button>
+
                             <ConnectedUsers socket={socket} />
                             {isLoggedIn ?
                               <div>
@@ -316,6 +384,12 @@ function Game({ socket }) {
                         }
                         {notRoomOwner ?
                           <div>
+                            <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => {
+                              setcreateRoomOwner(false);
+                              setNotRoomOwner(null);
+                              setOptionSelected(false);
+
+                            }}>Return</button>
                             {!lobbyJoined ?
                               <div>
                                 {isLoggedIn ?

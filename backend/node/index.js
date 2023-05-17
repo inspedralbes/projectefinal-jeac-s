@@ -39,6 +39,7 @@ app.use((req, res, next) => {
 
 socketIO.on('connection', (socket) => {
   console.log('Socket connected');
+  console.log("Lobbbbbbbbies", lobbies);
 
   i++;
   socket.data.id = i;
@@ -188,7 +189,7 @@ socketIO.on('connection', (socket) => {
     }
   });
 
-  socket.on("new_lobby", (test) => {
+  socket.on("new_lobby", (data) => {
     let existeix = false;
     let newLobbyIdentifier;
     do {
@@ -206,10 +207,10 @@ socketIO.on('connection', (socket) => {
         lobbyIdentifier: newLobbyIdentifier,
         ownerId: socket.data.id,
         yourId: socket.data.id,
-        //maxMembers: config.max_players,
+        maxMembers: data.max_players,
         members: [{
           idUser: socket.data.id,
-          username: test,
+          username: data.username,
           isOwner: true,
         }],
       };
@@ -223,6 +224,7 @@ socketIO.on('connection', (socket) => {
       socket.data.current_lobby = newLobbyIdentifier;
 
       sendUserList(socket.data.current_lobby);
+      console.log("New Lobby");
     }
   });
 
@@ -262,6 +264,10 @@ socketIO.on('connection', (socket) => {
     console.log("Start game", socket.data.current_lobby);
     socketIO.to(socket.data.current_lobby).emit("start_game");
   });
+
+  socket.on("leave_lobby", () => {
+    leaveLobby(socket);
+  });
   
 });
 
@@ -298,11 +304,11 @@ function joinLobby(socket, lobbyIdentifier, username) {
       lobby.members.forEach((member) => {
         console.log(lobby.ownerId, " / ", socket.data.id);
         console.log(member.username, " / ", username);
-        // console.log(lobby.members.length, " / ", lobby.maxMembers);
-        // if (lobby.members.length == lobby.maxMembers) {
-        //   disponible = false;
-        //   console.log("Can't add user");
-        // }
+        console.log("members", lobby.members.length, " / ", lobby.maxMembers);
+        if (lobby.members.length == lobby.maxMembers) {
+          disponible = false;
+          console.log("Can't add user");
+        }
         if (member.username == username || lobby.ownerId == socket.data.id) {
           disponible = false;
           console.log("Can't add user");
@@ -317,6 +323,7 @@ function joinLobby(socket, lobbyIdentifier, username) {
         });
         lobby.yourId = socket.data.id;
         socketIO.to(socket.id).emit("lobby_info", lobby);
+        console.log("User added");
       } else {
         socketIO.to(socket.id).emit("USER_ALR_CHOSEN_ERROR");
       }
@@ -331,13 +338,20 @@ function joinLobby(socket, lobbyIdentifier, username) {
 }
 
 function leaveLobby(socket) {
-  lobbies.forEach((lobby) => {
+  lobbies.forEach((lobby, ind_lobby) => {
     if (lobby.lobbyIdentifier == socket.data.current_lobby) {
       lobby.members.forEach((member, index) => {
         if (member.idUser == socket.data.id) {
-          lobby.members.splice(index, 1);
+            console.log("User left: ", member);
+            socketIO.to(socket.data.current_lobby).emit("user_left_lobby", member);
+            lobby.members.splice(index, 1);
         }
-      });
+
+        if (lobby.members.length == 0) {
+          console.log("Lobby with 0 users");
+          lobbies.splice(ind_lobby, 1);
+        }
+      }); 
     }
   });
 

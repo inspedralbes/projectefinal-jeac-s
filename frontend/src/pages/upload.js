@@ -5,7 +5,6 @@ import { store } from '../components/store';
 
 const Upload = ({socket}) => (
     <Provider store={store}>
-      {console.log("ASSdsfasdfasd", socket)}
       <UploadForm socket={socket}/>
     </Provider>
   );

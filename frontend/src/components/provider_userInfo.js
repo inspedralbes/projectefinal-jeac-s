@@ -430,25 +430,20 @@ const UserInfo = () => {
                             <thead>
                               <tr>
                                 <th class="w-1/3 border-fuchsia-600 border-b">
-                                  {t('historialGame')}
+                                  Juego
                                 </th>
                                 <th class="w-1/3 border-fuchsia-600 border-b">
-                                  {t('rankingPScore')}
+                                  Eliminar
                                 </th>
                                 <th class="w-1/3 border-fuchsia-600 border-b">
-                                  {t('historialDate')}
+                                  Actualizar
                                 </th>
                               </tr>
                             </thead>
                             <br></br>
                             <tbody>
-                              {playedGames.map((game, userId) => (
-                                <tr class="h-20 odd:bg-gray-700" key={userId}>
-                                  <td>{game.name}</td>
-                                  <td>{game.score}</td>
-                                  <td>{moment(game.created_at).format('DD MMM YYYY HH:mm:ss')}</td>
-                                </tr>
-                              ))}
+                              <p>aaa</p>
+
                             </tbody>
                           </table> :
                           <svg aria-hidden="true" class="inline-flex items-center w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

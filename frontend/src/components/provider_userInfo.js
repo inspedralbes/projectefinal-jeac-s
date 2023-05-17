@@ -150,7 +150,7 @@ const UserInfo = () => {
   const changePassword = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(process.env.REACT_APP_NODE_URL + '/api/changePassword', {
+      const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/changePassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -48,3 +48,4 @@ Route::get('/getBoughtItems', [StoreController::class, 'getBoughtItems']);
 
 Route::get('/showProfileOthers', [AuthController::class, 'showProfileOthers']);
 
+Route::post('/deleteGame/{id}', [GameController::class, 'deleteGame']);

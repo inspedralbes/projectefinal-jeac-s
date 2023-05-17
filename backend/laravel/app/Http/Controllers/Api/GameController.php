@@ -11,26 +11,27 @@ use App\Http\Controllers\Controller;
 
 class GameController extends Controller
 {
-    
+
     public function index()
     {
         // $games = Game::find($id);
         // return $games->data;
     }
-    
-    public function index_jugar(){
+
+    public function index_jugar()
+    {
         // $games = Game::find($id);
         // return $games->data;
     }
-    
-    
+
+
     public function create()
     {
         //
     }
-    
+
     public function upload(Request $request)
-    {        
+    {
         $game = new Game();
         $game->name = $request->name;
         //$file2 = $request->img;
@@ -40,12 +41,12 @@ class GameController extends Controller
         $game->description = $request->description;
         $game->path = $request->path;
 
-        
+
         // $path = base_path('../frontend/src/Games'. $request->name . '/./ ');
         // rename($path . '/initGame.js', base_path('../frontend/src/InitGames'. $request->name . '/initGame.js'));
         //info("Nom del joc: =>".$request->name);
-        
-        
+
+
         // $dir_path = date('Y') . '/' . date('m') . '/';
         // $file = request()->zip;
         // $zip = new ZipArchive();
@@ -55,7 +56,7 @@ class GameController extends Controller
         //     $zip->extractTo(base_path('../frontend/src/Games'. $request->name )); 
         //     $zip->close();
         // }
-        
+
         // $game->initScript='/src/InitGames' . $request->name . '/initGame.js';
 
         $game->save();
@@ -67,25 +68,36 @@ class GameController extends Controller
     {
         //
     }
-    
-    
+
+
     public function edit($id)
     {
         //
     }
-    
+
     public function update(Request $request, $id)
     {
         //
     }
-    
+
     public function destroy($id)
     {
         //
     }
-    
-    public function listGames(){
+
+    public function listGames()
+    {
         $game = Game::all();
         return response()->json(["games" => $game], Response::HTTP_OK);
     }
+
+    public function deleteGame($id)
+    {
+        $game = Game::find($id);
+    
+        $game->delete();
+    
+        return response()->json(['message' => 'Juego eliminado correctamente']);
+    }
+    
 }

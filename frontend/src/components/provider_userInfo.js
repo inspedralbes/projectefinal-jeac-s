@@ -252,6 +252,46 @@ const UserInfo = () => {
     return imgAvatar
   }
 
+  async function fetchUpdatedGames() {
+    if (isLoggedIn) {
+      try {
+        const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/getUserUploadGames', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        const updatedGames = await response.json();
+        setUploadedGames(updatedGames);
+        setIsLoading(true);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
+  const handleDeleteGame = (id) => {
+    fetch(process.env.REACT_APP_LARAVEL_URL + `/api/deleteGame/${id}`, {
+      method: 'POST',
+    })
+      .then(response => {
+        if (response.ok) {
+          console.log('Juego eliminado correctamente');
+          // Realiza cualquier acción adicional después de eliminar el juego
+          fetchUpdatedGames(); // Obtener la lista actualizada de juegos después de eliminar uno
+
+        } else {
+          console.log('Error al eliminar el juego');
+          // Maneja el error de eliminación del juego
+        }
+      })
+      .catch(error => {
+        console.error('Error en la solicitud DELETE:', error);
+        // Maneja cualquier otro error
+      });
+  };
+
   return (
     <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
       {isLoggedIn ?
@@ -294,7 +334,7 @@ const UserInfo = () => {
                   {activeTab === "tab1" &&
                     <div>
                       <br></br>
-                      <table class="table-auto">
+                      <table class="table-auto w-full">
                         <thead>
                           <tr>
                             <th class="w-1/5 border-fuchsia-600 border-b">
@@ -442,20 +482,20 @@ const UserInfo = () => {
                   {activeTab === "tab4" &&
                     <div class="flex w-full">
                       {isLoading ?
-                        <table class="table-auto flex-1">
+                        <table class="table-auto flex-1 w-full">
                           <thead>
                             <tr>
-                              <th class="w-1/3 border-fuchsia-600 border-b">
+                              <th class="w-1/4 border-fuchsia-600 border-b">
                                 Juego
                               </th>
-                              <th class="w-1/3 border-fuchsia-600 border-b">
+                              <th class="w-1/4 border-fuchsia-600 border-b">
                                 Descripción
                               </th>
-                              <th class="w-1/3 border-fuchsia-600 border-b">
+                              <th class="w-1/4 border-fuchsia-600 border-b">
                                 Actualizar
                               </th>
-                              <th class="w-1/3 border-fuchsia-600 border-b">
-                                Borrar
+                              <th class="w-1/4 border-fuchsia-600 border-b">
+                                Eliminar
                               </th>
                             </tr>
                           </thead>
@@ -465,6 +505,8 @@ const UserInfo = () => {
                               <tr class="h-20 odd:bg-gray-700">
                                 <td>{game.name}</td>
                                 <td>{game.description}</td>
+                                <td></td>
+                                <td><button onClick={() => handleDeleteGame(game.id)}>Eliminar</button></td>
                               </tr>
                             ))}
                           </tbody>
@@ -475,7 +517,6 @@ const UserInfo = () => {
                         </svg>
                       }
                     </div>
-
                   }
                 </div>
               </div>

@@ -39,16 +39,14 @@ function Game({ socket }) {
 
   useEffect(() => {
     return () => {
-      if (obj != null) {
+      if (!obj) {
         obj.destroyGame();
       }
     };
   }, []);
 
   useEffect(() => {
-    //if (obj == null) {
     getScript();
-    //}
   }, []);
 
   useEffect(() => {

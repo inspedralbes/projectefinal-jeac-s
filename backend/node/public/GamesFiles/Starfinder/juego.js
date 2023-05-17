@@ -1,7 +1,7 @@
 const configGame = {
   multiplayer: true,
   singleplayer: true,
-  max_players: 2,
+  max_players: 4,
 }
 
 let teams = [];
@@ -343,7 +343,7 @@ function playerMoved(data) {
   });
 }
 function userLeft(user) {
-  console.log("data", user);
+  console.log("User left (juego.js)", user);
   //game.destroy(true, false);
 }
 

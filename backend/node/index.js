@@ -304,7 +304,7 @@ function joinLobby(socket, lobbyIdentifier, username) {
       lobby.members.forEach((member) => {
         console.log(lobby.ownerId, " / ", socket.data.id);
         console.log(member.username, " / ", username);
-        console.log(lobby.members.length, " / ", lobby.maxMembers);
+        console.log("members", lobby.members.length, " / ", lobby.maxMembers);
         if (lobby.members.length == lobby.maxMembers) {
           disponible = false;
           console.log("Can't add user");

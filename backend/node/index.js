@@ -189,7 +189,7 @@ socketIO.on('connection', (socket) => {
     }
   });
 
-  socket.on("new_lobby", (test) => {
+  socket.on("new_lobby", (data) => {
     let existeix = false;
     let newLobbyIdentifier;
     do {
@@ -207,10 +207,10 @@ socketIO.on('connection', (socket) => {
         lobbyIdentifier: newLobbyIdentifier,
         ownerId: socket.data.id,
         yourId: socket.data.id,
-        //maxMembers: config.max_players,
+        maxMembers: data.max_players,
         members: [{
           idUser: socket.data.id,
-          username: test,
+          username: data.username,
           isOwner: true,
         }],
       };
@@ -304,11 +304,11 @@ function joinLobby(socket, lobbyIdentifier, username) {
       lobby.members.forEach((member) => {
         console.log(lobby.ownerId, " / ", socket.data.id);
         console.log(member.username, " / ", username);
-        // console.log(lobby.members.length, " / ", lobby.maxMembers);
-        // if (lobby.members.length == lobby.maxMembers) {
-        //   disponible = false;
-        //   console.log("Can't add user");
-        // }
+        console.log("members", lobby.members.length, " / ", lobby.maxMembers);
+        if (lobby.members.length == lobby.maxMembers) {
+          disponible = false;
+          console.log("Can't add user");
+        }
         if (member.username == username || lobby.ownerId == socket.data.id) {
           disponible = false;
           console.log("Can't add user");

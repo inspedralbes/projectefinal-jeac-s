@@ -59,6 +59,15 @@ class AuthController extends Controller
         return response()->json($user);
     }
 
+    public function showProfileOthers(Request $request){
+
+        $userId = $request->userId;
+        $user = User::find($userId);
+
+        return $user;
+
+    }
+
     public function saveScore(Request $request)
     {
         $user = Auth::user();

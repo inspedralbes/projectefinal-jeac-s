@@ -44,3 +44,5 @@ Route::post('/setAvatar', [StoreController::class, 'setAvatar']);
 Route::post('/setBGImage', [StoreController::class, 'setBGImage']);
 
 Route::get('/getBoughtItems', [StoreController::class, 'getBoughtItems']);
+
+Route::get('/showProfileOthers', [AuthController::class, 'showProfileOthers']);

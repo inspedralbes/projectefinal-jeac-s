@@ -9,6 +9,8 @@ const GET_STORE_ITEMS = 'GET_STORE_ITEMS';
 const UPDATE_BOUGHT_ITEMS = 'UPDATE_BOUGHT_ITEMS';
 const GET_GAMEINFO = 'GET_GAMEINFO';
 const GET_PATHGAME = 'GET_PATHGAME';
+const GET_USERID = 'GET_USERID';
+const GET_OTHERSINFO = 'GET_OTHERSINFO';
 
 const initialState = {
   isLoggedIn: false,
@@ -16,7 +18,9 @@ const initialState = {
   storeIems: {},
   boughtItems: {},
   gameInfo: {},
-  pathGame: {}
+  pathGame: {},
+  getUserId: {},
+  dataOthers: {}
 };
 
 const persistConfig = {
@@ -40,6 +44,10 @@ const reducer = (state = initialState, action) => {
       return { ...state, gameInfo: action.payload };
     case 'GET_PATHGAME':
       return { ...state, pathGame: action.payload };
+    case 'GET_USERID':
+      return { ...state, getUserId: action.payload };
+    case 'GET_OTHERSINFO':
+      return { ...state, dataOthers: action.payload };
     default:
       return state;
   }
@@ -56,7 +64,9 @@ const actions = {
   saveStoreItems: (storeItems) => ({ type: GET_STORE_ITEMS, payload: storeItems }),
   saveBoughtItems: (boughtItems) => ({ type: UPDATE_BOUGHT_ITEMS, payload: boughtItems }),
   saveGameInfo: (gameInfo) => ({ type: GET_GAMEINFO, payload: gameInfo }),
-  savePathGame: (pathGame) => ({ type: GET_PATHGAME, payload: pathGame })
+  savePathGame: (pathGame) => ({ type: GET_PATHGAME, payload: pathGame }),
+  getUserId: (getUserId) => ({ type: GET_USERID, payload: getUserId }),
+  dataOthers: (dataOthers) => ({ type: GET_OTHERSINFO, payload: dataOthers }),
 };
 
 export { store, persistor, actions };

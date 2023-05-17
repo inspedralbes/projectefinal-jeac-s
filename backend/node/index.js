@@ -311,8 +311,19 @@ function joinLobby(socket, lobbyIdentifier, username, gameID) {
         if (lobby.members.length >= lobby.maxMembers || lobby.gameID != gameID || member.username == username || lobby.ownerId == socket.data.id) {
           disponible = false;
           console.log("Can't add user");
+          if (lobby.members.length >= lobby.maxMembers) {
+            socketIO.to(socket.id).emit("message_error", "Can't join lobby. Lobby full");
+          }
+          else if (lobby.gameID != gameID) {
+            socketIO.to(socket.id).emit("message_error", "Can't join lobby. Wrong Lobby");
+          }
+          else if (member.username == username) {
+            socketIO.to(socket.id).emit("message_error", "Can't join lobby. Name already in use");
+          }
+          else if (lobby.ownerId == socket.data.id) {
+            socketIO.to(socket.id).emit("message_error", "Can't join lobby.");
+          }
         }
-        
       });
 
       if (disponible) {
@@ -327,6 +338,9 @@ function joinLobby(socket, lobbyIdentifier, username, gameID) {
       } else {
         socketIO.to(socket.id).emit("USER_ALR_CHOSEN_ERROR");
       }
+    }
+    else {
+      socketIO.to(socket.id).emit("message_error", "Can't join lobby. Wrong lobby indetifier");
     }
   });
 

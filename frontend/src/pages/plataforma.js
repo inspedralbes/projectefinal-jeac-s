@@ -38,6 +38,9 @@ function Game({ socket }) {
   const [hasMultiplayer, setHasMultiplayer] = useState(null);
   const [hasSingleplayer, setHasSingleplayer] = useState(null);
 
+  const [messageError, setMessageError] = useState("aaaaa");
+
+
 
   useEffect(() => {
     return () => {
@@ -50,6 +53,12 @@ function Game({ socket }) {
 
   useEffect(() => {
     getScript();
+  }, []);
+
+  useEffect(() => {
+    socket.on("message_error", (msg) => {
+      setMessageError(msg);
+    });
   }, []);
 
   useEffect(() => {
@@ -243,6 +252,7 @@ function Game({ socket }) {
 
   return (
     <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
+      <div>{messageError}</div>
       <div class="g-6 flex h-full flex-wrap items-center justify-center">
         <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
           <div class="p-4">
@@ -269,13 +279,13 @@ function Game({ socket }) {
                   <div>
                     {singlePlayer && !gameStarted ?
                       <div>
+                        <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { if (!isLoggedIn){ setSinglePlayerUserName(null);} setGameModeSelected(false); setSinglePlayer(false); }}>Return</button>
                         {isLoggedIn ?
                           <div>
                             <h3 class="text-white">Players:</h3>
                             <div>
                               {singlePlayerUserName && <p class="text-white">{singlePlayerUserName}</p>}
                               <br></br>
-                              <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(false); setSinglePlayer(false); }}>Return</button>
                               <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { saveUsername(); startGame(); }}>PLAY</button>
                             </div>
                           </div>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import routes from '../index.js';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
@@ -15,7 +14,7 @@ function GetRanking() {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const response = await fetch(routes.fetchLaravel + '/api/getRanking', {
+        const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/getRanking', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

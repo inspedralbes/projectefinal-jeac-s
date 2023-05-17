@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import routes from "../index.js";
 import { useNavigate  } from 'react-router';
 
 function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {

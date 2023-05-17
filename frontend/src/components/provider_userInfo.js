@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { store, actions } from './store'; // import the Redux store
 import React, { useState, useEffect } from 'react';
-import routes from '../index.js';
 import { NavLink } from 'react-router-dom';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +27,7 @@ const UserInfo = () => {
     async function fetchUsers() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(routes.fetchLaravel + '/api/showProfile', {
+          const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/showProfile', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -47,7 +46,7 @@ const UserInfo = () => {
     async function fetchStoreItems() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(routes.fetchLaravel + `/api/getStoreItems`, {
+          const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getStoreItems`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -66,7 +65,7 @@ const UserInfo = () => {
     async function fetchBoughtItems() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+          const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getBoughtItems`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -86,7 +85,7 @@ const UserInfo = () => {
     async function fetchPlayedGame() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(routes.fetchLaravel + `/api/showPlayedGame?userId=${userInfo.id}`, {
+          const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/showPlayedGame?userId=${userInfo.id}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -132,7 +131,7 @@ const UserInfo = () => {
   const changeName = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(routes.fetchLaravel + '/api/changeName', {
+      const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/changeName', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +150,7 @@ const UserInfo = () => {
   const changePassword = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(process.env.WS_NODE+'/api/changePassword', {
+      const response = await fetch(process.env.REACT_APP_NODE_URL + '/api/changePassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -170,7 +169,7 @@ const UserInfo = () => {
   async function sellItem(userId, itemId) {
     if (isLoggedIn) {
       try {
-        const a = await fetch(routes.fetchLaravel + `/api/sellItems`, {
+        const a = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/sellItems`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -183,7 +182,7 @@ const UserInfo = () => {
       }
 
       try {
-        const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+        const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getBoughtItems`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -203,7 +202,7 @@ const UserInfo = () => {
   async function setAvatar(userId, itemId) {
     if (isLoggedIn) {
       try {
-        const a = await fetch(routes.fetchLaravel + `/api/setAvatar`, {
+        const a = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/setAvatar`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -211,7 +210,7 @@ const UserInfo = () => {
           },
           body: JSON.stringify({ userId, itemId }),
         });
-        const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+        const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getBoughtItems`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

@@ -2,13 +2,10 @@ import React, { useState, useEffect } from "react";
 import routes from "../index.js";
 import { useNavigate  } from 'react-router';
 
-
 function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
-
     const [fetchData, setFetchData] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
-
     const handleInputChange = (name, id) => {
         
         console.log("HELLO: " + id);
@@ -23,7 +20,7 @@ function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
         async function fetchGames() {
 
             try {
-                const response = await fetch(routes.fetchLaravel + '/api/gamesList', {
+                const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/gamesList', {
                     method: 'GET',
                 });
 

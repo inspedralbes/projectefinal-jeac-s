@@ -27,8 +27,8 @@ function AsideNav() {
     const [sharedId, setSharedId] = useState('');
 
     const routes = {
-        fetchLaravel: "http://localhost:8000",
-        wsNode: "http://localhost:7878",
+        fetchLaravel: process.env.FETCH_LARAVEL,
+        wsNode: process.env.WS_NODE,
     };
 
     var socket = socketIO(routes.wsNode, {

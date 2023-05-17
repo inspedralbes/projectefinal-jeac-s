@@ -25,6 +25,7 @@ const UserInfo = () => {
     const [showSuccessMessagePassword, setShowSuccessMessagePassword] = useState(false);
     const [showSuccessMessageName, setShowSuccessMessageName] = useState(false);
     const { t } = useTranslation();
+    
 
     useEffect(() => {
         async function fetchUsers() {
@@ -43,17 +44,27 @@ const UserInfo = () => {
             }
         }
         fetchUsers();
-        /*
-                async function fetchStoreItems() {
-                   
-                    }
-                }
-                fetchStoreItems();
-        
-                async function fetchBoughtItems() {
-                  
-                }
-                fetchBoughtItems();*/
+
+
+        async function fetchBoughtItems() {
+            try {
+                const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+                const infoItems = await response.json();
+   
+                boughtItems = infoItems.filter(item => item.userId === otherUserInfo.id);
+                setBoughtItems(boughtItems);
+            
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchBoughtItems();
 
         async function fetchPlayedGame() {
             try {
@@ -215,14 +226,14 @@ const UserInfo = () => {
 
                                                     <div style={{ display: 'flex' }}>
                                                         {
-                                                            /*purchasedItems.map((item, id) => (
-                                                                <div class="text-center w-1/4" key={id}>
+                                                            boughtItems.map((item, userId) => (
+                                                                <div class="text-center w-1/4" key={userId}>
                                                                     <h2>{t('itemsItem')}: {item.name}</h2>
                                                                     <img class="object-center" src={item.image_url} />
                                                                     <p>{t('itemsDesc')}: {item.description}</p>
                                                                     <p>{t('itemsPrice')}: {item.price * 0.5}<img class="w-10 h-10 inline" src="JeacstarNF.png"></img></p>
                                                                 </div>
-                                                            ))*/
+                                                            ))
                                                         }
                                                     </div>
                                                     :

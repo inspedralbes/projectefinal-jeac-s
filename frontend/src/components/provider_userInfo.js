@@ -151,7 +151,7 @@ const UserInfo = () => {
   const changePassword = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/api/changePassword', {
+      const response = await fetch(process.env.WS_NODE+'/api/changePassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

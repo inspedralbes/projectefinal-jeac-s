@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom/client';
 
 import reportWebVitals from './reportWebVitals';
@@ -9,8 +9,8 @@ import {HashRouter} from "react-router-dom";
 import './App.css';
 
 const routes = {
-  fetchLaravel: "http://localhost:8000",
-  wsNode: "http://localhost:7878",
+  fetchLaravel: process.env.FETCH_LARAVEL,
+  wsNode: process.env.WS_NODE,
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -159,7 +159,7 @@ function Game({ socket }) {
   }
 
   function getScript() {
-    fetch('http://localhost:7878/GamesFiles/' + pathGame + '/juego.js', {
+    fetch(process.env.WS_NODE+'/GamesFiles/' + pathGame + '/juego.js', {
       method: 'GET',
       mode: 'same-origin',
     })

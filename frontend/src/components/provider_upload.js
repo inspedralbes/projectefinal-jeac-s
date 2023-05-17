@@ -186,8 +186,8 @@ const UploadForm = ({ socket }) => {
 
             //console.log("frefer", blobZip);
 
-            let img = "http://localhost:7878" + pathimagen;
-            let script = "http://localhost:7878" + pathScript;
+            let img = process.env.WS_NODE + pathimagen;
+            let script = process.env.WS_NODE + pathScript;
             const formData = new FormData();
             formData.append('name', gameNamee);
             formData.append('img', img);
@@ -195,7 +195,7 @@ const UploadForm = ({ socket }) => {
             formData.append('description', descriptionGame);
             formData.append('path', script);
 
-            const response = await fetch('http://localhost:8000/api/upload', {
+            const response = await fetch(process.env.FETCH_LARAVEL+'/api/upload', {
                 method: 'POST',
                 headers: {
                     'Accept': '*/*'

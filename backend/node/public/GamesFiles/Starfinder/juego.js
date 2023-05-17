@@ -233,7 +233,7 @@ function newStar(self) {
 
 function recibirInfoLobby(lobby) {
   //console.log("lobby", lobby);
-  //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", lobby);
+  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", lobby);
   let distanceFromCorner = 50;
   teams = [
     {

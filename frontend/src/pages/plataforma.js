@@ -41,9 +41,10 @@ function Game({ socket }) {
 
   useEffect(() => {
     return () => {
-      if (obj != null) {
+      if (!obj) {
         obj.destroyGame();
       }
+      socket.emit("leave_lobby");
     };
   }, []);
 
@@ -58,12 +59,14 @@ function Game({ socket }) {
       console.log("LOBBY INFO", data);
       setLobbyId(data.lobbyIdentifier);
       ownerLobby = data;
+      //obj.recibirInfoLobby(data);
+
     });
 
 
     socket.on("start_game", () => {
       setDisplayCanvas(true);
-      console.log(ownerLobby);
+      console.log("ownerLobby", ownerLobby);
       console.log("aaaaaaaa");
       const myTimeout = setTimeout(play, 500);
 
@@ -90,7 +93,8 @@ function Game({ socket }) {
     if (singlePlayerUserName != null) {
       socket.emit("new_lobby", {
         username: singlePlayerUserName,
-        max_players: obj.config_game.max_players
+        max_players: obj.config_game.max_players,
+        gameId: gameInfo
       });
       setLobbyStarted(true);
     } else {
@@ -107,7 +111,8 @@ function Game({ socket }) {
     if (singlePlayerUserName != null) {
       socket.emit("new_lobby", {
         username: singlePlayerUserName,
-        max_players: obj.config_game.max_players
+        max_players: obj.config_game.max_players,
+        gameId: gameInfo
       });
       setLobbyStarted(true);
     } else {
@@ -143,6 +148,7 @@ function Game({ socket }) {
       socket.emit("join_room", {
         lobbyIdentifier: lobbyIdInput,
         username: multiPlayerUserName,
+        gameID: gameInfo
       });
     }
   }
@@ -188,8 +194,8 @@ function Game({ socket }) {
     if (document.getElementById('canvas')) {
       console.log("ESta canvas");
       
+      //obj.recibirInfoLobby(ownerLobby);
       obj.init(sendInfoGame, finalJuego);
-      obj.recibirInfoLobby(ownerLobby);
 
     }
 

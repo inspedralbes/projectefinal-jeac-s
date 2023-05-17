@@ -205,6 +205,7 @@ socketIO.on('connection', (socket) => {
     if (!existeix) {
       let lobbyData = {
         lobbyIdentifier: newLobbyIdentifier,
+        gameID: data.gameId,
         ownerId: socket.data.id,
         yourId: socket.data.id,
         maxMembers: data.max_players,
@@ -234,7 +235,7 @@ socketIO.on('connection', (socket) => {
     // } else {
     //socket.data.username = data.username;
     console.log("data", data);
-    joinLobby(socket, data.lobbyIdentifier, data.username);
+    joinLobby(socket, data.lobbyIdentifier, data.username, data.gameID);
     // }
   });
   
@@ -295,7 +296,7 @@ function sendUserList(room) {
   });
 }
 
-function joinLobby(socket, lobbyIdentifier, username) {
+function joinLobby(socket, lobbyIdentifier, username, gameID) {
   var disponible = false;
   console.log("lobby", lobbies);
   lobbies.forEach((lobby) => {
@@ -305,14 +306,17 @@ function joinLobby(socket, lobbyIdentifier, username) {
         console.log(lobby.ownerId, " / ", socket.data.id);
         console.log(member.username, " / ", username);
         console.log("members", lobby.members.length, " / ", lobby.maxMembers);
-        if (lobby.members.length == lobby.maxMembers) {
+        console.log("IDs", lobby.gameID, " / ", gameID);
+
+        
+        if (lobby.members.length >= lobby.maxMembers || lobby.gameID != gameID || member.username == username || lobby.ownerId == socket.data.id) {
           disponible = false;
           console.log("Can't add user");
         }
-        if (member.username == username || lobby.ownerId == socket.data.id) {
-          disponible = false;
-          console.log("Can't add user");
-        }
+        // if (member.username == username || lobby.ownerId == socket.data.id) {
+        //   disponible = false;
+        //   console.log("Can't add user");
+        // }
       });
 
       if (disponible) {

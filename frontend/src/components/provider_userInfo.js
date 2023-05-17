@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { store, actions } from './store'; // import the Redux store
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 
@@ -18,10 +18,11 @@ const UserInfo = () => {
   const userInfo = useSelector((state) => state.data);
   const avatarUserInfo = useSelector((state) => state.boughtItems);
   const avatarStore = useSelector((state) => state.storeItems);
-  const dispatch = useDispatch();
   const [showSuccessMessagePassword, setShowSuccessMessagePassword] = useState(false);
   const [showSuccessMessageName, setShowSuccessMessageName] = useState(false);
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchUsers() {
@@ -505,7 +506,7 @@ const UserInfo = () => {
                               <tr class="h-20 odd:bg-gray-700">
                                 <td>{game.name}</td>
                                 <td>{game.description}</td>
-                                <td></td>
+                                <td><button onClick={() => navigate("/update")}>Actualizar</button></td>
                                 <td><button onClick={() => handleDeleteGame(game.id)}>Eliminar</button></td>
                               </tr>
                             ))}

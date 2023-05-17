@@ -87,8 +87,8 @@ class GameController extends Controller
 
     public function listGames()
     {
-        $game = Game::all();
-        return response()->json(["games" => $game], Response::HTTP_OK);
+        $games = Game::with('user')->get();
+        return response()->json(["games" => $games], Response::HTTP_OK);
     }
 
     public function deleteGame($id)

@@ -24,7 +24,7 @@ const UserInfo = () => {
     const [showSuccessMessagePassword, setShowSuccessMessagePassword] = useState(false);
     const [showSuccessMessageName, setShowSuccessMessageName] = useState(false);
     const { t } = useTranslation();
-    
+
 
     useEffect(() => {
         async function fetchUsers() {
@@ -55,10 +55,10 @@ const UserInfo = () => {
                     },
                 });
                 const infoItems = await response.json();
-   
+
                 boughtItems = infoItems.filter(item => item.userId === otherUserInfo.id);
                 setBoughtItems(boughtItems);
-            
+
             } catch (error) {
                 console.error(error);
             }

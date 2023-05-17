@@ -7,6 +7,7 @@ import Games from '../pages/games'
 // import Game from '../components/game'
 import Home from '../pages/home'
 import Profile from '../pages/userInfo.js';
+import OtherProfile from '../pages/otherUserInfo.js'
 import Upload from '../pages/upload.js';
 import Signin from '../pages/signin'
 import LoginForm from '../pages/login.js'
@@ -127,6 +128,7 @@ function AsideNav() {
                     <Route path="/games" element={<Games sharedValue={sharedValue} onSharedValueChange={handleSharedValueChange} sharedId={sharedId} onSharedIdChange={handleSharedIdChange} />} />
                     <Route path="/upload" element={<Upload socket={socket} />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/otherProfile" element={<OtherProfile />} />
                     <Route path="/signin" element={<Signin />} />
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/game" element={<Game socket={socket} sharedValue={sharedValue} sharedId={sharedId} />} />

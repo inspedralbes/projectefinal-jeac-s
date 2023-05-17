@@ -55,8 +55,8 @@ function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
                                     <div class="justify-center text-center flex flex-wrap">
                                         {fetchData.games.map((game) => (
                                             <div class="m-5 border-fuchsia-600 border-2 w-1/4 rounded overflow-hidden shadow-lg ">
-                                                <img class="w-full" src="Controller.jpg" alt="Sunset in the mountains" />
-                                                <div class="bg-purple-300   px-6 py-4">
+                                                <img class="w-full" src="Controller.jpg" alt="Game Image" />
+                                                <div class="bg-purple-300 px-6 py-4">
                                                     <p class="text-black">{game.name}</p>
                                                     <p class="text-black">{game.description}</p>
                                                     <br></br>

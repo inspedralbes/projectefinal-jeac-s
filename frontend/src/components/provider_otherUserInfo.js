@@ -8,26 +8,50 @@ import { useTranslation } from 'react-i18next';
 const UserInfo = () => {
     const isLoggedIn = useSelector(state => state.isLoggedIn);
     const token = localStorage.getItem('access_token');
-    const [name, setName] = useState('');
-    const [password, setPassword] = useState('');
-    const [storeItems, setStoreItems] = useState([]);
-    const [boughtItems, setBoughtItems] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingHistorial, setIsLoadingHistorial] = useState(false);
     const [playedGames, setPlayedGames] = useState([]);
-    const userInfo = useSelector((state) => state.data);
+    const [boughtInfo, setBoughtInfo] = useState([]);
+    const [storeInfo, setStoreInfo] = useState([]);
+    const [avatarSet, setAvatar] = useState([]);
     const otherInfo = useSelector((state) => state.dataOthers);
-    const avatarUserInfo = useSelector((state) => state.boughtItems);
-    const avatarStore = useSelector((state) => state.storeItems);
     const otherUserInfo = useSelector((state) => state.getUserId);
     const dispatch = useDispatch();
-    const [showSuccessMessagePassword, setShowSuccessMessagePassword] = useState(false);
-    const [showSuccessMessageName, setShowSuccessMessageName] = useState(false);
     const { t } = useTranslation();
 
-
     useEffect(() => {
+
+        async function avatarOther() {
+            console.log(boughtInfo.length)
+            if (boughtInfo.length > 0) {
+                console.log('BYEYE')
+                const matchingItems = boughtInfo.filter(item => item.avatar && item.userId === otherUserInfo.id);
+                if (matchingItems.length > 0) {
+                    console.log("HELLOOOOOOO")
+                    const userAvatarItem = storeInfo.find(item => item.id === matchingItems[0].itemId);
+                    setAvatar(userAvatarItem.image_url);
+                    console.log(userAvatarItem.image_url);
+                }
+            }
+        }
+        async function fetchStoreItems() {
+            try {
+                const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getStoreItems`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+                const avatar = await response.json();
+                setStoreInfo(avatar);
+                avatarOther();
+            } catch (error) {
+                console.error(error);
+            }
+        }
         async function fetchUsers() {
+
             try {
                 const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/showProfileOthers?userId=${otherUserInfo.id}`, {
                     method: 'GET',
@@ -42,10 +66,9 @@ const UserInfo = () => {
                 console.error(error);
             }
         }
-        fetchUsers();
-
 
         async function fetchBoughtItems() {
+
             try {
                 const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getBoughtItems`, {
                     method: 'GET',
@@ -56,14 +79,16 @@ const UserInfo = () => {
                 });
                 const infoItems = await response.json();
 
-                boughtItems = infoItems.filter(item => item.userId === otherUserInfo.id);
-                setBoughtItems(boughtItems);
+                const boughtItems = infoItems.filter(item => item.userId === otherUserInfo.id);
+                setBoughtInfo(boughtItems)
+                console.log(boughtInfo)
+                setIsLoading(true)
+                fetchStoreItems();
 
             } catch (error) {
                 console.error(error);
             }
         }
-        fetchBoughtItems();
 
         async function fetchPlayedGame() {
             try {
@@ -81,33 +106,22 @@ const UserInfo = () => {
                 console.error(error);
             }
         }
+
+        fetchBoughtItems();
+        fetchUsers();
         fetchPlayedGame();
+
     }, []);
 
-    /*const purchasedItems = storeItems.filter(item => {
-        return boughtItems.some(boughtItem => boughtItem.userId === userInfo.id && boughtItem.itemId === item.id);
-    });*/
+    const purchasedItems = storeInfo.filter(item => {
+        return boughtInfo.some(boughtItem => boughtItem.userId === otherUserInfo.id && boughtItem.itemId === item.id);
+    });
 
     const [activeTab, setActiveTab] = useState("tab1"); // initialize active tab to tab1
 
     const handleTabClick = (tab) => {
         setActiveTab(tab); // update active tab based on the tab clicked
     };
-
-    /*function avatar() {
-        let imgAvatar = "";
-
-        if (isLoggedIn) {
-            if (avatarUserInfo.length > 0) {
-                const matchingItems = avatarUserInfo.filter(item => item.avatar && item.userId === userInfo.id);
-                if (matchingItems.length > 0) {
-                    const userAvatarItem = avatarStore.find(item => item.id === matchingItems[0].itemId);
-                    imgAvatar = userAvatarItem.image_url;
-                }
-            }
-        }
-        return imgAvatar
-    }*/
 
     return (
         <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
@@ -140,7 +154,7 @@ const UserInfo = () => {
 
                                             <li className={`w-1/4 list-none ${activeTab === "tab4" ? "active" : ""}`}>
                                                 <a onClick={() => handleTabClick("tab4")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
-                                                    Tus Juegos
+                                                    Sus Juegos
                                                 </a>
                                             </li>
 
@@ -171,7 +185,7 @@ const UserInfo = () => {
                                                 <br></br>
                                                 <tbody>
                                                     <tr>
-                                                        <td><img class="rounded-full w-full border-4 border-fuchsia-600" /*src={avatar()}*/ alt=""></img></td>
+                                                        <td><img class="rounded-full w-full border-4 border-fuchsia-600" src={avatarSet} alt=""></img></td>
                                                         <td><h4 class="text-2xl">{otherInfo.name}</h4></td>
                                                         <td><h4 class="text-2xl">{otherInfo.totalScore}</h4></td>
                                                         <td><h4 class="text-2xl">{otherInfo.jeacstars}<img class="w-10 h-10 inline" src="JeacstarNF.png"></img></h4></td>
@@ -222,17 +236,22 @@ const UserInfo = () => {
                                         {activeTab === "tab3" &&
                                             <div className="mb-3 mt-md-4">
                                                 {isLoading ?
-
-                                                    <div style={{ display: 'flex' }}>
-                                                        {
-                                                            boughtItems.map((item, userId) => (
-                                                                <div class="text-center w-1/4" key={userId}>
-                                                                    <h2>{t('itemsItem')}: {item.name}</h2>
-                                                                    <img class="object-center" src={item.image_url} />
-                                                                    <p>{t('itemsDesc')}: {item.description}</p>
-                                                                    <p>{t('itemsPrice')}: {item.price * 0.5}<img class="w-10 h-10 inline" src="JeacstarNF.png"></img></p>
-                                                                </div>
-                                                            ))
+                                                    <div>
+                                                        {boughtInfo.length > 0 ?
+                                                            <div style={{ display: 'flex' }}>
+                                                                {
+                                                                    purchasedItems.map((item, userId) => (
+                                                                        <div class="text-center w-1/4" key={userId}>
+                                                                            <h2>{t('itemsItem')}: {item.name}</h2>
+                                                                            <img class="object-center" src={item.image_url} />
+                                                                            <p>{t('itemsDesc')}: {item.description}</p>
+                                                                            <p>{t('itemsPrice')}: {item.price * 0.5}<img class="w-10 h-10 inline" src="JeacstarNF.png"></img></p>
+                                                                        </div>
+                                                                    ))
+                                                                }
+                                                            </div>
+                                                            :
+                                                            <div>No tiene ningun item</div>
                                                         }
                                                     </div>
                                                     :
@@ -240,6 +259,7 @@ const UserInfo = () => {
                                                         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
                                                         <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
                                                     </svg>
+
                                                 }
                                             </div>
                                         }

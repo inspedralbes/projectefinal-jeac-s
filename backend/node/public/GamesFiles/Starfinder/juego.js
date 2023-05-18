@@ -1,7 +1,7 @@
 const configGame = {
   multiplayer: true,
   singleplayer: true,
-  max_players: 4,
+  max_players: 1,
 }
 
 let teams = [];
@@ -18,8 +18,8 @@ var scores = {
 };
 let canvasWidth = 800;
 let canvasHeight = 600;
-var game;
 
+var game;
 
 function init(_sendInfoGame, _finalJuego) {
 
@@ -233,7 +233,7 @@ function newStar(self) {
 
 function recibirInfoLobby(lobby) {
   //console.log("lobby", lobby);
-  //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", lobby);
+  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", lobby);
   let distanceFromCorner = 50;
   teams = [
     {

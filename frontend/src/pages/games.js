@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
-import routes from "../index.js";
-import { useNavigate  } from 'react-router';
-
+import { useNavigate } from 'react-router';
 
 function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
-
     const [fetchData, setFetchData] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleInputChange = (name, id) => {
-        
+
         console.log("HELLO: " + id);
         onSharedValueChange(name);
         onSharedIdChange(id)
@@ -18,26 +15,20 @@ function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
 
     };
 
-
     useEffect(() => {
         async function fetchGames() {
-
             try {
-                const response = await fetch(routes.fetchLaravel + '/api/gamesList', {
+                const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/gamesList', {
                     method: 'GET',
                 });
-
                 if (!response.ok) {
                     throw new Error(response.statusText);
                 }
-
                 const data = await response.json();
-                console.log(data)
                 setFetchData(data)
                 setLoading(false);
             } catch (error) {
                 //this.setError(error);
-
             }
         }
         fetchGames();
@@ -54,23 +45,25 @@ function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
                                 {fetchData.games ?
                                     <div class="justify-center text-center flex flex-wrap">
                                         {fetchData.games.map((game) => (
-                                            <div class="m-5 border-fuchsia-600 border-2 w-1/4 rounded overflow-hidden shadow-lg ">
+                                            <div class="m-5 border-fuchsia-600 border-2 w-1/4 rounded overflow-hidden shadow-lg">
                                                 <img class="w-full" src="Controller.jpg" alt="Game Image" />
                                                 <div class="bg-purple-300 px-6 py-4">
                                                     <p class="text-black">{game.name}</p>
                                                     <p class="text-black">{game.description}</p>
                                                     <br></br>
                                                     <button class="bg-violet-500 hover:bg-fuchsia-400 font-bold py-2 px-4 border-b-4 border-fuchsia-700 hover:violet-fuchsia-500 rounded text-white"
-                                                        onClick={() => handleInputChange(game.path, game.id)}>Play</button>
+                                                        onClick={() => handleInputChange(game.path, game.id)}>
+                                                        Play
+                                                    </button>
                                                 </div>
+                                                <p class="text-white">Creador: {game.user.name}</p>
                                             </div>
-
-                                        ))
-                                        }
+                                        ))}
                                     </div>
                                     :
                                     <></>
                                 }
+
                             </div>
                         </div>
                     </div>

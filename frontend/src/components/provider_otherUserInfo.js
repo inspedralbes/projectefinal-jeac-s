@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { store, actions } from './store'; // import the Redux store
 import React, { useState, useEffect } from 'react';
-import routes from '../index.js';
 import { NavLink } from 'react-router-dom';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
@@ -26,10 +25,11 @@ const UserInfo = () => {
     const [showSuccessMessageName, setShowSuccessMessageName] = useState(false);
     const { t } = useTranslation();
 
+
     useEffect(() => {
         async function fetchUsers() {
             try {
-                const response = await fetch(routes.fetchLaravel + `/api/showProfileOthers?userId=${otherUserInfo.id}`, {
+                const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/showProfileOthers?userId=${otherUserInfo.id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -43,21 +43,31 @@ const UserInfo = () => {
             }
         }
         fetchUsers();
-        /*
-                async function fetchStoreItems() {
-                   
-                    }
-                }
-                fetchStoreItems();
-        
-                async function fetchBoughtItems() {
-                  
-                }
-                fetchBoughtItems();*/
+
+
+        async function fetchBoughtItems() {
+            try {
+                const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getBoughtItems`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+                const infoItems = await response.json();
+
+                boughtItems = infoItems.filter(item => item.userId === otherUserInfo.id);
+                setBoughtItems(boughtItems);
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchBoughtItems();
 
         async function fetchPlayedGame() {
             try {
-                const response = await fetch(routes.fetchLaravel + `/api/showPlayedGame?userId=${otherUserInfo.id}`, {
+                const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/showPlayedGame?userId=${otherUserInfo.id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -215,14 +225,14 @@ const UserInfo = () => {
 
                                                     <div style={{ display: 'flex' }}>
                                                         {
-                                                            /*purchasedItems.map((item, id) => (
-                                                                <div class="text-center w-1/4" key={id}>
+                                                            boughtItems.map((item, userId) => (
+                                                                <div class="text-center w-1/4" key={userId}>
                                                                     <h2>{t('itemsItem')}: {item.name}</h2>
                                                                     <img class="object-center" src={item.image_url} />
                                                                     <p>{t('itemsDesc')}: {item.description}</p>
                                                                     <p>{t('itemsPrice')}: {item.price * 0.5}<img class="w-10 h-10 inline" src="JeacstarNF.png"></img></p>
                                                                 </div>
-                                                            ))*/
+                                                            ))
                                                         }
                                                     </div>
                                                     :

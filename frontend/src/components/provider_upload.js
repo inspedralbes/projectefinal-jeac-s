@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux';
-import saveAs from 'file-saver';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 let pathimagen = '';
@@ -13,15 +12,9 @@ const UploadForm = ({ socket }) => {
     const [img, setImg] = useState('')
     const [zip, setZip] = useState('')
     const [description, setDescription] = useState('')
-    const [categories, setCategories] = useState([])
     const [error, setError] = useState(null);
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const { t } = useTranslation();
-    const [pathInit, setPathInit] = useState('');
-    const [pathImg, setPathImg] = useState('');
-    const [file, setFile] = useState(null);
-    const [fileName, setFileName] = useState(null);
-    const [fileData, setFileData] = useState(null);
     const userInfo = useSelector((state) => state.data);
 
     useEffect(() => {
@@ -31,7 +24,6 @@ const UploadForm = ({ socket }) => {
         return () => {
             socket.off('extraction_complete');
         };
-
     }, []);
 
     function UploadGame(e) {
@@ -39,12 +31,6 @@ const UploadForm = ({ socket }) => {
 
         let file = document.getElementById("uploadZip").files[0];
         var fileImagen = document.getElementById("uploadImg").files[0];
-
-        // const formData = new FormData();
-        // formData.append('file', file);
-
-        // console.log("formData", formData);
-        // console.log("file", file);
         gameNamee = document.getElementById('nameGamee').value;
         descriptionGame = document.getElementById('descriptionGamee').value;
 
@@ -73,108 +59,19 @@ const UploadForm = ({ socket }) => {
                     zip: fileData,
                     img: fileDataImg
                 }
-                console.log("File Name", Files);
-
                 socket.emit('file-upload', Files);
             }
         }
+
         socket.on('extraction_complete', function (path) {
             pathScript = path.initGame;
-            console.log('Path', path);
-
             pathimagen = path.img;
-            console.log("AAAAAA", pathimagen);
             hacerFetch();
-
         });
     }
 
-    /**
-     * 
-     * @param {Funcion para convertir el ZIP en BLOB} dataURI 
-     * @returns 
-     */
-    function dataURItoBlob(dataURI) {
-        var byteString = atob(dataURI.split(',')[1]);
-        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-        var ab = new ArrayBuffer(byteString.length);
-        var ia = new Uint8Array(ab);
-        for (var i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
-        }
-        var blob = new Blob([ab], { type: mimeString });
-        return blob;
-    }
-
-    // function saveBlobs(blob, type) {
-    //     //let blobZip;
-    //     let blobImg;
-    //     //var fileImagen = document.getElementById("uploadImg").files[0];
-
-    //     blobImg = blob;
-    //     //console.log("blobZip", blobZip);
-
-    //     var imagen = new FileReader();
-
-    //     imagen.onload = async function () {
-    //         blobImg = dataURItoBlob(imagen.result);
-    //         //hacerFetch(blobZip, blobImg);
-
-    //     };
-
-    //     imagen.readAsDataURL(fileImagen);
-
-
-
-    //     if (type == "zip") {
-    //         blobZip = blob;
-    //         console.log("blobZip", blobZip);
-    //         console.log("blob", blob);
-    //     }
-    //     else {
-    //         blobImg = blob;
-    //         console.log("blobImg", blobImg);
-    //         console.log("blob", blob);
-    //     }
-
-    //     if (blobImg != null && blobZip != null) {
-    //         hacerFetch(blobZip, blobImg);
-    //         console.log("VV");
-
-    //     }
-    //     else {
-    //         console.log("F");
-    //     }
-
-    // }
-
-    const onClick = async () => {
-
-        //var file = document.getElementById("uploadZip").files[0];
-        var fileImagen = document.getElementById("uploadImg").files[0];
-        var reader = new FileReader();
-        // var imagen = new FileReader();
-
-        reader.onload = function () {
-            let blobresult = dataURItoBlob(reader.result)
-            //saveBlobs(blobresult, 'img');
-            hacerFetch(blobresult);
-
-        };
-        // imagen.onload = async function () {
-        //     let blobresult = dataURItoBlob(imagen.result)
-        //     await saveBlobs(blobresult, 'img');
-
-        // };
-        reader.readAsDataURL(fileImagen);
-        // imagen.readAsDataURL(fileImagen);
-
-    }
     async function hacerFetch() {
-        console.log("error 1");
         try {
-            console.log("error 2");
-
             let img = pathimagen;
             let script = pathScript;
             const formData = new FormData();
@@ -193,21 +90,18 @@ const UploadForm = ({ socket }) => {
             if (!response.ok) {
                 throw new Error(response.statusText);
             }
-            console.log("error 3");
-
             const data = await response.json();
-            console.log(data);
         } catch (error) {
             setError(error);
-
         }
     }
 
-    const [activeTab, setActiveTab] = useState("tab1"); // initialize active tab to tab1
+    const [activeTab, setActiveTab] = useState("tab1");
 
     const handleTabClick = (tab) => {
-        setActiveTab(tab); // update active tab based on the tab clicked
+        setActiveTab(tab);
     };
+
     return (
         <div class="overflow-auto flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
             {isLoggedIn ?
@@ -294,26 +188,20 @@ const UploadForm = ({ socket }) => {
                                             </form>
                                         </div>
                                     }
-
                                     {activeTab === "tab2" &&
-                                        <div>
-
-                                        </div>
+                                        <></>
                                     }
-
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 : <h2>
                     {t('mensajeErrorNotLoggedInUpload')}
                 </h2>
             }
         </div >
     );
-
 }
+
 export default UploadForm;

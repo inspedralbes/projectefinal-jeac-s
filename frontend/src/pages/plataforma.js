@@ -169,7 +169,7 @@ function Game({ socket }) {
   }
 
   function getScript() {
-    fetch(process.env.REACT_APP_NODE_URL+'/GamesFiles/' + pathGame + '/game.js', {
+    fetch(process.env.REACT_APP_NODE_URL + pathGame, {
       method: 'GET',
       mode: 'same-origin',
     })
@@ -277,7 +277,7 @@ function Game({ socket }) {
                   <div>
                     {singlePlayer && !gameStarted ?
                       <div>
-                        <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { if (!isLoggedIn){ setSinglePlayerUserName(null);} setGameModeSelected(false); setSinglePlayer(false); }}>Return</button>
+                        <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { if (!isLoggedIn) { setSinglePlayerUserName(null); } setGameModeSelected(false); setSinglePlayer(false); }}>Return</button>
                         {isLoggedIn ?
                           <div>
                             <h3 class="text-white">Players:</h3>

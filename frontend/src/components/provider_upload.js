@@ -23,20 +23,10 @@ const UploadForm = ({ socket }) => {
     const [fileName, setFileName] = useState(null);
     const [fileData, setFileData] = useState(null);
     const userInfo = useSelector((state) => state.data);
-    
+
     useEffect(() => {
         socket.on('upload_error', function (msg) {
             console.log('Node msg', msg);
-        });
-
-        socket.on('extraction_complete', function (path) {
-            pathScript = path.initGame;
-            console.log('Path', path);
-
-            pathimagen = path.img;
-            console.log("AAAAAA", pathimagen);
-            hacerFetch();
-
         });
         return () => {
             socket.off('extraction_complete');
@@ -44,7 +34,9 @@ const UploadForm = ({ socket }) => {
 
     }, []);
 
-    function UploadGame() {
+    function UploadGame(e) {
+        e.preventDefault();
+
         let file = document.getElementById("uploadZip").files[0];
         var fileImagen = document.getElementById("uploadImg").files[0];
 
@@ -86,6 +78,15 @@ const UploadForm = ({ socket }) => {
                 socket.emit('file-upload', Files);
             }
         }
+        socket.on('extraction_complete', function (path) {
+            pathScript = path.initGame;
+            console.log('Path', path);
+
+            pathimagen = path.img;
+            console.log("AAAAAA", pathimagen);
+            hacerFetch();
+
+        });
     }
 
     /**
@@ -182,7 +183,7 @@ const UploadForm = ({ socket }) => {
             formData.append('img', img);
             formData.append('description', descriptionGame);
             formData.append('path', script);
-            const response = await fetch(process.env.REACT_APP_LARAVEL_URL+'/api/upload', {
+            const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/upload', {
                 method: 'POST',
                 headers: {
                     'Accept': '*/*'
@@ -296,7 +297,7 @@ const UploadForm = ({ socket }) => {
 
                                     {activeTab === "tab2" &&
                                         <div>
-                                            
+
                                         </div>
                                     }
 

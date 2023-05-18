@@ -22,20 +22,11 @@ const UpdateForm = ({ socket }) => {
     const [file, setFile] = useState(null);
     const [fileName, setFileName] = useState(null);
     const [fileData, setFileData] = useState(null);
+    const userInfo = useSelector((state) => state.data);
 
     useEffect(() => {
         socket.on('upload_error', function (msg) {
             console.log('Node msg', msg);
-        });
-
-        socket.on('extraction_complete', function (path) {
-            pathScript = path.initGame;
-            console.log('Path', path);
-
-            pathimagen = path.img;
-            console.log("AAAAAA", pathimagen);
-            hacerFetch();
-
         });
         return () => {
             socket.off('extraction_complete');
@@ -43,7 +34,9 @@ const UpdateForm = ({ socket }) => {
 
     }, []);
 
-    function UploadGame() {
+    function UploadGame(e) {
+        e.preventDefault();
+
         let file = document.getElementById("uploadZip").files[0];
         var fileImagen = document.getElementById("uploadImg").files[0];
 
@@ -85,6 +78,15 @@ const UpdateForm = ({ socket }) => {
                 socket.emit('file-upload', Files);
             }
         }
+        socket.on('extraction_complete', function (path) {
+            pathScript = path.initGame;
+            console.log('Path', path);
+
+            pathimagen = path.img;
+            console.log("AAAAAA", pathimagen);
+            hacerFetch();
+
+        });
     }
 
     /**
@@ -169,33 +171,19 @@ const UpdateForm = ({ socket }) => {
 
     }
     async function hacerFetch() {
+        console.log("error 1");
         try {
-            //console.log("Zip", blobZip);
-            //console.log("Img", blobImg);
-
-            // let fecha = new Date();
-            // let diaActual = fecha.getDate();
-            // let mesActual = fecha.getMonth();
-            // let añoActual = fecha.getFullYear()
-            // let minutos = fecha.getMinutes();
-            // let segundos = fecha.getSeconds();
-            // let milisegundos = fecha.getMilliseconds();
-
-            // let nombreArchivo = name + "_" + diaActual + "/" + mesActual + "/" + añoActual + "/" + minutos + "/" + segundos + "/" + milisegundos;
-            // console.log(nombreArchivo);
-
-            //console.log("frefer", blobZip);
+            console.log("error 2");
 
             let img = pathimagen;
             let script = pathScript;
             const formData = new FormData();
+            formData.append('user_id', userInfo.id)
             formData.append('name', gameNamee);
             formData.append('img', img);
-            //formData.append('zip', blobZip, nombreArchivo);
             formData.append('description', descriptionGame);
             formData.append('path', script);
-
-            const response = await fetch(process.env.REACT_APP_LARAVEL_URL+'/api/upload', {
+            const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/upload', {
                 method: 'POST',
                 headers: {
                     'Accept': '*/*'
@@ -205,6 +193,8 @@ const UpdateForm = ({ socket }) => {
             if (!response.ok) {
                 throw new Error(response.statusText);
             }
+            console.log("error 3");
+
             const data = await response.json();
             console.log(data);
         } catch (error) {
@@ -307,7 +297,7 @@ const UpdateForm = ({ socket }) => {
 
                                     {activeTab === "tab2" &&
                                         <div>
-                                            
+
                                         </div>
                                     }
 

@@ -42,7 +42,7 @@ function Game({ socket }) {
 
   useEffect(() => {
     return () => {
-      if (!obj) {
+      if (obj != null || obj != undefined) {
         obj.destroyGame();
       }
       socket.emit("leave_lobby");
@@ -169,7 +169,7 @@ function Game({ socket }) {
   }
 
   function getScript() {
-    fetch(process.env.REACT_APP_NODE_URL+'/GamesFiles/' + pathGame + '/juego.js', {
+    fetch(process.env.REACT_APP_NODE_URL+'/GamesFiles/' + pathGame + '/game.js', {
       method: 'GET',
       mode: 'same-origin',
     })

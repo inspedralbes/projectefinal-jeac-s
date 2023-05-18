@@ -109,7 +109,7 @@ socketIO.on('connection', (socket) => {
             .on('close', () => {
               console.log('Extraction complete!');
 
-              const initGamePath = path.join('public', 'GamesFiles', file.name, 'juego.js');
+              const initGamePath = path.join('public', 'GamesFiles', file.name, 'game.js');
               //const imagesFolderPath = path.join('public', 'GamesFiles', file.name, 'images');
               //const scriptsFolderPath = path.join('public', 'GamesFiles', file.name, 'scripts');
 
@@ -119,11 +119,11 @@ socketIO.on('connection', (socket) => {
                   return;
                 }
 
-                const containsInitGame = data.includes('initGame.js');
+                  const containsInitGame = data.includes('game.js');
                 //const containsImagesFolder = fs.existsSync(imagesFolderPath);
                 //const containsScriptFolder = fs.existsSync(scriptsFolderPath);
 
-                console.log(`File ${zipName} contains initGame.js: ${containsInitGame}`);
+                console.log(`File ${zipName} contains game.js: ${containsInitGame}`);
                 // console.log(`File ${zipName} contains images folder: ${containsImagesFolder}`);
                 // console.log(`File ${zipName} contains scripts folder: ${containsScriptFolder}`);
 
@@ -155,7 +155,7 @@ socketIO.on('connection', (socket) => {
                 }
                 else {
                   console.log("Error validacion");
-                  socket.emit("upload_error", "Error en la subida. El zip no contiene el script initGame o las carpetas images y scripts");
+                  socket.emit("upload_error", "Error en la subida. El zip no contiene el script game.js o las carpetas images y scripts");
 
                   fs.rm(`./public/GamesFiles/${file.name}`, { recursive: true }, (err) => {
                     if (err) throw console.log("AAAA", err);;
@@ -170,7 +170,7 @@ socketIO.on('connection', (socket) => {
                 });
 
                 let routes = {
-                  initGame: `/GamesFiles/${file.name}/initGame.js`,
+                  initGame: `/GamesFiles/${file.name}/game.js`,
                   img: `/GamesImages/${file.name}/${file.img.name}`
                 }
 
@@ -268,7 +268,19 @@ socketIO.on('connection', (socket) => {
   socket.on("leave_lobby", () => {
     leaveLobby(socket);
   });
-  
+
+  socket.on("delete_game", (game) => {
+    fs.rm(`./public/GamesFiles/${game}`, { recursive: true }, (err) => {
+      if (err) throw console.log("AAAA", err);;
+      console.log('path/file.txt was deleted');
+
+    });
+    fs.rm(`./public/GamesImages/${game}`, { recursive: true }, (err) => {
+      if (err) throw console.log("AAAA", err);;
+      console.log('path/file.txt was deleted');
+
+    });
+  })  
 });
 
 

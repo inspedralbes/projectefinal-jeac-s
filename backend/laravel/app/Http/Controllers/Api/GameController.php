@@ -33,6 +33,7 @@ class GameController extends Controller
     public function upload(Request $request)
     {
         $game = new Game();
+        $game->user_id = $request->user_id;
         $game->name = $request->name;
         //$file2 = $request->img;
         //$file2->move(base_path('../frontend/public/ImageGames/'. $request->name), $file2->getClientOriginalName());        

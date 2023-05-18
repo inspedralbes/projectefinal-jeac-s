@@ -195,7 +195,7 @@ const UpdateForm = ({ socket }) => {
             formData.append('description', descriptionGame);
             formData.append('path', script);
 
-            const response = await fetch(process.env.FETCH_LARAVEL+'/api/upload', {
+            const response = await fetch(process.env.REACT_APP_LARAVEL_URL+'/api/upload', {
                 method: 'POST',
                 headers: {
                     'Accept': '*/*'

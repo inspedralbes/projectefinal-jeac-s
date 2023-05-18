@@ -5,7 +5,7 @@ import { useNavigate, NavLink } from 'react-router-dom';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 
-const UserInfo = () => {
+const UserInfo = ({ socket }) => {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
   const token = localStorage.getItem('access_token');
   const [name, setName] = useState('');
@@ -507,7 +507,7 @@ const UserInfo = () => {
                                 <td>{game.name}</td>
                                 <td>{game.description}</td>
                                 <td><button onClick={() => navigate("/update")}>Actualizar</button></td>
-                                <td><button onClick={() => handleDeleteGame(game.id)}>Eliminar</button></td>
+                                <td><button onClick={() => {handleDeleteGame(game.id); socket.emit("delete_game", game.name)}}>Eliminar</button></td>
                               </tr>
                             ))}
                           </tbody>

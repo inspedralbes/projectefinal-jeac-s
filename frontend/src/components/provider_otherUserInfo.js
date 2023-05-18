@@ -20,6 +20,20 @@ const UserInfo = () => {
     const { t } = useTranslation();
 
     useEffect(() => {
+
+        async function avatarOther() {
+            console.log(boughtInfo.length)
+            if (boughtInfo.length > 0) {
+                console.log('BYEYE')
+                const matchingItems = boughtInfo.filter(item => item.avatar && item.userId === otherUserInfo.id);
+                if (matchingItems.length > 0) {
+                    console.log("HELLOOOOOOO")
+                    const userAvatarItem = storeInfo.find(item => item.id === matchingItems[0].itemId);
+                    setAvatar(userAvatarItem.image_url);
+                    console.log(userAvatarItem.image_url);
+                }
+            }
+        }
         async function fetchStoreItems() {
             try {
                 const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getStoreItems`, {
@@ -31,7 +45,7 @@ const UserInfo = () => {
                 });
                 const avatar = await response.json();
                 setStoreInfo(avatar);
-
+                avatarOther();
             } catch (error) {
                 console.error(error);
             }
@@ -54,7 +68,7 @@ const UserInfo = () => {
         }
 
         async function fetchBoughtItems() {
-            console.log("HELLO")
+
             try {
                 const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getBoughtItems`, {
                     method: 'GET',
@@ -67,7 +81,10 @@ const UserInfo = () => {
 
                 const boughtItems = infoItems.filter(item => item.userId === otherUserInfo.id);
                 setBoughtInfo(boughtItems)
+                console.log(boughtInfo)
                 setIsLoading(true)
+                fetchStoreItems();
+
             } catch (error) {
                 console.error(error);
             }
@@ -90,22 +107,9 @@ const UserInfo = () => {
             }
         }
 
-        async function avatar() {
-            if (boughtInfo.length > 0) {
-                const matchingItems = boughtInfo.filter(item => item.avatar && item.userId === otherUserInfo.id);
-                if (matchingItems.length > 0) {
-                    const userAvatarItem = storeInfo.find(item => item.id === matchingItems[0].itemId);
-                    setAvatar(userAvatarItem.image_url);
-                    console.log(userAvatarItem.image_url);      
-                }
-            }
-        }
-        
-        fetchUsers();
         fetchBoughtItems();
-        fetchStoreItems();
+        fetchUsers();
         fetchPlayedGame();
-        avatar();
 
     }, []);
 

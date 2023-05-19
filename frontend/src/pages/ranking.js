@@ -31,7 +31,7 @@ function GetRanking() {
   }, []);
 
   function visitarPerfil(id){
-    dispatch(actions.getUserId({id: id, visitor: true}));
+    dispatch(actions.getUserId({id: id, visitor: true, tab:"tab1"}));
     navigate("/otherProfile")
   }
 

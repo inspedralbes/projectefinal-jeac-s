@@ -507,7 +507,7 @@ const UserInfo = ({ socket }) => {
                                 <td>{game.name}</td>
                                 <td>{game.description}</td>
                                 <td><button onClick={() => navigate("/update")}>Actualizar</button></td>
-                                <td><button onClick={() => {handleDeleteGame(game.id); socket.emit("delete_game", game.name)}}>Eliminar</button></td>
+                                <td><button onClick={() => { handleDeleteGame(game.id); socket.emit("delete_game", game.name) }}>Eliminar</button></td>
                               </tr>
                             ))}
                           </tbody>

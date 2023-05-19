@@ -4,9 +4,9 @@ import  UserInfo  from '../components/provider_userInfo';
 import { store } from '../components/store';
 
 
-const App = () => (
+const App = ({socket}) => (
   <Provider store={store}>
-    <UserInfo />
+    <UserInfo socket={socket}/>
   </Provider>
 );
 

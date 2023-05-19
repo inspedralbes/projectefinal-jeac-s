@@ -29,23 +29,17 @@ function Navbar() {
             </div>
             <div class="sm:ml-6 block">
               <div class="flex space-x-4">
-                {isLoggedIn ?
-                  (
-                    <NavLink to="/store">
-                      <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
-                        {t('navGameStore')}
-                      </a>
-                    </NavLink>
-                  )
-                  : null
-                }
-
+                <NavLink to="/games">
+                  <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                    Juegos
+                  </a>
+                </NavLink>
                 {isLoggedIn ?
                   (
                     <NavLink to="/upload">
                       <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
-                      {t('navUpload')}
-                        </a>
+                        {t('navUpload')}
+                      </a>
                     </NavLink>
                   )
                   : null
@@ -71,9 +65,9 @@ function Navbar() {
 
           }
           &nbsp;&nbsp;&nbsp;&nbsp;
-          <img class="w-5 md:w-7 lg:w-10" onClick={() => changeLanguage('es')} src="castellano.png"></img>&nbsp;&nbsp;&nbsp;
-          <img class="w-5 md:w-7 lg:w-10" onClick={() => changeLanguage('en')} src="ingles.png"></img>&nbsp;&nbsp;&nbsp;
-          <img class="w-5 md:w-7 lg:w-10" onClick={() => changeLanguage('cat')} src="catalan.png"></img>&nbsp;&nbsp;&nbsp;
+          <img class="w-5 md:w-7 lg:w-10 cursor-pointer" onClick={() => changeLanguage('es')} src="castellano.png"></img>&nbsp;&nbsp;&nbsp;
+          <img class="w-5 md:w-7 lg:w-10 cursor-pointer" onClick={() => changeLanguage('en')} src="ingles.png"></img>&nbsp;&nbsp;&nbsp;
+          <img class="w-5 md:w-7 lg:w-10 cursor-pointer" onClick={() => changeLanguage('cat')} src="catalan.png"></img>&nbsp;&nbsp;&nbsp;
 
         </div>
       </div>

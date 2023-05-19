@@ -3,19 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { actions } from '../components/store.js';
 
-    function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
+function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
     const [fetchData, setFetchData] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleInputChange = (name, id) => {
-
-        console.log("HELLO: " + id);
-        onSharedValueChange(name);
+    const handleInputChange = (path, id) => {
+        onSharedValueChange(path);
         onSharedIdChange(id)
         navigate('/game');
-
     };
 
     useEffect(() => {
@@ -37,10 +34,10 @@ import { actions } from '../components/store.js';
         fetchGames();
     }, []);
 
-    function visitarPerfil(id){
-        dispatch(actions.getUserId({id: id, visitor: true, tab: "tab4"}));
+    function visitarPerfil(id) {
+        dispatch(actions.getUserId({ id: id, visitor: true, tab: "tab4" }));
         navigate("/otherProfile")
-      }
+    }
 
     return (
         <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
@@ -63,9 +60,9 @@ import { actions } from '../components/store.js';
                                                         onClick={() => handleInputChange(game.path, game.id)}>
                                                         Play
                                                     </button>
-                                                    <p class="text-black " onClick={() => visitarPerfil(game.user.id)}>Creador: <a class = "hover:text-white">{game.user.name}</a></p>
+                                                    <p class="text-black " onClick={() => visitarPerfil(game.user.id)}>Creador: <a class="hover:text-white cursor-pointer">{game.user.name}</a></p>
                                                 </div>
-                                                
+
                                             </div>
                                         ))}
                                     </div>

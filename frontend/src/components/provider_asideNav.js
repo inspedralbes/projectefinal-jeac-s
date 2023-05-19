@@ -125,7 +125,7 @@ function AsideNav() {
                     <Route path="/upload" element={<Upload socket={socket} />} />
                     <Route path="/update" element={<Update socket={socket} />} />
                     <Route path="/profile" element={<Profile socket={socket} />} />
-                    <Route path="/otherProfile" element={<OtherProfile/>} />
+                    <Route path="/otherProfile" element={<OtherProfile sharedValue={sharedValue} onSharedValueChange={handleSharedValueChange} sharedId={sharedId} onSharedIdChange={handleSharedIdChange} />} />
                     <Route path="/signin" element={<Signin />} />
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/game" element={<Game socket={socket} sharedValue={sharedValue} sharedId={sharedId} />} />

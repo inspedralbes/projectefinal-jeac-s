@@ -51,4 +51,6 @@ Route::get('/showProfileOthers', [AuthController::class, 'showProfileOthers']);
 
 Route::post('/deleteGame/{id}', [GameController::class, 'deleteGame']);
 
- Route::get('/getOtherUserGames', [AuthController::class, 'getOtherUserGames']);
+Route::get('/getOtherUserGames', [AuthController::class, 'getOtherUserGames']);
+
+Route::post('/updateGame/{id}', [GameController::class, 'updateGame']);

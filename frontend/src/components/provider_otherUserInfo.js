@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from "react-router-dom";
 
 const UserInfo = () => {
     const isLoggedIn = useSelector(state => state.isLoggedIn);
@@ -18,6 +19,7 @@ const UserInfo = () => {
     const otherInfo = useSelector((state) => state.dataOthers);
     const otherUserInfo = useSelector((state) => state.getUserId);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -144,6 +146,10 @@ const UserInfo = () => {
     const handleTabClick = (tab) => {
         setActiveTab(tab); // update active tab based on the tab clicked
     };
+
+    const handleInputChange = (path, id) => {
+        navigate('/game');
+    }
 
     return (
         <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
@@ -311,7 +317,7 @@ const UserInfo = () => {
                                                             <tr class="h-20 odd:bg-gray-700">
                                                                 <td>{game.name}</td>
                                                                 <td>{game.description}</td>
-                                                                <td><button>PLAY</button></td>
+                                                                <td><button onClick={() => handleInputChange(game.path, game.id)}>PLAY</button></td>
                                                             </tr>
                                                         ))}
                                                     </tbody>

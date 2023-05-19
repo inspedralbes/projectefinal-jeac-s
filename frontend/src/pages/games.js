@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { actions } from '../components/store.js';
 
-function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
+    function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
     const [fetchData, setFetchData] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();

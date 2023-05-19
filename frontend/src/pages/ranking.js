@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import routes from '../index.js';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { actions } from '../components/store.js';
 
 function GetRanking() {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const response = await fetch(`${routes.fetchLaravel}/api/getRanking`, {
+        const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/getRanking', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -26,6 +30,11 @@ function GetRanking() {
     }
     fetchUsers();
   }, []);
+
+  function visitarPerfil(id){
+    dispatch(actions.getUserId({id: id, visitor: true, tab:"tab1"}));
+    navigate("/otherProfile")
+  }
 
   return (
     <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center">
@@ -74,7 +83,7 @@ function GetRanking() {
                                 index + 1
                               )}
                             </td>
-                            <td class="w-1/3" >{user.name}</td>
+                            <td class="w-1/3 text-white hover:text-sky-400" onClick={() => visitarPerfil(user.id)}><a class = "text-white hover:text-sky-400 cursor-pointer">{user.name}</a></td>
                             <td class="w-1/3" >{user.totalScore}</td>
                           </tr>
                         ))}

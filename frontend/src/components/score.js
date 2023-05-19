@@ -1,6 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { store, actions } from './store'; // import the Redux store
-import routes from '../index';
 
 async function endGame(totalScore) {  
   console.log(totalScore);
@@ -11,7 +10,7 @@ async function endGame(totalScore) {
   if (token)
     if (token != "0") {
       try {
-        const response = await fetch(`${routes.fetchLaravel}/api/saveScore`, {
+        const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/saveScore', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -24,7 +23,7 @@ async function endGame(totalScore) {
         store.dispatch(actions.saveData(data));
         const userId = data.id;
         
-        await fetch(`${routes.fetchLaravel}/api/createPlayedGame`, {
+        await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/createPlayedGame', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

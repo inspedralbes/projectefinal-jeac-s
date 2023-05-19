@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
-import routes from '../index.js';
 import { useTranslation } from 'react-i18next';
 
 const Tienda = () => {
@@ -16,7 +15,7 @@ const Tienda = () => {
     async function fetchStoreItems() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(`${routes.fetchLaravel}/api/getStoreItems`, {
+          const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getStoreItems`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -36,7 +35,7 @@ const Tienda = () => {
     async function fetchBoughtItems() {
       if (isLoggedIn) {
         try {
-          const response = await fetch(`${routes.fetchLaravel}/api/getBoughtItems`, {
+          const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getBoughtItems`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -58,7 +57,7 @@ const Tienda = () => {
   async function buyItem(userId, itemId) {
     if (isLoggedIn) {
       try {
-        const a = await fetch(`${routes.fetchLaravel}/api/buyItems`, {
+        const a = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/buyItems`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -71,7 +70,7 @@ const Tienda = () => {
         console.error(error);
       }
       try {
-        const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+        const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getBoughtItems`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

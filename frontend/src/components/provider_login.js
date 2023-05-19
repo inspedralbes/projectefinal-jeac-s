@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { store, actions } from './store';
 import { useNavigate } from "react-router-dom";
-import routes from '../index.js';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -21,7 +20,7 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${routes.fetchLaravel}/api/login`, {
+      const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +44,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await fetch(routes.fetchLaravel + `/api/getStoreItems`, {
+      const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getStoreItems`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -59,7 +58,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await fetch(routes.fetchLaravel + `/api/getBoughtItems`, {
+      const response = await fetch(process.env.REACT_APP_LARAVEL_URL + `/api/getBoughtItems`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

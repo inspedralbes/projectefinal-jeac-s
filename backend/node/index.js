@@ -15,7 +15,7 @@ const host = "0.0.0.0";
 let i = 0;
 let lobbies = [];
 
-app.use(express.static('public'));
+//app.use(express.static('public'));
 
 const random_hex_color_code = () => {
   let n = Math.floor(Math.random() * 999999);

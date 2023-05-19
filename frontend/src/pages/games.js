@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router';
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { actions } from '../components/store.js';
 
 function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
     const [fetchData, setFetchData] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleInputChange = (name, id) => {
 
@@ -34,6 +37,11 @@ function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
         fetchGames();
     }, []);
 
+    function visitarPerfil(id){
+        dispatch(actions.getUserId({id: id, visitor: true, tab: "tab4"}));
+        navigate("/otherProfile")
+      }
+
     return (
         <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
             <div class="text-center container h-full w-3/4 p-10">
@@ -55,8 +63,9 @@ function Games({ sharedValue, onSharedValueChange, onSharedIdChange }) {
                                                         onClick={() => handleInputChange(game.path, game.id)}>
                                                         Play
                                                     </button>
+                                                    <p class="text-black " onClick={() => visitarPerfil(game.user.id)}>Creador: <a class = "hover:text-white">{game.user.name}</a></p>
                                                 </div>
-                                                <p class="text-white">Creador: {game.user.name}</p>
+                                                
                                             </div>
                                         ))}
                                     </div>

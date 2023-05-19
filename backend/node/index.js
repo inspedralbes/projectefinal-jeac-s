@@ -196,45 +196,50 @@ socketIO.on('connection', (socket) => {
       'base64'
     );
 
+    let imgPath;
+    let folderPath = 'public/GamesImages/' + file.currentName;
+
 
     if (file.newName == '') {
+      
+      imgPath = `public/GamesImages/${file.currentName}/${file.img.name}`;
 
-      const imgPath = `public/GamesImages/${file.currentName}/${file.img.name}`;
-      const folderPath = 'public/GamesImages/' + file.currentName;
-
-
-      fs.writeFile(imgPath, imgbuffer, (error) => {
-        if (error) {
-          console.error(error);
-          return;
-        }
-      });
-
-      fs.readdir(folderPath, (err, images) => {
-        if (err) throw err;
-
-        for (const image of images) {
-
-          if (image != file.img.name) {
-            fs.unlink(path.join(folderPath, image), (err) => {
-              if (err) throw err;
-            });
-          }
-        }
-      });
     }
     else {
-      const currPath = `public/GamesImages/${file.currentName}`;
+      // folderPath = `public/GamesImages/${file.currentName}`;
       const newPath = `public/GamesImages/${file.newName}`;
 
-      fs.rename(currPath, newPath, function (err) {
+      fs.rename(folderPath, newPath, function (err) {
         if (err) {
           console.log(err)
         } else {
           console.log("Successfully renamed the directory.")
         }
       })
+
+      folderPath = `public/GamesImages/${file.newName}`;
     }
+
+    fs.writeFile(imgPath, imgbuffer, (error) => {
+      if (error) {
+        console.error(error);
+        return;
+      }
+    });
+
+    fs.readdir(folderPath, (err, images) => {
+      if (err) throw err;
+
+      for (const image of images) {
+
+        if (image != file.img.name) {
+          fs.unlink(path.join(folderPath, image), (err) => {
+            if (err) throw err;
+          });
+        }
+      }
+    });
+    
   })
 
   socket.on('update_zip', (file) => {

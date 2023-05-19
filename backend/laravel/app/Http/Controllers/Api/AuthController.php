@@ -100,9 +100,17 @@ class AuthController extends Controller
         return response()->json($users);
     }
 
-    public function getUserUploadGames(){
+    public function getUserUploadGames()
+    {
         $user = Auth::user();
         $games = Game::where('user_id', $user->id)->get();
+        return response()->json($games);
+    }
+
+    public function getOtherUserGames(Request $request)
+    {
+        $userId = $request->userId;
+        $games = Game::where('user_id', $userId)->get();
         return response()->json($games);
     }
 }

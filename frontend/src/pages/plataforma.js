@@ -169,7 +169,11 @@ function Game({ socket }) {
   }
 
   function getScript() {
-    fetch(process.env.REACT_APP_NODE_URL + pathGame, {
+    console.log("Get SCRIPT");
+    console.log(process.env.REACT_APP_NODE_URL);
+    console.log(process.env.REACT_APP_NODE_URL + pathGame);
+    console.log("Fent fetch");
+    fetch(process.env.REACT_APP_NODE_URL + "/node" + pathGame, {
       method: 'GET',
       mode: 'same-origin',
     })

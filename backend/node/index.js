@@ -72,6 +72,7 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on('file-upload', (file) => {
+    console.log("Socket de fileUpload");
     console.log('File received', file);
 
     if (file.name != '') {
@@ -189,6 +190,8 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on("new_lobby", (data) => {
+    console.log("Socket de newLobby");
+
     let existeix = false;
     let newLobbyIdentifier;
     do {
@@ -229,6 +232,8 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on("join_room", (data) => {
+    console.log("Socket de joinRoom");
+
     // if (data.username.length > 8) {
     //   socketIO.to(socket.id).emit("USR_NAME_TOO_LONG");
     // } else {
@@ -239,7 +244,7 @@ socketIO.on('connection', (socket) => {
   });
   
   socket.on("get_players_in_lobby", () => {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    console.log("Socket de getPlayersInLobby");
     lobbies.forEach((lobby) => {
       if (lobby.lobbyIdentifier == socket.data.current_lobby) {
         console.log("lobbyAAAAAAAAA", lobby);
@@ -261,15 +266,21 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on("can_start_game", () => {
+    console.log("Socket de canStartGame");
+
     console.log("Start game", socket.data.current_lobby);
     socketIO.to(socket.data.current_lobby).emit("start_game");
   });
 
   socket.on("leave_lobby", () => {
+    console.log("Socket de leaveLobby");
+
     leaveLobby(socket);
   });
 
   socket.on("delete_game", (game) => {
+    console.log("Socket de deleteGame");
+    
     fs.rm(`./public/GamesFiles/${game}`, { recursive: true }, (err) => {
       if (err) throw console.log("AAAA", err);;
       console.log('path/file.txt was deleted');

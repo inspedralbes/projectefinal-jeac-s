@@ -65,9 +65,9 @@ function Navbar() {
 
           }
           &nbsp;&nbsp;&nbsp;&nbsp;
-          <img class="w-5 md:w-7 lg:w-10" onClick={() => changeLanguage('es')} src="castellano.png"></img>&nbsp;&nbsp;&nbsp;
-          <img class="w-5 md:w-7 lg:w-10" onClick={() => changeLanguage('en')} src="ingles.png"></img>&nbsp;&nbsp;&nbsp;
-          <img class="w-5 md:w-7 lg:w-10" onClick={() => changeLanguage('cat')} src="catalan.png"></img>&nbsp;&nbsp;&nbsp;
+          <img class="w-5 md:w-7 lg:w-10 cursor-pointer" onClick={() => changeLanguage('es')} src="castellano.png"></img>&nbsp;&nbsp;&nbsp;
+          <img class="w-5 md:w-7 lg:w-10 cursor-pointer" onClick={() => changeLanguage('en')} src="ingles.png"></img>&nbsp;&nbsp;&nbsp;
+          <img class="w-5 md:w-7 lg:w-10 cursor-pointer" onClick={() => changeLanguage('cat')} src="catalan.png"></img>&nbsp;&nbsp;&nbsp;
 
         </div>
       </div>

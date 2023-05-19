@@ -173,7 +173,7 @@ function Game({ socket }) {
     console.log(process.env.REACT_APP_NODE_URL);
     console.log(process.env.REACT_APP_NODE_URL + pathGame);
     console.log("Fent fetch");
-    fetch(process.env.REACT_APP_NODE_URL + "/node" + pathGame, {
+    fetch(process.env.REACT_APP_FITXERS_URL + "/fitxers" + pathGame, {
       method: 'GET',
       mode: 'cors',
       headers: {

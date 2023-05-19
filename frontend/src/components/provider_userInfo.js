@@ -305,25 +305,25 @@ const UserInfo = ({ socket }) => {
                     <div class="flex space-x-4">
 
                       <li className={`w-1/4 list-none ${activeTab === "tab1" ? "active" : ""}`}>
-                        <a onClick={() => handleTabClick("tab1")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium">
+                        <a onClick={() => handleTabClick("tab1")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium cursor-pointer">
                           {t('profileUserInfo')}
                         </a>
                       </li>
 
                       <li className={`w-1/4 list-none ${activeTab === "tab2" ? "active" : ""}`}>
-                        <a onClick={() => handleTabClick("tab2")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium">
+                        <a onClick={() => handleTabClick("tab2")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium cursor-pointer">
                           {t('profileHistorial')}
                         </a>
                       </li>
 
                       <li className={`w-1/4 list-none ${activeTab === "tab3" ? "active" : ""}`}>
-                        <a onClick={() => handleTabClick("tab3")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium">
+                        <a onClick={() => handleTabClick("tab3")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium cursor-pointer">
                           {t('profileColeccionables')}
                         </a>
                       </li>
 
                       <li className={`w-1/4 list-none ${activeTab === "tab4" ? "active" : ""}`}>
-                        <a onClick={() => handleTabClick("tab4")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                        <a onClick={() => handleTabClick("tab4")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium cursor-pointer">
                           Tus Juegos
                         </a>
                       </li>
@@ -506,7 +506,7 @@ const UserInfo = ({ socket }) => {
                               <tr class="h-20 odd:bg-gray-700">
                                 <td>{game.name}</td>
                                 <td>{game.description}</td>
-                                <td><button onClick={() => navigate("/update")}>Actualizar</button></td>
+                                <td><button onClick={() => {navigate("/update"); dispatch(actions.saveUploadedGameId(game.id)); dispatch(actions.saveUploadedGameName(game.name))}}>Actualizar</button></td>
                                 <td><button onClick={() => {handleDeleteGame(game.id); socket.emit("delete_game", game.name)}}>Eliminar</button></td>
                               </tr>
                             ))}

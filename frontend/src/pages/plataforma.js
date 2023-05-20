@@ -239,15 +239,6 @@ function Game({ socket }) {
     }
   }
 
-  function destroyGame() {
-    if (obj != null) {
-      obj.init().destroy(true, false);
-      setDisplayCanvas(false);
-      setGameModeSelected(false);
-      setGameStarted(false);
-    }
-  }
-
   return (
     <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
       <div>{messageError}</div>

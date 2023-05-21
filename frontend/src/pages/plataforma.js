@@ -36,7 +36,7 @@ function Game({ socket }) {
   const [hasMultiplayer, setHasMultiplayer] = useState(null);
   const [hasSingleplayer, setHasSingleplayer] = useState(null);
 
-  const [messageError, setMessageError] = useState("aaaaa");
+  const [messageError, setMessageError] = useState("Error");
 
 
 
@@ -70,7 +70,6 @@ function Game({ socket }) {
     socket.on("start_game", () => {
       setDisplayCanvas(true);
       console.log("ownerLobby", ownerLobby);
-      console.log("aaaaaaaa");
       socket.emit("get_players_in_lobby");
       const myTimeout = setTimeout(play, 500);
 
@@ -268,10 +267,10 @@ function Game({ socket }) {
                   <div>
                     {singlePlayer && !gameStarted ?
                       <div>
-                        <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { if (!isLoggedIn) { setSinglePlayerUserName(null); } setGameModeSelected(false); setSinglePlayer(false); }}>Return</button>
+                        <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(false); setSinglePlayer(false); }}>Return</button>
                         {isLoggedIn ?
                           <div>
-                            <h3 class="text-white">Players:</h3>
+                            <h3 class="text-white">Player:</h3>
                             <div>
                               {singlePlayerUserName && <p class="text-white">{singlePlayerUserName}</p>}
                               <br></br>
@@ -314,15 +313,6 @@ function Game({ socket }) {
                         {createRoomOwner ?
                           <div>
                             <h1 className="text-white">{lobbyId}</h1>
-
-                            <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => {
-                              setcreateRoomOwner(false);
-                              setNotRoomOwner(null);
-                              setOptionSelected(false);
-                              //setLobbyId(""); 
-                              socket.emit("leave_lobby");
-                            }}>Return</button>
-
                             <ConnectedUsers socket={socket} />
                             {isLoggedIn ?
                               <div>
@@ -382,17 +372,11 @@ function Game({ socket }) {
                         }
                         {notRoomOwner ?
                           <div>
-                            <button class="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => {
-                              setcreateRoomOwner(false);
-                              setNotRoomOwner(null);
-                              setOptionSelected(false);
-
-                            }}>Return</button>
                             {!lobbyJoined ?
                               <div>
                                 {isLoggedIn ?
                                   <div>
-                                    {multiPlayerUserName && <p>{multiPlayerUserName}</p>}
+                                    {multiPlayerUserName && <p class="text-white">{multiPlayerUserName}</p>}
                                     <input
                                       class="text-white peer block min-h-[auto] w-full border-2 border-fuchsia-600 rounded bg-transparent px-3 py-[0.32rem] 
                                           leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 

@@ -71,6 +71,8 @@ socketIO.on('connection', (socket) => {
     });
   });
 
+
+
   socket.on('file-upload', (file) => {
     console.log('File received', file);
 
@@ -83,68 +85,68 @@ socketIO.on('connection', (socket) => {
           file.zip.data.replace(/^data:([A-Za-z-+/]+);base64,/, ''),
           'base64'
         );
-
+      
         const zipName = `${Date.now()}-${file.zip.name}`;
-
+      
         var dt = new Date();
         let time = dt.getDate() + "_" + (dt.getMonth() + 1) + "_" + dt.getFullYear()
-
+      
         console.log("time", time)
-
+      
         const filepath = `public/GamesFiles/${zipName}`;
-
+      
         fs.writeFile(filepath, buffer, (error) => {
           if (error) {
             console.error(error);
             return;
           }
-
+      
           console.log(`File ${zipName} saved`);
-
-
+      
+      
           console.log('File saved to disk');
-
+      
           fs.createReadStream(filepath)
             .pipe(unzipper.Extract({ path: `public/GamesFiles/${file.name}` }))
             .on('close', () => {
               console.log('Extraction complete!');
-
+      
               const initGamePath = path.join('public', 'GamesFiles', file.name, 'game.js');
               //const imagesFolderPath = path.join('public', 'GamesFiles', file.name, 'images');
               //const scriptsFolderPath = path.join('public', 'GamesFiles', file.name, 'scripts');
-
+      
               fs.readFile(filepath, 'utf-8', (error, data) => {
                 if (error) {
                   console.error(error);
                   return;
                 }
-
+      
                 const containsInitGame = data.includes('game.js');
                 //const containsImagesFolder = fs.existsSync(imagesFolderPath);
                 //const containsScriptFolder = fs.existsSync(scriptsFolderPath);
-
+      
                 console.log(`File ${zipName} contains game.js: ${containsInitGame}`);
                 // console.log(`File ${zipName} contains images folder: ${containsImagesFolder}`);
                 // console.log(`File ${zipName} contains scripts folder: ${containsScriptFolder}`);
-
+      
                 if (containsInitGame /*& containsImagesFolder & containsScriptFolder*/) {
                   console.log("Zip correct");
-
+      
                   const imgbuffer = Buffer.from(
                     file.img.data.replace(/^data:([A-Za-z-+/]+);base64,/, ''),
                     'base64'
                   );
-
+      
                   const folderPath = 'public/GamesImages/' + file.name;
                   const imgPath = `public/GamesImages/${file.name}/${file.img.name}`;
-
+      
                   fs.mkdir(folderPath, { recursive: true }, (err) => {
                     if (err) {
                       console.error(err);
                       return;
                     }
                     console.log(`La carpeta ha sido creada.`);
-
+      
                     fs.writeFile(imgPath, imgbuffer, (error) => {
                       if (error) {
                         console.error(error);
@@ -156,24 +158,24 @@ socketIO.on('connection', (socket) => {
                 else {
                   console.log("Error validacion");
                   socket.emit("upload_error", "Error en la subida. El zip no contiene el script game.js o las carpetas images y scripts");
-
+      
                   fs.rm(`./public/GamesFiles/${file.name}`, { recursive: true }, (err) => {
                     if (err) throw console.log("AAAA", err);;
                     console.log('path/file.txt was deleted');
-
+      
                   });
                 }
-
+      
                 fs.unlink(`./public/GamesFiles/${zipName}`, (err) => {
                   if (err) throw console.log("AAAA", err);;
                   console.log('path/file.txt was deleted');
                 });
-
+      
                 let routes = {
                   initGame: `/GamesFiles/${file.name}/game.js`,
                   img: `/GamesImages/${file.name}/${file.img.name}`
                 }
-
+      
                 socket.emit("extraction_complete", routes);
               });
             });
@@ -188,6 +190,75 @@ socketIO.on('connection', (socket) => {
     }
   });
 
+
+  socket.on('file_update', (file) => {
+    console.log("File", file);
+
+    if (file.img) {
+      console.log("Tiene IMAGEN");
+
+      const imgbuffer = Buffer.from(
+        file.img.data.replace(/^data:([A-Za-z-+/]+);base64,/, ''),
+        'base64'
+      );
+  
+      let imgPath = `public/GamesImages/${file.currentName}/${file.img.name}`;
+      let folderPath = 'public/GamesImages/' + file.currentName;
+
+      fs.writeFile(imgPath, imgbuffer, (error) => {
+        if (error) {
+          console.error(error);
+          return;
+        }
+      });
+  
+      fs.readdir(folderPath, (err, images) => {
+        if (err) throw err;
+  
+        for (const image of images) {
+  
+          if (image != file.img.name) {
+            fs.unlink(path.join(folderPath, image), (err) => {
+              if (err) throw err;
+            });
+          }
+        }
+      });
+  
+  
+      if (file.newName == '') {
+  
+        imgPath = `public/GamesImages/${file.currentName}/${file.img.name}`;
+  
+      }
+      else {
+        folderPath = `public/GamesImages/${file.currentName}`;
+        const newPath = `public/GamesImages/${file.newName}`;
+        imgPath = `public/GamesImages/${file.newName}/${file.img.name}`;
+
+  
+        fs.rename(folderPath, newPath, function (err) {
+          if (err) {
+            console.log(err)
+          } else {
+            console.log("Successfully renamed the directory.")
+          }
+        })
+  
+        //folderPath = `public/GamesImages/${file.newName}`;
+      }
+
+      console.log("IMGPATH", imgPath);
+  
+    }
+
+
+    if (file.zip) {
+      extracZip(file);
+    }
+
+  });
+  
   socket.on('update_img', (file) => {
     console.log("File to update", file);
 
@@ -201,7 +272,7 @@ socketIO.on('connection', (socket) => {
 
 
     if (file.newName == '') {
-      
+
       imgPath = `public/GamesImages/${file.currentName}/${file.img.name}`;
 
     }
@@ -239,7 +310,7 @@ socketIO.on('connection', (socket) => {
         }
       }
     });
-    
+
   })
 
   socket.on('update_zip', (file) => {
@@ -345,6 +416,84 @@ socketIO.on('connection', (socket) => {
 server.listen(PORT, host, () => {
   console.log("Listening on *:" + PORT);
 });
+
+
+function extracZip(file) {
+  const buffer = Buffer.from(
+    file.zip.data.replace(/^data:([A-Za-z-+/]+);base64,/, ''),
+    'base64'
+  );
+
+  const zipName = `${Date.now()}-${file.zip.name}`;
+
+  var dt = new Date();
+  let time = dt.getDate() + "_" + (dt.getMonth() + 1) + "_" + dt.getFullYear()
+
+  console.log("time", time)
+
+  const filepath = `public/GamesFiles/${zipName}`;
+
+  fs.writeFile(filepath, buffer, (error) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    console.log(`File ${zipName} saved`);
+
+
+    console.log('File saved to disk');
+
+    fs.createReadStream(filepath)
+      .pipe(unzipper.Extract({ path: `public/GamesFiles/${file.currentName}` }))
+      .on('close', () => {
+        console.log('Extraction complete!');
+
+        const initGamePath = path.join('public', 'GamesFiles', file.currentName, 'game.js');
+        //const imagesFolderPath = path.join('public', 'GamesFiles', file.name, 'images');
+        //const scriptsFolderPath = path.join('public', 'GamesFiles', file.name, 'scripts');
+
+        fs.readFile(filepath, 'utf-8', (error, data) => {
+          if (error) {
+            console.error(error);
+            return;
+          }
+
+          const containsInitGame = data.includes('game.js');
+          //const containsImagesFolder = fs.existsSync(imagesFolderPath);
+          //const containsScriptFolder = fs.existsSync(scriptsFolderPath);
+
+          console.log(`File ${zipName} contains game.js: ${containsInitGame}`);
+          // console.log(`File ${zipName} contains images folder: ${containsImagesFolder}`);
+          // console.log(`File ${zipName} contains scripts folder: ${containsScriptFolder}`);
+
+          if (containsInitGame /*& containsImagesFolder & containsScriptFolder*/) {
+            console.log("Zip correct");
+
+          
+            const folderPath = 'public/GamesImages/' + file.currentName;
+
+          }
+          else {
+            console.log("Error validacion");
+            socket.emit("upload_error", "Error en la subida. El zip no contiene el script game.js o las carpetas images y scripts");
+
+            fs.rm(`./public/GamesFiles/${file.currentName}`, { recursive: true }, (err) => {
+              if (err) throw console.log("AAAA", err);;
+              console.log('path/file.txt was deleted');
+
+            });
+          }
+
+          fs.unlink(`./public/GamesFiles/${zipName}`, (err) => {
+            if (err) throw console.log("AAAA", err);;
+            console.log('path/file.txt was deleted');
+          });
+
+        });
+      });
+  });
+}
 
 function sendUserList(room) {
   var list = [];

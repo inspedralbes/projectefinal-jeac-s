@@ -17,6 +17,7 @@ function Game({ socket }) {
   const userInfo = useSelector((state) => state.data);
   const gameInfo = useSelector((state) => state.gameInfo);
   const pathGame = useSelector((state) => state.pathGame);
+  const token = localStorage.getItem('access_token');
 
   const [lobbyId, setLobbyId] = useState(null);
   const [lobbyIdInput, setLobbyIdInput] = useState(null);
@@ -31,14 +32,10 @@ function Game({ socket }) {
   const [optionSelected, setOptionSelected] = useState(false);
   const [lobbyStarted, setLobbyStarted] = useState(false);
   const [lobbyJoined, setLobbyJoined] = useState(false);
-  const token = localStorage.getItem('access_token');
-
+  const [gameEnded, setGameEnded] = useState(false);
   const [hasMultiplayer, setHasMultiplayer] = useState(null);
   const [hasSingleplayer, setHasSingleplayer] = useState(null);
-
   const [messageError, setMessageError] = useState("Error");
-
-
 
   useEffect(() => {
     return () => {
@@ -66,13 +63,11 @@ function Game({ socket }) {
       ownerLobby = data;
     });
 
-
     socket.on("start_game", () => {
       setDisplayCanvas(true);
       console.log("ownerLobby", ownerLobby);
       socket.emit("get_players_in_lobby");
       const myTimeout = setTimeout(play, 500);
-
     });
 
     socket.on('send_datagame_to_platform', (data) => {
@@ -80,10 +75,12 @@ function Game({ socket }) {
         obj.recibirInfoFromPlatform(data);
       }
     });
+
     if (isLoggedIn) {
       setSinglePlayerUserName(userInfo.name);
       setMultiPlayerUserName(userInfo.name);
     }
+
     return () => {
       socket.off("start_game");
       socket.off("lobby_info");
@@ -124,7 +121,7 @@ function Game({ socket }) {
     }
   };
 
-  //Funciones lobby multi player.
+  //Funciones lobby multiplayer.
   function joinRoom() {
     setcreateRoomOwner(false);
     setNotRoomOwner(true);
@@ -182,7 +179,6 @@ function Game({ socket }) {
 
         setHasMultiplayer(obj.config_game.multiplayer);
         setHasSingleplayer(obj.config_game.singleplayer);
-
       })
   }
 
@@ -195,13 +191,10 @@ function Game({ socket }) {
       console.log("ESta canvas");
       obj.init(sendInfoGame, finalJuego);
       obj.recibirInfoLobby(ownerLobby);
-
     }
-
   }
 
   function sendInfoGame(infoGame) {
-    //console.log(infoGame);
     socket.emit("datagame", infoGame);
   }
 
@@ -209,6 +202,7 @@ function Game({ socket }) {
     var totalScore = points;
     var gameId = gameInfo;
     var score = totalScore;
+    setGameEnded(true);
 
     if (isLoggedIn) {
       try {

@@ -413,11 +413,11 @@ const UserInfo = ({ socket }) => {
                   }
 
                   {activeTab === "tab2" &&
-                    <div class="flex w-full items-center">
+                    <div >
                       {isLoading ?
                         <div>
                           {playedGames.length > 0 ?
-                            <div>
+                            <div class="flex w-full items-center">
                               <table class="table-auto flex-1">
                                 <thead>
                                   <tr>

@@ -33,12 +33,14 @@ const UserInfo = ({onSharedValueChange, onSharedIdChange}) => {
 
         async function avatarOther() {
             if (boughtInfo.length > 0) {
-                console.log('BYEYE')
                 const matchingItems = boughtInfo.filter(item => item.avatar && item.userId === otherUserInfo.id);
                 if (matchingItems.length > 0) {
                     const userAvatarItem = storeInfo.find(item => item.id === matchingItems[0].itemId);
-                    setAvatar(userAvatarItem.image_url);
-                    console.log(userAvatarItem.image_url);
+                     if(userAvatarItem.image_url != ""){
+                       setAvatar(userAvatarItem.image_url); 
+                    }else {
+                        setAvatar("Controller.jpg")
+                    }
                 }
             }
         }

@@ -165,7 +165,7 @@ function Game({ socket }) {
   }
 
   function getScript() {
-    fetch(process.env.REACT_APP_NODE_URL + pathGame, {
+    fetch(process.env.REACT_APP_NODE_FITXERS_URL + pathGame, {
       method: 'GET',
       mode: 'same-origin',
     })

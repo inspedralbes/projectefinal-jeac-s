@@ -17,6 +17,7 @@ import GetRanking from '../pages/ranking.js'
 import GetGameStore from '../pages/storeItems.js'
 import socketIO from "socket.io-client";
 import React, { useState, useEffect } from 'react';
+import Guide from '../pages/guide.js';
 
 function AsideNav() {
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
@@ -131,6 +132,8 @@ function AsideNav() {
                     <Route path="/game" element={<Game socket={socket} sharedValue={sharedValue} sharedId={sharedId} />} />
                     <Route path="/ranking" element={<GetRanking />} />
                     <Route path="/store" element={<GetGameStore />} />
+                    <Route path="/guide" element={<Guide />} />
+
                 </Routes>
             </div>
 

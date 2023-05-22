@@ -301,33 +301,31 @@ const UserInfo = ({ socket }) => {
             <div class="p-4">
               <div class="md:m-6 md:p-12">
                 <div class="text-center text-white">
-                  <nav class="backdrop-filter backdrop-blur-l bg-opacity-30 border-b-4 border-fuchsia-600">
+                  <nav class="backdrop-filter backdrop-blur-l bg-opacity-30 border-b-4 border-fuchsia-600 p-4">
                     <div class="flex space-x-4">
-
-                      <li className={`w-1/4 list-none ${activeTab === "tab1" ? "active" : ""}`}>
-                        <a onClick={() => handleTabClick("tab1")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium cursor-pointer">
+                      <li className={`w-1/4 list-none`}>
+                        <a onClick={() => handleTabClick("tab1")} className={`mt-4 mb-4 text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium cursor-pointer p-4 ${activeTab === "tab1" ? "active bg-gray-700" : ""}`}>
                           {t('profileUserInfo')}
                         </a>
                       </li>
 
-                      <li className={`w-1/4 list-none ${activeTab === "tab2" ? "active" : ""}`}>
-                        <a onClick={() => handleTabClick("tab2")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium cursor-pointer">
+                      <li className={`w-1/4 list-none`}>
+                        <a onClick={() => handleTabClick("tab2")} className={`text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium cursor-pointer ${activeTab === "tab2" ? "active bg-gray-700" : ""}`}>
                           {t('profileHistorial')}
                         </a>
                       </li>
 
-                      <li className={`w-1/4 list-none ${activeTab === "tab3" ? "active" : ""}`}>
-                        <a onClick={() => handleTabClick("tab3")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium cursor-pointer">
+                      <li className={`w-1/4 list-none`}>
+                        <a onClick={() => handleTabClick("tab3")} className={`text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium cursor-pointer ${activeTab === "tab3" ? "active bg-gray-700" : ""}`}>
                           {t('profileColeccionables')}
                         </a>
                       </li>
 
-                      <li className={`w-1/4 list-none ${activeTab === "tab4" ? "active" : ""}`}>
-                        <a onClick={() => handleTabClick("tab4")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium cursor-pointer">
+                      <li className={`w-1/4 list-none`}>
+                        <a onClick={() => handleTabClick("tab4")} className={`text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium cursor-pointer ${activeTab === "tab4" ? "active bg-gray-700" : ""}`}>
                           Tus Juegos
                         </a>
                       </li>
-
                     </div>
                   </nav>
                   <br></br>
@@ -493,7 +491,7 @@ const UserInfo = ({ socket }) => {
                   {activeTab === "tab4" &&
                     <div class="flex w-full">
                       {isLoading ?
-                        <table class="table-auto flex-1 w-full">
+                        <table class="table-flex flex-1 w-full ">
                           <thead>
                             <tr>
                               <th class="w-1/4 border-fuchsia-600 border-b">
@@ -516,8 +514,8 @@ const UserInfo = ({ socket }) => {
                               <tr class="h-20 odd:bg-gray-700">
                                 <td>{game.name}</td>
                                 <td>{game.description}</td>
-                                <td><button onClick={() => {navigate("/update"); dispatch(actions.saveUploadedGameId(game.id)); dispatch(actions.saveUploadedGameName(game.name))}}>Actualizar</button></td>
-                                <td><button onClick={() => {handleDeleteGame(game.id); socket.emit("delete_game", game.name)}}>Eliminar</button></td>
+                                <td><button onClick={() => { navigate("/update"); dispatch(actions.saveUploadedGameId(game.id)); dispatch(actions.saveUploadedGameName(game.name)) }}>Actualizar</button></td>
+                                <td><button onClick={() => { handleDeleteGame(game.id); socket.emit("delete_game", game.name) }}>Eliminar</button></td>
                               </tr>
                             ))}
                           </tbody>

@@ -15,7 +15,7 @@ const host = "0.0.0.0";
 let i = 0;
 let lobbies = [];
 
-//app.use(express.static('public'));
+app.use(express.static('public'));
 
 const random_hex_color_code = () => {
   let n = Math.floor(Math.random() * 999999);
@@ -46,7 +46,7 @@ socketIO.on('connection', (socket) => {
   socket.data.username = "";
   socket.data.token = null;
   socket.data.current_lobby = null;
-
+  
   socket.on('disconnect', () => {
     console.log("socket disconected", socket.data.id);
     leaveLobby(socket);
@@ -119,7 +119,7 @@ socketIO.on('connection', (socket) => {
                   return;
                 }
 
-                const containsInitGame = data.includes('game.js');
+                  const containsInitGame = data.includes('game.js');
                 //const containsImagesFolder = fs.existsSync(imagesFolderPath);
                 //const containsScriptFolder = fs.existsSync(scriptsFolderPath);
 
@@ -188,59 +188,6 @@ socketIO.on('connection', (socket) => {
     }
   });
 
-  socket.on('update_img', (file) => {
-    console.log("File to update", file);
-
-    const imgbuffer = Buffer.from(
-      file.img.data.replace(/^data:([A-Za-z-+/]+);base64,/, ''),
-      'base64'
-    );
-
-
-    if (file.newName == '') {
-
-      const imgPath = `public/GamesImages/${file.currentName}/${file.img.name}`;
-      const folderPath = 'public/GamesImages/' + file.currentName;
-
-
-      fs.writeFile(imgPath, imgbuffer, (error) => {
-        if (error) {
-          console.error(error);
-          return;
-        }
-      });
-
-      fs.readdir(folderPath, (err, images) => {
-        if (err) throw err;
-
-        for (const image of images) {
-
-          if (image != file.img.name) {
-            fs.unlink(path.join(folderPath, image), (err) => {
-              if (err) throw err;
-            });
-          }
-        }
-      });
-    }
-    else {
-      const currPath = `public/GamesImages/${file.currentName}`;
-      const newPath = `public/GamesImages/${file.newName}`;
-
-      fs.rename(currPath, newPath, function (err) {
-        if (err) {
-          console.log(err)
-        } else {
-          console.log("Successfully renamed the directory.")
-        }
-      })
-    }
-  })
-
-  socket.on('update_zip', (file) => {
-    console.log("File to update", file);
-  })
-
   socket.on("new_lobby", (data) => {
     let existeix = false;
     let newLobbyIdentifier;
@@ -290,7 +237,7 @@ socketIO.on('connection', (socket) => {
     joinLobby(socket, data.lobbyIdentifier, data.username, data.gameID);
     // }
   });
-
+  
   socket.on("get_players_in_lobby", () => {
     console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     lobbies.forEach((lobby) => {
@@ -308,7 +255,7 @@ socketIO.on('connection', (socket) => {
         console.log("LOBIDATA", lobbyData);
 
 
-        socketIO.to(socket.id).emit("lobby_info", lobbyData);
+        socketIO.to(socket.id).emit("lobby_info", lobbyData);    
       }
     });
   });
@@ -333,7 +280,7 @@ socketIO.on('connection', (socket) => {
       console.log('path/file.txt was deleted');
 
     });
-  })
+  })  
 });
 
 
@@ -372,7 +319,7 @@ function joinLobby(socket, lobbyIdentifier, username, gameID) {
         console.log("members", lobby.members.length, " / ", lobby.maxMembers);
         console.log("IDs", lobby.gameID, " / ", gameID);
 
-
+        
         if (lobby.members.length >= lobby.maxMembers || lobby.gameID != gameID || member.username == username || lobby.ownerId == socket.data.id) {
           disponible = false;
           console.log("Can't add user");
@@ -421,16 +368,16 @@ function leaveLobby(socket) {
     if (lobby.lobbyIdentifier == socket.data.current_lobby) {
       lobby.members.forEach((member, index) => {
         if (member.idUser == socket.data.id) {
-          console.log("User left: ", member);
-          socketIO.to(socket.data.current_lobby).emit("user_left_lobby", member);
-          lobby.members.splice(index, 1);
+            console.log("User left: ", member);
+            socketIO.to(socket.data.current_lobby).emit("user_left_lobby", member);
+            lobby.members.splice(index, 1);
         }
 
         if (lobby.members.length == 0) {
           console.log("Lobby with 0 users");
           lobbies.splice(ind_lobby, 1);
         }
-      });
+      }); 
     }
   });
 

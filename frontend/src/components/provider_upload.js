@@ -115,13 +115,13 @@ const UploadForm = ({ socket }) => {
                                     <div class="flex space-x-2">
 
                                         <li className={`w-1/2 list-none ${activeTab === "tab1" ? "active" : ""}`}>
-                                            <a onClick={() => handleTabClick("tab1")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium cursor-pointer">
+                                            <a onClick={() => handleTabClick("tab1")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium">
                                                 Upload Game
                                             </a>
                                         </li>
 
                                         <li className={`w-1/2 list-none ${activeTab === "tab2" ? "active" : ""}`}>
-                                            <a onClick={() => handleTabClick("tab2")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium cursor-pointer">
+                                            <a onClick={() => handleTabClick("tab2")} class="text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium">
                                                 Guided instructions
                                             </a>
                                         </li>

@@ -11,8 +11,6 @@ const GET_GAMEINFO = 'GET_GAMEINFO';
 const GET_PATHGAME = 'GET_PATHGAME';
 const GET_USERID = 'GET_USERID';
 const GET_OTHERSINFO = 'GET_OTHERSINFO';
-const GET_UPLOADED_GAME_ID = 'GET_UPLOADED_GAME_ID';
-const GET_UPLOADED_GAME_NAME = 'GET_UPLOADED_GAME_NAME';
 
 const initialState = {
   isLoggedIn: false,
@@ -22,9 +20,7 @@ const initialState = {
   gameInfo: {},
   pathGame: {},
   getUserId: {},
-  dataOthers: {},
-  uploadedGameId: {},
-  uploadedGameName: {},
+  dataOthers: {}
 };
 
 const persistConfig = {
@@ -52,10 +48,6 @@ const reducer = (state = initialState, action) => {
       return { ...state, getUserId: action.payload };
     case 'GET_OTHERSINFO':
       return { ...state, dataOthers: action.payload };
-    case 'GET_UPLOADED_GAME_ID':
-      return { ...state, uploadedGameId: action.payload };
-    case 'GET_UPLOADED_GAME_NAME':
-      return { ...state, uploadedGameName: action.payload };
     default:
       return state;
   }
@@ -75,9 +67,6 @@ const actions = {
   savePathGame: (pathGame) => ({ type: GET_PATHGAME, payload: pathGame }),
   getUserId: (getUserId) => ({ type: GET_USERID, payload: getUserId }),
   dataOthers: (dataOthers) => ({ type: GET_OTHERSINFO, payload: dataOthers }),
-  saveUploadedGameId: (uploadedGameId) => ({ type: GET_UPLOADED_GAME_ID, payload: uploadedGameId }),
-  saveUploadedGameName: (uploadedGameName) => ({ type: GET_UPLOADED_GAME_NAME, payload: uploadedGameName }),
-
 };
 
 export { store, persistor, actions };

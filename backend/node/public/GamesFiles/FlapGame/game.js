@@ -251,12 +251,13 @@ function recibirInfoLobby(lobby) {
 
 function userLeft(user) {
     console.log("User left (juego.js)", user);
-    //game.destroy(true, false);
   }
 
-function destroyGame() {
-    game.destroy(true, false);
-}
+  function destroyGame() {
+    if (game != null || game != undefined) {
+      game.destroy(true, false);
+    }
+  }
 
 function executeGame() {
     var obj = [];

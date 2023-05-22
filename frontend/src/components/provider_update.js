@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { store, actions } from './store'; // import the Redux store
+import Profile from '../pages/userInfo.js';
+import { useNavigate } from "react-router-dom";
+
 
 let pathimagen = '';
 let gameNamee = '';
@@ -20,14 +23,25 @@ const UpdateForm = ({ socket }) => {
     const uploadedGameId = useSelector((state) => state.uploadedGameId);
     const uploadedGameName = useSelector((state) => state.uploadedGameName);
 
+    const navigate = useNavigate();
+
     console.log(uploadedGameName);
 
     useEffect(() => {
         socket.on('upload_error', function (msg) {
             console.log('Node msg', msg);
         });
+
+        socket.on('update_complete', function (routes) {
+            console.log('New routes', routes);
+            pathScript = routes.initGame;
+            pathimagen = routes.img;
+            hacerFetch(uploadedGameId);
+        });
+
         return () => {
             socket.off('extraction_complete');
+            socket.off('update_complete');
         };
     }, []);
 
@@ -144,75 +158,22 @@ const UpdateForm = ({ socket }) => {
                 }
 
                 socket.emit('file_update', file);
-                
-                
+
+
+            }
+
         }
-        // else if (fileImagen) {
-        //     const reader2 = new FileReader();
-        //     reader2.readAsDataURL(fileImagen);
-
-        //     reader2.onload = (event) => {
-        //         const fileDataImg = {
-        //             name: fileImagen.name,
-        //             type: fileImagen.type,
-        //             data: event.target.result,
-        //         };
-        //         console.log("fileDataImg", fileDataImg);
-
-        //         const Files = {
-        //             name: nameGame,
-        //             img: fileDataImg
-        //         }
-        //         socket.emit('file_update', Files);
-        //     }
-        // }
-
-
-        // socket.on('extraction_complete', function (path) {
-        //     pathScript = path.initGame;
-        //     pathimagen = path.img;
-        //     hacerFetch(uploadedGameId);
-        // });
-
-        //hacerFetch(uploadedGameId);
-
-    }
-}
-
-    function updateImage() {
-        var fileImagen = document.getElementById("uploadImg").files[0];
-
-        const reader2 = new FileReader();
-        reader2.readAsDataURL(fileImagen);
-
-        reader2.onload = (event) => {
-            let fileDataImg = {
-                name: fileImagen.name,
-                type: fileImagen.type,
-                data: event.target.result,
-            };
-            console.log("fileDataImg", fileDataImg);
-
-            const fileData = {
-                name: fileImagen.name,
-                type: fileImagen.type,
-                data: event.target.result,
-            };
-
-            console.log("fileData", fileData);
-            console.log("fileDataIMagen", fileDataImg);
-
+        else if (!fileImagen && !fileZip && nameGame != '') {
             const file = {
                 newName: nameGame,
                 currentName: uploadedGameName,
-                img: fileDataImg
             }
 
-            //socket.emit('update_img', file);
-
-            return file;
+            socket.emit('file_update', file);
         }
-
+        else if (!fileImagen && !fileZip) {
+            hacerFetch(uploadedGameId);
+        }
     }
 
     async function hacerFetch(uploadedGameId) {
@@ -247,6 +208,8 @@ const UpdateForm = ({ socket }) => {
                 console.log('Error al actualizar el juego');
             } else {
                 console.log('Juego actualizado correctamente');
+                navigate("/profile")
+
             }
         } catch (error) {
             console.error('Error en la solicitud UPDATE:', error);
@@ -320,7 +283,7 @@ const UpdateForm = ({ socket }) => {
                                                     <br></br>
                                                     <input
                                                         class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                                                        id='uploadZip' type='file'  accept=".zip,.rar,.7zip" value={zip} onChange={(e) => setZip(e.target.value)}>
+                                                        id='uploadZip' type='file' accept=".zip,.rar,.7zip" value={zip} onChange={(e) => setZip(e.target.value)}>
                                                     </input>
                                                 </div>
 

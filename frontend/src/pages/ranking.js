@@ -41,9 +41,9 @@ function GetRanking() {
       <div class="container h-full w-full md:w-full lg:w-2/4 lg:p-5 ">
         <div class="block rounded-lg bg-gray-800 border-violet-300 shadow-lg dark:bg-neutral-800">
           <div class="border-violet-300 border p-4">
-            <div class="md:m-6 md:p-12">
+            <div class="md:mr-6 md:pr-12 md:ml-6 md:pl-12 md:mb-6 md:pb-12">
               <div class="text-center">
-                <h1 class="text-white text-2xl font-bold">
+                <h1 class="font-mono text-white text-4xl mt-10 font-bold">
                   {t('ranking')}
                 </h1>
                 <br></br>

@@ -103,9 +103,9 @@ const UploadForm = ({ socket }) => {
                 <div class=" container h-full w-3/4 p-10">
                     <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
                         <div class="p-4">
-                            <div class="md:m-6 md:p-12">
+                            <div>
                                 <div class="text-center text-white">
-                                    <h1 class="text-2xl text-gray-300 font-bold">UPLOAD GAME</h1><br></br>
+                                    <h1 class="font-mono text-white text-4xl mt-10 font-bold">UPLOAD GAME</h1><br></br>
                                     <div>
                                         <form onSubmit={UploadGame}>
                                             <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>

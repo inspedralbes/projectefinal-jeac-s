@@ -170,7 +170,8 @@ const UserInfo = ({ onSharedValueChange, onSharedIdChange }) => {
                                             </li>
                                         </div>
                                     </nav>
-                                    <br></br>
+                                    <br></br>                  <br></br>
+
 
                                     {activeTab === "tab1" &&
                                         <div>
@@ -178,23 +179,23 @@ const UserInfo = ({ onSharedValueChange, onSharedIdChange }) => {
                                                 <table class="table-auto w-full">
                                                     <thead>
                                                         <tr>
-                                                            <th class="w-1/4 border-fuchsia-600 border-b">
+                                                            <th class="w-1/5 border-fuchsia-600 border-b">
                                                                 {t('profileProfilePicture')}
                                                             </th>
-                                                            <th class="w-1/4 border-fuchsia-600 border-b">
+                                                            <th class="w-1/5 border-fuchsia-600 border-b">
                                                                 {t('profileName')}
                                                             </th>
-                                                            <th class="w-1/4 border-fuchsia-600 border-b">
+                                                            <th class="w-1/5 border-fuchsia-600 border-b">
                                                                 {t('profileTotalScore')}
                                                             </th>
-                                                            <th class="w-1/4 border-fuchsia-600 border-b">
+                                                            <th class="w-1/5 border-fuchsia-600 border-b">
                                                                 Jeacstars
                                                             </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td><img class="rounded-full w-full border-4 border-fuchsia-600" src={avatarSet} alt=""></img></td>
+                                                            <td class="text-center"><img class="rounded-full border-4 border-fuchsia-600 w-3/4 h-3/4 mx-auto mt-4" src={avatarSet} alt=""></img></td>
                                                             <td><h4 class="text-2xl">{otherInfo.name}</h4></td>
                                                             <td><h4 class="text-2xl">{otherInfo.totalScore}</h4></td>
                                                             <td><h4 class="text-2xl">{otherInfo.jeacstars}<img class="w-10 h-10 inline" src="JeacstarNF.png"></img></h4></td>

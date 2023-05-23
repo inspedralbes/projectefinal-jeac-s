@@ -63,9 +63,9 @@ function Games({ onSharedValueChange, onSharedIdChange }) {
                                                     <br></br><br></br>
                                                     <div>
                                                         <hr className="border-black mt-4 mb-4"></hr>
-                                                        <p className="text-black text-xl font-bold" onClick={() => visitarPerfil(game.user.id)}>
+                                                        <p className="text-black text-xl font-bold">
                                                             Juego creado por:<br></br>
-                                                            <a className="hover:text-white cursor-pointer">{game.user.name}</a>
+                                                            <a onClick={() => visitarPerfil(game.user.id)} className="hover:text-white cursor-pointer">{game.user.name}</a>
                                                         </p>
                                                     </div>
                                                 </div>

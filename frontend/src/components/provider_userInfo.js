@@ -360,7 +360,7 @@ const UserInfo = ({ socket }) => {
                         </thead>
                         <tbody>
                           <tr>
-                            <td><img class="rounded-full w-full border-4 border-fuchsia-600" src={avatar()} alt=""></img></td>
+                            <td class="text-center"><img class="rounded-full border-4 border-fuchsia-600 w-3/4 h-3/4 mx-auto mt-4" src={avatar()} alt=""></img></td>
                             <td><h4 class="text-2xl">{userInfo.name}</h4></td>
                             <td><h4 class="text-2xl">{userInfo.email}</h4></td>
                             <td><h4 class="text-2xl">{userInfo.totalScore}</h4></td>

@@ -94,7 +94,10 @@ const Tienda = () => {
       <div class="text-center container h-full w-3/4 p-10">
         <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
           <div class="p-4">
-            <div class="md:m-6 md:p-12">
+            <div class="md:mr-6 md:pr-12 md:ml-6 md:pl-12 md:mb-6 md:pb-12">
+              <h1 class="font-mono text-white text-4xl mt-10 font-bold md:pb-12">
+                TIENDA
+              </h1>
               <div class="justify-center text-white text-center flex flex-wrap">
                 {isLoggedIn ?
                   <div>

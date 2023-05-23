@@ -57,10 +57,10 @@ function init(_sendInfoGame, _finalJuego) {
 
 function preload() {
     // Preload assets
-    this.load.image('bird', '../GamesFiles/FlapGame/assets/bird.png');
-    this.load.image('bird2', '../GamesFiles/FlapGame/assets/bird2.png');
-    this.load.image('pipe', '../GamesFiles/FlapGame/assets/pipe.png');
-    this.load.image('background', '../GamesFiles/FlapGame/assets/background.png');
+    this.load.image('bird', './fitxers/GamesFiles/FlapGame/assets/bird.png');
+    this.load.image('bird2', './fitxers/GamesFiles/FlapGame/assets/bird2.png');
+    this.load.image('pipe', './fitxers/GamesFiles/FlapGame/assets/pipe.png');
+    this.load.image('background', './fitxers/GamesFiles/FlapGame/assets/background.png');
 }
 
 function create() {

@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { store, actions } from './store'; // import the Redux store
+import { actions } from './store';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import moment from 'moment';
@@ -278,13 +278,9 @@ const UserInfo = ({ socket }) => {
     })
       .then(response => {
         if (response.ok) {
-          console.log('Juego eliminado correctamente');
           // Realiza cualquier acción adicional después de eliminar el juego
           fetchUpdatedGames(); // Obtener la lista actualizada de juegos después de eliminar uno
 
-        } else {
-          console.log('Error al eliminar el juego');
-          // Maneja el error de eliminación del juego
         }
       })
       .catch(error => {
@@ -353,7 +349,6 @@ const UserInfo = ({ socket }) => {
                             </th>
                           </tr>
                         </thead>
-                        <br></br>
                         <tbody>
                           <tr>
                             <td><img class="rounded-full w-full border-4 border-fuchsia-600" src={avatar()} alt=""></img></td>
@@ -369,7 +364,7 @@ const UserInfo = ({ socket }) => {
                       <form onSubmit={changeName}>
                         <div class="border-2 border-fuchsia-600 relative mb-4 mt-10" data-te-input-wrapper-init>
                           <label
-                            for="exampleFormControlInput1"
+                            htmlFor="exampleFormControlInput1"
                             class="text-gray-400 pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
                             {t('profileChangeName')}
                           </label>
@@ -430,7 +425,6 @@ const UserInfo = ({ socket }) => {
                                     </th>
                                   </tr>
                                 </thead>
-                                <br></br>
                                 <tbody>
                                   {playedGames.map((game, userId) => (
                                     <tr class="h-20 odd:bg-gray-700" key={userId}>
@@ -508,14 +502,32 @@ const UserInfo = ({ socket }) => {
                               </th>
                             </tr>
                           </thead>
-                          <br></br>
                           <tbody>
                             {uploadedGames.map((game) => (
-                              <tr class="h-20 odd:bg-gray-700">
+                              <tr key={game.id} className="h-20 odd:bg-gray-700">
                                 <td>{game.name}</td>
                                 <td>{game.description}</td>
-                                <td><button onClick={() => { navigate("/update"); dispatch(actions.saveUploadedGameId(game.id)); dispatch(actions.saveUploadedGameName(game.name)) }}>Actualizar</button></td>
-                                <td><button onClick={() => { handleDeleteGame(game.id); socket.emit("delete_game", game.name) }}>Eliminar</button></td>
+                                <td>
+                                  <button
+                                    onClick={() => {
+                                      navigate("/update");
+                                      dispatch(actions.saveUploadedGameId(game.id));
+                                      dispatch(actions.saveUploadedGameName(game.name));
+                                    }}
+                                  >
+                                    Actualizar
+                                  </button>
+                                </td>
+                                <td>
+                                  <button
+                                    onClick={() => {
+                                      handleDeleteGame(game.id);
+                                      socket.emit("delete_game", game.name);
+                                    }}
+                                  >
+                                    Eliminar
+                                  </button>
+                                </td>
                               </tr>
                             ))}
                           </tbody>

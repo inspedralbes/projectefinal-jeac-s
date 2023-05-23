@@ -59,7 +59,6 @@ function create() {
             delay: 1000,
             loop: true,
             callback: function () {
-                console.log("aaa");
                 tiempoRestante--;
 
                 if (tiempoRestante <= 0) {
@@ -192,7 +191,7 @@ function recibirInfoLobby(lobby) {
 }
 
 function userLeft(user) {
-    console.log("User left (juego.js)", user);
+    console.log("User left: ", user);
   }
 
   function destroyGame() {

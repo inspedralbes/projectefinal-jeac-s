@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ConnectedUsers from "../components/ConnectedUsers.js"
-import { store, actions } from '../components/store.js'; // import the Redux store
+import { store, actions } from '../components/store.js';
 
 var Phaser = null;
 var obj = null;
@@ -58,14 +58,12 @@ function Game({ socket }) {
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
-      console.log("LOBBY INFO", data);
       setLobbyId(data.lobbyIdentifier);
       ownerLobby = data;
     });
 
     socket.on("start_game", () => {
       setDisplayCanvas(true);
-      console.log("ownerLobby", ownerLobby);
       socket.emit("get_players_in_lobby");
       const myTimeout = setTimeout(play, 500);
     });
@@ -175,20 +173,13 @@ function Game({ socket }) {
       .then(scriptText => {
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
-        console.log("HOLA YAUME, que tal?", obj.config_game);
-
         setHasMultiplayer(obj.config_game.multiplayer);
         setHasSingleplayer(obj.config_game.singleplayer);
       })
   }
 
   function play() {
-    //setGameStarted(true);
-    console.log("HOLA", obj);
-    console.log("CANVAS", document.getElementById('canvas'));
-
     if (document.getElementById('canvas')) {
-      console.log("ESta canvas");
       obj.init(sendInfoGame, finalJuego);
       obj.recibirInfoLobby(ownerLobby);
     }
@@ -248,7 +239,6 @@ function Game({ socket }) {
                     :
                     <></>
                   }
-                  
                   {hasMultiplayer ?
                     <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(false); }}>Multiplayer</button>
                     :
@@ -261,7 +251,7 @@ function Game({ socket }) {
                 {singlePlayer && !gameStarted ?
                   <div>
                     <button class="bg-violet-500 absolute left-0 top-0 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(false); setSinglePlayer(false); }}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z" />
+                      <path fillRule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z" />
                     </svg></button>
                     {isLoggedIn ?
                       <div>
@@ -296,13 +286,11 @@ function Game({ socket }) {
                   :
                   <div>
                     {!optionSelected && !gameStarted ?
-
                       <div>
-
                         <button class="bg-violet-500 absolute left-0 top-0 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(false); }}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
-                          <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z" />
+                          <path fillRule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z" />
                         </svg></button>
-                        
+
                         <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={createRoom}>Create lobby</button><br></br><br></br>
                         <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={joinRoom}>Join lobby</button>
                       </div> :

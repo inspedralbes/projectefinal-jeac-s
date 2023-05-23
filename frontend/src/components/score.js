@@ -1,8 +1,6 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { store, actions } from './store'; // import the Redux store
+import { store, actions } from './store';
 
-async function endGame(totalScore) {  
-  console.log(totalScore);
+async function endGame(totalScore) {
   const token = localStorage.getItem('access_token');
   const gameId = 8;
   const score = totalScore;
@@ -21,7 +19,7 @@ async function endGame(totalScore) {
         const data = await response.json();
         store.dispatch(actions.saveData(data));
         const userId = data.id;
-        
+
         await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/createPlayedGame', {
           method: 'POST',
           headers: {
@@ -30,7 +28,6 @@ async function endGame(totalScore) {
           },
           body: JSON.stringify({ userId, gameId, score }),
         });
-
       } catch (error) {
         console.error(error);
       }

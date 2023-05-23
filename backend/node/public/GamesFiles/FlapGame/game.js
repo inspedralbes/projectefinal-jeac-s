@@ -233,7 +233,6 @@ function recibirInfoFromPlatform(data) {
 }
 
 function recibirInfoLobby(lobby) {
-    console.log(lobby);
     lobby.members.forEach((member) => {
         players++;
         if (member.idUser == lobby.yourId) {
@@ -246,11 +245,10 @@ function recibirInfoLobby(lobby) {
             ownerDelLobby = false;
         }
     });
-    console.log(user);
 }
 
 function userLeft(user) {
-    console.log("User left (juego.js)", user);
+    console.log("User left: ", user);
   }
 
   function destroyGame() {

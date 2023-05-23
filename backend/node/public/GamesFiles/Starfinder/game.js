@@ -142,10 +142,26 @@ function recibirInfoFromPlatform(data) {
     //console.log("Ship hace la movicion");
     playerMoved(data);
   }
-  else if (data.infoGame.action == 'new_game') {
-    startNewGame();
-  }
+  else if (data.infoGame.action == "new_game") {
+    gameEnded = false;
+    textWin.destroy();
 
+    playersArray.forEach((player) => {
+      
+      if (player.self == true) {
+        self.ship.setPosition(player.posX, player.posY);
+        self.ship.setRotation(0, 0);
+      }
+
+    })
+
+  }
+  else if (data.infoGame.action == "self_ship_movement") {
+    if (data.infoGame.id === self.ship.playerId) {
+      self.ship.setRotation(data.infoGame.rotation);
+      self.ship.setPosition(data.infoGame.posX, data.infoGame.posY);
+    }
+  }
   else if (data.infoGame.action == 'starLocation' && !ownerDelLobby) {
 
     //console.log("Location star", data);
@@ -191,15 +207,15 @@ function recibirInfoFromPlatform(data) {
 
       gameEnded = true;
 
-      
+
       if (ownerDelLobby) {
-        
+
         button = self.add.rectangle(400, 300, 200, 80, 0xff0000);
         button.setInteractive();
         button.on('pointerdown', startNewGame);
       }
 
-      textWin = self.add.text(200, 200, 'Blue wins ', { fontSize: '32px', fill: '#FF0000' });
+      textWin = self.add.text(300, 200, 'Blue wins ', { fontSize: '32px', fill: '#FFFFFF' });
 
 
       playersArray.forEach(player => {
@@ -218,11 +234,13 @@ function recibirInfoFromPlatform(data) {
 
       gameEnded = true;
 
-      button = self.add.rectangle(400, 300, 200, 80, 0xff0000);
-      button.setInteractive();
-      button.on('pointerdown', startNewGame);
+      if (ownerDelLobby) {
+        button = self.add.rectangle(300, 200, 200, 80, 0xff0000);
+        button.setInteractive();
+        button.on('pointerdown', startNewGame);
+      }
 
-      textWin = self.add.text(584, 16, 'Red wins ', { fontSize: '32px', fill: '#FF0000' });
+      textWin = self.add.text(584, 16, 'Red wins ', { fontSize: '32px', fill: '#FFFFFF'});
 
       playersArray.forEach(player => {
         if (player.id == yourId) {
@@ -237,6 +255,14 @@ function recibirInfoFromPlatform(data) {
       });
     }
 
+  }
+
+  else if (data.infoGame.action == 'reset_score') {
+    scores.red = 0;
+    scores.blue = 0;
+
+    self.blueScoreText.setText('Blue: ' + scores.blue);
+    self.redScoreText.setText('Red: ' + scores.red);
   }
 }
 
@@ -360,6 +386,11 @@ function addPlayers(self) {
 }
 
 function playerMoved(data) {
+  // if (data.infoGame.id === self.ship.playerId){
+  //   self.ship.setRotation(data.infoGame.rotation);
+  //   self.ship.setPosition(data.infoGame.posX, data.infoGame.posY);
+  // }
+
   otherPlayers.getChildren().forEach(function (otherPlayer) {
     if (data.infoGame.id === otherPlayer.playerId) {
       otherPlayer.setRotation(data.infoGame.rotation);
@@ -367,6 +398,7 @@ function playerMoved(data) {
     }
   });
 }
+
 function userLeft(user) {
   console.log("User left (juego.js)", user);
 }
@@ -379,33 +411,33 @@ function destroyGame() {
 
 function startNewGame() {
 
-  sendInfoGame({ action: "new_game"})
+  sendInfoGame({ action: "new_game" })
 
   if (ownerDelLobby) {
     button.destroy();
   }
   textWin.destroy();
 
-  scores.red = 0;
-  scores.blue = 0;
+  sendInfoGame({ action: "reset_score" })
 
-  self.blueScoreText.setText('Blue: ' + scores.blue);
-  self.redScoreText.setText('Red: ' + scores.red);
 
   playersArray.forEach((player) => {
     console.log("PLAyer", player);
     console.log("Self ship", self.ship);
     console.log("others ship", otherPlayers);
 
-    if (player.self == true) {
-      self.ship.setPosition(player.posX, player.posY);
-      self.ship.setRotation(0, 0);
-    }
+    // if (player.self == true) {
+    //   self.ship.setPosition(player.posX, player.posY);
+    //   self.ship.setRotation(0, 0);
+    //   //sendInfoGame({ action: "self_ship_movement", id: self.ship.playerId, posX: self.ship.x, posY: self.ship.y, rotation: self.ship.rotation })
+
+    // }
 
     otherPlayers.getChildren().forEach(function (other) {
       if (player.id === other.playerId) {
         other.setPosition(player.posX, player.posY);
         other.setRotation(0, 0);
+        sendInfoGame({ action: "shipMovement", id: other.playerId, posX: other.x, posY: other.y, rotation: other.rotation })
       }
     });
 

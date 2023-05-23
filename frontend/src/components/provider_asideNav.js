@@ -18,7 +18,7 @@ import GetGameStore from '../pages/storeItems.js'
 import socketIO from "socket.io-client";
 import React, { useState, useEffect } from 'react';
 
-function AsideNav() {
+function AsideNav({ socket }) {
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const dispatch = useDispatch();
     const storeItems = useSelector((state) => state.storeItems);
@@ -26,16 +26,6 @@ function AsideNav() {
     const userInfo = useSelector((state) => state.data);
     const [sharedValue, setSharedValue] = useState('');
     const [sharedId, setSharedId] = useState('');
-
-    var socket = socketIO(process.env.REACT_APP_NODE_URL, {
-        withCredentials: true,
-        cors: {
-            origin: "*",
-            credentials: true,
-        },
-        path: "/node/",
-        transports: ["websocket"],
-    });
 
     const handleSharedValueChange = (newValue) => {
         dispatch(actions.savePathGame(newValue));

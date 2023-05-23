@@ -605,5 +605,4 @@ function renameFolders(file) {
     });
 
   }
-  console.log("RUTAS", routes);
 }

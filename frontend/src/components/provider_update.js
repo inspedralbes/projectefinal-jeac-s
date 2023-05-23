@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import routes from "../index.js";
 
 let pathimagen = '';
 let gameNamee = '';
 let descriptionGame = '';
 let pathScript = '';
 
-const UploadForm = ({ socket }) => {
+const UpdateForm = ({ socket }) => {
     const [nameGame, setName] = useState('')
     const [img, setImg] = useState('')
     const [zip, setZip] = useState('')
@@ -205,4 +204,4 @@ const UploadForm = ({ socket }) => {
     );
 }
 
-export default UploadForm;
+export default UpdateForm;

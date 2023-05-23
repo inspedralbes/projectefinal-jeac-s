@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom/client';
 
 import reportWebVitals from './reportWebVitals';
@@ -7,11 +7,6 @@ import AsideNav from './components/asideNav.js';
 import {HashRouter} from "react-router-dom";
 
 import './App.css';
-
-const routes = {
-  fetchLaravel: "http://jeacsgames.cat/../laravel/public",
-  wsNode: "http://jeacsg.alumnes.inspedralbes.cat:7878",
-};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -28,6 +23,3 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
-
-
-export default routes;

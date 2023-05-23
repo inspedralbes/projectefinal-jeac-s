@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, NavLink } from "react-router-dom";
-import routes from '../index.js';
 import { useTranslation } from 'react-i18next';
 
 function Signin() {
@@ -20,7 +19,7 @@ function Signin() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${routes.fetchLaravel}/api/register`, {
+      const response = await fetch(process.env.REACT_APP_LARAVEL_URL + '/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

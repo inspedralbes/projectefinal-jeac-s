@@ -1,12 +1,12 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import  UserInfo  from '../components/provider_userInfo';
+import  OtherUserInfo  from '../components/provider_otherUserInfo';
 import { store } from '../components/store';
 
 
-const App = ({socket}) => (
+const App = () => (
   <Provider store={store}>
-    <UserInfo socket={socket}/>
+    <OtherUserInfo />
   </Provider>
 );
 

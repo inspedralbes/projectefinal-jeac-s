@@ -13,13 +13,21 @@ const UploadForm = ({ socket }) => {
     const [zip, setZip] = useState('')
     const [description, setDescription] = useState('')
     const [error, setError] = useState(null);
+    const [messageError, setMessageError] = useState("Error");
+
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const { t } = useTranslation();
     const userInfo = useSelector((state) => state.data);
 
     useEffect(() => {
-        socket.on('upload_error', function (msg) {
+        socket.on('message_error', function (msg) {
             console.log('Node msg', msg);
+            setMessageError(msg);
+
+            document.getElementById("popup").style.display = "block";
+            setTimeout((() => {
+              document.getElementById("popup").style.display = "none";
+            }), 3000)
         });
         return () => {
             socket.off('extraction_complete');
@@ -97,7 +105,9 @@ const UploadForm = ({ socket }) => {
     }
 
     return (
+
         <div class="overflow-auto flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
+            <div id="popup" className="hidden">{messageError}</div>
             {isLoggedIn ?
                 <div class=" container h-full w-3/4 p-10">
                     <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">

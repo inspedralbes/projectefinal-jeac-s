@@ -39,7 +39,6 @@ app.use((req, res, next) => {
 
 socketIO.on('connection', (socket) => {
   console.log('Socket connected');
-  console.log("Lobbbbbbbbies", lobbies);
 
   i++;
   socket.data.id = i;
@@ -145,7 +144,6 @@ socketIO.on('connection', (socket) => {
                       console.error(err);
                       return;
                     }
-                    console.log(`La carpeta ha sido creada.`);
 
                     fs.writeFile(imgPath, imgbuffer, (error) => {
                       if (error) {
@@ -153,11 +151,15 @@ socketIO.on('connection', (socket) => {
                         return;
                       }
                     });
+                
                   });
+                  socket.emit("message_error", "Uploaded successfully");
                 }
                 else {
                   console.log("Error validacion");
                   socket.emit("upload_error", "Error en la subida. El zip no contiene el script game.js o las carpetas images y scripts");
+                  socket.emit("message_error", "The zip does not contain the game.js file ");
+
 
                   fs.rm(`./public/GamesFiles/${file.name}`, { recursive: true }, (err) => {
                     if (err) throw console.log("AAAA", err);;
@@ -177,16 +179,21 @@ socketIO.on('connection', (socket) => {
                 }
 
                 socket.emit("extraction_complete", routes);
+
               });
             });
         });
       }
       else {
         console.log("Nombre no disponible");
+        socket.emit("message_error", "Name already in use");
+
       }
     }
     else {
       console.log("Nombre vacio");
+      socket.emit("message_error", "Name cannot be empty");
+
     }
   });
 
@@ -230,9 +237,7 @@ socketIO.on('connection', (socket) => {
             }
           }
         });
-
       }
-
       if (file.zip) {
         extracZip(file);
       }
@@ -254,6 +259,8 @@ socketIO.on('connection', (socket) => {
     }
     else {
       console.log("NOMBRE YA EXISTE");
+      socket.emit("message_error", "Name already in use");
+
     }
   });
 

@@ -194,9 +194,13 @@ socketIO.on('connection', (socket) => {
   socket.on('file_update', (file) => {
     console.log("File", file);
 
+    let existNameFolder = false;
+    if (file.newName != '') { 
+      const NameFolderExist = path.join('public', 'GamesFiles', file.newName);
+      existNameFolder = fs.existsSync(NameFolderExist);
 
-    const NameFolderExist = path.join('public', 'GamesFiles', file.newName);
-    const existNameFolder = fs.existsSync(NameFolderExist);
+    }
+    
 
     if (!existNameFolder) {
 

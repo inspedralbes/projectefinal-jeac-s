@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ConnectedUsers from "../components/ConnectedUsers.js"
-import { store, actions } from '../components/store.js'; // import the Redux store
+import { store, actions } from '../components/store.js';
 
 var Phaser = null;
 var obj = null;
@@ -63,14 +63,12 @@ function Game({ socket }) {
 
   useEffect(() => {
     socket.on("lobby_info", (data) => {
-      console.log("LOBBY INFO", data);
       setLobbyId(data.lobbyIdentifier);
       ownerLobby = data;
     });
 
     socket.on("start_game", () => {
       setDisplayCanvas(true);
-      console.log("ownerLobby", ownerLobby);
       socket.emit("get_players_in_lobby");
       const myTimeout = setTimeout(play, 500);
     });
@@ -170,7 +168,7 @@ function Game({ socket }) {
   }
 
   function getScript() {
-    fetch(process.env.REACT_APP_FITXERS_URL + pathGame, {
+    fetch(process.env.REACT_APP_NODE_FITXERS_URL + pathGame, {
       method: 'GET',
       mode: 'same-origin',
     })
@@ -180,20 +178,13 @@ function Game({ socket }) {
       .then(scriptText => {
         const scriptFn = new Function(scriptText + '; return executeGame()');
         obj = scriptFn();
-        console.log("HOLA YAUME, que tal?", obj.config_game);
-
         setHasMultiplayer(obj.config_game.multiplayer);
         setHasSingleplayer(obj.config_game.singleplayer);
       })
   }
 
   function play() {
-    //setGameStarted(true);
-    console.log("HOLA", obj);
-    console.log("CANVAS", document.getElementById('canvas'));
-
     if (document.getElementById('canvas')) {
-      console.log("ESta canvas");
       obj.init(sendInfoGame, finalJuego);
       obj.recibirInfoLobby(ownerLobby);
     }

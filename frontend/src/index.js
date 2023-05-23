@@ -5,15 +5,28 @@ import reportWebVitals from './reportWebVitals';
 
 import AsideNav from './components/asideNav.js';
 import {HashRouter} from "react-router-dom";
+import socketIO from "socket.io-client";
+
 
 import './App.css';
+
+
+var socket = socketIO(process.env.REACT_APP_NODE_URL, {
+  withCredentials: true,
+  cors: {
+      origin: "*",
+      credentials: true,
+  },
+  path: "/node/",
+  transports: ["websocket"],
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <div>
       <HashRouter>
-        <AsideNav></AsideNav>
+        <AsideNav socket={socket}></AsideNav>
       </HashRouter>
     </div>
   </React.StrictMode>

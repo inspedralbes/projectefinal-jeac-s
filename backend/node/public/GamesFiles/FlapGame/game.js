@@ -57,10 +57,10 @@ function init(_sendInfoGame, _finalJuego) {
 
 function preload() {
     // Preload assets
-    this.load.image('bird', '../GamesFiles/FlapGame/assets/bird.png');
-    this.load.image('bird2', '../GamesFiles/FlapGame/assets/bird2.png');
-    this.load.image('pipe', '../GamesFiles/FlapGame/assets/pipe.png');
-    this.load.image('background', '../GamesFiles/FlapGame/assets/background.png');
+    this.load.image('bird', './fitxers/GamesFiles/FlapGame/assets/bird.png');
+    this.load.image('bird2', './fitxers/GamesFiles/FlapGame/assets/bird2.png');
+    this.load.image('pipe', './fitxers/GamesFiles/FlapGame/assets/pipe.png');
+    this.load.image('background', './fitxers/GamesFiles/FlapGame/assets/background.png');
 }
 
 function create() {
@@ -233,7 +233,6 @@ function recibirInfoFromPlatform(data) {
 }
 
 function recibirInfoLobby(lobby) {
-    console.log(lobby);
     lobby.members.forEach((member) => {
         players++;
         if (member.idUser == lobby.yourId) {
@@ -246,17 +245,17 @@ function recibirInfoLobby(lobby) {
             ownerDelLobby = false;
         }
     });
-    console.log(user);
 }
 
 function userLeft(user) {
-    console.log("User left (juego.js)", user);
-    //game.destroy(true, false);
+    console.log("User left: ", user);
   }
 
-function destroyGame() {
-    game.destroy(true, false);
-}
+  function destroyGame() {
+    if (game != null || game != undefined) {
+      game.destroy(true, false);
+    }
+  }
 
 function executeGame() {
     var obj = [];

@@ -62,7 +62,6 @@ function recibirInfo(puntos) {
       texto += p.member + ': ' + p.score + '\n';
     });
     textoContador.setText(texto);
-    console.log(puntos);
   }
   
 

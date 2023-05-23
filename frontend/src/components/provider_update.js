@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { store, actions } from './store'; // import the Redux store
-import Profile from '../pages/userInfo.js';
 import { useNavigate } from "react-router-dom";
 
 
@@ -120,12 +118,7 @@ const UpdateForm = ({ socket }) => {
                     currentName: uploadedGameName,
                     img: fileDataImg
                 }
-
-                //socket.emit('update_img', file);
-
                 socket.emit('file_update', file);
-
-
             }
         }
         else if (!fileImagen && fileZip) {
@@ -141,13 +134,6 @@ const UpdateForm = ({ socket }) => {
                     data: event.target.result,
                 };
                 console.log("fileDataZip", fileDataZip);
-
-                // const fileData = {
-                //     name: fileImagen.name,
-                //     type: fileImagen.type,
-                //     data: event.target.result,
-                // };
-
                 console.log("fileData", fileDataZip);
                 console.log("fileDataZip", fileDataZip);
 

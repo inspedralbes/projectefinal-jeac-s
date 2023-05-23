@@ -4,7 +4,6 @@ import { actions } from './store';
 import Navbar from './navbar.js'
 import { Routes, Route } from "react-router-dom";
 import Games from '../pages/games'
-// import Game from '../components/game'
 import Home from '../pages/home'
 import Profile from '../pages/userInfo.js';
 import OtherProfile from '../pages/otherUserInfo.js'
@@ -15,8 +14,7 @@ import LoginForm from '../pages/login.js'
 import Game from '../pages/plataforma.js'
 import GetRanking from '../pages/ranking.js'
 import GetGameStore from '../pages/storeItems.js'
-import socketIO from "socket.io-client";
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Guide from '../pages/guide.js';
 
 function AsideNav({ socket }) {

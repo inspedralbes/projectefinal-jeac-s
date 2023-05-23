@@ -18,8 +18,8 @@ let lobbies = [];
 //app.use(express.static('public'));
 
 const random_hex_color_code = () => {
-  let n = Math.floor(Math.random() * 999999);
-  return n.toString().padStart(6, "0");
+  let n = Math.floor(Math.random() * 9999);
+  return n.toString().padStart(4, "0");
 };
 
 const socketIO = new Server(server, {
@@ -334,8 +334,19 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on("can_start_game", () => {
-    console.log("Start game", socket.data.current_lobby);
-    socketIO.to(socket.data.current_lobby).emit("start_game");
+    lobbies.forEach((lobby) => {
+      if (lobby.lobbyIdentifier == socket.data.current_lobby) {
+        if (lobby.members.length > 1) {
+          console.log("Start game", socket.data.current_lobby);
+          socketIO.to(socket.data.current_lobby).emit("start_game");
+        }
+
+        else {
+          socketIO.to(socket.id).emit("message_error_start_game", "You cannot play alone");
+        }
+
+      }
+    });
   });
 
   socket.on("leave_lobby", () => {

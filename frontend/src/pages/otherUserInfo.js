@@ -195,7 +195,7 @@ const UserInfo = ({ onSharedValueChange, onSharedIdChange }) => {
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td class="text-center"><img class="rounded-full border-4 border-fuchsia-600 h-48 mx-auto mt-4" src={avatarSet} alt=""></img></td>
+                                                            <td class="text-center"><img class="rounded-full border-4 border-fuchsia-600 w-3/4 h-3/4 mx-auto mt-4" src={avatarSet} alt=""></img></td>
                                                             <td><h4 class="text-2xl">{otherInfo.name}</h4></td>
                                                             <td><h4 class="text-2xl">{otherInfo.totalScore}</h4></td>
                                                             <td><h4 class="text-2xl">{otherInfo.jeacstars}<img class="w-10 h-10 inline" src="JeacstarNF.png"></img></h4></td>

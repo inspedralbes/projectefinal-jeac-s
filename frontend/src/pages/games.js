@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux'
+import { actions } from '../components/store.js'
 
 function Games({ onSharedValueChange, onSharedIdChange }) {
     const [fetchData, setFetchData] = useState([]);
@@ -31,6 +33,11 @@ function Games({ onSharedValueChange, onSharedIdChange }) {
         }
         fetchGames();
     }, []);
+
+    function visitarPerfil(id){
+        dispatchEvent(actions.getUserId({id: id, visitor: true, tab: "tab4"}));
+        navigate("/otherProfile")
+    }
 
     return (
         <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center">

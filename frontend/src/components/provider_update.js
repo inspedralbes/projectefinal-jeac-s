@@ -16,6 +16,8 @@ const UpdateForm = ({ socket }) => {
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const { t } = useTranslation();
     const userInfo = useSelector((state) => state.data);
+    const uploadedGameId = useSelector((state) => state.uploadedGameId);
+    const uploadedGameName = useSelector((state) => state.uploadedGameName);
 
     useEffect(() => {
         socket.on('upload_error', function (msg) {

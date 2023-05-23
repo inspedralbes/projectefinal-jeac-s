@@ -29,45 +29,185 @@ const UpdateForm = ({ socket }) => {
     function UploadGame(e) {
         e.preventDefault();
 
-        let file = document.getElementById("uploadZip").files[0];
+        console.log("Entra update");
+
+        let fileZip = document.getElementById("uploadZip").files[0];
         var fileImagen = document.getElementById("uploadImg").files[0];
         gameNamee = document.getElementById('nameGamee').value;
         descriptionGame = document.getElementById('descriptionGamee').value;
+        let fileDataImg = null;
 
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
+        if (fileZip && fileImagen) {
 
-        const reader2 = new FileReader();
-        reader2.readAsDataURL(fileImagen);
+            console.log("Zip e imagen");
 
-        reader.onload = (event) => {
-            const fileData = {
-                name: file.name,
-                type: file.type,
-                data: event.target.result,
-            };
+            const reader = new FileReader();
+            reader.readAsDataURL(fileZip);
+
+            const reader2 = new FileReader();
+            reader2.readAsDataURL(fileImagen);
+
+            reader.onload = (event) => {
+                const fileData = {
+                    name: fileZip.name,
+                    type: fileZip.type,
+                    data: event.target.result,
+                };
+
+                reader2.onload = (event) => {
+                    const fileDataImg = {
+                        name: fileImagen.name,
+                        type: fileImagen.type,
+                        data: event.target.result,
+                    };
+
+                    const Files = {
+                        newName: nameGame,
+                        currentName: uploadedGameName,
+                        zip: fileData,
+                        img: fileDataImg
+                    }
+                    socket.emit('file_update', Files);
+                }
+            }
+
+        }
+        else if (fileImagen && !fileZip) {
+            console.log("Imagen");
+
+
+            const reader2 = new FileReader();
+            reader2.readAsDataURL(fileImagen);
 
             reader2.onload = (event) => {
-                const fileDataImg = {
+                let fileDataImg = {
+                    name: fileImagen.name,
+                    type: fileImagen.type,
+                    data: event.target.result,
+                };
+                console.log("fileDataImg", fileDataImg);
+
+                const fileData = {
                     name: fileImagen.name,
                     type: fileImagen.type,
                     data: event.target.result,
                 };
 
-                const Files = {
-                    name: nameGame,
-                    zip: fileData,
+                console.log("fileData", fileData);
+                console.log("fileDataIMagen", fileDataImg);
+
+                const file = {
+                    newName: nameGame,
+                    currentName: uploadedGameName,
                     img: fileDataImg
                 }
-                socket.emit('file-upload', Files);
+
+                //socket.emit('update_img', file);
+
+                socket.emit('file_update', file);
+
+
             }
         }
+        else if (!fileImagen && fileZip) {
+            console.log("ZIP");
 
-        socket.on('extraction_complete', function (path) {
-            pathScript = path.initGame;
-            pathimagen = path.img;
-            hacerFetch();
-        });
+            const readerZip = new FileReader();
+            readerZip.readAsDataURL(fileZip);
+
+            readerZip.onload = (event) => {
+                let fileDataZip = {
+                    name: fileZip.name,
+                    type: fileZip.type,
+                    data: event.target.result,
+                };
+                console.log("fileDataZip", fileDataZip);
+
+                // const fileData = {
+                //     name: fileImagen.name,
+                //     type: fileImagen.type,
+                //     data: event.target.result,
+                // };
+
+                console.log("fileData", fileDataZip);
+                console.log("fileDataZip", fileDataZip);
+
+                const file = {
+                    newName: nameGame,
+                    currentName: uploadedGameName,
+                    zip: fileDataZip
+                }
+
+                socket.emit('file_update', file);
+                
+                
+        }
+        // else if (fileImagen) {
+        //     const reader2 = new FileReader();
+        //     reader2.readAsDataURL(fileImagen);
+
+        //     reader2.onload = (event) => {
+        //         const fileDataImg = {
+        //             name: fileImagen.name,
+        //             type: fileImagen.type,
+        //             data: event.target.result,
+        //         };
+        //         console.log("fileDataImg", fileDataImg);
+
+        //         const Files = {
+        //             name: nameGame,
+        //             img: fileDataImg
+        //         }
+        //         socket.emit('file_update', Files);
+        //     }
+        // }
+
+
+        // socket.on('extraction_complete', function (path) {
+        //     pathScript = path.initGame;
+        //     pathimagen = path.img;
+        //     hacerFetch(uploadedGameId);
+        // });
+
+        //hacerFetch(uploadedGameId);
+
+    }
+}
+
+    function updateImage() {
+        var fileImagen = document.getElementById("uploadImg").files[0];
+
+        const reader2 = new FileReader();
+        reader2.readAsDataURL(fileImagen);
+
+        reader2.onload = (event) => {
+            let fileDataImg = {
+                name: fileImagen.name,
+                type: fileImagen.type,
+                data: event.target.result,
+            };
+            console.log("fileDataImg", fileDataImg);
+
+            const fileData = {
+                name: fileImagen.name,
+                type: fileImagen.type,
+                data: event.target.result,
+            };
+
+            console.log("fileData", fileData);
+            console.log("fileDataIMagen", fileDataImg);
+
+            const file = {
+                newName: nameGame,
+                currentName: uploadedGameName,
+                img: fileDataImg
+            }
+
+            //socket.emit('update_img', file);
+
+            return file;
+        }
+
     }
 
     async function hacerFetch() {
@@ -132,7 +272,7 @@ const UpdateForm = ({ socket }) => {
                                             <form onSubmit={UploadGame}>
                                                 <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
                                                     <label
-                                                        for="exampleFormControlInput11"
+                                                        htmlFor="exampleFormControlInput11"
                                                         class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
 
                                                         Game Name</label>
@@ -145,7 +285,7 @@ const UpdateForm = ({ socket }) => {
 
                                                 <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
                                                     <label
-                                                        for="exampleFormControlInput11"
+                                                        htmlFor="exampleFormControlInput11"
                                                         class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
 
                                                         Image Game</label>
@@ -158,20 +298,20 @@ const UpdateForm = ({ socket }) => {
 
                                                 <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
                                                     <label
-                                                        for="exampleFormControlInput11"
+                                                        htmlFor="exampleFormControlInput11"
                                                         class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
 
                                                         Zip Game</label>
                                                     <br></br>
                                                     <input
                                                         class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                                                        id='uploadZip' type='file' accept='.zip' value={zip} onChange={(e) => setZip(e.target.value)} required>
+                                                        id='uploadZip' type='file'  accept=".zip,.rar,.7zip" value={zip} onChange={(e) => setZip(e.target.value)}>
                                                     </input>
                                                 </div>
 
                                                 <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
                                                     <label
-                                                        for="exampleFormControlInput11"
+                                                        htmlFor="exampleFormControlInput11"
                                                         class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
 
                                                         Description</label>

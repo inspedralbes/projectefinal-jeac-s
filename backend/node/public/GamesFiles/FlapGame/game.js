@@ -233,7 +233,6 @@ function recibirInfoFromPlatform(data) {
 }
 
 function recibirInfoLobby(lobby) {
-    console.log(lobby);
     lobby.members.forEach((member) => {
         players++;
         if (member.idUser == lobby.yourId) {
@@ -246,17 +245,17 @@ function recibirInfoLobby(lobby) {
             ownerDelLobby = false;
         }
     });
-    console.log(user);
 }
 
 function userLeft(user) {
-    console.log("User left (juego.js)", user);
-    //game.destroy(true, false);
+    console.log("User left: ", user);
   }
 
-function destroyGame() {
-    game.destroy(true, false);
-}
+  function destroyGame() {
+    if (game != null || game != undefined) {
+      game.destroy(true, false);
+    }
+  }
 
 function executeGame() {
     var obj = [];

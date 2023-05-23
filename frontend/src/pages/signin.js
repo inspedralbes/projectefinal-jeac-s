@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate, NavLink } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 
@@ -11,7 +11,6 @@ function Signin() {
   const [isLoading, setLoading] = useState(false);
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const { t } = useTranslation();
-
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -27,22 +26,20 @@ function Signin() {
         mode: 'same-origin',
         body: JSON.stringify({ name, email, password }),
       });
-
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-
       const data = await response.json();
       if (data.isRegistered) {
         navigate("/login")
       }
       setLoading(false);
-
     } catch (error) {
       setError(error);
       setLoading(false);
     }
   };
+
   return (
     <div class="overflow-auto flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
       {isLoggedIn ?
@@ -67,14 +64,13 @@ function Signin() {
                           {t('signInMensajeJeacs')}
                         </h4>
                       </div>
-
                       <form onSubmit={handleSubmit}>
                         <p class="mb-4 text-white">
                           {t('singInSubmitMensaje')}
                         </p>
                         <div class="border-2 border-fuchsia-600 relative mb-4 mt-10" data-te-input-wrapper-init>
                           <label
-                            for="exampleFormControlInput1"
+                            htmlFor="exampleFormControlInput1"
                             class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
                             {t('signInUsername')}
                           </label>
@@ -82,16 +78,14 @@ function Signin() {
                           <input
                             class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                             type="text" placeholder="Enter name" value={name} onChange={(event) => setName(event.target.value)} required />
-
                         </div>
                         <br></br>
                         <div class="border-2 border-fuchsia-600 relative mb-4 " data-te-input-wrapper-init>
                           <label
-                            for="exampleFormControlInput11"
+                            htmlFor="exampleFormControlInput11"
                             class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
                             {t('signInEmail')}
                           </label>
-
                           <br></br>
                           <input
                             class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
@@ -103,7 +97,7 @@ function Signin() {
                         <br></br><br></br>
                         <div class="border-2 border-fuchsia-600 relative mb-4 " data-te-input-wrapper-init>
                           <label
-                            for="exampleFormControlInput11"
+                            htmlFor="exampleFormControlInput11"
                             class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
                             {t('signInPassword')}
                           </label>
@@ -116,7 +110,6 @@ function Signin() {
                           {t('signInPasswordMustHave')}
                         </a>
                         <br></br><br></br>
-
                         <div class="mb-12 pb-1 pt-1 text-center">
                           <button
                             class="bg-gradient-to-r from-violet-400 to-fuchsia-800 mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
@@ -137,9 +130,7 @@ function Signin() {
                               </p>
                             )}
                           </button>
-
                         </div>
-
                         <div class="flex items-center justify-between pb-6">
                           <p class="mb-0 mr-2 text-white">
                             {t('signInAlreadyAcc')}

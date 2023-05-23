@@ -87,32 +87,32 @@ const Tienda = () => {
   });
 
   return (
-    <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
-      <div class="text-center container h-full w-3/4 p-10">
-        <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
-          <div class="p-4">
-            <div class="md:mr-6 md:pr-12 md:ml-6 md:pl-12 md:mb-6 md:pb-12">
-              <h1 class="font-mono text-white text-4xl mt-10 font-bold md:pb-12">
+    <div className="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
+      <div className="text-center container h-full w-3/4 p-10">
+        <div className="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
+          <div className="p-4">
+            <div className="md:mr-6 md:pr-12 md:ml-6 md:pl-12 md:mb-6 md:pb-12">
+              <h1 className="font-mono text-white text-4xl mt-10 font-bold md:pb-12">
                 TIENDA
               </h1>
-              <div class="justify-center text-white text-center flex flex-wrap">
+              <div className="justify-center text-white text-center flex flex-wrap">
                 {isLoggedIn ?
                   <div>
                     {isLoading ?
                       <div>
                         {itemsToBuy.length > 0 ?
                           <div >
-                            <h2 class=" text-xl">{t('itemsTitle')}</h2>
+                            <h2 className=" text-xl">{t('itemsTitle')}</h2>
                             <br></br>
                             {
                               itemsToBuy.map((item, id) => (
-                                <div class="flex" key={id}>
-                                  <div class="flex-initial w-1/3 text-center">
+                                <div className="flex" key={id}>
+                                  <div className="flex-initial w-1/3 text-center">
                                     <h2>{t('itemsItem')}: {item.name}</h2>
-                                    <img src={item.image_url} class="mx-auto" />
+                                    <img src={item.image_url} className="mx-auto" />
                                     <p>{t('itemsDesc')}: {item.description}</p>
-                                    <p class="inline">{t('itemsPrice')}: {item.price}</p>
-                                    <img class="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>
+                                    <p className="inline">{t('itemsPrice')}: {item.price}</p>
+                                    <img className="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>
                                     <button id={item.id} onClick={() => buyItem(userInfo.id, item.id)}>
                                       {t('storeBuyItem')}
                                     </button>

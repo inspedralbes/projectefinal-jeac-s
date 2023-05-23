@@ -36,24 +36,24 @@ function GetRanking() {
   }
 
   return (
-    <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center">
-      <div class="container h-full w-full md:w-full lg:w-2/4 lg:p-5 ">
-        <div class="block rounded-lg bg-gray-800 border-violet-300 shadow-lg dark:bg-neutral-800">
-          <div class="border-violet-300 border p-4">
-            <div class="md:mr-6 md:pr-12 md:ml-6 md:pl-12 md:mb-6 md:pb-12">
-              <div class="text-center">
-                <h1 class="font-mono text-white text-4xl mt-10 font-bold">
+    <div className="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center">
+      <div className="container h-full w-full md:w-full lg:w-2/4 lg:p-5 ">
+        <div className="block rounded-lg bg-gray-800 border-violet-300 shadow-lg dark:bg-neutral-800">
+          <div className="border-violet-300 border p-4">
+            <div className="md:mr-6 md:pr-12 md:ml-6 md:pl-12 md:mb-6 md:pb-12">
+              <div className="text-center">
+                <h1 className="font-mono text-white text-4xl mt-10 font-bold">
                   {t('ranking')}
                 </h1>
                 <br></br>
                 {isLoading ? (
-                  <p class="text-white">
+                  <p className="text-white">
                     {t('loading')}
                   </p>
                 ) : (
                   <div>
-                    <table class="text-xl border-separate w-fill text-sm text-left text-violet-100 dark:text-violet-100">
-                      <thead class="text-center text-x text-white uppercase bg-violet-600 dark:text-white">
+                    <table className="text-xl border-separate w-fill text-sm text-left text-violet-100 dark:text-violet-100">
+                      <thead className="text-center text-x text-white uppercase bg-violet-600 dark:text-white">
                         <tr>
                           <th>
                             {t('rankingPos')}
@@ -66,24 +66,24 @@ function GetRanking() {
                           </th>
                         </tr>
                       </thead>
-                      <tbody class="text-center">
+                      <tbody className="text-center">
                         {users.map((user, index) => (
-                          <tr class="bg-violet-500 border-b border-violet-400" key={user.id}>
-                            <td class=" w-1/3 px-6 py-4 font-medium text-violet-50 whitespace-nowrap dark:text-violet-100" >
+                          <tr className="bg-violet-500 border-b border-violet-400" key={user.id}>
+                            <td className=" w-1/3 px-6 py-4 font-medium text-violet-50 whitespace-nowrap dark:text-violet-100" >
                               {index < 3 ? (
                                 index === 0 ? (
-                                  <img src="oro.png" alt="oro" class="mx-auto w-1/2" />
+                                  <img src="oro.png" alt="oro" className="mx-auto w-1/2" />
                                 ) : index === 1 ? (
-                                  <img src="plata.png" alt="plata" class="mx-auto w-1/2" />
+                                  <img src="plata.png" alt="plata" className="mx-auto w-1/2" />
                                 ) : (
-                                  <img src="bronce.png" alt="gold" class="mx-auto w-1/2" />
+                                  <img src="bronce.png" alt="gold" className="mx-auto w-1/2" />
                                 )
                               ) : (
                                 index + 1
                               )}
                             </td>
-                            <td class="w-1/3 text-white hover:text-sky-400" onClick={() => visitarPerfil(user.id)}><a class = "text-white hover:text-sky-400 cursor-pointer">{user.name}</a></td>
-                            <td class="w-1/3" >{user.totalScore}</td>
+                            <td className="w-1/3 text-white hover:text-sky-400" onClick={() => visitarPerfil(user.id)}><a className = "text-white hover:text-sky-400 cursor-pointer">{user.name}</a></td>
+                            <td className="w-1/3" >{user.totalScore}</td>
                           </tr>
                         ))}
                       </tbody>

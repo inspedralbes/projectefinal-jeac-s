@@ -29,15 +29,13 @@ const UserInfo = ({ onSharedValueChange, onSharedIdChange }) => {
 
     useEffect(() => {
         async function avatarOther() {
-            if (boughtInfo.length > 0) {
+            if (boughtInfo.length >= 0) {
                 const matchingItems = boughtInfo.filter(item => item.avatar && item.userId === otherUserInfo.id);
                 if (matchingItems.length > 0) {
                     const userAvatarItem = storeInfo.find(item => item.id === matchingItems[0].itemId);
-                    if (userAvatarItem.image_url != "") {
-                        setAvatar(userAvatarItem.image_url);
-                    } else {
-                        setAvatar("Controller.jpg")
-                    }
+                    setAvatar(userAvatarItem.image_url);
+                } else {
+                    setAvatar("Controller.jpg")
                 }
             }
         }

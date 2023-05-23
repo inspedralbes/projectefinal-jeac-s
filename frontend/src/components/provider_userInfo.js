@@ -5,6 +5,8 @@ import { useNavigate, NavLink } from 'react-router-dom';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 
+let imgAvatar;
+
 const UserInfo = ({ socket }) => {
   const isLoggedIn = useSelector(state => state.isLoggedIn);
   const token = localStorage.getItem('access_token');
@@ -239,14 +241,15 @@ const UserInfo = ({ socket }) => {
   };
 
   function avatar() {
-    let imgAvatar = "";
-
     if (isLoggedIn) {
-      if (avatarUserInfo.length > 0) {
+
+      if (avatarUserInfo.length >= 0) {
         const matchingItems = avatarUserInfo.filter(item => item.avatar && item.userId === userInfo.id);
         if (matchingItems.length > 0) {
           const userAvatarItem = avatarStore.find(item => item.id === matchingItems[0].itemId);
           imgAvatar = userAvatarItem.image_url;
+        } else {
+          imgAvatar = "Controller.jpg";
         }
       }
     }
@@ -433,8 +436,6 @@ const UserInfo = ({ socket }) => {
                                       <td>{moment(game.created_at).format('DD MMM YYYY HH:mm:ss')}</td>
                                     </tr>
                                   ))}
-
-
                                 </tbody>
                               </table>
                             </div> :

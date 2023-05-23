@@ -29,8 +29,9 @@ const socketIO = new Server(server, {
     origin: true,
     credentials: true,
   },
+  // Poner / en path para que funcione en produccion con proxy
   //Poner /node/ en path para que en produccion con conexion directa con puerto funcione
-  path: "/node/",
+  path: "/",
 });
 
 app.use(express.static('public'));
@@ -42,6 +43,7 @@ app.use((req, res, next) => {
 })
 
 socketIO.on('connection', (socket) => {
+  console.log("Este es el servidor", server);
   console.log('Socket connected');
   console.log("Lobbbbbbbbies", lobbies);
 

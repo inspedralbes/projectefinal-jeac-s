@@ -6,6 +6,7 @@ import { actions } from '../components/store.js'
 function Games({ onSharedValueChange, onSharedIdChange }) {
     const [fetchData, setFetchData] = useState([]);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleInputChange = (name, id) => {
 
@@ -35,7 +36,7 @@ function Games({ onSharedValueChange, onSharedIdChange }) {
     }, []);
 
     function visitarPerfil(id){
-        dispatchEvent(actions.getUserId({id: id, visitor: true, tab: "tab4"}));
+        dispatch(actions.getUserId({id: id, visitor: true, tab: "tab4"}));
         navigate("/otherProfile")
     }
 

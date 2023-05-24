@@ -15,8 +15,8 @@ let i = 0;
 let lobbies = [];
 
 const random_hex_color_code = () => {
-  let n = Math.floor(Math.random() * 999999);
-  return n.toString().padStart(6, "0");
+  let n = Math.floor(Math.random() * 9999);
+  return n.toString().padStart(4, "0");
 };
 
 const socketIO = new Server(server, {
@@ -123,7 +123,6 @@ socketIO.on('connection', (socket) => {
                       console.error(err);
                       return;
                     }
-                    console.log(`La carpeta ha sido creada.`);
 
                     fs.writeFile(imgPath, imgbuffer, (error) => {
                       if (error) {
@@ -131,11 +130,15 @@ socketIO.on('connection', (socket) => {
                         return;
                       }
                     });
+                
                   });
+                  socket.emit("message_error", "Uploaded successfully");
                 }
                 else {
                   console.log("Error validacion");
                   socket.emit("upload_error", "Error en la subida. El zip no contiene el script game.js o las carpetas images y scripts");
+                  socket.emit("message_error", "The zip does not contain the game.js file ");
+
 
                   fs.rm(`./public/GamesFiles/${file.name}`, { recursive: true }, (err) => {
                     if (err) throw console.log("AAAA", err);;
@@ -155,16 +158,21 @@ socketIO.on('connection', (socket) => {
                 }
 
                 socket.emit("extraction_complete", routes);
+
               });
             });
         });
       }
       else {
         console.log("Nombre no disponible");
+        socket.emit("message_error", "Name already in use");
+
       }
     }
     else {
       console.log("Nombre vacio");
+      socket.emit("message_error", "Name cannot be empty");
+
     }
   });
 
@@ -210,7 +218,6 @@ socketIO.on('connection', (socket) => {
           }
         });
       }
-
       if (file.zip) {
         extracZip(file);
       }
@@ -232,6 +239,8 @@ socketIO.on('connection', (socket) => {
     }
     else {
       console.log("NOMBRE YA EXISTE");
+      socket.emit("message_error", "Name already in use");
+
     }
   });
 
@@ -303,8 +312,19 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on("can_start_game", () => {
-    console.log("Start game", socket.data.current_lobby);
-    socketIO.to(socket.data.current_lobby).emit("start_game");
+    lobbies.forEach((lobby) => {
+      if (lobby.lobbyIdentifier == socket.data.current_lobby) {
+        if (lobby.members.length > 1) {
+          console.log("Start game", socket.data.current_lobby);
+          socketIO.to(socket.data.current_lobby).emit("start_game");
+        }
+
+        else {
+          socketIO.to(socket.id).emit("message_error_start_game", "You cannot play alone");
+        }
+
+      }
+    });
   });
 
   socket.on("leave_lobby", () => {

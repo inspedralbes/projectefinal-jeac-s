@@ -6,14 +6,12 @@ import { actions } from '../components/store.js';
 function Games({ onSharedValueChange, onSharedIdChange }) {
     const [fetchData, setFetchData] = useState([]);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const handleInputChange = (name, id) => {
-
-        console.log("HELLO: " + id);
-        onSharedValueChange(name);
+    const handleInputChange = (path, id) => {
+        onSharedValueChange(path);
         onSharedIdChange(id)
         navigate('/game');
-
     };
 
     useEffect(() => {

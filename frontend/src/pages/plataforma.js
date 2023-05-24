@@ -228,6 +228,10 @@ function Game({ socket }) {
 
   async function finalJuego(points) {
     var totalScore = points;
+
+    if (totalScore > 300) {
+      totalScore = 150;
+    }
     var gameId = gameInfo;
     var score = totalScore;
     setGameEnded(true);

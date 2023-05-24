@@ -7,6 +7,8 @@ const configGame = {
 var sendInfoGame = null;
 var finalJuego = null;
 var game;
+var ownerDelLobby;
+var user;
 
 function init(_sendInfoGame, _finalJuego) {
     sendInfoGame = _sendInfoGame;
@@ -63,7 +65,16 @@ function recibirInfoFromPlatform(data) {
 }
 
 function recibirInfoLobby(lobby) {
-    console.log(lobby);
+    lobby.members.forEach((member) => {
+        if (member.idUser == lobby.yourId) {
+            user = member.username;
+        }
+        if (lobby.ownerId == lobby.yourId) {
+            ownerDelLobby = true;
+        } else {
+            ownerDelLobby = false;
+        }
+    });
 }
 
 function userLeft(user) {

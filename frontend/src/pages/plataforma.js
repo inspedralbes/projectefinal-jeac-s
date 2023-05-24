@@ -56,7 +56,6 @@ function Game({ socket }) {
     socket.on("message_error", (msg) => {
       setMessageError(msg);
       setSinglePlayerUserName(null);
-      setMultiPlayerUserName(null);
       setGameModeSelected(false);
       setSinglePlayer(false);
       setGameStarted(false);
@@ -71,8 +70,14 @@ function Game({ socket }) {
     socket.on("message_error_start_game", (msg) => {
       setMessageError(msg);
       setGameStarted(false);
+      document.getElementById("popup").style.display = "block";
+      setTimeout((() => {
+        document.getElementById("popup").style.display = "none";
+      }), 3000)
+    });
 
-
+    socket.on("message_error_alone", (msg) => {
+      setMessageError(msg);      
       document.getElementById("popup").style.display = "block";
       setTimeout((() => {
         document.getElementById("popup").style.display = "none";
@@ -169,8 +174,7 @@ function Game({ socket }) {
   }
 
   function joinLobby() {
-
-    if ( lobbyIdInput && multiPlayerUserName ) {
+    if ((lobbyIdInput || lobbyIdInput != null) && (multiPlayerUserName || multiPlayerUserName != null)) {
       setLobbyJoined(true);
       socket.emit("join_room", {
         lobbyIdentifier: lobbyIdInput,
@@ -196,7 +200,7 @@ function Game({ socket }) {
 
   function startGame() {
     if (singlePlayerUserName != null || multiPlayerUserName != null) {
-      socket.emit("can_start_game");
+      socket.emit("can_start_game", singlePlayer);
       setGameStarted(true);
     } else {
       setGameStarted(false);

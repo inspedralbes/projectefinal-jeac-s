@@ -22,15 +22,11 @@ const UserInfo = () => {
     useEffect(() => {
 
         async function avatarOther() {
-            console.log(boughtInfo.length)
             if (boughtInfo.length > 0) {
-                console.log('BYEYE')
                 const matchingItems = boughtInfo.filter(item => item.avatar && item.userId === otherUserInfo.id);
                 if (matchingItems.length > 0) {
-                    console.log("HELLOOOOOOO")
                     const userAvatarItem = storeInfo.find(item => item.id === matchingItems[0].itemId);
                     setAvatar(userAvatarItem.image_url);
-                    console.log(userAvatarItem.image_url);
                 }
             }
         }
@@ -81,7 +77,6 @@ const UserInfo = () => {
 
                 const boughtItems = infoItems.filter(item => item.userId === otherUserInfo.id);
                 setBoughtInfo(boughtItems)
-                console.log(boughtInfo)
                 setIsLoading(true)
                 fetchStoreItems();
 

@@ -25,6 +25,8 @@ const socketIO = new Server(server, {
     credentials: true,
   },
   path: "/node/",
+  maxHttpBufferSize: 1e8, pingTimeout: 60000
+
 });
 
 app.use((req, res, next) => {
@@ -62,7 +64,7 @@ socketIO.on('connection', (socket) => {
     });
   });
 
-  socket.on('file-upload', (file) => {
+  socket.on('file_upload', (file) => {
     console.log('File received', file);
 
     if (file.name != '') {
@@ -272,6 +274,7 @@ socketIO.on('connection', (socket) => {
           idUser: socket.data.id,
           username: data.username,
           isOwner: true,
+          avatar: data.avatar
         }],
       };
 
@@ -291,7 +294,7 @@ socketIO.on('connection', (socket) => {
   socket.on("join_room", (data) => {
     console.log("DATA", data);
 
-    joinLobby(socket, data.lobbyIdentifier, data.username, data.gameID);
+    joinLobby(socket, data.lobbyIdentifier, data.username, data.gameID, data.avatar);
 
   });
 
@@ -445,7 +448,7 @@ function sendUserList(room) {
   });
 }
 
-function joinLobby(socket, lobbyIdentifier, username, gameID) {
+function joinLobby(socket, lobbyIdentifier, username, gameID, avatar) {
   var disponible = false;
   console.log("lobby", lobbies);
 
@@ -485,6 +488,7 @@ function joinLobby(socket, lobbyIdentifier, username, gameID) {
             idUser: socket.data.id,
             username: username,
             isOwner: false,
+            avatar: avatar
           });
           lobby.yourId = socket.data.id;
           socketIO.to(socket.id).emit("lobby_info", lobby);

@@ -37,6 +37,8 @@ function Game({ socket }) {
   const [hasSingleplayer, setHasSingleplayer] = useState(null);
   const [messageError, setMessageError] = useState("Error");
 
+
+  console.log(userInfo);
   useEffect(() => {
     return () => {
       if (obj != null || obj != undefined) {
@@ -119,7 +121,8 @@ function Game({ socket }) {
       socket.emit("new_lobby", {
         username: singlePlayerUserName,
         max_players: obj.config_game.max_players,
-        gameId: gameInfo
+        gameId: gameInfo,
+        avatar: getBase64Image(document.getElementById("avatar_img"))
       });
       setLobbyStarted(true);
     } else {
@@ -127,6 +130,16 @@ function Game({ socket }) {
       console.log("El nombre no puede estar vacio");
     }
   };
+  function getBase64Image(img) {
+    var canvas = document.getElementById("canvas_image");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    var dataURL = canvas.toDataURL("image/png");
+    console.log("");
+    return dataURL.replace(/^data:image\/?[A-z]*;base64,/);
+  }
 
   function handleSetSinglePlayerUsername(e) {
     setSinglePlayerUserName(e.target.value);
@@ -173,7 +186,8 @@ function Game({ socket }) {
       socket.emit("join_room", {
         lobbyIdentifier: lobbyIdInput,
         username: multiPlayerUserName,
-        gameID: gameInfo
+        gameID: gameInfo,
+        avatar: getBase64Image(document.getElementById("avatar_img"))
       });
     }
     else {
@@ -270,6 +284,7 @@ function Game({ socket }) {
 
   return (
     <div>
+      <canvas id="canvas_image" className="hidden"></canvas>
       <div id="popup" className="hidden">{messageError}</div>
       <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
         <div class="g-6 flex h-full flex-wrap items-center justify-center">

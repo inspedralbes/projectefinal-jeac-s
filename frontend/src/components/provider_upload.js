@@ -43,10 +43,10 @@ const UploadForm = ({ socket }) => {
         descriptionGame = document.getElementById('descriptionGamee').value;
 
         const reader = new FileReader();
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(fileImagen);
 
         const reader2 = new FileReader();
-        reader2.readAsDataURL(fileImagen);
+        reader2.readAsDataURL(file);
 
         reader.onload = (event) => {
             const fileData = {
@@ -64,10 +64,11 @@ const UploadForm = ({ socket }) => {
 
                 const Files = {
                     name: nameGame,
-                    zip: fileData,
-                    img: fileDataImg
+                    img: fileData,
+                    zip: fileDataImg
                 }
-                socket.emit('file-upload', Files);
+                console.log("ASjksdhfkdhfasfkljd", Files);
+                socket.emit('file_upload', Files);
             }
         }
 

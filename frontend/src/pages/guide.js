@@ -24,7 +24,7 @@ function Guide() {
                                 <p>  En primer lugar, descarga nuestra plantilla, la cual contiene los scripts básicos necesarios para configurar el
                                     juego.</p><br></br>
                                     
-                                <div class = "text-center"><a class = "underline text-cyan-500" href = "catalan.png" download = "CatalanBandera">PLANTILLA JUEGO BASE "game.js"</a></div><br></br>
+                                <div class = "text-center"><a class = "underline text-cyan-500" href = "Plantilla.zip" download = "Plantilla.zip">PLANTILLA JUEGO BASE "game.js"</a></div><br></br>
 
                                 <p> Seguidamente, te explicaremos las variables y funciones esenciales que podrás modificar según tus necesidades.</p>
                                 <br></br><br></br>

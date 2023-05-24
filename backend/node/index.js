@@ -285,6 +285,7 @@ socketIO.on('connection', (socket) => {
 
       sendUserList(socket.data.current_lobby);
       console.log("New Lobby");
+      socketIO.to(socket.id).emit("message_button_play", "Waiting for players");
     }
   });
 
@@ -486,6 +487,8 @@ function joinLobby(socket, lobbyIdentifier, username, gameID) {
     socket.join(lobbyIdentifier);
     socket.data.current_lobby = lobbyIdentifier;
     sendUserList(lobbyIdentifier);
+    socketIO.to(socket.data.current_lobby).emit("message_button_play", "Play");
+
   }
 }
 

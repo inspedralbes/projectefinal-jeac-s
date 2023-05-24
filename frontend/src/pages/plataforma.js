@@ -36,6 +36,8 @@ function Game({ socket }) {
   const [hasMultiplayer, setHasMultiplayer] = useState(null);
   const [hasSingleplayer, setHasSingleplayer] = useState(null);
   const [messageError, setMessageError] = useState("Error");
+  const [buttonText, setButtonText] = useState("Playrerewr");
+
 
   useEffect(() => {
     return () => {
@@ -75,6 +77,10 @@ function Game({ socket }) {
       setTimeout((() => {
         document.getElementById("popup").style.display = "none";
       }), 3000)
+    });
+
+    socket.on("message_button_play", (msg) => {
+      setButtonText(msg);
     });
   }, []);
 
@@ -353,7 +359,7 @@ function Game({ socket }) {
                                 <div>
                                   {!gameStarted ?
                                     <div>
-                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>PLAY</button>
+                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>{buttonText}</button>
                                     </div>
                                     :
                                     <></>
@@ -377,7 +383,7 @@ function Game({ socket }) {
                                       <label className="text-white">
                                         Introduce your nickname
                                       </label><br></br>
-                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { handleSaveUsernameOnClick() }}>Set Lobby</button>
+                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { handleSaveUsernameOnClick()}}>Set Lobby</button>
                                     </div>
                                   </label>
                                 </div>
@@ -385,7 +391,7 @@ function Game({ socket }) {
                                 <div>
                                   {!gameStarted ?
                                     <div>
-                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>PLAY</button>
+                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>{buttonText}</button>
                                     </div>
                                     :
                                     <></>

@@ -4,8 +4,6 @@ const configGame = {
     max_players: 2,
   }
 
-
-
 var contador = 0;
 var textoContador;
 var textoTiempo;
@@ -42,8 +40,8 @@ function init(_sendInfoGame, _finalJuego) {
 }
 
 function preload() {
-    this.load.image("background", "./bgImage.jpg");
-    this.load.image("object", "./object.jpg");
+    this.load.image("background", "../GamesFiles/AimGame/images/bgImage.jpg");
+    this.load.image("object", "../GamesFiles/AimGame/images/object.jpg");
 }
 
 function create() {
@@ -61,7 +59,6 @@ function create() {
             delay: 1000,
             loop: true,
             callback: function () {
-                console.log("aaa");
                 tiempoRestante--;
 
                 if (tiempoRestante <= 0) {
@@ -194,13 +191,14 @@ function recibirInfoLobby(lobby) {
 }
 
 function userLeft(user) {
-    console.log("User left (juego.js)", user);
-    //game.destroy(true, false);
+    console.log("User left: ", user);
   }
 
-function destroyGame() {
-    game.destroy(true, false);
-}
+  function destroyGame() {
+    if (game != null || game != undefined) {
+      game.destroy(true, false);
+    }
+  }
 
 function executeGame() {
     var obj = [];

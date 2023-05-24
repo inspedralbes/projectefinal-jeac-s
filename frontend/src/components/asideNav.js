@@ -4,9 +4,9 @@ import AsideNav from './provider_asideNav';
 import { store } from './store';
 
 
-const App = () => (
+const App = ({socket}) => (
   <Provider store={store}>
-    <AsideNav />
+    <AsideNav socket={socket}/>
   </Provider>
 );
 

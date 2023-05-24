@@ -15,9 +15,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/getUserUploadGames', [AuthController::class, 'getUserUploadGames']);
 });
 
-// Route::prefix('api')->group(function () {
-// });
-
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/login', [AuthController::class, 'login']);

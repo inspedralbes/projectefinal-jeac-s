@@ -53,6 +53,22 @@ function Game({ socket }) {
   useEffect(() => {
     socket.on("message_error", (msg) => {
       setMessageError(msg);
+      setSinglePlayerUserName(null);
+      setMultiPlayerUserName(null);
+      setGameModeSelected(false);
+      setSinglePlayer(false);
+      setGameStarted(false);
+      setLobbyJoined(false);
+
+      document.getElementById("popup").style.display = "block";
+      setTimeout((() => {
+        document.getElementById("popup").style.display = "none";
+      }), 3000)
+    });
+
+    socket.on("message_error_start_game", (msg) => {
+      setMessageError(msg);
+      setGameStarted(false);
 
 
       document.getElementById("popup").style.display = "block";
@@ -147,7 +163,8 @@ function Game({ socket }) {
   }
 
   function joinLobby() {
-    if (lobbyIdInput != null && multiPlayerUserName != null) {
+
+    if ( lobbyIdInput && multiPlayerUserName ) {
       setLobbyJoined(true);
       socket.emit("join_room", {
         lobbyIdentifier: lobbyIdInput,
@@ -155,6 +172,20 @@ function Game({ socket }) {
         gameID: gameInfo
       });
     }
+    else {
+      if (!lobbyIdInput) {
+        setMessageError("Lobby id can't be null");
+      }
+      else if(!multiPlayerUserName) {
+        setMessageError("Username can't be null");
+      }
+
+      document.getElementById("popup").style.display = "block";
+      setTimeout((() => {
+        document.getElementById("popup").style.display = "none";
+      }), 3000)
+    }
+    
   }
 
   function startGame() {
@@ -197,6 +228,10 @@ function Game({ socket }) {
 
   async function finalJuego(points) {
     var totalScore = points;
+
+    if (totalScore > 300) {
+      totalScore = 150;
+    }
     var gameId = gameInfo;
     var score = totalScore;
     setGameEnded(true);
@@ -233,11 +268,10 @@ function Game({ socket }) {
     <div>
       <div id="popup" className="hidden">{messageError}</div>
       <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
-        <div>{messageError}</div>
         <div class="g-6 flex h-full flex-wrap items-center justify-center">
           <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
             <div class="relative p-4 md:m-6 md:p-12 text-center">
-              {!gameModeSelected ?
+              {!gameModeSelected && !displayCanvas ?
                 <div>
                   <h3 class="text-white">Choose the gamemode</h3>
                   <br></br>

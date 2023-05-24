@@ -41,7 +41,7 @@ socketIO.on('connection', (socket) => {
   socket.data.username = "";
   socket.data.token = null;
   socket.data.current_lobby = null;
-  
+
   socket.on('disconnect', () => {
     console.log("socket disconected", socket.data.id);
     leaveLobby(socket);
@@ -130,7 +130,7 @@ socketIO.on('connection', (socket) => {
                         return;
                       }
                     });
-                
+
                   });
                   socket.emit("message_error", "Uploaded successfully");
                 }
@@ -289,10 +289,12 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on("join_room", (data) => {
-    console.log("data", data);
+    console.log("DATA", data);
+
     joinLobby(socket, data.lobbyIdentifier, data.username, data.gameID);
+
   });
-  
+
   socket.on("get_players_in_lobby", () => {
     console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     lobbies.forEach((lobby) => {
@@ -307,6 +309,9 @@ socketIO.on('connection', (socket) => {
         };
         console.log("LOBIDATA", lobbyData);
         socketIO.to(socket.id).emit("lobby_info", lobbyData);
+      }
+      else {
+        socketIO.to(socket.id).emit("message_error", "Wrong lobby id");
       }
     });
   });
@@ -342,7 +347,7 @@ socketIO.on('connection', (socket) => {
       console.log('path/file.txt was deleted');
 
     });
-  })  
+  })
 });
 
 
@@ -438,54 +443,61 @@ function sendUserList(room) {
 function joinLobby(socket, lobbyIdentifier, username, gameID) {
   var disponible = false;
   console.log("lobby", lobbies);
-  lobbies.forEach((lobby) => {
-    if (lobby.lobbyIdentifier == lobbyIdentifier) {
-      disponible = true;
-      lobby.members.forEach((member) => {
-        console.log(lobby.ownerId, " / ", socket.data.id);
-        console.log(member.username, " / ", username);
-        console.log("members", lobby.members.length, " / ", lobby.maxMembers);
-        console.log("IDs", lobby.gameID, " / ", gameID);
 
-        if (lobby.members.length >= lobby.maxMembers || lobby.gameID != gameID || member.username == username || lobby.ownerId == socket.data.id) {
-          disponible = false;
-          console.log("Can't add user");
-          if (lobby.members.length >= lobby.maxMembers) {
-            socketIO.to(socket.id).emit("message_error", "Can't join lobby. Lobby full");
-          }
-          else if (lobby.gameID != gameID) {
-            socketIO.to(socket.id).emit("message_error", "Can't join lobby. Wrong Lobby");
-          }
-          else if (member.username == username) {
-            socketIO.to(socket.id).emit("message_error", "Can't join lobby. Name already in use");
-          }
-          else if (lobby.ownerId == socket.data.id) {
-            socketIO.to(socket.id).emit("message_error", "Can't join lobby.");
-          }
-        }
-      });
+  if (lobbies.length == 0) {
+    socketIO.to(socket.id).emit("message_error", "Wrong lobby id");
+  }
+  else {
+    lobbies.forEach((lobby) => {
+      if (lobby.lobbyIdentifier == lobbyIdentifier) {
+        disponible = true;
+        lobby.members.forEach((member) => {
+          console.log(lobby.ownerId, " / ", socket.data.id);
+          console.log(member.username, " / ", username);
+          console.log("members", lobby.members.length, " / ", lobby.maxMembers);
+          console.log("IDs", lobby.gameID, " / ", gameID);
 
-      if (disponible) {
-        lobby.members.push({
-          idUser: socket.data.id,
-          username: username,
-          isOwner: false,
+          if (lobby.members.length >= lobby.maxMembers || lobby.gameID != gameID || member.username == username || lobby.ownerId == socket.data.id) {
+            disponible = false;
+            console.log("Can't add user");
+            if (lobby.members.length >= lobby.maxMembers) {
+              socketIO.to(socket.id).emit("message_error", "Can't join lobby. Lobby full");
+            }
+            else if (lobby.gameID != gameID) {
+              socketIO.to(socket.id).emit("message_error", "Can't join lobby. Wrong Lobby");
+            }
+            else if (member.username == username) {
+              socketIO.to(socket.id).emit("message_error", "Can't join lobby. Name already in use");
+            }
+            else if (lobby.ownerId == socket.data.id) {
+              socketIO.to(socket.id).emit("message_error", "Can't join lobby.");
+            }
+          }
         });
-        lobby.yourId = socket.data.id;
-        socketIO.to(socket.id).emit("lobby_info", lobby);
-        console.log("User added");
-      } else {
-        socketIO.to(socket.id).emit("USER_ALR_CHOSEN_ERROR");
+
+        if (disponible) {
+          lobby.members.push({
+            idUser: socket.data.id,
+            username: username,
+            isOwner: false,
+          });
+          lobby.yourId = socket.data.id;
+          socketIO.to(socket.id).emit("lobby_info", lobby);
+          console.log("User added");
+        } else {
+          socketIO.to(socket.id).emit("USER_ALR_CHOSEN_ERROR");
+        }
       }
+      else {
+        socketIO.to(socket.id).emit("message_error", "Can't join lobby. Wrong lobby indetifier");
+
+      }
+    });
+    if (disponible) {
+      socket.join(lobbyIdentifier);
+      socket.data.current_lobby = lobbyIdentifier;
+      sendUserList(lobbyIdentifier);
     }
-    else {
-      socketIO.to(socket.id).emit("message_error", "Can't join lobby. Wrong lobby indetifier");
-    }
-  });
-  if (disponible) {
-    socket.join(lobbyIdentifier);
-    socket.data.current_lobby = lobbyIdentifier;
-    sendUserList(lobbyIdentifier);
   }
 }
 
@@ -494,15 +506,15 @@ function leaveLobby(socket) {
     if (lobby.lobbyIdentifier == socket.data.current_lobby) {
       lobby.members.forEach((member, index) => {
         if (member.idUser == socket.data.id) {
-            console.log("User left: ", member);
-            socketIO.to(socket.data.current_lobby).emit("user_left_lobby", member);
-            lobby.members.splice(index, 1);
+          console.log("User left: ", member);
+          socketIO.to(socket.data.current_lobby).emit("user_left_lobby", member);
+          lobby.members.splice(index, 1);
         }
         if (lobby.members.length == 0) {
           console.log("Lobby with 0 users");
           lobbies.splice(ind_lobby, 1);
         }
-      }); 
+      });
     }
   });
   socket.leave(socket.data.current_lobby);

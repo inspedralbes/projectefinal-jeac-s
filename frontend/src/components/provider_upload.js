@@ -50,17 +50,21 @@ const UploadForm = ({ socket }) => {
 
         reader.onload = (event) => {
             const fileData = {
-                name: file.name,
-                type: file.type,
+                name: fileImagen.name,
+                type: fileImagen.type,
                 data: event.target.result,
             };
 
             reader2.onload = (event) => {
                 const fileDataImg = {
-                    name: fileImagen.name,
-                    type: fileImagen.type,
+                    name: file.name,
+                    type: file.type,
                     data: event.target.result,
                 };
+
+                console.log("fileDataImg", fileDataImg);
+                console.log("fileData", fileData);
+
 
                 const Files = {
                     name: nameGame,

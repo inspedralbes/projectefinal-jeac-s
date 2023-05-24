@@ -316,18 +316,23 @@ socketIO.on('connection', (socket) => {
     });
   });
 
-  socket.on("can_start_game", () => {
+  socket.on("can_start_game", (single) => {
+    console.log(single);
     lobbies.forEach((lobby) => {
-      if (lobby.lobbyIdentifier == socket.data.current_lobby) {
-        if (lobby.members.length > 1) {
-          console.log("Start game", socket.data.current_lobby);
+      if (!single) {
+        if (lobby.lobbyIdentifier == socket.data.current_lobby) {
+          if (lobby.members.length > 1) {
+            console.log("Start game", socket.data.current_lobby);
+            socketIO.to(socket.data.current_lobby).emit("start_game");
+          }
+          else {
+            socketIO.to(socket.id).emit("message_error_start_game", "You cannot play alone");
+          }
+        }
+      } else {
+        if (lobby.lobbyIdentifier == socket.data.current_lobby) {
           socketIO.to(socket.data.current_lobby).emit("start_game");
         }
-
-        else {
-          socketIO.to(socket.id).emit("message_error_start_game", "You cannot play alone");
-        }
-
       }
     });
   });

@@ -32,6 +32,11 @@ function Games({ onSharedValueChange, onSharedIdChange }) {
         fetchGames();
     }, []);
 
+    function visitarPerfil(id) {
+        dispatch(actions.getUserId({ id: id, visitor: true, tab: "tab4" }));
+        navigate("/otherProfile")
+    }
+
     return (
         <div class="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center">
             <div class="text-center container h-full w-3/4 p-10">

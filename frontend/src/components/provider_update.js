@@ -27,7 +27,6 @@ const UpdateForm = ({ socket }) => {
 
     useEffect(() => {
         socket.on('message_error', function (msg) {
-            console.log('Node msg', msg);
 
             setMessageError(msg);
 
@@ -36,6 +35,13 @@ const UpdateForm = ({ socket }) => {
                 document.getElementById("popup").style.display = "none";
             }), 3000)
         });
+
+        socket.on('update_complete', function (routes) {
+            pathScript = routes.initGame;
+            pathimagen = routes.img;
+            hacerFetch(uploadedGameId);
+        });
+
         return () => {
             socket.off('extraction_complete');
         };
@@ -44,8 +50,6 @@ const UpdateForm = ({ socket }) => {
     function UpdateGame(e) {
         e.preventDefault();
 
-        console.log("Entra update");
-
         let fileZip = document.getElementById("uploadZip").files[0];
         var fileImagen = document.getElementById("uploadImg").files[0];
         gameNamee = document.getElementById('nameGamee').value;
@@ -53,8 +57,6 @@ const UpdateForm = ({ socket }) => {
         let fileDataImg = null;
 
         if (fileZip && fileImagen) {
-
-            console.log("Zip e imagen");
 
             const reader = new FileReader();
             reader.readAsDataURL(fileImagen);
@@ -88,7 +90,6 @@ const UpdateForm = ({ socket }) => {
 
         }
         else if (fileImagen && !fileZip) {
-            console.log("Imagen");
 
 
             const reader2 = new FileReader();
@@ -100,16 +101,12 @@ const UpdateForm = ({ socket }) => {
                     type: fileImagen.type,
                     data: event.target.result,
                 };
-                console.log("fileDataImg", fileDataImg);
 
                 const fileData = {
                     name: fileImagen.name,
                     type: fileImagen.type,
                     data: event.target.result,
                 };
-
-                console.log("fileData", fileData);
-                console.log("fileDataIMagen", fileDataImg);
 
                 const file = {
                     newName: nameGame,
@@ -125,7 +122,6 @@ const UpdateForm = ({ socket }) => {
             }
         }
         else if (!fileImagen && fileZip) {
-            console.log("ZIP");
 
             const readerZip = new FileReader();
             readerZip.readAsDataURL(fileZip);
@@ -136,16 +132,6 @@ const UpdateForm = ({ socket }) => {
                     type: fileZip.type,
                     data: event.target.result,
                 };
-                console.log("fileDataZip", fileDataZip);
-
-                // const fileData = {
-                //     name: fileImagen.name,
-                //     type: fileImagen.type,
-                //     data: event.target.result,
-                // };
-
-                console.log("fileData", fileDataZip);
-                console.log("fileDataZip", fileDataZip);
 
                 const file = {
                     newName: nameGame,

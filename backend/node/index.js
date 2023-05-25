@@ -276,7 +276,6 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on("join_room", (data) => {
-
     joinLobby(socket, data.lobbyIdentifier, data.username, data.gameID);
 
   });

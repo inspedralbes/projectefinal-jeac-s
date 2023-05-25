@@ -1,13 +1,15 @@
-import express from "express";
-import unzipper from "unzipper";
-import path from "path";
-import fs from "fs";
-import multer from "multer";
-import http from "http";
-import { Server } from "socket.io";
+const express = require("express");
+const unzipper = require("unzipper");
+const path = require("path");
+const multer = require("multer");
+const http = require("http");
+const { Server } = require("socket.io");
+const { log } = require("console");
+const fs = require('fs');
+
+
 
 const app = express();
-const upload = multer({ dest: 'public/GamesFiles/' });
 const server = http.createServer(app);
 const PORT = 7878;
 const host = "0.0.0.0";

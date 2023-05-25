@@ -128,7 +128,6 @@ function Game({ socket }) {
         username: singlePlayerUserName,
         max_players: obj.config_game.max_players,
         gameId: gameInfo,
-        avatar: getBase64Image(document.getElementById("avatar_img"))
       });
       setLobbyStarted(true);
     } else {
@@ -136,17 +135,7 @@ function Game({ socket }) {
       console.log("El nombre no puede estar vacio");
     }
   };
-  function getBase64Image(img) {
-    var canvas = document.getElementById("canvas_image");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    var dataURL = canvas.toDataURL("image/png");
-    console.log("");
-    return dataURL.replace(/^data:image\/?[A-z]*;base64,/);
-  }
-
+ 
   function handleSetSinglePlayerUsername(e) {
     setSinglePlayerUserName(e.target.value);
   }
@@ -193,7 +182,6 @@ function Game({ socket }) {
         lobbyIdentifier: lobbyIdInput,
         username: multiPlayerUserName,
         gameID: gameInfo,
-        avatar: getBase64Image(document.getElementById("avatar_img"))
       });
     }
     else {

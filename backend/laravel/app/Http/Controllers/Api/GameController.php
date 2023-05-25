@@ -60,5 +60,30 @@ class GameController extends Controller
     
         return response()->json(['message' => 'Juego eliminado correctamente']);
     }
+
+    public function updateGame(Request $request, $id)
+    {
+        $game = Game::find($id);
+
+        if ($request->has('name') && !empty($request->input('name'))) {
+            $game->name = $request->input('name');
+        }
+
+        if ($request->has('img') && !empty($request->input('img'))) {
+            $game->img = $request->input('img');
+        }
+
+        if ($request->has('description') && !empty($request->input('description'))) {
+            $game->description = $request->input('description');
+        }
+
+        if ($request->has('path') && !empty($request->input('path'))) {
+            $game->path = $request->input('path');
+        }
+
+        $game->save();
+
+        return response()->json(['message' => 'Juego actualizado correctamente']);
+    }
     
 }

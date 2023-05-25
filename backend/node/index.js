@@ -261,7 +261,6 @@ socketIO.on('connection', (socket) => {
           idUser: socket.data.id,
           username: data.username,
           isOwner: true,
-          avatar: data.avatar
         }],
       };
 
@@ -278,7 +277,7 @@ socketIO.on('connection', (socket) => {
 
   socket.on("join_room", (data) => {
 
-    joinLobby(socket, data.lobbyIdentifier, data.username, data.gameID, data.avatar);
+    joinLobby(socket, data.lobbyIdentifier, data.username, data.gameID);
 
   });
 
@@ -418,7 +417,7 @@ function sendUserList(room) {
   });
 }
 
-function joinLobby(socket, lobbyIdentifier, username, gameID, avatar) {
+function joinLobby(socket, lobbyIdentifier, username, gameID) {
   var disponible = false;
 
   if (lobbies.length == 0) {
@@ -451,8 +450,8 @@ function joinLobby(socket, lobbyIdentifier, username, gameID, avatar) {
             idUser: socket.data.id,
             username: username,
             isOwner: false,
-            avatar: avatar
           });
+          
           lobby.yourId = socket.data.id;
           socketIO.to(socket.id).emit("lobby_info", lobby);
         } else {

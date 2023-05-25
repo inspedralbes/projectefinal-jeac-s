@@ -15,6 +15,8 @@ const UpdateForm = ({ socket }) => {
     const [zip, setZip] = useState('')
     const [description, setDescription] = useState('')
     const [error, setError] = useState(null);
+    const [messageError, setMessageError] = useState("Error");
+
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const { t } = useTranslation();
     const userInfo = useSelector((state) => state.data);
@@ -23,15 +25,18 @@ const UpdateForm = ({ socket }) => {
 
     const navigate = useNavigate();
 
-    console.log(uploadedGameName);
-
     useEffect(() => {
-        socket.on('upload_error', function (msg) {
-            console.log('Node msg', msg);
+        socket.on('message_error', function (msg) {
+
+            setMessageError(msg);
+
+            document.getElementById("popup").style.display = "block";
+            setTimeout((() => {
+                document.getElementById("popup").style.display = "none";
+            }), 3000)
         });
 
         socket.on('update_complete', function (routes) {
-            console.log('New routes', routes);
             pathScript = routes.initGame;
             pathimagen = routes.img;
             hacerFetch(uploadedGameId);
@@ -46,8 +51,6 @@ const UpdateForm = ({ socket }) => {
     function UpdateGame(e) {
         e.preventDefault();
 
-        console.log("Entra update");
-
         let fileZip = document.getElementById("uploadZip").files[0];
         var fileImagen = document.getElementById("uploadImg").files[0];
         gameNamee = document.getElementById('nameGamee').value;
@@ -56,33 +59,31 @@ const UpdateForm = ({ socket }) => {
 
         if (fileZip && fileImagen) {
 
-            console.log("Zip e imagen");
-
             const reader = new FileReader();
-            reader.readAsDataURL(fileZip);
+            reader.readAsDataURL(fileImagen);
 
             const reader2 = new FileReader();
-            reader2.readAsDataURL(fileImagen);
+            reader2.readAsDataURL(fileZip);
 
             reader.onload = (event) => {
                 const fileData = {
-                    name: fileZip.name,
-                    type: fileZip.type,
+                    name: fileImagen.name,
+                    type: fileImagen.type,
                     data: event.target.result,
                 };
 
                 reader2.onload = (event) => {
                     const fileDataImg = {
-                        name: fileImagen.name,
-                        type: fileImagen.type,
+                        name: fileZip.name,
+                        type: fileZip.type,
                         data: event.target.result,
                     };
 
                     const Files = {
                         newName: nameGame,
                         currentName: uploadedGameName,
-                        zip: fileData,
-                        img: fileDataImg
+                        img: fileData,
+                        zip: fileDataImg
                     }
                     socket.emit('file_update', Files);
                 }
@@ -90,7 +91,6 @@ const UpdateForm = ({ socket }) => {
 
         }
         else if (fileImagen && !fileZip) {
-            console.log("Imagen");
 
 
             const reader2 = new FileReader();
@@ -102,16 +102,12 @@ const UpdateForm = ({ socket }) => {
                     type: fileImagen.type,
                     data: event.target.result,
                 };
-                console.log("fileDataImg", fileDataImg);
 
                 const fileData = {
                     name: fileImagen.name,
                     type: fileImagen.type,
                     data: event.target.result,
                 };
-
-                console.log("fileData", fileData);
-                console.log("fileDataIMagen", fileDataImg);
 
                 const file = {
                     newName: nameGame,
@@ -122,7 +118,6 @@ const UpdateForm = ({ socket }) => {
             }
         }
         else if (!fileImagen && fileZip) {
-            console.log("ZIP");
 
             const readerZip = new FileReader();
             readerZip.readAsDataURL(fileZip);
@@ -133,9 +128,6 @@ const UpdateForm = ({ socket }) => {
                     type: fileZip.type,
                     data: event.target.result,
                 };
-                console.log("fileDataZip", fileDataZip);
-                console.log("fileData", fileDataZip);
-                console.log("fileDataZip", fileDataZip);
 
                 const file = {
                     newName: nameGame,
@@ -210,7 +202,7 @@ const UpdateForm = ({ socket }) => {
     };
 
     return (
-        <div className="overflow-auto flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
+        <div class="overflow-auto flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
             {isLoggedIn ?
                 <div className=" container h-full w-3/4 p-10">
                     <div className="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
@@ -244,7 +236,7 @@ const UpdateForm = ({ socket }) => {
                                                         Game Name</label>
                                                     <br></br>
                                                     <input
-                                                        className="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                        class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                                         id="nameGamee" type='text' placeholder="Name" value={nameGame} onChange={(e) => { setName(e.target.value) }}>
                                                     </input>
                                                 </div>
@@ -256,7 +248,7 @@ const UpdateForm = ({ socket }) => {
                                                         Image Game</label>
                                                     <br></br>
                                                     <input
-                                                        className="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                        class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                                         id='uploadImg' type='file' accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)}>
                                                     </input>
                                                 </div>
@@ -280,7 +272,7 @@ const UpdateForm = ({ socket }) => {
                                                         Description</label>
                                                     <br></br>
                                                     <input
-                                                        className="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                        class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                                         id="descriptionGamee" placeholder="Add a description" rows='5' cols='50' value={description} onChange={(e) => setDescription(e.target.value)}>
                                                     </input>
                                                 </div>

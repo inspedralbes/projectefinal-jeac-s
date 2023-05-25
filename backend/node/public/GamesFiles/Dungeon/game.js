@@ -2,209 +2,248 @@ const configGame = {
     multiplayer: true,
     singleplayer: true,
     max_players: 2,
-}
-var game;
+};
+
 var sendInfoGame = null;
 var finalJuego = null;
-var player;
-var walls;
-var treasure;
-var enemies;
-var score = 0;
-var scoreText;
-var level = 1;
-var levelText;
-var projectiles;
-var shootKey;
-var playerDirection = 'right';
+var game;
+var ownerDelLobby;
+var user;
+var faune;
+var faune2;
+var fauneCreated = false;
+var wallsLayer;
+let self = null;
+var lastPosition = { x: 0, y: 0 };
+var lizardLastPosition = { x: 0, y: 0 };
+let direction = '';
+var lizard;
 
 function init(_sendInfoGame, _finalJuego) {
     sendInfoGame = _sendInfoGame;
     finalJuego = _finalJuego;
 
-    // Configuración del juego
     var config = {
         type: Phaser.canvas,
-        width: 800,
-        height: 600,
+        width: 400,
+        height: 300,
         canvas: document.getElementById('canvas'),
         physics: {
             default: 'arcade',
             arcade: {
                 gravity: { y: 0 },
-                debug: false
-            }
+                debug: true,
+            },
         },
         scene: {
             preload: preload,
             create: create,
-            update: update
-        }
+            update: update,
+        },
+        scale: {
+            zoom: 2,
+        },
     };
-
     game = new Phaser.Game(config);
     return game;
 }
 
 function preload() {
-    this.load.image('player', 'assets/player.png');
-    this.load.image('wall', 'assets/wall.png');
-    this.load.image('treasure', 'assets/treasure.png');
-    this.load.image('enemy', 'assets/enemy.png');
-    this.load.image('projectile', 'assets/projectile.png');
+    this.load.image('tiles', '../GamesFiles/Dungeon/tiles/dungeon_tiles.png');
+    this.load.tilemapTiledJSON('dungeon', '../GamesFiles/Dungeon/tiles/dungeon-01.json');
+    this.load.atlas('faune', '../GamesFiles/Dungeon/character/fauna.png', '../GamesFiles/Dungeon/character/fauna.json');
+    this.load.atlas('lizard', '../GamesFiles/Dungeon/enemies/lizard.png', '../GamesFiles/Dungeon/enemies/lizard.json');
+
+    this.cursors = this.input.keyboard.createCursorKeys();
+}
+function createAnimations() {
+    this.anims.create({
+        key: 'faune-idle-down',
+        frames: [{ key: 'faune', frame: 'walk-down-3.png' }],
+    });
+    this.anims.create({
+        key: 'faune-idle-up',
+        frames: [{ key: 'faune', frame: 'walk-up-3.png' }]
+    })
+
+    this.anims.create({
+        key: 'faune-idle-side',
+        frames: [{ key: 'faune', frame: 'walk-side-3.png' }]
+    })
+
+    this.anims.create({
+        key: 'faune-run-down',
+        frames: this.anims.generateFrameNames('faune', { start: 1, end: 8, prefix: 'run-down-', suffix: '.png' }),
+        repeat: -1,
+        frameRate: 15
+    })
+
+    this.anims.create({
+        key: 'faune-run-up',
+        frames: this.anims.generateFrameNames('faune', { start: 1, end: 8, prefix: 'run-up-', suffix: '.png' }),
+        repeat: -1,
+        frameRate: 15
+    })
+
+    this.anims.create({
+        key: 'faune-run-side',
+        frames: this.anims.generateFrameNames('faune', { start: 1, end: 8, prefix: 'run-side-', suffix: '.png' }),
+        repeat: -1,
+        frameRate: 15
+    })
+
+    this.anims.create({
+        key: 'lizard-idle',
+        frames: this.anims.generateFrameNames('lizard', { start: 0, end: 3, prefix: 'lizard_m_idle_anim_f', suffix: '.png' }),
+        repeat: -1,
+        frameRate: 10
+    })
+
+    this.anims.create({
+        key: 'lizard-run',
+        frames: this.anims.generateFrameNames('lizard', { start: 0, end: 3, prefix: 'lizard_m_run_anim_f', suffix: '.png' }),
+        repeat: -1,
+        frameRate: 10
+    })
 }
 
 function create() {
-    // Crear el jugador
-    player = this.physics.add.sprite(32, 32, 'player');
-    player.setCollideWorldBounds(true);
-    projectiles = this.physics.add.group();
+    self = this;
+    const map = this.make.tilemap({ key: 'dungeon' });
+    const tileset = map.addTilesetImage('dungeon', 'tiles');
+    map.createLayer('Ground', tileset);
+    wallsLayer = map.createLayer('Walls', tileset);
+    wallsLayer.setCollisionByProperty({ collides: true });
 
-    // Crear las paredes
-    // walls = this.physics.add.staticGroup();
-    // walls.create(400, 0, 'wall').setOrigin(0.5, 0).refreshBody();
-    // walls.create(400, 600, 'wall').setOrigin(0.5, 1).refreshBody();
-    // walls.create(0, 300, 'wall').setOrigin(0, 0.5).refreshBody();
-    // walls.create(800, 300, 'wall').setOrigin(1, 0.5).refreshBody();
+    createAnimations.call(this);
 
-    // Crear el tesoro
-    treasure = this.physics.add.sprite(Phaser.Math.Between(100, 700), Phaser.Math.Between(100, 500), 'treasure');
+    if (ownerDelLobby) {
+        faune = this.physics.add.sprite(128, 128, 'faune', 'walk-down-3.png');
+        faune.body.setSize(faune.width * 0.5, faune.height * 0.8);
+        faune.anims.play('faune-idle-down');
+        this.physics.add.collider(faune, wallsLayer);
+        this.cameras.main.startFollow(faune, true);
 
-    // Crear los enemigos
-    enemies = this.physics.add.group();
-    createEnemies();
+        const speedEnemy = 70;
 
-    // Colisiones
-    this.physics.add.collider(player, walls);
-    this.physics.add.overlap(player, treasure, collectTreasure, null, this);
-    this.physics.add.overlap(player, enemies, hitEnemy, null, this);
+        lizard = this.physics.add.sprite(256, 128, 'lizard', 'lizard_m_idle_anim_f0.png');
+        lizard.anims.play('lizard-run');
+        this.physics.add.collider(lizard, wallsLayer); // Add a collider with wallsLayer
+        lizard.setVelocity(Phaser.Math.Between(-speedEnemy, speedEnemy), Phaser.Math.Between(-speedEnemy, speedEnemy));
 
-    // Texto de puntuación
-    scoreText = this.add.text(16, 16, 'Puntuación: 0', { fontSize: '32px', fill: '#fff' });
-
-    // Texto de nivel
-    levelText = this.add.text(16, 50, 'Nivel: 1', { fontSize: '24px', fill: '#fff' });
-
-    // Controles del jugador
-    cursors = this.input.keyboard.createCursorKeys();
-    shootKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    player.setFlipX(true);
-
+        // Set the lizard's bounce to 1 to make it bounce off the walls.
+        lizard.body.setBounce(1);
+    } else {
+        faune2 = this.physics.add.sprite(128, 128, 'faune', 'walk-down-3.png');
+        faune2.body.setSize(faune2.width * 0.5, faune2.height * 0.8);
+        faune2.anims.play('faune-idle-down');
+        this.physics.add.collider(faune2, wallsLayer);
+        this.cameras.main.startFollow(faune2, true);
+    }
 }
 
 function update() {
-    // Movimiento del jugador
-    player.setVelocity(0);
+    if (!this.cursors || (!faune && !faune2)) {
+        return;
+    }
+    const speed = 100;
+    const { left, right, up, down } = this.cursors;
+    let character = ownerDelLobby ? faune : faune2;
 
-    if (Phaser.Input.Keyboard.JustDown(shootKey)) {
-        var projectile;
-        var velocityX = 0;
-        var velocityY = 0;
+    if (left.isDown) {
+        character.anims.play('faune-run-side', true);
+        character.setVelocity(-speed, 0);
+        character.scaleX = -1;
+        character.body.offset.x = 24;
+        direction = 'left';
+    } else if (right.isDown) {
+        character.anims.play('faune-run-side', true);
+        character.setVelocity(speed, 0);
+        character.scaleX = 1;
+        character.body.offset.x = 8;
+        direction = 'right';
+    } else if (up.isDown) {
+        character.anims.play('faune-run-up', true);
+        character.setVelocity(0, -speed);
+        direction = 'up';
+    } else if (down.isDown) {
+        character.anims.play('faune-run-down', true);
+        character.setVelocity(0, speed);
+        direction = 'down';
+    } else {
+        const parts = character.anims.currentAnim.key.split('-');
+        parts[1] = 'idle';
+        character.play(parts.join('-'));
+        character.setVelocity(0, 0);
+    }
 
-        if (playerDirection === 'right') {
-            velocityX = 500;
-        } else if (playerDirection === 'left') {
-            velocityX = -500;
-        } else if (playerDirection === 'up') {
-            velocityY = -500;
-        } else if (playerDirection === 'down') {
-            velocityY = 500;
+    var currentPosition = { x: character.x, y: character.y }; // Usar 'character' en lugar de 'faune'
+    if (currentPosition.x !== lastPosition.x || currentPosition.y !== lastPosition.y) {
+        lastPosition = currentPosition;
+        var data = {
+            faune: ownerDelLobby ? { x: currentPosition.x, y: currentPosition.y } : null,
+            faune2: !ownerDelLobby ? { x: currentPosition.x, y: currentPosition.y } : null,
+            direction: direction,
+            animation: character.anims.currentAnim.key,
+            scaleX: character.scaleX,
+        };
+        sendInfoGame(data);
+    }
+
+    if (lizard) {
+        var lizardCurrentPosition = { x: lizard.x, y: lizard.y };
+        if (lizardCurrentPosition.x !== lizardLastPosition.x || lizardCurrentPosition.y !== lizardLastPosition.y) {
+            lizardLastPosition = lizardCurrentPosition;
+            var lizardPosition = { x: lizard.x, y: lizard.y };
+            sendInfoGame({ lizard: lizardPosition });
         }
-
-        if (cursors.up.isDown && cursors.right.isDown) {
-            velocityX = 500;
-            velocityY = -500;
-        } else if (cursors.up.isDown && cursors.left.isDown) {
-            velocityX = -500;
-            velocityY = -500;
-        } else if (cursors.down.isDown && cursors.right.isDown) {
-            velocityX = 500;
-            velocityY = 500;
-        } else if (cursors.down.isDown && cursors.left.isDown) {
-            velocityX = -500;
-            velocityY = 500;
-        }
-
-        projectile = projectiles.create(player.x, player.y, 'projectile');
-        projectile.setVelocity(velocityX, velocityY);
-
-        this.physics.add.collider(projectile, enemies, destroyEnemy, null, this);
-    }
-
-    if (cursors.left.isDown) {
-        player.setVelocityX(-200);
-        playerDirection = 'left';
-    } else if (cursors.right.isDown) {
-        player.setVelocityX(200);
-        playerDirection = 'right';
-    }
-
-    if (cursors.up.isDown) {
-        player.setVelocityY(-200);
-        playerDirection = 'up';
-    } else if (cursors.down.isDown) {
-        player.setVelocityY(200);
-        playerDirection = 'down';
-    }
-
-    if (playerDirection === 'left') {
-        player.setFlipX(true);
-    } else if (playerDirection === 'right') {
-        player.setFlipX(false);
     }
 }
-
-function collectTreasure(player, treasure) {
-    treasure.disableBody(true, true);
-    score += 10;
-    scoreText.setText('Puntuación: ' + score);
-
-    if (score % 50 === 0) {
-        level++;
-        levelText.setText('Nivel: ' + level);
-        createEnemies();
-    }
-
-    // Aquí puedes agregar tu lógica para continuar el juego después de recoger el tesoro
-}
-
-function hitEnemy(player, enemy) {
-    this.physics.pause();
-    player.setTint(0xff0000);
-    alert('¡Has sido atrapado por un enemigo!');
-
-    // Aquí puedes agregar tu lógica para reiniciar el juego después de ser atrapado
-}
-
-function createEnemies() {
-    enemies.clear(true, true);
-
-    for (var i = 0; i < level; i++) {
-        var x = Phaser.Math.Between(100, 700);
-        var y = Phaser.Math.Between(100, 500);
-        var enemy = enemies.create(x, y, 'enemy');
-        enemy.setCollideWorldBounds(true);
-        enemy.setBounce(1);
-        enemy.setVelocity(Phaser.Math.Between(-200, 200), Phaser.Math.Between(-200, 200));
-    }
-}
-
-function destroyEnemy(projectile, enemy) {
-    projectile.disableBody(true, true);
-    enemy.disableBody(true, true);
-    score += 20;
-    scoreText.setText('Puntuación: ' + score);
-
-    if (enemies.countActive() === 0) {
-        level++;
-        levelText.setText('Nivel: ' + level);
-        createEnemies();
-    }
-}
-
 
 function recibirInfoFromPlatform(data) {
-    console.log(data);
+    if (!ownerDelLobby && data.infoGame.faune) {
+        if (!faune) {
+            faune = self.physics.add.sprite(data.infoGame.faune.x, data.infoGame.faune.y, 'faune', 'walk-down-3.png');
+            faune.body.setSize(faune.width * 0.5, faune.height * 0.8);
+            self.physics.add.collider(faune, wallsLayer);
+            self.cameras.main.startFollow(faune2, true);
+        } else {
+            var newPosition = data.infoGame.faune;
+            if (newPosition.x !== faune.x || newPosition.y !== faune.y) {
+                faune.setPosition(newPosition.x, newPosition.y);
+                faune.anims.play(data.infoGame.animation, true);
+                faune.scaleX = data.infoGame.scaleX;
+                faune.body.offset.x = data.infoGame.scaleX === -1 ? 24 : 8;
+            }
+        }
+    }
+
+    if (ownerDelLobby && data.infoGame.faune2) {
+        if (!faune2) {
+            faune2 = self.physics.add.sprite(data.infoGame.faune2.x, data.infoGame.faune2.y, 'faune', 'walk-down-3.png');
+            faune2.body.setSize(faune2.width * 0.5, faune2.height * 0.8);
+            self.physics.add.collider(faune2, wallsLayer);
+            self.cameras.main.startFollow(faune, true);
+        } else {
+            var newPosition = data.infoGame.faune2;
+            if (newPosition.x !== faune2.x || newPosition.y !== faune2.y) {
+                faune2.setPosition(newPosition.x, newPosition.y);
+                faune2.anims.play(data.infoGame.animation, true);
+                faune2.scaleX = data.infoGame.scaleX;
+                faune2.body.offset.x = data.infoGame.scaleX === -1 ? 24 : 8;
+            }
+        }
+    }
+    if (!ownerDelLobby && data.infoGame.lizard) {
+        if (!lizard) {
+            lizard = self.physics.add.sprite(data.infoGame.lizard.x, data.infoGame.lizard.y, 'lizard', 'lizard_m_idle_anim_f0.png');
+        } else {
+            var newPosition = data.infoGame.lizard;
+            if (newPosition.x !== lizard.x || newPosition.y !== lizard.y) {
+                lizard.setPosition(newPosition.x, newPosition.y);
+            }
+        }
+    }
 }
 
 function recibirInfoLobby(lobby) {

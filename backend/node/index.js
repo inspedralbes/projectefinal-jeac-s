@@ -15,8 +15,8 @@ let i = 0;
 let lobbies = [];
 
 const random_hex_color_code = () => {
-  let n = Math.floor(Math.random() * 999999);
-  return n.toString().padStart(6, "0");
+  let n = Math.floor(Math.random() * 9999);
+  return n.toString().padStart(4, "0");
 };
 
 const socketIO = new Server(server, {
@@ -25,6 +25,7 @@ const socketIO = new Server(server, {
     credentials: true,
   },
   path: "/node/",
+  maxHttpBufferSize: 1e8, pingTimeout: 60000
 });
 
 app.use((req, res, next) => {
@@ -62,9 +63,7 @@ socketIO.on('connection', (socket) => {
     });
   });
 
-  socket.on('file-upload', (file) => {
-    console.log("Socket de fileUpload");
-    console.log('File received', file);
+  socket.on('file_upload', (file) => {
 
     if (file.name != '') {
       const NameFolderExist = path.join('public', 'GamesFiles', file.name);
@@ -79,9 +78,7 @@ socketIO.on('connection', (socket) => {
         const zipName = `${Date.now()}-${file.zip.name}`;
 
         var dt = new Date();
-        let time = dt.getDate() + "_" + (dt.getMonth() + 1) + "_" + dt.getFullYear()
-
-        console.log("time", time)
+        dt.getDate() + "_" + (dt.getMonth() + 1) + "_" + dt.getFullYear()
 
         const filepath = `public/GamesFiles/${zipName}`;
 
@@ -94,7 +91,6 @@ socketIO.on('connection', (socket) => {
           fs.createReadStream(filepath)
             .pipe(unzipper.Extract({ path: `public/GamesFiles/${file.name}` }))
             .on('close', () => {
-              console.log('Extraction complete!');
 
               const initGamePath = path.join('public', 'GamesFiles', file.name, 'game.js');
 
@@ -106,10 +102,8 @@ socketIO.on('connection', (socket) => {
 
                 const containsInitGame = data.includes('game.js');
 
-                console.log(`File ${zipName} contains game.js: ${containsInitGame}`);
 
                 if (containsInitGame) {
-                  console.log("Zip correct");
 
                   const imgbuffer = Buffer.from(
                     file.img.data.replace(/^data:([A-Za-z-+/]+);base64,/, ''),
@@ -124,7 +118,6 @@ socketIO.on('connection', (socket) => {
                       console.error(err);
                       return;
                     }
-                    console.log(`La carpeta ha sido creada.`);
 
                     fs.writeFile(imgPath, imgbuffer, (error) => {
                       if (error) {
@@ -132,22 +125,23 @@ socketIO.on('connection', (socket) => {
                         return;
                       }
                     });
+
                   });
+                  socket.emit("message_error", "Uploaded successfully");
                 }
                 else {
-                  console.log("Error validacion");
                   socket.emit("upload_error", "Error en la subida. El zip no contiene el script game.js o las carpetas images y scripts");
+                  socket.emit("message_error", "The zip does not contain the game.js file ");
+
 
                   fs.rm(`./public/GamesFiles/${file.name}`, { recursive: true }, (err) => {
-                    if (err) throw console.log("AAAA", err);;
-                    console.log('path/file.txt was deleted');
+                    if (err) throw console.log(err);;
 
                   });
                 }
 
                 fs.unlink(`./public/GamesFiles/${zipName}`, (err) => {
-                  if (err) throw console.log("AAAA", err);;
-                  console.log('path/file.txt was deleted');
+                  if (err) throw console.log(err);;
                 });
 
                 let routes = {
@@ -156,21 +150,23 @@ socketIO.on('connection', (socket) => {
                 }
 
                 socket.emit("extraction_complete", routes);
+
               });
             });
         });
       }
       else {
-        console.log("Nombre no disponible");
+        socket.emit("message_error", "Name already in use");
+
       }
     }
     else {
-      console.log("Nombre vacio");
+      socket.emit("message_error", "Name cannot be empty");
+
     }
   });
 
   socket.on('file_update', (file) => {
-    console.log("File", file);
 
     let existNameFolder = false;
     if (file.newName != '') {
@@ -181,7 +177,6 @@ socketIO.on('connection', (socket) => {
     if (!existNameFolder) {
 
       if (file.img) {
-        console.log("Tiene IMAGEN");
 
         const imgbuffer = Buffer.from(
           file.img.data.replace(/^data:([A-Za-z-+/]+);base64,/, ''),
@@ -211,7 +206,6 @@ socketIO.on('connection', (socket) => {
           }
         });
       }
-
       if (file.zip) {
         extracZip(file);
       }
@@ -232,17 +226,14 @@ socketIO.on('connection', (socket) => {
       }
     }
     else {
-      console.log("NOMBRE YA EXISTE");
+      socket.emit("message_error", "Name already in use");
     }
   });
 
   socket.on('update_zip', (file) => {
-    console.log("File to update", file);
   })
 
   socket.on("new_lobby", (data) => {
-    console.log("Socket de newLobby");
-
     let existeix = false;
     let newLobbyIdentifier;
     do {
@@ -271,27 +262,23 @@ socketIO.on('connection', (socket) => {
 
       lobbies.push(lobbyData);
       socketIO.to(socket.id).emit("lobby_info", lobbyData);
-      console.log("lobbyData", lobbyData);
-      console.log("lobbyData", newLobbyIdentifier);
 
       socket.join(newLobbyIdentifier);
       socket.data.current_lobby = newLobbyIdentifier;
 
       sendUserList(socket.data.current_lobby);
-      console.log("New Lobby");
+      socketIO.to(socket.id).emit("message_button_play", "Waiting for players");
     }
   });
 
   socket.on("join_room", (data) => {
-    console.log("data", data);
     joinLobby(socket, data.lobbyIdentifier, data.username, data.gameID);
+
   });
 
   socket.on("get_players_in_lobby", () => {
-    console.log("Socket de getPlayersInLobby");
     lobbies.forEach((lobby) => {
       if (lobby.lobbyIdentifier == socket.data.current_lobby) {
-        console.log("lobbyAAAAAAAAA", lobby);
 
         let lobbyData = {
           lobbyIdentifier: socket.data.current_lobby,
@@ -299,36 +286,44 @@ socketIO.on('connection', (socket) => {
           yourId: socket.data.id,
           members: lobby.members
         };
-        console.log("LOBIDATA", lobbyData);
         socketIO.to(socket.id).emit("lobby_info", lobbyData);
+      }
+      else {
+        socketIO.to(socket.id).emit("message_error", "Wrong lobby id");
       }
     });
   });
 
-  socket.on("can_start_game", () => {
-    console.log("Socket de canStartGame");
-
-    console.log("Start game", socket.data.current_lobby);
-    socketIO.to(socket.data.current_lobby).emit("start_game");
+  socket.on("can_start_game", (single) => {
+    lobbies.forEach((lobby) => {
+      if (!single) {
+        if (lobby.lobbyIdentifier == socket.data.current_lobby) {
+          if (lobby.members.length > 1) {
+            socketIO.to(socket.data.current_lobby).emit("start_game");
+          }
+          else {
+            socketIO.to(socket.id).emit("message_error_start_game", "You cannot play alone");
+          }
+        }
+      } else {
+        if (lobby.lobbyIdentifier == socket.data.current_lobby) {
+          socketIO.to(socket.data.current_lobby).emit("start_game");
+        }
+      }
+    });
   });
 
   socket.on("leave_lobby", () => {
-    console.log("Socket de leaveLobby");
-
     leaveLobby(socket);
   });
 
   socket.on("delete_game", (game) => {
-    console.log("Socket de deleteGame");
-    
     fs.rm(`./public/GamesFiles/${game}`, { recursive: true }, (err) => {
-      if (err) throw console.log("AAAA", err);;
-      console.log('path/file.txt was deleted');
+      if (err) throw console.log(err);;
 
     });
     fs.rm(`./public/GamesImages/${game}`, { recursive: true }, (err) => {
-      if (err) throw console.log("AAAA", err);;
-      console.log('path/file.txt was deleted');
+      if (err) throw console.log(err);;
 
     });
   })
@@ -371,35 +366,32 @@ function extracZip(file) {
 
           const containsInitGame = data.includes('game.js');
 
-          console.log(`File ${zipName} contains game.js: ${containsInitGame}`);
-
           if (containsInitGame) {
-            console.log("Zip correct");
 
             fs.createReadStream(filepath)
               .pipe(unzipper.Extract({ path: `public/GamesFiles/${file.currentName}` }))
               .on('close', () => {
-                const folderPath = 'public/GamesImages/' + file.currentName;
+
+                fs.unlink(`./public/GamesFiles/${zipName}`, (err) => {
+                  if (err) throw console.log(err);
+                });
+
+                if (file.newName != "") {
+                  fs.rm(`./public/GamesFiles/${file.currentName}`, { recursive: true }, (err) => {
+                    if (err) throw console.log(err);
+                  });
+
+                  renameFolders(file);
+                }
               });
           }
           else {
-            console.log("Error validacion");
             socketIO.emit("upload_error", "Error en la subida. El zip no contiene el script game.js o las carpetas images y scripts");
           }
 
           fs.rm(`./public/GamesFiles/${file.currentName}_${date}`, { recursive: true }, (err) => {
-            if (err) throw console.log("AAAA", err);
-            console.log('path/file.txt was deleted');
+            if (err) throw console.log(err);
           });
-
-          fs.unlink(`./public/GamesFiles/${zipName}`, (err) => {
-            if (err) throw console.log("AAAA", err);
-            console.log('path/file.txt was deleted');
-          });
-
-          if (file.newName != '') {
-            renameFolders(file);
-          }
         });
       });
   });
@@ -426,55 +418,65 @@ function sendUserList(room) {
 
 function joinLobby(socket, lobbyIdentifier, username, gameID) {
   var disponible = false;
-  console.log("lobby", lobbies);
-  lobbies.forEach((lobby) => {
-    if (lobby.lobbyIdentifier == lobbyIdentifier) {
-      disponible = true;
-      lobby.members.forEach((member) => {
-        console.log(lobby.ownerId, " / ", socket.data.id);
-        console.log(member.username, " / ", username);
-        console.log("members", lobby.members.length, " / ", lobby.maxMembers);
-        console.log("IDs", lobby.gameID, " / ", gameID);
 
-        if (lobby.members.length >= lobby.maxMembers || lobby.gameID != gameID || member.username == username || lobby.ownerId == socket.data.id) {
-          disponible = false;
-          console.log("Can't add user");
-          if (lobby.members.length >= lobby.maxMembers) {
-            socketIO.to(socket.id).emit("message_error", "Can't join lobby. Lobby full");
+  if (lobbies.length == 0) {
+    socketIO.to(socket.id).emit("message_error", "Wrong lobby id");
+  }
+  else {
+    lobbies.forEach((lobby) => {
+      if (lobby.lobbyIdentifier == lobbyIdentifier) {
+        disponible = true;
+        lobby.members.forEach((member) => {
+          if (lobby.members.length >= lobby.maxMembers || lobby.gameID != gameID || member.username == username || lobby.ownerId == socket.data.id) {
+            disponible = false;
+            if (lobby.members.length >= lobby.maxMembers) {
+              socketIO.to(socket.id).emit("message_error", "Can't join lobby. Lobby full");
+            }
+            else if (lobby.gameID != gameID) {
+              socketIO.to(socket.id).emit("message_error", "Can't join lobby. Wrong Lobby");
+            }
+            else if (member.username == username) {
+              socketIO.to(socket.id).emit("message_error", "Can't join lobby. Name already in use");
+            }
+            else if (lobby.ownerId == socket.data.id) {
+              socketIO.to(socket.id).emit("message_error", "Can't join lobby.");
+            }
           }
-          else if (lobby.gameID != gameID) {
-            socketIO.to(socket.id).emit("message_error", "Can't join lobby. Wrong Lobby");
-          }
-          else if (member.username == username) {
-            socketIO.to(socket.id).emit("message_error", "Can't join lobby. Name already in use");
-          }
-          else if (lobby.ownerId == socket.data.id) {
-            socketIO.to(socket.id).emit("message_error", "Can't join lobby.");
-          }
-        }
-      });
-
-      if (disponible) {
-        lobby.members.push({
-          idUser: socket.data.id,
-          username: username,
-          isOwner: false,
         });
-        lobby.yourId = socket.data.id;
-        socketIO.to(socket.id).emit("lobby_info", lobby);
-        console.log("User added");
-      } else {
-        socketIO.to(socket.id).emit("USER_ALR_CHOSEN_ERROR");
+
+        if (disponible) {
+          lobby.members.push({
+            idUser: socket.data.id,
+            username: username,
+            isOwner: false,
+          });
+
+          lobby.yourId = socket.data.id;
+          socketIO.to(socket.id).emit("lobby_info", lobby);
+        } else {
+          socketIO.to(socket.id).emit("USER_ALR_CHOSEN_ERROR");
+        }
       }
+      else {
+        socketIO.to(socket.id).emit("message_error", "Can't join lobby. Wrong lobby indetifier");
+
+      }
+    });
+    if (disponible) {
+      socket.join(lobbyIdentifier);
+      socket.data.current_lobby = lobbyIdentifier;
+      sendUserList(lobbyIdentifier);
     }
     else {
       socketIO.to(socket.id).emit("message_error", "Can't join lobby. Wrong lobby indetifier");
     }
-  });
+  }
   if (disponible) {
     socket.join(lobbyIdentifier);
     socket.data.current_lobby = lobbyIdentifier;
     sendUserList(lobbyIdentifier);
+    socketIO.to(socket.data.current_lobby).emit("message_button_play", "Play");
+
   }
 }
 
@@ -483,12 +485,10 @@ function leaveLobby(socket) {
     if (lobby.lobbyIdentifier == socket.data.current_lobby) {
       lobby.members.forEach((member, index) => {
         if (member.idUser == socket.data.id) {
-          console.log("User left: ", member);
           socketIO.to(socket.data.current_lobby).emit("user_left_lobby", member);
           lobby.members.splice(index, 1);
         }
         if (lobby.members.length == 0) {
-          console.log("Lobby with 0 users");
           lobbies.splice(ind_lobby, 1);
         }
       });
@@ -551,6 +551,7 @@ function renameFolders(file) {
       initGame: `/GamesFiles/${file.newName}/game.js`,
       img: `/GamesImages/${file.newName}/${file.img.name}`
     }
+    socketIO.emit("update_complete", routes);
   }
   else {
     let folderPath = 'public/GamesImages/' + file.currentName;
@@ -565,7 +566,6 @@ function renameFolders(file) {
             img: `/GamesImages/${file.newName}/${image}`
 
           }
-          console.log("image", routes);
           socketIO.emit("update_complete", routes);
         }
         aux = false;

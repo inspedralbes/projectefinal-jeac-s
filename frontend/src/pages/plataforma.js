@@ -36,6 +36,8 @@ function Game({ socket }) {
   const [hasMultiplayer, setHasMultiplayer] = useState(null);
   const [hasSingleplayer, setHasSingleplayer] = useState(null);
   const [messageError, setMessageError] = useState("Error");
+  const [buttonText, setButtonText] = useState("Playrerewr");
+
 
   useEffect(() => {
     return () => {
@@ -53,12 +55,37 @@ function Game({ socket }) {
   useEffect(() => {
     socket.on("message_error", (msg) => {
       setMessageError(msg);
-
+      setSinglePlayerUserName(null);
+      setGameModeSelected(false);
+      setSinglePlayer(false);
+      setGameStarted(false);
+      setLobbyJoined(false);
 
       document.getElementById("popup").style.display = "block";
       setTimeout((() => {
         document.getElementById("popup").style.display = "none";
       }), 3000)
+    });
+
+    socket.on("message_error_start_game", (msg) => {
+      setMessageError(msg);
+      setGameStarted(false);
+      document.getElementById("popup").style.display = "block";
+      setTimeout((() => {
+        document.getElementById("popup").style.display = "none";
+      }), 3000)
+    });
+
+    socket.on("message_error_alone", (msg) => {
+      setMessageError(msg);      
+      document.getElementById("popup").style.display = "block";
+      setTimeout((() => {
+        document.getElementById("popup").style.display = "none";
+      }), 3000)
+    });
+
+    socket.on("message_button_play", (msg) => {
+      setButtonText(msg);
     });
   }, []);
 
@@ -98,7 +125,7 @@ function Game({ socket }) {
       socket.emit("new_lobby", {
         username: singlePlayerUserName,
         max_players: obj.config_game.max_players,
-        gameId: gameInfo
+        gameId: gameInfo,
       });
       setLobbyStarted(true);
     } else {
@@ -106,7 +133,7 @@ function Game({ socket }) {
       console.log("El nombre no puede estar vacio");
     }
   };
-
+ 
   function handleSetSinglePlayerUsername(e) {
     setSinglePlayerUserName(e.target.value);
   }
@@ -147,19 +174,33 @@ function Game({ socket }) {
   }
 
   function joinLobby() {
-    if (lobbyIdInput != null && multiPlayerUserName != null) {
+    if ((lobbyIdInput || lobbyIdInput != null) && (multiPlayerUserName || multiPlayerUserName != null)) {
       setLobbyJoined(true);
       socket.emit("join_room", {
         lobbyIdentifier: lobbyIdInput,
         username: multiPlayerUserName,
-        gameID: gameInfo
+        gameID: gameInfo,
       });
     }
+    else {
+      if (!lobbyIdInput) {
+        setMessageError("Lobby id can't be null");
+      }
+      else if(!multiPlayerUserName) {
+        setMessageError("Username can't be null");
+      }
+
+      document.getElementById("popup").style.display = "block";
+      setTimeout((() => {
+        document.getElementById("popup").style.display = "none";
+      }), 3000)
+    }
+    
   }
 
   function startGame() {
     if (singlePlayerUserName != null || multiPlayerUserName != null) {
-      socket.emit("can_start_game");
+      socket.emit("can_start_game", singlePlayer);
       setGameStarted(true);
     } else {
       setGameStarted(false);
@@ -197,6 +238,10 @@ function Game({ socket }) {
 
   async function finalJuego(points) {
     var totalScore = points;
+
+    if (totalScore > 300) {
+      totalScore = 150;
+    }
     var gameId = gameInfo;
     var score = totalScore;
     setGameEnded(true);
@@ -231,13 +276,13 @@ function Game({ socket }) {
 
   return (
     <div>
-      <div id="popup" classNameName="hidden">{messageError}</div>
-      <div className="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
-        <div>{messageError}</div>
-        <div className="g-6 flex h-full flex-wrap items-center justify-center">
-          <div className="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
-            <div className="relative p-4 md:m-6 md:p-12 text-center">
-              {!gameModeSelected ?
+      <canvas id="canvas_image" className="hidden"></canvas>
+      <div id="popup" className="hidden">{messageError}</div>
+      <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
+        <div class="g-6 flex h-full flex-wrap items-center justify-center">
+          <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
+            <div class="relative p-4 md:m-6 md:p-12 text-center">
+              {!gameModeSelected && !displayCanvas ?
                 <div>
                   <h3 className="text-white">Choose the gamemode</h3>
                   <br></br>
@@ -319,7 +364,7 @@ function Game({ socket }) {
                                 <div>
                                   {!gameStarted ?
                                     <div>
-                                      <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>PLAY</button>
+                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>{buttonText}</button>
                                     </div>
                                     :
                                     <></>
@@ -343,7 +388,7 @@ function Game({ socket }) {
                                       <label classNameName="text-white">
                                         Introduce your nickname
                                       </label><br></br>
-                                      <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { handleSaveUsernameOnClick() }}>Set Lobby</button>
+                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { handleSaveUsernameOnClick()}}>Set Lobby</button>
                                     </div>
                                   </label>
                                 </div>
@@ -351,7 +396,7 @@ function Game({ socket }) {
                                 <div>
                                   {!gameStarted ?
                                     <div>
-                                      <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>PLAY</button>
+                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>{buttonText}</button>
                                     </div>
                                     :
                                     <></>

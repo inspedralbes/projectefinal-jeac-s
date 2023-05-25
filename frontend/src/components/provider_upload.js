@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from "react-router-dom";
 
 let pathimagen = '';
 let gameNamee = '';
@@ -13,13 +14,21 @@ const UploadForm = ({ socket }) => {
     const [zip, setZip] = useState('')
     const [description, setDescription] = useState('')
     const [error, setError] = useState(null);
+    const [messageError, setMessageError] = useState("Error");
+
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const { t } = useTranslation();
     const userInfo = useSelector((state) => state.data);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        socket.on('upload_error', function (msg) {
-            console.log('Node msg', msg);
+        socket.on('message_error', function (msg) {
+            setMessageError(msg);
+
+            document.getElementById("popup").style.display = "block";
+            setTimeout((() => {
+              document.getElementById("popup").style.display = "none";
+            }), 3000)
         });
         return () => {
             socket.off('extraction_complete');
@@ -35,31 +44,36 @@ const UploadForm = ({ socket }) => {
         descriptionGame = document.getElementById('descriptionGamee').value;
 
         const reader = new FileReader();
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(fileImagen);
 
         const reader2 = new FileReader();
-        reader2.readAsDataURL(fileImagen);
+        reader2.readAsDataURL(file);
 
         reader.onload = (event) => {
             const fileData = {
-                name: file.name,
-                type: file.type,
+                name: fileImagen.name,
+                type: fileImagen.type,
                 data: event.target.result,
             };
 
             reader2.onload = (event) => {
                 const fileDataImg = {
-                    name: fileImagen.name,
-                    type: fileImagen.type,
+                    name: file.name,
+                    type: file.type,
                     data: event.target.result,
                 };
 
+                console.log("fileDataImg", fileDataImg);
+                console.log("fileData", fileData);
+
+
                 const Files = {
                     name: nameGame,
-                    zip: fileData,
-                    img: fileDataImg
+                    img: fileData,
+                    zip: fileDataImg
                 }
-                socket.emit('file-upload', Files);
+                console.log("ASjksdhfkdhfasfkljd", Files);
+                socket.emit('file_upload', Files);
             }
         }
 
@@ -89,15 +103,21 @@ const UploadForm = ({ socket }) => {
             });
             if (!response.ok) {
                 throw new Error(response.statusText);
+            } else {
+                console.log('Juego subido correctamente');
+                navigate("/games")
+
             }
             const data = await response.json();
         } catch (error) {
             setError(error);
-        }
+        } 
     }
 
     return (
-        <div className="overflow-auto flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
+
+        <div class="overflow-auto flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
+            <div id="popup" className="hidden">{messageError}</div>
             {isLoggedIn ?
                 <div className=" container h-full w-3/4 p-10">
                     <div className="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">

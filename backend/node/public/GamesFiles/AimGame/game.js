@@ -16,7 +16,7 @@ var ownerDelLobby;
 var objects;
 var object;
 var user;
-var tiempoRestante = 10;
+var tiempoRestante = 30;
 var usuarios = [];
 var game;
 
@@ -38,10 +38,9 @@ function init(_sendInfoGame, _finalJuego) {
     game = new Phaser.Game(config);
     return game;
 }
-
 function preload() {
-    this.load.image("background", "../GamesFiles/AimGame/images/bgImage.jpg");
-    this.load.image("object", "../GamesFiles/AimGame/images/object.jpg");
+    this.load.image("background", "./fitxers/GamesFiles/AimGame/images/bgImage.jpg");
+    this.load.image("object", "./fitxers/GamesFiles/AimGame/images/object.jpg");
 }
 
 function create() {

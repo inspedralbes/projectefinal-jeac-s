@@ -78,93 +78,73 @@ const LoginForm = () => {
                     {t('logInAlreadyLoggedIn')}
                 </p> :
                 <div className="g-6 flex h-full flex-wrap items-center justify-center">
-                    <div className="w-72 h-90 -mt-14 block rounded-lg bg-purple-900 shadow-lg dark:bg-neutral-800">
+                    <div className="w-full mb-14 rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
 
-                        <div className="p-4">
-                            <div className="md:m-6 md:p-12">
+                        <div className="p-20">
+                            <NavLink to="/">
                                 <div className="text-center">
                                     <img
-                                        className="mx-auto w-48"
+                                        className="m-auto w-60"
                                         src="LogoBuenoSNB.png"
                                         alt="logo" />
                                 </div>
-                                <form onSubmit={handleSubmit}>
-                                    {/* <div className="border-2 border-fuchsia-600 relative mb-4 mt-10" data-te-input-wrapper-init>
-                                        <label
-                                            htmlFor="exampleFormControlInput1"
-                                            className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
-                                            {t('signInEmail')}
-                                        </label>
-                                        <br></br>
+                            </NavLink>
+                            <br></br>
+                            <br></br>
+                            <form onSubmit={handleSubmit} autoComplete="off">
+                                <div class="relative z-0 w-full mb-6 group">
+                                    <input value={email} autoComplete="off" onChange={(event) => setEmail(event.target.value)} type="email" name="floating_email" id="floating_email" class="block pt-4 px-0 w-full text-sm text-white  bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-purple-600 peer" placeholder=" " required autoFocus />
+                                    <label for="floating_email" class="peer-focus:font-medium absolute text-xl text-white dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 font-bold peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
+                                </div>
+                                <div class="relative z-0 w-full mb-6 group">
+                                    <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" name="floating_password" id="floating_password" class="block pt-4 px-0 w-full text-sm text-white  bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-purple-600 peer" placeholder=" " required />
+                                    <label for="floating_password" class="font-bold text-xl peer-focus:font-medium absolute text-sm text-white dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+                                </div>
+                                <br></br>
+                                <div className="mb-12 pb-1 pt-1 text-center">
+                                    <button
+                                        className="bg-gradient-to-r from-violet-400 to-fuchsia-800 mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
+                                        type="submit" disabled={isLoading}
+                                        data-te-ripple-init
+                                        data-te-ripple-color="light"
+                                    >
+                                        {isLoading ? (
+                                            <div role="status">
+                                                <svg aria-hidden="true" className="inline-flex items-center w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                                                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                                                </svg>
+                                                <span className="sr-only"></span>
+                                            </div>
+                                        ) : (
+                                            <p>
+                                                {t('logIn')}
+                                            </p>
+                                        )}
+                                    </button>
+                                </div>
 
-                                        <input
-                                            className="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                                            id="username" type="email" placeholder="Enter email" value={email} onChange={(event) => setEmail(event.target.value)} />
-
-                                    </div> */}
-
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <input value={email} onChange={(event) => setEmail(event.target.value)} type="email" name="floating_email" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                        <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-white dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email address</label>
-                                    </div>
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" name="floating_password" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-white peer" placeholder=" " required />
-                                        <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-white dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
-                                    </div>
-                                    {/* <br></br>
-                                    <div className="border-2 border-fuchsia-600 relative mb-4 " data-te-input-wrapper-init>
-                                        <label
-                                            htmlFor="exampleFormControlInput11"
-                                            className=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
-                                            {t('signInPassword')}
-                                        </label>
-                                        <br></br>
-                                        <input
-                                            className="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                                            id="password" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-
-                                    </div> */}
-                                    <br></br>
-                                    <div className="mb-12 pb-1 pt-1 text-center">
-                                        <button
-                                            className="bg-gradient-to-r from-violet-400 to-fuchsia-800 mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
-                                            type="submit" disabled={isLoading}
+                                <div className="flex items-center justify-between pb-6">
+                                    <p className="mr-2 text-white">
+                                        {t('logInNotAcc')}
+                                    </p>
+                                    <NavLink to="/signin">
+                                        {/* <button
+                                            type="button"
+                                            className="text-white inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
                                             data-te-ripple-init
-                                            data-te-ripple-color="light"
-                                        >
-                                            {isLoading ? (
-                                                <div role="status">
-                                                    <svg aria-hidden="true" className="inline-flex items-center w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                                                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
-                                                    </svg>
-                                                    <span className="sr-only"></span>
-                                                </div>
-                                            ) : (
-                                                <p>
-                                                    {t('logIn')}
-                                                </p>
-                                            )}
+                                            data-te-ripple-color="light">
+                                            {t('signIn')}
+                                        </button> */}
+
+                                        <button className="group relative h-10 w-36 border-2 overflow-hidden rounded-lg bg-transparent uppercase font-bold text-lg shadow" data-te-ripple-init data-te-ripple-color="light">
+                                            <div className="absolute inset-0 w-3 bg-purple-400 transition-all duration-[500ms] ease-out group-hover:w-full"></div>
+                                            <span className="relative text-white group-hover:text-black ">{t('signIn')}</span>
                                         </button>
-                                    </div>
+                                    </NavLink>
+                                </div>
+                            </form>
 
-                                    <div className="flex items-center justify-between pb-6">
-                                        <p className="mr-2 text-white">
-                                            {t('logInNotAcc')}
-                                        </p>
-                                        <NavLink to="/signin">
-                                            <button
-                                                type="button"
-                                                className="text-white inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-                                                data-te-ripple-init
-                                                data-te-ripple-color="light">
-                                                {t('signIn')}
-                                            </button>
-                                        </NavLink>
-                                    </div>
-                                </form>
-
-                            </div>
                         </div>
                     </div>
                 </div>

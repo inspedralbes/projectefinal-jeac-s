@@ -53,13 +53,12 @@ function init(_sendInfoGame, _finalJuego) {
 
 
 function preload() {
-  this.load.image('blue_ship_1', '../GamesFiles/Starfinder/images/spaceShips_blue.png');
-  this.load.image('red_ship_1', '../GamesFiles/Starfinder/images/spaceShips_red.png');
-  this.load.image('blue_ship_2', '../GamesFiles/Starfinder/images/enemy_blue.png');
-  this.load.image('red_ship_2', '../GamesFiles/Starfinder/images/enemy_red.png');
-
-  this.load.image('star', '../GamesFiles/Starfinder/images/star_gold.png');
-  this.load.image('background', '../GamesFiles/Starfinder/images/spaceBackground.png');
+  this.load.image('blue_ship_1', './fitxers/GamesFiles/Starfinder/images/spaceShips_blue.png');
+  this.load.image('red_ship_1', './fitxers/GamesFiles/Starfinder/images/spaceShips_red.png');
+  this.load.image('blue_ship_2', './fitxers/GamesFiles/Starfinder/images/enemy_blue.png');
+  this.load.image('red_ship_2', './fitxers/GamesFiles/Starfinder/images/enemy_red.png');
+  this.load.image('star', './fitxers/GamesFiles/Starfinder/images/star_gold.png');
+  this.load.image('background', './fitxers/GamesFiles/Starfinder/images/spaceBackground.png');
 
 
 }
@@ -232,8 +231,7 @@ function newStar(self) {
 }
 
 function recibirInfoLobby(lobby) {
-  //console.log("lobby", lobby);
-  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", lobby);
+  console.log("aux", lobby);
   let distanceFromCorner = 50;
   teams = [
     {

@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router';
-import { useDispatch } from 'react-redux'
-import { actions } from '../components/store.js'
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { actions } from '../components/store.js';
 
 function Games({ onSharedValueChange, onSharedIdChange }) {
     const [fetchData, setFetchData] = useState([]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleInputChange = (name, id) => {
-
-        console.log("HELLO: " + id);
-        onSharedValueChange(name);
+    const handleInputChange = (path, id) => {
+        onSharedValueChange(path);
         onSharedIdChange(id)
         navigate('/game');
-
     };
 
     useEffect(() => {
@@ -35,8 +32,8 @@ function Games({ onSharedValueChange, onSharedIdChange }) {
         fetchGames();
     }, []);
 
-    function visitarPerfil(id){
-        dispatch(actions.getUserId({id: id, visitor: true, tab: "tab4"}));
+    function visitarPerfil(id) {
+        dispatch(actions.getUserId({ id: id, visitor: true, tab: "tab4" }));
         navigate("/otherProfile")
     }
 

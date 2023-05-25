@@ -21,7 +21,6 @@ const UploadForm = ({ socket }) => {
 
     useEffect(() => {
         socket.on('message_error', function (msg) {
-            console.log('Node msg', msg);
             setMessageError(msg);
 
             document.getElementById("popup").style.display = "block";

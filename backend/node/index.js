@@ -64,7 +64,6 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on('file_upload', (file) => {
-    console.log('File received', file);
 
     if (file.name != '') {
       const NameFolderExist = path.join('public', 'GamesFiles', file.name);
@@ -137,7 +136,6 @@ socketIO.on('connection', (socket) => {
 
                   fs.rm(`./public/GamesFiles/${file.name}`, { recursive: true }, (err) => {
                     if (err) throw console.log(err);;
-                    console.log('path/file.txt was deleted');
 
                   });
                 }
@@ -229,12 +227,10 @@ socketIO.on('connection', (socket) => {
     }
     else {
       socket.emit("message_error", "Name already in use");
-
     }
   });
 
   socket.on('update_zip', (file) => {
-    console.log("File to update", file);
   })
 
   socket.on("new_lobby", (data) => {
@@ -372,10 +368,22 @@ function extracZip(file) {
           const containsInitGame = data.includes('game.js');
 
           if (containsInitGame) {
+
             fs.createReadStream(filepath)
               .pipe(unzipper.Extract({ path: `public/GamesFiles/${file.currentName}` }))
               .on('close', () => {
-                const folderPath = 'public/GamesImages/' + file.currentName;
+
+                fs.unlink(`./public/GamesFiles/${zipName}`, (err) => {
+                  if (err) throw console.log(err);
+                });
+
+                if (file.newName != "") {
+                  fs.rm(`./public/GamesFiles/${file.currentName}`, { recursive: true }, (err) => {
+                    if (err) throw console.log(err);
+                  });
+
+                  renameFolders(file);
+                }
               });
           }
           else {
@@ -385,14 +393,6 @@ function extracZip(file) {
           fs.rm(`./public/GamesFiles/${file.currentName}_${date}`, { recursive: true }, (err) => {
             if (err) throw console.log(err);
           });
-
-          fs.unlink(`./public/GamesFiles/${zipName}`, (err) => {
-            if (err) throw console.log(err);
-          });
-
-          if (file.newName != '') {
-            renameFolders(file);
-          }
         });
       });
   });
@@ -451,7 +451,7 @@ function joinLobby(socket, lobbyIdentifier, username, gameID) {
             username: username,
             isOwner: false,
           });
-          
+
           lobby.yourId = socket.data.id;
           socketIO.to(socket.id).emit("lobby_info", lobby);
         } else {
@@ -552,6 +552,7 @@ function renameFolders(file) {
       initGame: `/GamesFiles/${file.newName}/game.js`,
       img: `/GamesImages/${file.newName}/${file.img.name}`
     }
+    socketIO.emit("update_complete", routes);
   }
   else {
     let folderPath = 'public/GamesImages/' + file.currentName;

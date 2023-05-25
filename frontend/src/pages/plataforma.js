@@ -39,8 +39,6 @@ function Game({ socket }) {
   const [buttonText, setButtonText] = useState("Playrerewr");
 
 
-
-  console.log(userInfo);
   useEffect(() => {
     return () => {
       if (obj != null || obj != undefined) {

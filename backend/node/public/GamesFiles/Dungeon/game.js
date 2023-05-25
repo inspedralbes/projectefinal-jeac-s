@@ -15,9 +15,15 @@ var fauneCreated = false;
 var wallsLayer;
 let self = null;
 var lastPosition = { x: 0, y: 0 };
-var lizardLastPosition = { x: 0, y: 0 };
 let direction = '';
 var lizard;
+const speed = 70;
+const Direction = {
+    UP: 0,
+    DOWN: 1,
+    LEFT: 2,
+    RIGHT: 3,
+};
 
 function init(_sendInfoGame, _finalJuego) {
     sendInfoGame = _sendInfoGame;
@@ -124,15 +130,29 @@ function create() {
         this.physics.add.collider(faune, wallsLayer);
         this.cameras.main.startFollow(faune, true);
 
-        const speedEnemy = 70;
+        lizard = this.physics.add.sprite(256, 128, 'lizard', 'lizard_m_idle_anim_f0.png')
+        lizard.anims.play('lizard-idle');
 
-        lizard = this.physics.add.sprite(256, 128, 'lizard', 'lizard_m_idle_anim_f0.png');
-        lizard.anims.play('lizard-run');
-        this.physics.add.collider(lizard, wallsLayer); // Add a collider with wallsLayer
-        lizard.setVelocity(Phaser.Math.Between(-speedEnemy, speedEnemy), Phaser.Math.Between(-speedEnemy, speedEnemy));
+        var direction = Direction.RIGHT;
 
-        // Set the lizard's bounce to 1 to make it bounce off the walls.
-        lizard.body.setBounce(1);
+        switch (direction) {
+            case Direction.UP:
+                lizard.setVelocity(0, -speed);
+                break;
+
+            case Direction.DOWN:
+                lizard.setVelocity(0, speed);
+                break;
+
+            case Direction.LEFT:
+                lizard.setVelocity(-speed, 0);
+                break;
+
+            case Direction.RIGHT:
+                lizard.setVelocity(speed, 0);
+                break;
+        }
+
     } else {
         faune2 = this.physics.add.sprite(128, 128, 'faune', 'walk-down-3.png');
         faune2.body.setSize(faune2.width * 0.5, faune2.height * 0.8);
@@ -190,14 +210,14 @@ function update() {
         sendInfoGame(data);
     }
 
-    if (lizard) {
-        var lizardCurrentPosition = { x: lizard.x, y: lizard.y };
-        if (lizardCurrentPosition.x !== lizardLastPosition.x || lizardCurrentPosition.y !== lizardLastPosition.y) {
-            lizardLastPosition = lizardCurrentPosition;
-            var lizardPosition = { x: lizard.x, y: lizard.y };
-            sendInfoGame({ lizard: lizardPosition });
-        }
-    }
+    // if (lizard) {
+    //     var lizardCurrentPosition = { x: lizard.x, y: lizard.y };
+    //     if (lizardCurrentPosition.x !== lizardLastPosition.x || lizardCurrentPosition.y !== lizardLastPosition.y) {
+    //         lizardLastPosition = lizardCurrentPosition;
+    //         var lizardPosition = { x: lizard.x, y: lizard.y };
+    //         sendInfoGame({ lizard: lizardPosition });
+    //     }
+    // }
 }
 
 function recibirInfoFromPlatform(data) {
@@ -234,16 +254,16 @@ function recibirInfoFromPlatform(data) {
             }
         }
     }
-    if (!ownerDelLobby && data.infoGame.lizard) {
-        if (!lizard) {
-            lizard = self.physics.add.sprite(data.infoGame.lizard.x, data.infoGame.lizard.y, 'lizard', 'lizard_m_idle_anim_f0.png');
-        } else {
-            var newPosition = data.infoGame.lizard;
-            if (newPosition.x !== lizard.x || newPosition.y !== lizard.y) {
-                lizard.setPosition(newPosition.x, newPosition.y);
-            }
-        }
-    }
+    // if (!ownerDelLobby && data.infoGame.lizard) {
+    //     if (!lizard) {
+    //         lizard = self.physics.add.sprite(data.infoGame.lizard.x, data.infoGame.lizard.y, 'lizard', 'lizard_m_idle_anim_f0.png');
+    //     } else {
+    //         var newPosition = data.infoGame.lizard;
+    //         if (newPosition.x !== lizard.x || newPosition.y !== lizard.y) {
+    //             lizard.setPosition(newPosition.x, newPosition.y);
+    //         }
+    //     }
+    // }
 }
 
 function recibirInfoLobby(lobby) {

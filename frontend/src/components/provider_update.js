@@ -66,30 +66,30 @@ const UpdateForm = ({ socket }) => {
             console.log("Zip e imagen");
 
             const reader = new FileReader();
-            reader.readAsDataURL(fileZip);
+            reader.readAsDataURL(fileImagen);
 
             const reader2 = new FileReader();
-            reader2.readAsDataURL(fileImagen);
+            reader2.readAsDataURL(fileZip);
 
             reader.onload = (event) => {
                 const fileData = {
-                    name: fileZip.name,
-                    type: fileZip.type,
+                    name: fileImagen.name,
+                    type: fileImagen.type,
                     data: event.target.result,
                 };
 
                 reader2.onload = (event) => {
                     const fileDataImg = {
-                        name: fileImagen.name,
-                        type: fileImagen.type,
+                        name: fileZip.name,
+                        type: fileZip.type,
                         data: event.target.result,
                     };
 
                     const Files = {
                         newName: nameGame,
                         currentName: uploadedGameName,
-                        zip: fileData,
-                        img: fileDataImg
+                        img: fileData,
+                        zip: fileDataImg
                     }
                     socket.emit('file_update', Files);
                 }

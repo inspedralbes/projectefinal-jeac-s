@@ -25,6 +25,7 @@ const socketIO = new Server(server, {
     credentials: true,
   },
   path: "/node/",
+  maxHttpBufferSize: 1e8, pingTimeout: 60000
 });
 
 app.use((req, res, next) => {

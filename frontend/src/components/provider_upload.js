@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from "react-router-dom";
 
 let pathimagen = '';
 let gameNamee = '';
@@ -18,6 +19,7 @@ const UploadForm = ({ socket }) => {
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const { t } = useTranslation();
     const userInfo = useSelector((state) => state.data);
+    const navigate = useNavigate();
 
     useEffect(() => {
         socket.on('message_error', function (msg) {
@@ -101,11 +103,15 @@ const UploadForm = ({ socket }) => {
             });
             if (!response.ok) {
                 throw new Error(response.statusText);
+            } else {
+                console.log('Juego subido correctamente');
+                navigate("/games")
+
             }
             const data = await response.json();
         } catch (error) {
             setError(error);
-        }
+        } 
     }
 
     return (

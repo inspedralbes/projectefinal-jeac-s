@@ -35,7 +35,7 @@ function Navbar() {
 
                                 <NavLink to="/games">
                                     <button href="#" className=" text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
-                                    {t('navGames')}
+                                        {t('navGames')}
                                     </button>
                                 </NavLink>
 
@@ -54,7 +54,7 @@ function Navbar() {
                                     (
                                         <NavLink to="/guide">
                                             <button href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
-                                                Guía para crear juego
+                                                {t('navGuide')}
                                             </button>
                                         </NavLink>
                                     )

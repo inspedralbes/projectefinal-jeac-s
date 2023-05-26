@@ -52,6 +52,7 @@ i18n.use(initReactI18next).init({
                 itemsAvatar: 'Establecer como avatar',
                 navGames: 'Juegos',
                 navUpload: 'Subir juego',
+                navGuide: 'Guía para crear juegos',
                 storeBuyItem: 'Comprar',
                 storeNoItemsLeft: 'No quedan objetos en la tienda',
                 itemsTitle: 'Tienda de cosmeticos'
@@ -106,6 +107,7 @@ i18n.use(initReactI18next).init({
                 itemsAvatar: 'Set as avatar',
                 navGames: 'Games',
                 navUpload: 'Upload game',
+                navGuide: 'Guide to create games',
                 storeBuyItem: 'Buy',
                 storeNoItemsLeft: 'No items left on the store',
                 itemsTitle: 'Cosmetics Store'
@@ -159,10 +161,10 @@ i18n.use(initReactI18next).init({
                 itemsAvatar: 'Establir com a avatar',
                 navGames: 'Jocs',
                 navUpload: 'Pujar joc',
+                navGuide: 'Guia per a crear jocs',
                 storeBuyItem: 'Comprar',
                 storeNoItemsLeft: 'No queden objectes a la botiga',
                 itemsTitle: 'Botiga de cosmètics'
-
             }
         }
     }

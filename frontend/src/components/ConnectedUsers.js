@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 
 function ConnectedUsers({ socket }) {
     const [userList, setUserList] = useState([]);
     const [firstTime, setFirstTime] = useState(true);
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (firstTime) {
@@ -18,7 +20,7 @@ function ConnectedUsers({ socket }) {
 
     return (
         <div className="lobby__connectedUsers">
-            <h2 className="connectedUsers_title text-white">Connected users</h2>
+            <h2 className="connectedUsers_title text-white">{t('connectedUsers')}</h2>
             <ul id="userList" className="connectedUsers__userList userList">
 
                 {userList.map((user, index) => {

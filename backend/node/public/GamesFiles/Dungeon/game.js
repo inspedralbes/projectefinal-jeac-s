@@ -131,7 +131,7 @@ function create() {
         this.physics.add.collider(lizard, wallsLayer); // Add a collider with wallsLayer
         lizard.setVelocity(Phaser.Math.Between(-speedEnemy, speedEnemy), Phaser.Math.Between(-speedEnemy, speedEnemy));
 
-        // Set the lizard's bounce to 1 to make it bounce off the walls
+        // Set the lizard's bounce to 1 to make it bounce off the walls.
         lizard.body.setBounce(1);
     } else {
         faune2 = this.physics.add.sprite(128, 128, 'faune', 'walk-down-3.png');

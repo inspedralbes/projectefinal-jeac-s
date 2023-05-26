@@ -322,7 +322,7 @@ const UserInfo = ({ socket }) => {
 
                       <li className={`w-1/4 list-none`}>
                         <a onClick={() => handleTabClick("tab4")} className={`text-gray-300 text-xl hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium cursor-pointer ${activeTab === "tab4" ? "active bg-gray-700" : ""}`}>
-                          Tus Juegos
+                          {t('navGames')}
                         </a>
                       </li>
                     </div>
@@ -439,7 +439,7 @@ const UserInfo = ({ socket }) => {
                                 </tbody>
                               </table>
                             </div> :
-                            <div>No tiene ninguna partida jugada</div>
+                            <div></div>
                           }</div> :
                         <svg aria-hidden="true" class="inline-flex items-center w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
@@ -490,16 +490,16 @@ const UserInfo = ({ socket }) => {
                           <thead>
                             <tr>
                               <th class="w-1/4 border-fuchsia-600 border-b">
-                                Juego
+                                {t('navGames')}
                               </th>
                               <th class="w-1/4 border-fuchsia-600 border-b">
-                                Descripción
+                                {t('itemsDesc')}
                               </th>
                               <th class="w-1/4 border-fuchsia-600 border-b">
-                                Actualizar
+                                {t('gamesUpdate')}
                               </th>
                               <th class="w-1/4 border-fuchsia-600 border-b">
-                                Eliminar
+                                {t('gamesDelete')}
                               </th>
                             </tr>
                           </thead>
@@ -516,7 +516,7 @@ const UserInfo = ({ socket }) => {
                                       dispatch(actions.saveUploadedGameName(game.name));
                                     }}
                                   >
-                                    Actualizar
+                                    {t('gamesUpdate')}
                                   </button>
                                 </td>
                                 <td>
@@ -526,7 +526,7 @@ const UserInfo = ({ socket }) => {
                                       socket.emit("delete_game", game.name);
                                     }}
                                   >
-                                    Eliminar
+                                    {t('gamesDelete')}
                                   </button>
                                 </td>
                               </tr>

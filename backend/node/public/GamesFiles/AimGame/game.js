@@ -16,7 +16,7 @@ var ownerDelLobby;
 var objects;
 var object;
 var user;
-var tiempoRestante = 10;
+var tiempoRestante = 30;
 var usuarios = [];
 var game;
 

@@ -64,4 +64,5 @@ class GameController extends Controller
 
         return response()->json(['message' => 'Juego actualizado correctamente']);
     }
+    
 }

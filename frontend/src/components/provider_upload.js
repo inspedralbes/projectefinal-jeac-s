@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from "react-router-dom";
 
 let pathimagen = '';
 let gameNamee = '';
@@ -18,6 +19,7 @@ const UploadForm = ({ socket }) => {
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const { t } = useTranslation();
     const userInfo = useSelector((state) => state.data);
+    const navigate = useNavigate();
 
     useEffect(() => {
         socket.on('message_error', function (msg) {
@@ -25,7 +27,7 @@ const UploadForm = ({ socket }) => {
 
             document.getElementById("popup").style.display = "block";
             setTimeout((() => {
-              document.getElementById("popup").style.display = "none";
+                document.getElementById("popup").style.display = "none";
             }), 3000)
         });
         return () => {
@@ -42,31 +44,36 @@ const UploadForm = ({ socket }) => {
         descriptionGame = document.getElementById('descriptionGamee').value;
 
         const reader = new FileReader();
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(fileImagen);
 
         const reader2 = new FileReader();
-        reader2.readAsDataURL(fileImagen);
+        reader2.readAsDataURL(file);
 
         reader.onload = (event) => {
             const fileData = {
-                name: file.name,
-                type: file.type,
+                name: fileImagen.name,
+                type: fileImagen.type,
                 data: event.target.result,
             };
 
             reader2.onload = (event) => {
                 const fileDataImg = {
-                    name: fileImagen.name,
-                    type: fileImagen.type,
+                    name: file.name,
+                    type: file.type,
                     data: event.target.result,
                 };
 
+                console.log("fileDataImg", fileDataImg);
+                console.log("fileData", fileData);
+
+
                 const Files = {
                     name: nameGame,
-                    zip: fileData,
-                    img: fileDataImg
+                    img: fileData,
+                    zip: fileDataImg
                 }
-                socket.emit('file-upload', Files);
+                console.log("ASjksdhfkdhfasfkljd", Files);
+                socket.emit('file_upload', Files);
             }
         }
 
@@ -96,6 +103,10 @@ const UploadForm = ({ socket }) => {
             });
             if (!response.ok) {
                 throw new Error(response.statusText);
+            } else {
+                console.log('Juego subido correctamente');
+                navigate("/games")
+
             }
             const data = await response.json();
         } catch (error) {
@@ -108,68 +119,68 @@ const UploadForm = ({ socket }) => {
         <div class="overflow-auto flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
             <div id="popup" className="hidden">{messageError}</div>
             {isLoggedIn ?
-                <div class=" container h-full w-3/4 p-10">
-                    <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
-                        <div class="p-4">
+                <div className=" container h-full w-3/4 p-10">
+                    <div className="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
+                        <div className="p-4">
                             <div>
-                                <div class="text-center text-white">
-                                    <h1 class="font-mono text-white text-4xl mt-10 font-bold">UPLOAD GAME</h1><br></br>
+                                <div className="text-center text-white">
+                                    <h1 className="font-mono text-white text-4xl mt-10 font-bold">{t('uploadtitle')}</h1><br></br>
                                     <div>
                                         <form onSubmit={UploadGame}>
-                                            <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
+                                            <div className="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
                                                 <label
                                                     htmlFor="exampleFormControlInput11"
-                                                    class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
+                                                    className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
 
-                                                    Game Name</label>
+                                                    {t('uploadName')}</label>
                                                 <br></br>
                                                 <input
-                                                    class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                    className="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                                     id="nameGamee" type='text' placeholder="Name" value={nameGame} onChange={(e) => { setName(e.target.value) }} required>
                                                 </input>
                                             </div>
 
-                                            <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
+                                            <div className="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
                                                 <label
                                                     htmlFor="exampleFormControlInput11"
-                                                    class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
+                                                    className=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
 
-                                                    Image Game</label>
+                                                    {t('uploadImage')}</label>
                                                 <br></br>
                                                 <input
-                                                    class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                    className="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                                     id='uploadImg' type='file' accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)} required>
                                                 </input>
                                             </div>
 
-                                            <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
+                                            <div className="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
                                                 <label
                                                     htmlFor="exampleFormControlInput11"
-                                                    class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
+                                                    className=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
 
-                                                    Zip Game</label>
+                                                    Zip</label>
                                                 <br></br>
                                                 <input
-                                                    class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                    className="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                                     id='uploadZip' type='file' accept='.zip' value={zip} onChange={(e) => setZip(e.target.value)} required>
                                                 </input>
                                             </div>
 
-                                            <div class="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
+                                            <div className="border-2 border-fuchsia-600 relative mb-4" data-te-input-wrapper-init>
                                                 <label
                                                     htmlFor="exampleFormControlInput11"
-                                                    class=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
+                                                    className=" pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-white transition-all duration-200 ease-out peer-focus:-translate-y-[2rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
 
-                                                    Description</label>
+                                                    {t('itemsDesc')}</label>
                                                 <br></br>
                                                 <input
-                                                    class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                    className="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                                     id="descriptionGamee" placeholder="Add a description" rows='5' cols='50' value={description} onChange={(e) => setDescription(e.target.value)} required>
                                                 </input>
                                             </div>
 
-                                            <button class="text-white inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10" variant="primary">
-                                                Submit
+                                            <button className="text-white inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10" variant="primary">
+                                            {t('uploadButton')}
                                             </button>
                                         </form>
                                     </div>

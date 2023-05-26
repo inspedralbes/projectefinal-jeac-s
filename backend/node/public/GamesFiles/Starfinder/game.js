@@ -295,6 +295,7 @@ function newStar(self) {
 }
 
 function recibirInfoLobby(lobby) {
+  console.log("aux", lobby);
   let distanceFromCorner = 50;
   teams = [
     {

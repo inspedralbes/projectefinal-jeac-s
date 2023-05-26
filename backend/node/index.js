@@ -292,9 +292,6 @@ socketIO.on('connection', (socket) => {
         };
         socketIO.to(socket.id).emit("lobby_info", lobbyData);
       }
-      else {
-        socketIO.to(socket.id).emit("message_error", "Wrong lobby id  2222");
-      }
     });
   });
 
@@ -424,7 +421,7 @@ function joinLobby(socket, lobbyIdentifier, username, gameID) {
   var disponible = false;
 
   if (lobbies.length == 0) {
-    socketIO.to(socket.id).emit("message_error", "Wrong lobby id 111111");
+    socketIO.to(socket.id).emit("message_error", "Wrong lobby id");
   }
   else {
     lobbies.forEach((lobby) => {

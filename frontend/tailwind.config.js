@@ -12,6 +12,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         'image-all': "url('/public/retroNeo.jpg')",
+        'image-arcade': "url('/public/Arcade.jpg')",
         }
     },
   },

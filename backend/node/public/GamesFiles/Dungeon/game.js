@@ -28,6 +28,7 @@ var lizardLastPosition = { x: 0, y: 0 };
 let hit = 0;
 var health = 3;
 let lastShotTime = 0;
+let spaceDown = false;
 
 function init(_sendInfoGame, _finalJuego) {
     sendInfoGame = _sendInfoGame;
@@ -287,8 +288,6 @@ function setLizardVelocity(direction) {
 }
 
 
-let spaceDown = false;
-
 function update() {
     if (hit > 0) {
         hit++;
@@ -343,6 +342,10 @@ function update() {
             knife.y += vec.y * 16;
 
             this.physics.velocityFromRotation(angle, 300, knife.body.velocity);
+            var knifee = {
+                knifee: knife
+            }
+            sendInfoGame(knifee)
         } else if (!space.isDown) {
             spaceDown = false;
         }
@@ -442,6 +445,9 @@ function recibirInfoFromPlatform(data) {
                 lizard.setPosition(newPosition.x, newPosition.y);
             }
         }
+    }
+    if (data.infoGame.knifee) {
+        console.log(data.infoGame.knifee);
     }
 
     if (data.infoGame.ded == "dead") {

@@ -48,7 +48,7 @@ function Games({ onSharedValueChange, onSharedIdChange }) {
                                 <div class="flex flex-col justify-start p-6">
                                     <p class="mb-2 text-xl font-medium text-white">{game.name}</p>
                                     <p class="mb-4 text-base text-gray-400">{game.description}</p>
-                                    <button class="bg-purple-500 hover:bg-purple-600 font-bold py-2 px-4 rounded text-white text-lg mt-auto self-end">
+                                    <button onClick={() => handleInputChange(game.path, game.id)} class="bg-purple-500 hover:bg-purple-600 font-bold py-2 px-4 rounded text-white text-lg mt-auto self-end">
                                         Play
                                     </button>
                                     <div className="text-center">

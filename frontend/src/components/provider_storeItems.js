@@ -93,7 +93,7 @@ const Tienda = () => {
           <div className="p-4">
             <div className="md:mr-6 md:pr-12 md:ml-6 md:pl-12 md:mb-6 md:pb-12">
               <h1 className="font-mono text-white text-4xl mt-10 font-bold md:pb-12">
-                TIENDA
+              {t('tiendaTitle')}
               </h1>
               <div className="justify-center text-white text-center flex flex-wrap">
                 {isLoggedIn ?

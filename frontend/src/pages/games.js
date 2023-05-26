@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { actions } from '../components/store.js';
+import { useTranslation } from 'react-i18next';
 
 function Games({ onSharedValueChange, onSharedIdChange }) {
     const [fetchData, setFetchData] = useState([]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const handleInputChange = (path, id) => {
         onSharedValueChange(path);
@@ -49,12 +51,12 @@ function Games({ onSharedValueChange, onSharedIdChange }) {
                                     <p class="mb-2 text-xl font-medium text-white">{game.name}</p>
                                     <p class="mb-4 text-base text-gray-400">{game.description}</p>
                                     <button onClick={() => handleInputChange(game.path, game.id)} class="bg-purple-500 hover:bg-purple-600 font-bold py-2 px-4 rounded text-white text-lg mt-auto self-end">
-                                        Play
+                                    {t('gamesPlay')}
                                     </button>
                                     <div className="text-center">
                                         <hr class="border-gray-600 mt-4 mb-4"></hr>
                                         <p class="text-white text-lg font-bold relative group">
-                                            Juego creado por:<br></br>
+                                        {t('gamesCreatedBy')}<br></br>
                                             <a onClick={() => visitarPerfil(game.user.id)} class="cursor-pointer uppercase text-sm text-gray-400 group-hover:text-purple-500 transition-colors duration-300">{game.user.name}</a>
                                             <span class="absolute bottom-0 left-0 w-full h-0.5 bg-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
                                         </p>

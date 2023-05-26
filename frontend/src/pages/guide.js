@@ -6,7 +6,7 @@ function Guide() {
             <div className="container h-full w-3/4 p-10">
                 <div className="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
                     <div className="p-4">
-                        <h2 className="font-mono text-white text-center  text-4xl mt-10 font-bold">GUIA CREACION DE JUEGO</h2>
+                        <h2 className="font-mono text-white text-center  text-4xl mt-10 font-bold">GUÍA CREACIÓN DE JUEGO</h2>
                         <div className="md:m-6 md:p-12">
                             <div className="text-white text-xl">
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import ConnectedUsers from "../components/ConnectedUsers.js"
 import { store, actions } from '../components/store.js';
+import { useTranslation } from 'react-i18next';
 
 var Phaser = null;
 var obj = null;
@@ -37,6 +38,7 @@ function Game({ socket }) {
   const [hasSingleplayer, setHasSingleplayer] = useState(null);
   const [messageError, setMessageError] = useState("Error");
   const [buttonText, setButtonText] = useState("Playrerewr");
+  const { t } = useTranslation();
 
 
   useEffect(() => {
@@ -77,7 +79,7 @@ function Game({ socket }) {
     });
 
     socket.on("message_error_alone", (msg) => {
-      setMessageError(msg);      
+      setMessageError(msg);
       document.getElementById("popup").style.display = "block";
       setTimeout((() => {
         document.getElementById("popup").style.display = "none";
@@ -133,7 +135,7 @@ function Game({ socket }) {
       console.log("El nombre no puede estar vacio");
     }
   };
- 
+
   function handleSetSinglePlayerUsername(e) {
     setSinglePlayerUserName(e.target.value);
   }
@@ -186,7 +188,7 @@ function Game({ socket }) {
       if (!lobbyIdInput) {
         setMessageError("Lobby id can't be null");
       }
-      else if(!multiPlayerUserName) {
+      else if (!multiPlayerUserName) {
         setMessageError("Username can't be null");
       }
 
@@ -195,7 +197,7 @@ function Game({ socket }) {
         document.getElementById("popup").style.display = "none";
       }), 3000)
     }
-    
+
   }
 
   function startGame() {
@@ -284,16 +286,16 @@ function Game({ socket }) {
             <div class="relative p-4 md:m-6 md:p-12 text-center">
               {!gameModeSelected && !displayCanvas ?
                 <div>
-                  <h3 className="text-white">Choose the gamemode</h3>
+                  <h3 className="text-white">{t('gameMode')}</h3>
                   <br></br>
                   <div>
                     {hasSingleplayer ?
-                      <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(true); }}>Single Player</button>
+                      <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(true); }}>{t('gameModeSP')}</button>
                       :
                       <></>
                     }
                     {hasMultiplayer ?
-                      <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(false); }}>Multiplayer</button>
+                      <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { setGameModeSelected(true); setSinglePlayer(false); }}>{t('gameModeMP')}</button>
                       :
                       <></>
                     }
@@ -308,11 +310,11 @@ function Game({ socket }) {
                       </svg></button>
                       {isLoggedIn ?
                         <div>
-                          <h3 className="text-white">Player:</h3>
+                          <h3 className="text-white">{t('gameModePlayerNameLoggedIn')}</h3>
                           <div>
                             {singlePlayerUserName && <p className="text-white">{singlePlayerUserName}</p>}
                             <br></br>
-                            <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { saveUsername(); startGame(); }}>PLAY</button>
+                            <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { saveUsername(); startGame(); }}>{t('gamesPlay')}</button>
                           </div>
                         </div>
                         :
@@ -327,10 +329,10 @@ function Game({ socket }) {
                                 id="singlePNotLoggedIn" type="text"
                                 required placeholder="Username" onChange={handleSetSinglePlayerUsername} />
 
-                              <label classNameName="text-white">
-                                Introduce your nickname
+                              <label className="text-white">
+                                {t('gameModePlayerNameNotLoggedIn')}
                               </label><br></br>
-                              <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { handleSaveUsernameOnClick(); startGame(); }}>PLAY</button>
+                              <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { handleSaveUsernameOnClick(); startGame(); }}>{t('gamesPlay')}</button>
                             </div>
                           </label>
                         </div>
@@ -344,21 +346,21 @@ function Game({ socket }) {
                             <path fillRule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z" />
                           </svg></button>
 
-                          <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={createRoom}>Create lobby</button><br></br><br></br>
-                          <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={joinRoom}>Join lobby</button>
+                          <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={createRoom}>{t('createLobby')}</button><br></br><br></br>
+                          <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={joinRoom}>{t('joinLobby')}</button>
                         </div> :
                         <></>
                       }
                       {createRoomOwner ?
                         <div>
-                          <h1 classNameName="text-white text-3xl font-bold">{lobbyId}</h1>
+                          <h1 className="text-white text-3xl font-bold">{lobbyId}</h1>
                           <ConnectedUsers socket={socket} />
                           {isLoggedIn ?
                             <div>
                               {!lobbyStarted ?
                                 <div>
                                   {singlePlayerUserName && <p className="text-white">{singlePlayerUserName}</p>}
-                                  <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { saveUsername() }}>Set Lobby</button>
+                                  <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { saveUsername() }}>{t('setLobby')}</button>
                                 </div>
                                 :
                                 <div>
@@ -385,10 +387,10 @@ function Game({ socket }) {
                                           [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                         id="singlePNotLoggedIn" type="text"
                                         required placeholder="Username" onChange={handleSetSinglePlayerUsername} />
-                                      <label classNameName="text-white">
-                                        Introduce your nickname
+                                      <label className="text-white">
+                                        {t('gameModePlayerNameNotLoggedIn')}
                                       </label><br></br>
-                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { handleSaveUsernameOnClick()}}>Set Lobby</button>
+                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { handleSaveUsernameOnClick() }}>{t('setLobby')}</button>
                                     </div>
                                   </label>
                                 </div>
@@ -423,8 +425,8 @@ function Game({ socket }) {
                                           [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                     id="singlePNotLoggedIn" type="text"
                                     required placeholder="Lobby ID" value={lobbyIdInput} onChange={handleSetLobbyIdNoOwner} />
-                                  <label classNameName="text-white">Introduce lobby ID</label><br></br>
-                                  <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { joinLobby() }}>Join Lobby</button>
+                                  <label className="text-white">{t('intLobbyID')}</label><br></br>
+                                  <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { joinLobby() }}>{t('joinLobby')}</button>
                                 </div>
                                 :
                                 <div>
@@ -439,8 +441,8 @@ function Game({ socket }) {
                                           [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                             id="multiPNotLoggedIn" type="text"
                                             required placeholder="Username" value={multiPlayerUserName} onChange={handleSetMultiPlayerUsername} />
-                                          <label classNameName="text-white">
-                                            Introduce your nickname
+                                          <label className="text-white">
+                                          {t('gameModePlayerNameNotLoggedIn')}
                                           </label><br></br>
                                         </div>
                                       </label>
@@ -451,8 +453,8 @@ function Game({ socket }) {
                                           [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                         id="singlePNotLoggedIn" type="text"
                                         required placeholder="Lobby ID" value={lobbyIdInput} onChange={handleSetLobbyIdNoOwner} />
-                                      <label classNameName="text-white">Introduce lobby ID</label><br></br>
-                                      <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { joinLobby() }}>Join Lobby</button>
+                                      <label className="text-white">{t('intLobbyID')}</label><br></br>
+                                      <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { joinLobby() }}>{t('joinLobby')}</button>
                                     </div>
                                   </label>
                                 </div>
@@ -473,7 +475,7 @@ function Game({ socket }) {
                   <div>
                   </div>
                   <div id="game">
-                    <canvas id="canvas" classNameName="canvasGame"></canvas>
+                    <canvas id="canvas" className="canvasGame"></canvas>
                   </div>
                 </div>
                 :

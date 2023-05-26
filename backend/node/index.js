@@ -475,7 +475,7 @@ function joinLobby(socket, lobbyIdentifier, username, gameID) {
     socket.join(lobbyIdentifier);
     socket.data.current_lobby = lobbyIdentifier;
     sendUserList(lobbyIdentifier);
-    socketIO.to(socket.data.current_lobby).emit("message_button_play", "Play");
+    socketIO.to(socket.data.current_lobby).emit("message_button_play", "PLAY");
 
   }
 }

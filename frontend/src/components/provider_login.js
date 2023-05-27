@@ -4,6 +4,7 @@ import { store, actions } from './store';
 import { useNavigate } from "react-router-dom";
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import Swal from "sweetalert2";
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
@@ -29,17 +30,40 @@ const LoginForm = () => {
             });
 
             const data = await response.json();
+            
             if (data.isLoggedIn) {
                 dispatch(actions.login());
                 store.dispatch(actions.saveData(data[1]));
                 localStorage.setItem('access_token', data[0]);
                 navigate("/")
-            }
 
+                Swal.fire({
+                    position: "bottom-end",
+                    icon: "success",
+                    title: "You have successfully logedin",
+                    showConfirmButton: false,
+                    timer: 3500,
+                });
+            }else{
+                Swal.fire({
+                    position: "bottom-end",
+                    icon: "error",
+                    title: "Invalid Credentials",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
             setLoading(false)
         } catch (error) {
             console.error(error);
             setLoading(false)
+            Swal.fire({
+                position: "bottom-end",
+                icon: "error",
+                title: "An error occurred while loading",
+                showConfirmButton: false,
+                timer: 1500,
+            });
         }
 
         try {
@@ -79,28 +103,31 @@ const LoginForm = () => {
                 </p> :
                 <div className="g-6 flex h-full flex-wrap items-center justify-center">
                     <div className="w-full mb-14 rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
-
                         <div className="p-20">
                             <NavLink to="/">
                                 <div className="text-center">
                                     <img
-                                        className="m-auto w-60"
+                                        className="m-auto w-74"
                                         src="LogoBuenoSNB.png"
                                         alt="logo" />
                                 </div>
                             </NavLink>
+                           
                             <br></br>
                             <br></br>
-                            <form onSubmit={handleSubmit} autoComplete="off">
+                            <form className="mt-5" onSubmit={handleSubmit} autoComplete="off">
+
                                 <div class="relative z-0 w-full mb-6 group">
                                     <input value={email} autoComplete="off" onChange={(event) => setEmail(event.target.value)} type="email" name="floating_email" id="floating_email" class="block pt-4 px-0 w-full text-sm text-white  bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-purple-600 peer" placeholder=" " required autoFocus />
                                     <label for="floating_email" class="peer-focus:font-medium absolute text-xl text-white dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 font-bold peer-focus:text-white peer-focus:dark:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">{t('signInEmail')}</label>
                                 </div>
+
                                 <div class="relative z-0 w-full mb-6 group">
                                     <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" name="floating_password" id="floating_password" class="block pt-4 px-0 w-full text-sm text-white  bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-white focus:outline-none focus:ring-0 focus:border-purple-600 peer" placeholder=" " required />
                                     <label for="floating_password" class="font-bold text-xl peer-focus:font-medium absolute text-sm text-white dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">{t('signInPassword')}</label>
                                 </div>
                                 <br></br>
+
                                 <div className="mb-12 pb-1 pt-1 text-center">
                                     <button
                                         className="bg-gradient-to-r from-violet-400 to-fuchsia-800 mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
@@ -143,8 +170,8 @@ const LoginForm = () => {
                                         </button>
                                     </NavLink>
                                 </div>
-                            </form>
 
+                            </form>
                         </div>
                     </div>
                 </div>

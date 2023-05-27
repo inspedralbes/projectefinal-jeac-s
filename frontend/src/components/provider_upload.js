@@ -167,20 +167,28 @@ const UploadForm = ({ socket }) => {
                                             </div>
                                         </div>
 
-                                        {/* ARCHIVOS */}
 
-                                        <div className='flex justify-center p-6'>
+
+                                        {/* ARCHIVOS */}
+                                        <div className='flex justify-center p-6 text-black'>
+                                            {/* IMAGEN */}
                                             <div class="flex w-2/5 mx-5 items-center justify-center">
                                                 <label for="uploadImg" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                                     <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                                         <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                                                         <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
                                                         <p class="text-xs text-gray-500 dark:text-gray-400"> PNG, JPG or JPEG</p>
+                                                        {/* <h2>{fileDataImg && <h2>{fileDataImg.name}</h2>}</h2> */}
                                                     </div>
                                                     <input accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)} id="uploadImg" type="file" class="hidden" />
                                                 </label>
                                             </div>
 
+
+
+
+
+                                            {/* ZIP */}  
                                             <div class="flex w-2/5 mx-5 items-center justify-center">
                                                 <label for="uploadZip" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                                     <div class="flex flex-col items-center justify-center pt-5 pb-6">
@@ -194,28 +202,20 @@ const UploadForm = ({ socket }) => {
                                         </div>
 
                                         <div className='flex justify-center mt-10'>
+                                            <button href="#_" class="relative inline-flex items-center justify-center py-10 px-40 p-20 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-purple-500 rounded-xl shadow-md group">
+                                                <span class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-purple-500 group-hover:translate-x-0 ease">
+                                                    <svg fill="#000000" height="200px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.768 512.768" ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1)"> <g> <path d="M504.233,6.244c-5.695-4.828-13.841-6.8-22.394-2.912L12.506,216.665c-16.337,7.426-16.764,30.477-0.713,38.502 l145.331,72.666l-7.767,163.239c-0.858,18.029,19.667,28.91,34.107,18.082l78.318-58.726l40.67,54.494 c10.136,13.582,31.299,10.491,37.128-5.422L511.358,30.573C515.039,20.522,511.111,11.419,504.233,6.244z M392.393,90.856 L233.58,249.669l-45.937,45.72L70.87,237.003L392.393,90.856z M194.13,447.828l3.938-82.764l38.194,51.172L194.13,447.828z M313.074,447.819l-92.868-124.435l43.527-43.527l174.484-173.664L313.074,447.819z"></path> </g> </g> </g></svg>
+                                                </span>
+                                                <span class="absolute flex items-center justify-center w-full h-full uppercase text-white transition-all duration-300 transform group-hover:translate-x-full ease">
+                                                    {t('uploadButton')}
+                                                </span>
+                                                <span class="relative invisible ">{t('uploadButton')}</span>
+                                            </button>
 
-
-
-                                        <button href="#_" class="relative inline-flex items-center justify-center py-10 px-40 p-20 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-purple-500 rounded-xl shadow-md group">
-                                            <span class="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-purple-500 group-hover:translate-x-0 ease">
-                                                <svg fill="#000000" height="200px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.768 512.768" ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1)"> <g> <path d="M504.233,6.244c-5.695-4.828-13.841-6.8-22.394-2.912L12.506,216.665c-16.337,7.426-16.764,30.477-0.713,38.502 l145.331,72.666l-7.767,163.239c-0.858,18.029,19.667,28.91,34.107,18.082l78.318-58.726l40.67,54.494 c10.136,13.582,31.299,10.491,37.128-5.422L511.358,30.573C515.039,20.522,511.111,11.419,504.233,6.244z M392.393,90.856 L233.58,249.669l-45.937,45.72L70.87,237.003L392.393,90.856z M194.13,447.828l3.938-82.764l38.194,51.172L194.13,447.828z M313.074,447.819l-92.868-124.435l43.527-43.527l174.484-173.664L313.074,447.819z"></path> </g> </g> </g></svg>
-                                            </span>
-                                            <span class="absolute flex items-center justify-center w-full h-full uppercase text-white transition-all duration-300 transform group-hover:translate-x-full ease">
-                                                {t('uploadButton')}
-                                            </span>
-                                            <span class="relative invisible ">{t('uploadButton')}</span>
-                                        </button>
-
-                                        {/* <button className="inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-300 ease-in-out transform hover:scale-105 hover:bg-danger hover:text-white focus:outline-none focus:border-danger-600 focus:text-danger-600 focus:ring-0">
+                                            {/* <button className="inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-300 ease-in-out transform hover:scale-105 hover:bg-danger hover:text-white focus:outline-none focus:border-danger-600 focus:text-danger-600 focus:ring-0">
                                             {t('uploadButton')}
                                         </button> */}
-
-
-
-                                         </div>   
-                                        
-
+                                        </div>
                                     </form>
                                 </div>
                             </div>

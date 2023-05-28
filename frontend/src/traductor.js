@@ -76,6 +76,7 @@ i18n.use(initReactI18next).init({
                 setLobby: 'Establecer sala',
                 intLobbyID: 'Introduce la ID de la sala',
                 connectedUsers: 'Usuarios conectados',
+                zipGame: 'Zip del Juego',
             }
         },
         en: {
@@ -149,6 +150,7 @@ i18n.use(initReactI18next).init({
                 setLobby: 'Set lobby',
                 intLobbyID: 'Introduce lobby ID',
                 connectedUsers: 'Connected users',
+                zipGame: 'Game Zip',
             }
         },
         cat: {
@@ -222,6 +224,7 @@ i18n.use(initReactI18next).init({
                 setLobby: 'Establir sala',
                 intLobbyID: `Introdueix l'ID de la sala`,
                 connectedUsers: 'Usuaris connectats',
+                zipGame: 'Zip del Joc',
             }
         }
     }

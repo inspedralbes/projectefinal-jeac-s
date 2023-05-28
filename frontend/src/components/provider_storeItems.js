@@ -87,7 +87,7 @@ const Tienda = () => {
     });
 
     return (
-        <div className="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center ">
+        <div className="overflow-auto bg-image-all bg-cover bg-no-repeat bg-center bg-fixed flex h-screen justify-center items-center">
             <div className="text-center container h-full w-3/4 p-10">
                 <div className="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
                     <div className="p-4">
@@ -95,56 +95,62 @@ const Tienda = () => {
                             <h1 className="font-mono text-white text-4xl mt-10 font-bold md:pb-12">
                                 {t('tiendaTitle')}
                             </h1>
-                            <div className="justify-center text-white text-center flex flex-wrap">
-                                {isLoggedIn ?
-                                    <div>
-                                        {isLoading ?
-                                            <div>
-                                                {itemsToBuy.length > 0 ?
-                                                    <div >
-                                                        <h2 className=" text-xl">{t('itemsTitle')}</h2>
+                            <div className="justify-center text-white text-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {isLoggedIn ? (
+                                    isLoading ? (
+                                        itemsToBuy.length > 0 ? (
+                                            itemsToBuy.map((item, id) => (
+                                                <div className="flex flex-col text-black rounded-lg bg-purple-300 shadow-lg p-4" key={id}>
+                                                    <h2 className='uppercase font-bold'>{item.name}</h2>
+                                                    <br />
+                                                    <div className="flex flex-col justify-start">
+                                                        <img src={item.image_url} className="mx-auto w-48 h-48 object-cover" alt="Item Image" />
+                                                        <br />
+                                                        <p>{item.description}</p>
                                                         <br></br>
-                                                        {
-                                                            itemsToBuy.map((item, id) => (
-                                                                <div className="flex" key={id}>
-                                                                    <div className="flex-initial w-1/3 text-center">
-                                                                        <h2>{t('itemsItem')}: {item.name}</h2>
-                                                                        <img src={item.image_url} className="mx-auto" />
-                                                                        <p>{t('itemsDesc')}: {item.description}</p>
-                                                                        <p className="inline">{t('itemsPrice')}: {item.price}</p>
-                                                                        <img className="inline w-10 h-10" src="JeacstarNF.png" alt="JeacstarNF"></img><br></br>
-                                                                        <button id={item.id} onClick={() => buyItem(userInfo.id, item.id)}>
-                                                                            {t('storeBuyItem')}
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            ))
-                                                        }
-                                                    </div> :
-                                                    <p>
-                                                        {t('storeNoItemsLeft')}
-                                                    </p>
-                                                }
-                                            </div> :
-                                            <div
-                                                class="m-12 inline-block h-8 text-white w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                                                role="status">
-                                                <span
-                                                    class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-                                                >{t('loading')}</span>
-                                            </div>
-                                        }
-                                    </div> :
-                                    <p>
-                                        {t('mensajeErrorNotLoggedInStore')}
-                                    </p>
-                                }
+                                                        <div className="flex">
+                                                            <div className="flex items-center justify-start">
+                                                                <p>{t('itemsPrice')}: {item.price}</p>
+                                                                <img className="inline w-10 h-10 ml-2" src="JeacstarNF.png" alt="JeacstarNF" />
+                                                            </div>
+                                                            <div className="flex items-center justify-end">
+                                                                <button
+                                                                    id={item.id}
+                                                                    onClick={() => buyItem(userInfo.id, item.id)}
+                                                                    className="bg-purple-500 hover:bg-purple-600 font-bold py-2 px-4 rounded text-white text-lg mt-auto self-end transition-colors duration-300"
+                                                                >
+                                                                    {t('storeBuyItem')}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <br />
+                                                    </div>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p>{t('storeNoItemsLeft')}</p>
+                                        )
+                                    ) : (
+                                        <div
+                                            class="mx-[600px] inline-block h-8 text-white w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                                            role="status">
+                                            <span
+                                                class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                                            >{t('loading')}</span>
+                                        </div>
+                                    )
+                                ) : (
+                                    <p>{t('mensajeErrorNotLoggedInStore')}</p>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
+
     );
 };
 

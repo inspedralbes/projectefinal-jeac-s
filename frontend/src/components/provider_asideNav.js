@@ -16,6 +16,7 @@ import GetRanking from '../pages/ranking.js'
 import GetGameStore from '../pages/storeItems.js'
 import React, { useState } from 'react';
 import Guide from '../pages/guide.js';
+import Swal from "sweetalert2";
 
 function AsideNav({ socket }) {
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
@@ -40,6 +41,13 @@ function AsideNav({ socket }) {
     function logout() {
         dispatch(actions.logout());
         localStorage.setItem('access_token', "0");
+        Swal.fire({
+            position: "bottom-end",
+            icon: "info",
+            title: "You have successfully loged out",
+            showConfirmButton: false,
+            timer: 1500,
+        });
     }
 
     function avatar() {

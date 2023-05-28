@@ -40,7 +40,8 @@ const LoginForm = () => {
                 Swal.fire({
                     position: "bottom-end",
                     icon: "success",
-                    title: "You have successfully logedin",
+                    title: "You have successfully loged in",
+                    description: "SISISIS funca",
                     showConfirmButton: false,
                     timer: 3500,
                 });

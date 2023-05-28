@@ -43,7 +43,6 @@ function Games({ onSharedValueChange, onSharedIdChange }) {
     return (
         <div class="bg-image-arcade bg-cover bg-no-repeat bg-center flex h-screen justify-center items-center overflow-auto">
             <div class="flex mt-auto container w-3/4 p-10">
-
                 <div className="flex grid grid-cols-1 md:grid-cols-2 gap-8 mt-20">
                     {fetchData.games ? (
                         fetchData.games.map((game) => (
@@ -67,13 +66,16 @@ function Games({ onSharedValueChange, onSharedIdChange }) {
                             </div>
                         ))
                     ) : (
-                        <div className="spinner-container flex items-center justify-center">
-                        <div className="h-8 text-white w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-                          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-                            {t('loading')}
-                          </span>
+                        <div className="flex items-center justify-center h-screen">
+                            <div className="fixed top-0 left-0 right-0 flex items-center justify-center h-screen">
+                                <div className="h-8 text-white w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+                                    <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                                        {t('loading')}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                      </div>
+
                     )}
                 </div>
 

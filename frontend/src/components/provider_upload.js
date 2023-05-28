@@ -195,17 +195,17 @@ const UploadForm = ({ socket }) => {
                                             </div>
                                         </div>
                                         <div className='flex justify-center mt-10'>
-                                            <NavLink to="/">
+                                            {/* <NavLink to="/"> */}
                                                 <button href="#_" className="relative inline-flex items-center justify-center py-10 px-40 p-20 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out border-2 border-purple-500 rounded-xl shadow-md group">
                                                     <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-purple-500 group-hover:translate-x-0 ease">
-                                                        <svg fill="#000000" height="200px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.768 512.768" ><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1)"> <g> <path d="M504.233,6.244c-5.695-4.828-13.841-6.8-22.394-2.912L12.506,216.665c-16.337,7.426-16.764,30.477-0.713,38.502 l145.331,72.666l-7.767,163.239c-0.858,18.029,19.667,28.91,34.107,18.082l78.318-58.726l40.67,54.494 c10.136,13.582,31.299,10.491,37.128-5.422L511.358,30.573C515.039,20.522,511.111,11.419,504.233,6.244z M392.393,90.856 L233.58,249.669l-45.937,45.72L70.87,237.003L392.393,90.856z M194.13,447.828l3.938-82.764l38.194,51.172L194.13,447.828z M313.074,447.819l-92.868-124.435l43.527-43.527l174.484-173.664L313.074,447.819z"></path> </g> </g> </g></svg>
+                                                        <svg fill="#000000" height="200px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.768 512.768" ><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g transform="translate(0 -1)"> <g> <path d="M504.233,6.244c-5.695-4.828-13.841-6.8-22.394-2.912L12.506,216.665c-16.337,7.426-16.764,30.477-0.713,38.502 l145.331,72.666l-7.767,163.239c-0.858,18.029,19.667,28.91,34.107,18.082l78.318-58.726l40.67,54.494 c10.136,13.582,31.299,10.491,37.128-5.422L511.358,30.573C515.039,20.522,511.111,11.419,504.233,6.244z M392.393,90.856 L233.58,249.669l-45.937,45.72L70.87,237.003L392.393,90.856z M194.13,447.828l3.938-82.764l38.194,51.172L194.13,447.828z M313.074,447.819l-92.868-124.435l43.527-43.527l174.484-173.664L313.074,447.819z"></path> </g> </g> </g></svg>
                                                     </span>
                                                     <span className="absolute flex items-center justify-center w-full h-full uppercase text-white transition-all duration-300 transform group-hover:translate-x-full ease">
                                                         {t('uploadButton')}
                                                     </span>
                                                     <span className="relative invisible ">{t('uploadButton')}</span>
                                                 </button>
-                                            </NavLink>
+                                            {/* </NavLink> */}
                                         </div>
                                     </form>
                                 </div>

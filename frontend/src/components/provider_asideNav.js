@@ -75,8 +75,8 @@ function AsideNav({ socket }) {
                 <NavLink to="/profile">
                     <div className="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
                         {isLoggedIn ?
-                            <img id="avatar_img" class="h-8 w-9 md:h-10 md:w-12 lg:h-10 lg:w-12 rounded-full" src={avatar()} alt=""></img>
-                            : <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" /></svg>
+                            <img id="avatar_img" className="h-8 w-9 md:h-10 md:w-12 lg:h-10 lg:w-12 rounded-full" src={avatar()} alt=""></img>
+                            : <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" /></svg>
                         }
 
                     </div>

@@ -77,6 +77,7 @@ i18n.use(initReactI18next).init({
                 intLobbyID: 'Introduce la ID de la sala',
                 connectedUsers: 'Usuarios conectados',
                 zipGame: 'Zip del Juego',
+                userNotLoggedError: 'Debes iniciar sesión para poder acceder a esta parte de la página',
             }
         },
         en: {
@@ -151,6 +152,7 @@ i18n.use(initReactI18next).init({
                 intLobbyID: 'Introduce lobby ID',
                 connectedUsers: 'Connected users',
                 zipGame: 'Game Zip',
+                userNotLoggedError: 'You must be logged in to acces to this part of the website'
             }
         },
         cat: {
@@ -225,6 +227,7 @@ i18n.use(initReactI18next).init({
                 intLobbyID: `Introdueix l'ID de la sala`,
                 connectedUsers: 'Usuaris connectats',
                 zipGame: 'Zip del Joc',
+                userNotLoggedError: "Has d'niciar sessió per poder accedir en aquesta part de la página",
             }
         }
     }

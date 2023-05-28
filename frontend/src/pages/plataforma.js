@@ -280,10 +280,10 @@ function Game({ socket }) {
     <div>
       <canvas id="canvas_image" className="hidden"></canvas>
       <div id="popup" className="hidden">{messageError}</div>
-      <div class="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
-        <div class="g-6 flex h-full flex-wrap items-center justify-center">
-          <div class="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
-            <div class="relative p-4 md:m-6 md:p-12 text-center">
+      <div className="flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
+        <div className="g-6 flex h-full flex-wrap items-center justify-center">
+          <div className="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
+            <div className="relative p-4 md:m-6 md:p-12 text-center">
               {!gameModeSelected && !displayCanvas ?
                 <div>
                   <h3 className="text-white">{t('gameMode')}</h3>
@@ -366,7 +366,7 @@ function Game({ socket }) {
                                 <div>
                                   {!gameStarted ?
                                     <div>
-                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>{buttonText}</button>
+                                      <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>{buttonText}</button>
                                     </div>
                                     :
                                     <></>
@@ -390,7 +390,7 @@ function Game({ socket }) {
                                       <label className="text-white">
                                         {t('gameModePlayerNameNotLoggedIn')}
                                       </label><br></br>
-                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { handleSaveUsernameOnClick() }}>{t('setLobby')}</button>
+                                      <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { handleSaveUsernameOnClick() }}>{t('setLobby')}</button>
                                     </div>
                                   </label>
                                 </div>
@@ -398,7 +398,7 @@ function Game({ socket }) {
                                 <div>
                                   {!gameStarted ?
                                     <div>
-                                      <button class="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>{buttonText}</button>
+                                      <button className="bg-violet-500 m-5 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded" onClick={() => { startGame(); }}>{buttonText}</button>
                                     </div>
                                     :
                                     <></>

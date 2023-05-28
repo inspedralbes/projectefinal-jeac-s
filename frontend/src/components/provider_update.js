@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 
 let pathimagen = '';
@@ -202,7 +203,7 @@ const UpdateForm = ({ socket }) => {
     };
 
     return (
-        <div class="overflow-auto flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
+        <div className="overflow-auto flex h-screen justify-center items-center min-h-screen bg-image-all bg-cover bg-no-repeat bg-center bg-fixed">
             {isLoggedIn ?
                 <div className=" container h-full w-3/4 p-10">
                     <div className="block rounded-lg bg-gray-800 shadow-lg dark:bg-neutral-800">
@@ -220,7 +221,7 @@ const UpdateForm = ({ socket }) => {
                                                     {t('uploadName')}</label>
                                                 <br></br>
                                                 <input
-                                                    class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                    className="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                                     id="nameGamee" type='text' placeholder="Name" value={nameGame} onChange={(e) => { setName(e.target.value) }}>
                                                 </input>
                                             </div>
@@ -232,7 +233,7 @@ const UpdateForm = ({ socket }) => {
                                                     {t('uploadImage')}</label>
                                                 <br></br>
                                                 <input
-                                                    class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                    className="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                                     id='uploadImg' type='file' accept="image/png, image/jpeg" value={img} onChange={(e) => setImg(e.target.value)}>
                                                 </input>
                                             </div>
@@ -256,12 +257,12 @@ const UpdateForm = ({ socket }) => {
                                                     {t('itemsDesc')}</label>
                                                 <br></br>
                                                 <input
-                                                    class="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                    className="text-white peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                                     id="descriptionGamee" placeholder="Add a description" rows='5' cols='50' value={description} onChange={(e) => setDescription(e.target.value)}>
                                                 </input>
                                             </div>
                                             <button className="text-white inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10" variant="primary">
-                                            {t('uploadButton')}
+                                                {t('uploadButton')}
                                             </button>
                                         </form>
                                     </div>
@@ -273,9 +274,35 @@ const UpdateForm = ({ socket }) => {
                         </div>
                     </div>
                 </div>
-                : <h2>
-                    {t('mensajeErrorNotLoggedInUpload')}
-                </h2>
+                :
+                <div>
+                    <div className="p-10 text-center bg-gray-800 text-white font-bold rounded-lg">
+                        <p className="mb-6 text-lg lg:text-2xl sm:px-16 xl:px-48 dark:text-gray-400">
+                            {t('profileNotLoggedIn')}
+                        </p>
+                        <p className="mb-6 text-lg lg:text-2xl sm:px-16 xl:px-48 dark:text-gray-400">
+                            {t('userNotLoggedError')}
+                        </p>
+                        <div className='flex justify-center uppercase'>
+                            <div className='mr-2'>
+                                <NavLink to="/login">
+                                    <a href="#" className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-white bg-purple-800 rounded-lg hover:bg-purple-900 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+                                        {t('logIn')}
+                                    </a>
+                                </NavLink>
+                            </div>
+                            <div className='ml-2'>
+                                <NavLink to="/signin">
+                                    <a href="#" className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-white bg-purple-800 rounded-lg hover:bg-purple-900 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+                                        {t('signIn')}
+                                    </a>
+                                </NavLink>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             }
         </div >
     );

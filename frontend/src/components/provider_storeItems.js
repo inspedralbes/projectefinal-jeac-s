@@ -132,10 +132,10 @@ const Tienda = () => {
                                         )
                                     ) : (
                                         <div
-                                            class="mx-[600px] inline-block h-8 text-white w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                                            className="mx-[600px] inline-block h-8 text-white w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
                                             role="status">
                                             <span
-                                                class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                                                className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
                                             >{t('loading')}</span>
                                         </div>
                                     )

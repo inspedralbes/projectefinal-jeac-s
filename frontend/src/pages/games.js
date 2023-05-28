@@ -41,8 +41,8 @@ function Games({ onSharedValueChange, onSharedIdChange }) {
     }
 
     return (
-        <div class="bg-image-arcade bg-cover bg-no-repeat bg-center flex h-screen justify-center items-center overflow-auto">
-            <div class="flex mt-auto container w-3/4 p-10">
+        <div className="bg-image-arcade bg-cover bg-no-repeat bg-center flex h-screen justify-center items-center overflow-auto">
+            <div className="flex mt-auto container w-3/4 p-10">
                 <div className="flex grid grid-cols-1 md:grid-cols-2 gap-8 mt-20">
                     {fetchData.games ? (
                         fetchData.games.map((game) => (

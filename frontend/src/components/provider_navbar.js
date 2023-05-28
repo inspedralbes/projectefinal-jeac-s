@@ -25,16 +25,16 @@ function Navbar() {
                         <div className="flex items-center">
                             <NavLink to="/">
                                 {/* <img className="hidden w-auto md:h-6 md:block lg:h-8 lg:block " src="LogoLargo.png" alt="Your Company"></img> */}
-                                <img className="w-24 h-5" src="LogoLargo.png" alt="Your Company"></img>
+                                <img className="w-72 h-16" src="LogoLargo.png" alt="Your Company"></img>
                                 <img className="hidden h-8 w-auto " src="LogoLargo.png" alt="Your Company"></img>
                             </NavLink>
                         </div>
 
                         <div className="sm:ml-6 flex">
-                            <div className="flex space-x-4">
+                            <div className="flex items-center space-x-4">
 
                                 <NavLink to="/games">
-                                    <button href="#" className=" text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                                    <button href="#" className="flex text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
                                         {t('navGames')}
                                     </button>
                                 </NavLink>

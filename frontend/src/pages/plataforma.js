@@ -13,32 +13,33 @@ import('phaser')
     Phaser = module;
   })
 
-function Game({ socket }) {
-  const isLoggedIn = useSelector(state => state.isLoggedIn);
-  const userInfo = useSelector((state) => state.data);
-  const gameInfo = useSelector((state) => state.gameInfo);
-  const pathGame = useSelector((state) => state.pathGame);
-  const token = localStorage.getItem('access_token');
-
-  const [lobbyId, setLobbyId] = useState(null);
-  const [lobbyIdInput, setLobbyIdInput] = useState(null);
-  const [displayCanvas, setDisplayCanvas] = useState(false);
-  const [gameModeSelected, setGameModeSelected] = useState(false);
-  const [singlePlayer, setSinglePlayer] = useState(false);
-  const [gameStarted, setGameStarted] = useState(false);
-  const [singlePlayerUserName, setSinglePlayerUserName] = useState(null);
-  const [multiPlayerUserName, setMultiPlayerUserName] = useState(null);
-  const [createRoomOwner, setcreateRoomOwner] = useState(null);
-  const [notRoomOwner, setNotRoomOwner] = useState(null);
-  const [optionSelected, setOptionSelected] = useState(false);
-  const [lobbyStarted, setLobbyStarted] = useState(false);
-  const [lobbyJoined, setLobbyJoined] = useState(false);
-  const [gameEnded, setGameEnded] = useState(false);
-  const [hasMultiplayer, setHasMultiplayer] = useState(null);
-  const [hasSingleplayer, setHasSingleplayer] = useState(null);
-  const [messageError, setMessageError] = useState("Error");
-  const [buttonText, setButtonText] = useState("Playrerewr");
-  const { t } = useTranslation();
+function Game({ socket , sharedValue, sharedId}) {
+    const isLoggedIn = useSelector(state => state.isLoggedIn);
+    const userInfo = useSelector((state) => state.data);
+    const gameInfo = useSelector((state) => state.gameInfo);
+    const pathGame = useSelector((state) => state.pathGame);
+    const token = localStorage.getItem('access_token');
+  
+    const [lobbyId, setLobbyId] = useState(null);
+    const [lobbyIdInput, setLobbyIdInput] = useState(null);
+    const [displayCanvas, setDisplayCanvas] = useState(false);
+    const [gameModeSelected, setGameModeSelected] = useState(false);
+    const [singlePlayer, setSinglePlayer] = useState(false);
+    const [gameStarted, setGameStarted] = useState(false);
+    const [singlePlayerUserName, setSinglePlayerUserName] = useState(null);
+    const [multiPlayerUserName, setMultiPlayerUserName] = useState(null);
+    const [createRoomOwner, setcreateRoomOwner] = useState(null);
+    const [notRoomOwner, setNotRoomOwner] = useState(null);
+    const [optionSelected, setOptionSelected] = useState(false);
+    const [lobbyStarted, setLobbyStarted] = useState(false);
+    const [lobbyJoined, setLobbyJoined] = useState(false);
+    const [gameEnded, setGameEnded] = useState(false);
+    const [hasMultiplayer, setHasMultiplayer] = useState(null);
+    const [hasSingleplayer, setHasSingleplayer] = useState(null);
+    const [messageError, setMessageError] = useState("Error");
+    const [buttonText, setButtonText] = useState("Playrerewr");
+    const { t } = useTranslation();
+  
 
 
   useEffect(() => {
@@ -49,6 +50,9 @@ function Game({ socket }) {
       socket.emit("leave_lobby");
     };
   }, []);
+
+  console.log(sharedValue)
+  console.log(sharedId)
 
   useEffect(() => {
     getScript();
@@ -95,6 +99,7 @@ function Game({ socket }) {
     socket.on("lobby_info", (data) => {
       setLobbyId(data.lobbyIdentifier);
       ownerLobby = data;
+      console.log(ownerLobby);
     });
 
     socket.on("start_game", () => {
@@ -110,8 +115,8 @@ function Game({ socket }) {
     });
 
     if (isLoggedIn) {
-      setSinglePlayerUserName(userInfo.name);
-      setMultiPlayerUserName(userInfo.name);
+      setUsername(userInfo.name);
+      setOwnerName(userInfo.name)
     }
 
     return () => {
@@ -136,8 +141,8 @@ function Game({ socket }) {
     }
   };
 
-  function handleSetSinglePlayerUsername(e) {
-    setSinglePlayerUserName(e.target.value);
+  function gameMode() {
+    setGameModeSelected(true);
   }
 
   function handleSaveUsernameOnClick() {
@@ -200,14 +205,26 @@ function Game({ socket }) {
 
   }
 
+  function toggleForm() {
+    setDisplayForm(true);
+    setcreateRoomOwner(false);
+    setOptionSelected(true);
+  }
+
+  function handleChangeLobbyId(e) {
+    setLobbyIdInput(e.target.value);
+  }
+
+  function handleChangeUsername(e) {
+    setUsername(e.target.value);
+  }
+
   function startGame() {
     if (singlePlayerUserName != null || multiPlayerUserName != null) {
       socket.emit("can_start_game", singlePlayer);
       setGameStarted(true);
     } else {
-      setGameStarted(false);
-      setDisplayCanvas(false)
-      console.log("El nombre no puede estar vacio");
+      console.log("El nombre del owner no puede estar vacio");
     }
   }
 

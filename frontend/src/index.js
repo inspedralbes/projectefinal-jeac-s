@@ -17,7 +17,7 @@ var socket = socketIO(process.env.REACT_APP_NODE_URL, {
       origin: "*",
       credentials: true,
   },
-  path: "/node/",
+  path: "/",
   transports: ["websocket"],
 });
 

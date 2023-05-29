@@ -15,7 +15,6 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        // return response()->json(["message" => "OK"]);
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -100,8 +99,7 @@ class AuthController extends Controller
         return response()->json($users);
     }
 
-    public function getUserUploadGames()
-    {
+    public function getUserUploadGames(){
         $user = Auth::user();
         $games = Game::where('user_id', $user->id)->get();
         return response()->json($games);

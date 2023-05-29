@@ -1,11 +1,12 @@
 const configGame = {
   multiplayer: true,
   singleplayer: true,
-  max_players: 1,
+  max_players: 4,
 }
 
 let teams = [];
 let playersArray = [];
+let playersActors = [];
 let otherPlayers = [];
 let jugadores;
 let yourId = 0;
@@ -18,6 +19,11 @@ var scores = {
 };
 let canvasWidth = 800;
 let canvasHeight = 600;
+
+let textWin;
+let button;
+
+let gameEnded = false;
 
 var game;
 
@@ -53,13 +59,12 @@ function init(_sendInfoGame, _finalJuego) {
 
 
 function preload() {
-  this.load.image('blue_ship_1', '../GamesFiles/Starfinder/images/spaceShips_blue.png');
-  this.load.image('red_ship_1', '../GamesFiles/Starfinder/images/spaceShips_red.png');
-  this.load.image('blue_ship_2', '../GamesFiles/Starfinder/images/enemy_blue.png');
-  this.load.image('red_ship_2', '../GamesFiles/Starfinder/images/enemy_red.png');
-
-  this.load.image('star', '../GamesFiles/Starfinder/images/star_gold.png');
-  this.load.image('background', '../GamesFiles/Starfinder/images/spaceBackground.png');
+  this.load.image('blue_ship_1', './fitxers/GamesFiles/Starfinder/images/spaceShips_blue.png');
+  this.load.image('red_ship_1', './fitxers/GamesFiles/Starfinder/images/spaceShips_red.png');
+  this.load.image('blue_ship_2', './fitxers/GamesFiles/Starfinder/images/enemy_blue.png');
+  this.load.image('red_ship_2', './fitxers/GamesFiles/Starfinder/images/enemy_red.png');
+  this.load.image('star', './fitxers/GamesFiles/Starfinder/images/star_gold.png');
+  this.load.image('background', './fitxers/GamesFiles/Starfinder/images/spaceBackground.png');
 
 
 }
@@ -68,6 +73,8 @@ function create() {
   self = this;
 
   otherPlayers = this.physics.add.group();
+  playersActors = this.physics.add.group();
+
 
 
   //this.otherPlayers = this.physics.add.group();
@@ -134,7 +141,26 @@ function recibirInfoFromPlatform(data) {
     //console.log("Ship hace la movicion");
     playerMoved(data);
   }
+  else if (data.infoGame.action == "new_game") {
+    gameEnded = false;
+    textWin.destroy();
 
+    playersArray.forEach((player) => {
+      
+      if (player.self == true) {
+        self.ship.setPosition(player.posX, player.posY);
+        self.ship.setRotation(0, 0);
+      }
+
+    })
+
+  }
+  else if (data.infoGame.action == "self_ship_movement") {
+    if (data.infoGame.id === self.ship.playerId) {
+      self.ship.setRotation(data.infoGame.rotation);
+      self.ship.setPosition(data.infoGame.posX, data.infoGame.posY);
+    }
+  }
   else if (data.infoGame.action == 'starLocation' && !ownerDelLobby) {
 
     //console.log("Location star", data);
@@ -162,7 +188,9 @@ function recibirInfoFromPlatform(data) {
     if (self.star) {
       self.star.destroy();
     }
-    newStar(self);
+    if (!gameEnded) {
+      newStar(self);
+    }
   }
   else if (data.infoGame.action == 'update_score') {
     //console.log("AAAAAAAA", data);
@@ -175,11 +203,24 @@ function recibirInfoFromPlatform(data) {
     self.redScoreText.setText('Red: ' + scores.red);
 
     if (scores.blue == 20) {
+
+      gameEnded = true;
+
+
+      if (ownerDelLobby) {
+
+        button = self.add.rectangle(400, 300, 200, 80, 0xff0000);
+        button.setInteractive();
+        button.on('pointerdown', startNewGame);
+      }
+
+      textWin = self.add.text(300, 200, 'Blue wins ', { fontSize: '32px', fill: '#FFFFFF' });
+
+
       playersArray.forEach(player => {
         if (player.id == yourId) {
           if (player.team == 'blue') {
-            //finalJuego(25);
-            game.destroy(true, false);
+            finalJuego(25);
           }
           else {
             finalJuego(10);
@@ -189,10 +230,20 @@ function recibirInfoFromPlatform(data) {
     }
 
     if (scores.red == 20) {
+
+      gameEnded = true;
+
+      if (ownerDelLobby) {
+        button = self.add.rectangle(300, 200, 200, 80, 0xff0000);
+        button.setInteractive();
+        button.on('pointerdown', startNewGame);
+      }
+
+      textWin = self.add.text(584, 16, 'Red wins ', { fontSize: '32px', fill: '#FFFFFF'});
+
       playersArray.forEach(player => {
         if (player.id == yourId) {
           if (player.team == 'red') {
-
             finalJuego(25);
           }
           else {
@@ -204,6 +255,14 @@ function recibirInfoFromPlatform(data) {
     }
 
   }
+
+  else if (data.infoGame.action == 'reset_score') {
+    scores.red = 0;
+    scores.blue = 0;
+
+    self.blueScoreText.setText('Blue: ' + scores.blue);
+    self.redScoreText.setText('Red: ' + scores.red);
+  }
 }
 
 function newStar(self) {
@@ -212,28 +271,31 @@ function newStar(self) {
     y: Math.floor(Math.random() * 500) + 50
   };
 
-  if (self.star) self.star.destroy();
-  self.star = self.physics.add.image(star.x, star.y, 'star');
-  sendInfoGame({ action: "starLocation", star_object: self.star, posX: star.x, posY: star.y })
+  if (!gameEnded) {
 
-  self.physics.add.overlap(self.ship, self.star, function () {
+    if (self.star) self.star.destroy();
+    self.star = self.physics.add.image(star.x, star.y, 'star');
+    sendInfoGame({ action: "starLocation", star_object: self.star, posX: star.x, posY: star.y })
 
-    self.star.destroy();
-    playersArray.forEach((player) => {
-      console.log("PlayerPlayerPlayer", player);
-      if (player.id == yourId) {
-        console.log("PlayerTeam", player);
-        sendInfoGame({ action: "update_score", team: player.team })
-      }
-    });
+    self.physics.add.overlap(self.ship, self.star, function () {
 
-    newStar(self);
-  }, null, self);
+      self.star.destroy();
+      playersArray.forEach((player) => {
+        console.log("PlayerPlayerPlayer", player);
+        if (player.id == yourId) {
+          console.log("PlayerTeam", player);
+          sendInfoGame({ action: "update_score", team: player.team })
+        }
+      });
+
+      newStar(self);
+    }, null, self);
+
+  }
 }
 
 function recibirInfoLobby(lobby) {
-  //console.log("lobby", lobby);
-  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", lobby);
+  console.log("aux", lobby);
   let distanceFromCorner = 50;
   teams = [
     {
@@ -300,41 +362,35 @@ function recibirInfoLobby(lobby) {
 
 function addPlayers(self) {
 
-
-  if (jugadores == null) {
-    jugadores = self.add.group();
-  }
-
   playersArray.forEach((player) => {
     console.log("Player", player);
-    //Crea una imagen para el jugador y agrégalo al grupo de jugadores
-    // let jugadorImagen = self.physics.add.image(100, 150, 'red_ship_1').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
-    // let jugadorImagen2 = self.physics.add.image(500, 150, 'blue_ship_2').setOrigin(0.5, 0.5).setDisplaySize(53, 40);
 
 
     if (player.self == true) {
-      //console.log("PlayerAAAAAAAA", player);
-
       self.ship = self.physics.add.image(player.posX, player.posY, player.sprite).setOrigin(0.5, 0.5).setDisplaySize(53, 40);
       self.ship.setDrag(100);
       self.ship.setAngularDrag(100);
       self.ship.setMaxVelocity(200);
+      self.ship.playerId = player.id
     }
     else {
-      //sconsole.log("Player", player);
       let other = self.physics.add.image(player.posX, player.posY, player.sprite).setOrigin(0.5, 0.5).setDisplaySize(53, 40);
 
       other.playerId = player.id;
       otherPlayers.add(other);
 
+
     }
-    //jugadores.add(jugadorImagen);
-    //console.log("jugadores", jugadoress);
 
   })
 }
 
 function playerMoved(data) {
+  // if (data.infoGame.id === self.ship.playerId){
+  //   self.ship.setRotation(data.infoGame.rotation);
+  //   self.ship.setPosition(data.infoGame.posX, data.infoGame.posY);
+  // }
+
   otherPlayers.getChildren().forEach(function (otherPlayer) {
     if (data.infoGame.id === otherPlayer.playerId) {
       otherPlayer.setRotation(data.infoGame.rotation);
@@ -342,13 +398,50 @@ function playerMoved(data) {
     }
   });
 }
+
 function userLeft(user) {
   console.log("User left (juego.js)", user);
-  //game.destroy(true, false);
 }
 
 function destroyGame() {
-  game.destroy(true, false);
+  if (game != null || game != undefined) {
+    game.destroy(true, false);
+  }
+}
+
+function startNewGame() {
+
+  sendInfoGame({ action: "new_game" })
+
+  if (ownerDelLobby) {
+    button.destroy();
+  }
+  textWin.destroy();
+
+  sendInfoGame({ action: "reset_score" })
+
+
+  playersArray.forEach((player) => {
+    console.log("PLAyer", player);
+    console.log("Self ship", self.ship);
+    console.log("others ship", otherPlayers);
+
+    // if (player.self == true) {
+    //   self.ship.setPosition(player.posX, player.posY);
+    //   self.ship.setRotation(0, 0);
+    //   //sendInfoGame({ action: "self_ship_movement", id: self.ship.playerId, posX: self.ship.x, posY: self.ship.y, rotation: self.ship.rotation })
+
+    // }
+
+    otherPlayers.getChildren().forEach(function (other) {
+      if (player.id === other.playerId) {
+        other.setPosition(player.posX, player.posY);
+        other.setRotation(0, 0);
+        sendInfoGame({ action: "shipMovement", id: other.playerId, posX: other.x, posY: other.y, rotation: other.rotation })
+      }
+    });
+
+  })
 }
 
 function executeGame() {
